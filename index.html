@@ -1,0 +1,19 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Mixly_Web for Mithon</title>
+    <script type="text/javascript">
+      function changeFrameHeight(){
+        var ifm= document.getElementById("myiframe"); 
+        ifm.height=document.documentElement.clientHeight*0.98;
+      }
+
+      window.onresize=function(){  
+         changeFrameHeight();  
+      }
+    </script>
+</head>
+<body>
+    <iframe src="apps/mixly/index_board_MicroPython[NRF51822_mithon].html" id="myiframe" frameborder="0" width="100%" onload="changeFrameHeight()" scrolling="no" style="display:block;"></iframe>
+</body>
+</html>
