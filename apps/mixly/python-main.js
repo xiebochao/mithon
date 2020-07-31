@@ -145,7 +145,7 @@ var code_head = 'import math\n'+
 
 let connect_btn = document.getElementById("connect_btn");
 let upload_btn = document.getElementById("upload_btn");
-let buffer = null;
+let deviceObj = null;
 
 // Choose a device
 const selectDevice = async () => {
@@ -155,16 +155,17 @@ const selectDevice = async () => {
         const device = await navigator.usb.requestDevice({
             filters: [{vendorId: 0xD28}]
         });
-		await update(device);
-		alert(doDownload())
+        alert('连接成功!');
+		deviceObj = device;
 	} catch (error) {
 		// statusEl.style.visibility = "hidden";
 		console.log(error);
 		// setStatus(error);
+		return null;
 	}
 }
 
-connect_btn.addEventListener("click", selectDevice);
+connect_btn.addEventListener("click", () => {selectDevice()});
 
 //-----------------------------------------------------------
 const setStatus = state => {
@@ -172,14 +173,7 @@ const setStatus = state => {
 }
 
 const setTransfer = progress => {
-    if (!progress) {
-        statusEl.style.visibility = "hidden";
-        return;
-    }
-    selectEl.style.visibility = "hidden";
-    statusEl.style.visibility = "visible";
-    barEl.style.width = `${progress * 100}%`;
-    transferEl.textContent = `${Math.ceil(progress * 100)}%`;
+   
 }
 
 // Load a firmware image
@@ -195,11 +189,19 @@ const setImage = (file) => {
     reader.readAsArrayBuffer(file);
 }
 
-// Update a device with the firmware image
-const update = async device => {
+// Update a device with the firmware image transferred from block/code
+const update = async deviceObj => {
+	if(!deviceObj){
+		alert('无可用设备!')
+		return;
+	}
+	let buffer = null;
+	firmware = document.getElementById('firmware').innerText;
+	hexfile = getHexFile(firmware);
+	var hex2Blob = new Blob([hexfile],{type:'text/plain'});
+	buffer =  await hex2Blob.arrayBuffer()
     if (!buffer) return;
-
-    const transport = new DAPjs.WebUSB(device);
+    const transport = new DAPjs.WebUSB(deviceObj);
     const target = new DAPjs.DAPLink(transport);
 
     target.on(DAPjs.DAPLink.EVENT_PROGRESS, progress => {
@@ -216,11 +218,9 @@ const update = async device => {
         await target.disconnect();
 
         setStatus("Flash complete!");
-        setTransfer();
-        fileEl.value = "";
     } catch (error) {
-        statusEl.style.visibility = "hidden";
         setStatus(error);
     }
 }
+upload_btn.addEventListener("click", () => {update(deviceObj)});
 
