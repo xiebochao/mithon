@@ -32,16 +32,29 @@ var MSG = {
 	catEthernet_clinet: "用戶端",
 	tab_blocks: "模組",
 	tab_arduino: "代碼",
-	copyright: "Copyright © 北京師範大學米思齊團隊				http://mixly.org/",
+	copyright: "Copyright © 北京師範大學傅騫博士團隊				http://mixly.org/",
 	catGame: "遊戲",
 	catSystem: "系統",
-	catTurtle: "海龜",
+	catTurtle: "海龜畫圖",
 	catTuple: "元組",
 	catIot: "物聯網",
 	catSet: "集合",
 	catData: "資料分析",
 	catHardware: "硬體交互",
 	catAI: "人工智慧",
+	catHear: "機器聽覺",
+	catImage: "機器視覺",
+	catTFT: "顯示屏",
+	catAV: "音視頻",
+	catCamera: "攝像頭",
+	catImage_Draw: "圖像繪制",
+	catImage_Base: "圖像基礎",
+	catImage_Filte: "圖像濾波",
+	catImage_Shpe: "形狀識別",
+	catImage_Color: "顏色識別",
+	catImage_Codes: "維碼識別",
+	catImage_Features: "特征識別",
+	catShaw:'硬件說明',		
 	catDS: "資料結構",
 	catOnBoard:'板載資源',
 	catOnBoardDisplay:'板載顯示',
@@ -63,7 +76,8 @@ var MSG = {
 	catclass: "類",
 	catproperty: "屬性",
 	catmethod: "方法",
-	catobject: "對象"
+	catobject: "對象",
+	catEvents: "事件"
 };
 Blockly.Msg.ADD_COMMENT = "添加注釋";
 Blockly.Msg.AUTH = "請授權這個應用程式以保存您的作品並共用。";
@@ -2136,7 +2150,6 @@ Blockly.blynk_IOT_DOUBLE = '浮點型';
 Blockly.blynk_IOT_VAR_NAME = '變數名';
 Blockly.blynk_TIMER = 'Blynk計時器';
 Blockly.blynk_IOT_WidgetLED = 'LED組件 虛擬管腳';
-Blockly.blynk_iot_WidgetLED_COLOR = '顏色';
 Blockly.blynk_IOT_IR_SEND = '紅外控制空調 品牌';
 Blockly.blynk_IOT_GREE = '格力';
 Blockly.blynk_IOT_MIDEA = '美的';
@@ -2814,3 +2827,7 @@ Blockly.MIXLY_PYTHON_PASS = '佔位語句';
 Blockly.MIXLY_PYTHON_TRY = '嘗試執行';
 Blockly.MIXLY_PYTHON_EXCEPT = '出現異常';
 Blockly.MIXLY_PYTHON_FINALLY = '最終執行';
+Blockly.MIXLY_SOFT_ANALOGWRITE_PIN = '軟件模擬輸出 管腳 #';
+Blockly.MIXLY_CANCEL_SOFT_ANALOGWRITE_PIN = '取消軟件模擬輸出 管腳 #';
+Blockly.MIXLY_TOOLTIP_CANCEL_SOFT_ANALOGWRITE_PIN = '取消指定管腳的軟件模擬PWM';
+Blockly.MIXLY_MITHON_NEAR="被接近";

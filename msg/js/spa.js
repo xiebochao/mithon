@@ -32,7 +32,7 @@ var MSG = {
   catEthernet_clinet: "Cliente",
   tab_blocks: "Bloques",
   tab_arduino: "Código",
-  copyright: "Copyright © Beijing Normal University Mi Siqi Team http://mixly.org/",
+  copyright: "Copyright © Mixly Team http://mixly.org/",
   catGame: "Juego",
   catSystem: "Sistema",
   catTurtle: "tortuga marina",
@@ -63,7 +63,8 @@ var MSG = {
   catclass: "Clase",
   catproperty: "Atributos",
   catmethod: "Método",
-  catobject: "Objeto"
+  catobject: "Objeto",
+  catEvents: "Incidente"
 };
 Blockly.Msg.ADD_COMMENT = "Añadir comentario";
 Blockly.Msg.AUTH = "Por favor, autorice esta aplicación para guardar su trabajo y compartirlo";
@@ -2137,7 +2138,6 @@ Blockly.blynk_IOT_DOUBLE = 'Flotar';
 Blockly.blynk_IOT_VAR_NAME = 'Nombre de variable';
 Blockly.blynk_TIMER = 'Blynk timer';
 Blockly.blynk_IOT_WidgetLED = 'Pin virtual del componente LED';
-Blockly.blynk_iot_WidgetLED_COLOR = 'Color';
 Blockly.blynk_IOT_IR_SEND = 'Marca de aire acondicionado controlado por infrarrojos';
 Blockly.blynk_IOT_GREE = 'Gree';
 Blockly.blynk_IOT_MIDEA = 'Hermosa';
@@ -2813,3 +2813,7 @@ Blockly.MIXLY_PYTHON_PASS = 'microblog';
 Blockly.MIXLY_PYTHON_TRY = 'Intentar ejecutar';
 Blockly.MIXLY_PYTHON_EXCEPT = 'Aparición de anomalías';
 Blockly.MIXLY_PYTHON_FINALLY = 'Ejecución final';
+Blockly.MIXLY_SOFT_ANALOGWRITE_PIN = 'Salida analógica de software pin #';
+Blockly.MIXLY_CANCEL_SOFT_ANALOGWRITE_PIN = 'Cancelar el pin de salida analógica de software #';
+Blockly.MIXLY_TOOLTIP_CANCEL_SOFT_ANALOGWRITE_PIN = 'Cancele la simulación de software PWM del pin especificado';
+Blockly.MIXLY_MITHON_NEAR="Cerca.";

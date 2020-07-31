@@ -35,7 +35,7 @@ var MSG = {
 	catEthernet_clinet:"Client",
 	tab_blocks: "Blocks",
 	tab_arduino: "Code",
-	copyright:"Copyright © Mixly Team@BNU				 http://mixly.org/",
+	copyright:"Copyright © Mixly Team				 http://mixly.org/",
 	catGame:"Game",
 	catSystem:"System",
 	catTurtle:"Turtle",
@@ -45,6 +45,19 @@ var MSG = {
 	catData:"Data",
 	catHardware:"Hardware",
 	catAI:"AI",
+	catHear: "machine Hear",
+	catImage: "machine vision",
+	catTFT: "Display",
+	catAV: "Audio/Video",
+	catCamera: "Camera ",
+	catImage_Draw: "Image rendering ",
+	catImage_Base: "Image foundation",
+	catImage_Filte: "Image filtering",
+	catImage_Shpe: "Shape recognition",
+	catImage_Color: "Color recognition",
+	catImage_Codes: "Code recognition ",
+	catImage_Features: "Feature recognition",
+	catShaw:'MixNo/MixPY',	
 	catDS: "Data Structure",
 	catOnBoard:'Board',
 	catOnBoardDisplay:'Board Display',
@@ -66,7 +79,8 @@ var MSG = {
 	catclass: "Class",
 	catproperty: "Attributes",
 	catmethod: "Method",
-	catobject: "Object"
+	catobject: "Object",
+	catEvents: "Events"
 };
 Blockly.Msg.ADD_COMMENT= "Add Comment";
 Blockly.Msg.AUTH= "Please authorize this app to enable your work to be saved and to allow it to be shared by you.";
@@ -2138,7 +2152,6 @@ Blockly.blynk_IOT_DOUBLE = 'Float';
 Blockly.blynk_IOT_VAR_NAME = 'Variable name';
 Blockly.blynk_TIMER = 'Blynk timer';
 Blockly.blynk_IOT_WidgetLED = 'LED component virtual pin';
-Blockly.blynk_iot_WidgetLED_COLOR = 'Color';
 Blockly.blynk_IOT_IR_SEND = 'Infrared controlled air conditioner brand';
 Blockly.blynk_IOT_GREE = 'Gree';
 Blockly.blynk_IOT_MIDEA = 'Beautiful';
@@ -2815,3 +2828,7 @@ Blockly.MIXLY_PYTHON_PASS = 'pass';
 Blockly.MIXLY_PYTHON_TRY = 'try';
 Blockly.MIXLY_PYTHON_EXCEPT = 'except';
 Blockly.MIXLY_PYTHON_FINALLY = 'finally';
+Blockly.MIXLY_SOFT_ANALOGWRITE_PIN = 'Software analog output pin #';
+Blockly.MIXLY_CANCEL_SOFT_ANALOGWRITE_PIN = 'Cancel software analog output pin #';
+Blockly.MIXLY_TOOLTIP_CANCEL_SOFT_ANALOGWRITE_PIN = 'Cancel the software simulation PWM of the specified pin';
+Blockly.MIXLY_MITHON_NEAR="is worked";

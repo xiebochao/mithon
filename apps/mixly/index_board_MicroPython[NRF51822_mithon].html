@@ -68,7 +68,6 @@
   <script src="../../generators/python/tuple.js"></script>
   <script src="../../generators/mithon/mithon.js"></script>
   <!-- ace file -->
-  <script src="python-main.js" type="application/javascript"></script>
   <script src="js/lib/ace/ace.js" type="application/javascript"></script>
   <script src="js/lib/ace/ext-language_tools.js" type="application/javascript"></script>
   <script src="../../blocks/python/utility.js"></script>
@@ -77,23 +76,7 @@
   <link rel="stylesheet" type="text/css" href="css/color_mithon.css" />
   <link rel="stylesheet" type="text/css" href="css/ACEfont.css" />
   <!-- upload -->
-  <script src="static/js/jquery-2.1.4.min.js" type="application/javascript"></script>
-  <script src="static/js/jquery.browser.min.js" type="application/javascript"></script>
-  <script src="static/js/forge.min.js" type="application/javascript"></script>
-  <script src="static/js/FileSaver.min.js" type="application/javascript"></script>
-  <script src="static/js/vex.combined.min.js" type="application/javascript"></script>
-  <script src="static/js/encoding.min.js" type="application/javascript"></script>
-  <script src="static/js/mustache.min.js" type="application/javascript"></script>
-  <script src="static/js/ResizeSensor.js"></script>
-  <script src="static/js/ElementQueries.min.js"></script>
-  <script src="static/js/custom-event-polyfill.js"></script>
-  <script src="static/js/lzma-d.min.js"></script>
-  <script src="static/js/base64.js"></script>
-  <script src="static/js/microbit-fs.umd.min.js"></script>
-  <script src="lang/en.js" id="lang"></script>
-  <script src="micropythonapi.js"></script>
-  <script src="python-main.js"></script>
-  <script src="urlparser.js"></script>
+  <script type="text/javascript" src="dap.umd.js"></script>
 </head>
 <body onload="init()">
   <table height="100%" width="100%" id="table_whole">
@@ -113,6 +96,18 @@
             var viewMode1 = document.getElementById('viewMode1');
             viewMode1.href = 'index_board_MicroPython[NRF51822_mithon].html?lang=' + Code.LANG;
             </script>
+            <td class="tabmin">
+              <div id="status">
+                <div id="bar"></div>
+                <div id="transfer"></div>
+              </div>
+            </td>
+            <td class="tabmin"  width="100"> 
+              <button id="connect_btn">连接</button>
+            </td>
+            <td class="tabmin" width="100" >
+              <button id="upload_btn" >上传</button>
+            </td>
             <td class="tabmin">
               <input onclick="Blockly.mainWorkspace.undo(0);" name="undo" type="image" title="undo(ctrl+z)" src="media/undo.png" style="padding:5px;" onmouseover="this.src='media/undo1.png'" onmousedown="this.src='media/undo2.png'" onmouseup="this.src='media/undo1.png'" onmouseout="this.src='media/undo.png'" width="20" height="20" border="0">
             </td>
@@ -175,20 +170,6 @@
               document.getElementById('span_blocks').textContent = MSG['tab_blocks'];
               document.getElementById('span_arduino').textContent = MSG['tab_arduino'];
             </script>
-              <script type="application/javascript">
-                // Call the web_editor function to start the editor running.
-                var config = {
-                    microPythonApi: microPythonApi,
-                    translate: language,
-                    flags: {
-                        blocks: false,
-                        snippets: true,
-                        share: false,
-                        experimental: false,
-                    },
-                };
-                web_editor(config);
-            </script>
           </tr>
         </table>
       </td>
@@ -202,6 +183,7 @@
       <div id="sidebar" class="right-top" onclick="sidecodeClick()"></div>
     </tr>
   </table>
+  <script src="python-main.js" type="application/javascript"></script>
   <div id="content_blocks" class="content"></div>
   <div id="content_arduino" class="content" wrap="off"></div>
   <textarea id="content_xml" class="content" wrap="off" readonly></textarea>

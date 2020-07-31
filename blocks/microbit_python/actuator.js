@@ -391,6 +391,23 @@ Blockly.Blocks.servo_move = {
 };
 
 
+Blockly.Blocks['bit_motor_control'] = {
+  init: function() {
+    this.appendValueInput("speed")
+        .setCheck(null)
+        .appendField(Blockly.MIXLY_MOTOR)
+        .appendField(new Blockly.FieldDropdown([["M1","1"], ["M2","2"], ["M3","3"], ["M4","4"]]), "Motor")
+        .appendField(Blockly.MIXLY_SPEED);
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([["Forward","1*"], ["Reverse","-1*"]]), "mode");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(Blockly.Blocks.actuator.HUE);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
 //RGB
 Blockly.Blocks.display_rgb_init = {
     init: function () {

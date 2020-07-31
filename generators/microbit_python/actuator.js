@@ -197,6 +197,82 @@ Blockly.Python.servo_move = function() {
     return code;
 };
 
+Blockly.Python.bit_motor_control = function() {
+    Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+    Blockly.Python.setups_['class_bit_motor_control'] =
+        'def initPCA9685():\n'+
+        '    i2c.write(0x40, bytearray([0x00, 0x00]))\n'+
+        '    setFreq(50)\n'+
+        '    for idx in range(0, 16, 1):\n'+
+        '        setPwm(idx, 0 ,0)\n'+
+        'def MotorRun(Motors, speed):\n'+
+        '    speed = speed * 16\n'+
+        '    if (speed >= 4096):\n'+
+        '        speed = 4095\n'+
+        '    if (speed <= -4096):\n'+
+        '        speed = -4095\n'+
+        '    if (Motors <= 4 and Motors > 0):\n'+
+        '        pp = (Motors - 1) * 2\n'+
+        '        pn = (Motors - 1) * 2 + 1\n'+
+        '        if (speed >= 0):\n'+
+        '            setPwm(pp, 0, speed)\n'+
+        '            setPwm(pn, 0, 0)\n'+
+        '        else :\n'+
+        '            setPwm(pp, 0, 0)\n'+
+        '            setPwm(pn, 0, -speed)\n'+
+        'def Servo(Servos, degree):\n'+
+        '    v_us = (degree * 1800 / 180 + 600)\n'+
+        '    value = int(v_us * 4096 / 20000)\n'+
+        '    setPwm(Servos + 7, 0, value)\n'+
+        'def setFreq(freq):\n'+
+        '    prescaleval = int(25000000/(4096*freq)) - 1\n'+
+        '    i2c.write(0x40, bytearray([0x00]))\n'+
+        '    oldmode = i2c.read(0x40, 1)\n'+
+        '    newmode = (oldmode[0] & 0x7F) | 0x10\n'+
+        '    i2c.write(0x40, bytearray([0x00, newmode]))\n'+
+        '    i2c.write(0x40, bytearray([0xfe, prescaleval]))\n'+
+        '    i2c.write(0x40, bytearray([0x00, oldmode[0]]))\n'+
+        '    sleep(4)\n'+
+        '    i2c.write(0x40, bytearray([0x00, oldmode[0] | 0xa1]))\n'+
+        'def setPwm(channel, on, off):\n'+
+        '    if (channel >= 0 and channel <= 15):\n'+
+        '        buf = bytearray([0X06 + 4 * channel, on & 0xff, (on >> 8) & 0xff, off & 0xff, (off >> 8) & 0xff])\n'+
+        '        i2c.write(0x40, buf)\n'+
+        'def setStepper(stpMotors, dir, speed):\n'+
+        '    spd = speed\n'+
+        '    setFreq(spd)\n'+
+        '    if (stpMotors == 1):\n'+
+        '        if (dir):\n'+
+        '            setPwm(0, 2047, 4095)\n'+
+        '            setPwm(1, 1, 2047)\n'+
+        '            setPwm(2, 1023, 3071)\n'+
+        '            setPwm(3, 3071, 1023)\n'+
+        '        else:\n'+
+        '            setPwm(3, 2047, 4095)\n'+
+        '            setPwm(2, 1, 2047)\n'+
+        '            setPwm(1, 1023, 3071)\n'+
+        '            setPwm(0, 3071, 1023)\n'+
+        '    elif (stpMotors == 2):\n'+
+        '        if (dir):\n'+
+        '            setPwm(4, 2047, 4095)\n'+
+        '            setPwm(5, 1, 2047)\n'+
+        '            setPwm(6, 1023, 3071)\n'+
+        '            setPwm(7, 3071, 1023)\n'+
+        '        else:\n'+
+        '            setPwm(7, 2047, 4095)\n'+
+        '            setPwm(6, 1, 2047)\n'+
+        '            setPwm(4, 1023, 3071)\n'+
+        '            setPwm(5, 3071, 1023)\n\n'+
+        'initPCA9685()\n'
+
+    var Motor= this.getFieldValue('Motor');
+    var mode= this.getFieldValue('mode');
+    var speed = Blockly.Python.valueToCode(this, 'speed', Blockly.Python.ORDER_ATOMIC);
+
+    var code = 'MotorRun('+Motor+', '+mode+''+speed+')\n';
+    return code;
+};
+
 Blockly.Python.display_rgb_init=function(){
     var dropdown_rgbpin = Blockly.Python.valueToCode(this, 'PIN', Blockly.Python.ORDER_ATOMIC);
     var value_ledcount = Blockly.Python.valueToCode(this, 'LEDCOUNT', Blockly.Python.ORDER_ATOMIC);
