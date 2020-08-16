@@ -93,7 +93,6 @@
             <!-- <label for="modal_1" id="save_btn" class="pseudo button icon-floppy"></label> -->
             <span id="save_xml_btn" class="pseudo button icon-floppy" onclick="save()"></span>
             <span id="save_py_btn" class="pseudo button icon-code" onclick="mixlyjs.saveInoFileAs()"></span>
-            <span id="save_hex_btn" class="pseudo button icon-download" onclick="mixlyjs.compileMicrobitPy()"></span>
             <span id="play_btn" onclick="pyengine.run();" class="success button"></span>
             <span id="stop_btn" onclick="pyengine.kill();" class="error button"></span>
             <script style="display:none;">
@@ -104,7 +103,6 @@
                 document.getElementById('open_btn').textContent = MSG['open'];
                 document.getElementById('save_xml_btn').textContent = MSG['save_blocks'];
                 document.getElementById('save_py_btn').textContent = MSG['save_py'];
-                document.getElementById('save_hex_btn').textContent = MSG['save_hex'];
                 document.getElementById('play_btn').textContent = MSG['run'];
                 document.getElementById('stop_btn').textContent = MSG['stop'];
             </script>
