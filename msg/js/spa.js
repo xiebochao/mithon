@@ -3,68 +3,80 @@
 goog.provide('Blockly.Msg.spa');
 goog.require('Blockly.Msg');
 var MSG = {
-	catInOut: "Entrada/Salida",
-  catControl: "Control",
-  catMath: "Matemáticas",
-  catText: "Texto",
-  catLists: "Array",
-  catMicropyLists: "Lista",
-  catDicts: "Diccionario",
-  catLogic: "Lógica",
-  catSerialPort: "Puerto serie",
-  catGroup: "Comunicación",
-  catIR: "IR Comunicación",
-  catI2C: "I2C Comunicación",
-  catSPI: "SPI Comunicación",
-  catRFID: "RFID",
-  catStorage: "Almacenamiento",
-  catSensor: "Sensor",
-  catActuator: "Actuador",
-  catActuator_motor: "Motor",
-  catActuator_voice: "Sonido",
-  catActuator_light: "Luz",
-  catMonitor: "Monitor",
-  catVar: "variable",
-  catFun: "Función",
-  catNetwork: "Red",
-  catEthernet: "Ethernet",
-  catEthernet_init: "Init",
-  catEthernet_clinet: "Cliente",
-  tab_blocks: "Bloques",
-  tab_arduino: "Código",
-  copyright: "Copyright © Mixly Team http://mixly.org/",
-  catGame: "Juego",
-  catSystem: "Sistema",
-  catTurtle: "tortuga marina",
-  catTuple: "tupla",
-  catIot: "Internet de las cosas",
-  catSet: "Colección",
-  catData: "Análisis de datos",
-  catHardware: "Interacción de hardware",
-  catAI: "Inteligencia Artificial",
-  catDS: "Estructura de datos",
-  catOnBoard: 'Recursos a bordo',
-  catOnBoardDisplay: 'Pantalla integrada',
-  catOnBoardSensor: 'detección a bordo',
-  catOnBoardActuator: 'Ejecución a bordo',
-  cat4Digitdisplay: 'Cuatro tubos digitales',
-  catLCD: 'LCD',
-  catOLED: 'Display',
-  catMatrix: 'Pantalla de matriz de puntos',
-  catFactory: 'Módulo personalizado',
-  catBlynk: 'Blynk IoT',
-  catFile: 'Archivo',
-  catOnenet: 'OneNET',
-  catTools: 'Herramientas',
-  catWIFI: 'Wi-Fi',
-  catMQTT: 'MQTT',
-  catsklearn:'Aprendizaje automático',
-  catclass_make: "Clases y objetos",
-  catclass: "Clase",
-  catproperty: "Atributos",
-  catmethod: "Método",
-  catobject: "Objeto",
-  catEvents: "Incidente"
+    catInOut: "Entrada/Salida",
+    catControl: "Control",
+    catMath: "Matemáticas",
+    catText: "Texto",
+    catLists: "Array",
+    catMicropyLists: "Lista",
+    catDicts: "Diccionario",
+    catLogic: "Lógica",
+    catSerialPort: "Puerto serie",
+    catGroup: "Comunicación",
+    catIR: "IR Comunicación",
+    catI2C: "I2C Comunicación",
+    catSPI: "SPI Comunicación",
+    catRFID: "RFID",
+    catStorage: "Almacenamiento",
+    catSensor: "Sensor",
+    catActuator: "Actuador",
+    catActuator_motor: "Motor",
+    catActuator_voice: "Sonido",
+    catActuator_light: "Luz",
+    catMonitor: "Monitor",
+    catVar: "variable",
+    catFun: "Función",
+    catNetwork: "Red",
+    catEthernet: "Ethernet",
+    catEthernet_init: "Init",
+    catEthernet_clinet: "Cliente",
+    tab_blocks: "Bloques",
+    tab_arduino: "Código",
+    copyright: "Copyright © Mixly Team http://mixly.org/",
+    catGame: "Juego",
+    catSystem: "Sistema",
+    catTurtle: "tortuga marina",
+    catTuple: "tupla",
+    catIot: "Internet de las cosas",
+    catSet: "Colección",
+    catData: "Análisis de datos",
+    catHardware: "Interacción de hardware",
+    catAI: "Inteligencia Artificial",
+    catDS: "Estructura de datos",
+    catOnBoard: 'Recursos a bordo',
+    catOnBoardDisplay: 'Pantalla integrada',
+    catOnBoardSensor: 'detección a bordo',
+    catOnBoardActuator: 'Ejecución a bordo',
+    cat4Digitdisplay: 'Cuatro tubos digitales',
+    catLCD: 'LCD',
+    catOLED: 'Display',
+    catMatrix: 'Pantalla de matriz de puntos',
+    catFactory: 'Módulo personalizado',
+    catBlynk: 'Blynk IoT',
+    catFile: 'Archivo',
+    catOnenet: 'OneNET',
+    catTools: 'Herramientas',
+    catWIFI: 'Wi-Fi',
+    catMQTT: 'MQTT',
+    catsklearn: 'Aprendizaje automático',
+    catclass_make: "Clases y objetos",
+    catclass: "Clase",
+    catproperty: "Atributos",
+    catmethod: "Método",
+    catobject: "Objeto",
+    catEvents: "Incidente",
+    undo: "deshacer",
+    redo: "repetición",
+    new: "nuevo",
+    open: "abierto",
+    save: "guardar",
+    save_blocks: "guardar XML",
+    save_py: "guardar PY",
+    save_hex: "guardar HEX",
+    connect: "La conexión",
+    upload: "cargar",
+    run: "ejecute",
+    stop: "parar"
 };
 Blockly.Msg.ADD_COMMENT = "Añadir comentario";
 Blockly.Msg.AUTH = "Por favor, autorice esta aplicación para guardar su trabajo y compartirlo";
@@ -168,7 +180,7 @@ Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FIRST = "Eliminar el primer elemento 
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_END = "Eliminar el elemento en la posición especificada en la lista. #1 es el último elemento";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_FROM_START = "Eliminar el elemento en la posición especificada en la lista. #1 es el primer elemento";
 Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_LAST = "Eliminar el último elemento de la matriz";
-Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM ="Eliminar un elemento aleatorio de la matriz";
+Blockly.Msg.LISTS_GET_INDEX_TOOLTIP_REMOVE_RANDOM = "Eliminar un elemento aleatorio de la matriz";
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_END = "Hasta el final";
 Blockly.Msg.LISTS_GET_SUBLIST_END_FROM_START = "Al primero";
 Blockly.Msg.LISTS_GET_SUBLIST_END_LAST = "Hasta el final";
@@ -265,7 +277,7 @@ Blockly.Msg.MATH_IS_TOOLTIP = "Devuelve verdadero o falso si el número es par, 
 Blockly.Msg.MATH_IS_WHOLE = "es un número entero";
 Blockly.Msg.MATH_MODULO_HELPURL = "https://en.wikipedia.org/wiki/%E6%A8%A1%E9%99%A4";
 Blockly.Msg.MATH_MODULO_TITLE = "Tome el resto de %1 ÷ %2";
-Blockly.Msg.MATH_MODULO_TOOLTIP  = "Devuelve el resto después de dividir estos dos números";
+Blockly.Msg.MATH_MODULO_TOOLTIP = "Devuelve el resto después de dividir estos dos números";
 Blockly.Msg.MATH_NUMBER_HELPURL = "https://en.wikipedia.org/wiki/number";
 Blockly.Msg.MATH_NUMBER_TOOLTIP = "Un número";
 Blockly.Msg.MATH_ONLIST_OPERATOR_AVERAGE = "Promedio";
@@ -317,7 +329,7 @@ Blockly.Msg.MATH_SINGLE_TOOLTIP_ROUND = "Devuelve la parte entera de un número 
 Blockly.Msg.MATH_SINGLE_TOOLTIP_CEIL = "Devuelve el entero más pequeño mayor o igual que un número";
 Blockly.Msg.MATH_SINGLE_TOOLTIP_FLOOR = "Devuelve el entero más grande menor o igual que un número";
 Blockly.Msg.MATH_SUBTRACTION_SYMBOL = "-"; // sin traducir
-Blockly.Msg.MATH_QUYU_SYMBOL="%";
+Blockly.Msg.MATH_QUYU_SYMBOL = "%";
 Blockly.Msg.MATH_TRIG_ACOS = "acos"; // sin traducir
 Blockly.Msg.MATH_TRIG_ASIN = "asin"; // sin traducir
 Blockly.Msg.MATH_TRIG_ATAN = "atan"; // sin traducir
@@ -2150,7 +2162,7 @@ Blockly.blynk_IOT_FAN_3 = 'Alta velocidad';
 Blockly.blynk_IOT_FAN_2 = 'Velocidad media';
 Blockly.blynk_IOT_FAN_1 = 'Baja velocidad';
 Blockly.blynk_IOT_IR_FAN = 'Velocidad del viento';
-Blockly.blynk_IOT_IR_TEMP =Blockly.MIXLY_TEMPERATURE;
+Blockly.blynk_IOT_IR_TEMP = Blockly.MIXLY_TEMPERATURE;
 Blockly.blynk_IOT_IR_POWER = 'Poder';
 Blockly.blynk_IOT_IR_RECEIVE_RAW = 'Pin de decodificación de señal infrarroja';
 Blockly.blynk_IOT_IR_SEND = 'Pin de transmisión infrarroja';
@@ -2526,7 +2538,7 @@ Blockly.MIXLY_LONG_PRESS_START = 'Pulsación larga de inicio';
 Blockly.MIXLY_DURING_LONG_PRESS = 'Pulsación larga';
 Blockly.MIXLY_LONG_PRESS_END = 'La prensa larga termina';
 Blockly.ONEBUTTON = "Botón multifunción";
-Blockly.PS2= 'controlador PS2';
+Blockly.PS2 = 'controlador PS2';
 Blockly.PS2_TRIANGLE = "Clave de triángulo";
 Blockly.PS2_CIRCLE = 'Llave redonda';
 Blockly.PS2_CROSS = '× Clave';
@@ -2642,10 +2654,10 @@ Blockly.MIXLY_RETURN_DATA = "Valor de retorno";
 Blockly.TFT_Brightness = "Luz de fondo";
 Blockly.BLYNK_DISCONNECTED = 'El hardware está fuera de línea';
 Blockly.MIXLY_U8G2_SETCONTRAST = "Brillo de luz de fondo OLED";
-Blockly.MIXLY_DHT11_T=Blockly.MIXLY_TEMPERATURE;
-Blockly.MIXLY_DHT11_H=Blockly.MIXLY_Humidity;
-Blockly.MIXLY_LCD_STAT_ON=Blockly.MIXLY_ON;
-Blockly.MIXLY_LCD_STAT_OFF=Blockly.MIXLY_OFF;
+Blockly.MIXLY_DHT11_T = Blockly.MIXLY_TEMPERATURE;
+Blockly.MIXLY_DHT11_H = Blockly.MIXLY_Humidity;
+Blockly.MIXLY_LCD_STAT_ON = Blockly.MIXLY_ON;
+Blockly.MIXLY_LCD_STAT_OFF = Blockly.MIXLY_OFF;
 Blockly.MIXGO_ONBOARDDISPLAY_HELP = "Mixgo Max necesita conectar la pantalla al pie de los tubos 21 y 22 para usar el módulo de visualización de la pizarra.";
 Blockly.MIXLY_ELECLEVEL = "Nivel de activación";
 Blockly.MIXLY_GET_PRESSES_TIME = "Duración (segundos)";
@@ -2658,16 +2670,16 @@ Blockly.Msg.RIGHT_CYCLE = "Ciclo correcto";
 Blockly.Msg.LEFT_CYCLE = "Ciclo izquierdo";
 Blockly.MIXLY_FAILED = "Fallar";
 Blockly.MIXLY_SUCCESS = "El éxito";
-Blockly.MIXLY_WRITE="Escribir";
-Blockly.MIXLY_READONLY="Solo lectura";
-Blockly.MIXLY_FILE_PATH="Ruta del archivo";
+Blockly.MIXLY_WRITE = "Escribir";
+Blockly.MIXLY_READONLY = "Solo lectura";
+Blockly.MIXLY_FILE_PATH = "Ruta del archivo";
 Blockly.GET_THE_DIFFERENCE_BETWEEN_TWO_DATES = 'Obtén la diferencia entre dos fechas';
 Blockly.START = 'Inicio ';
 Blockly.END = 'Fin ';
 Blockly.MLX90614_TYPE = 'Sensor de temperatura infrarroja';
 Blockly.MLX90614_TARGET_OBJECT_TEMP = 'Temperatura objetivo del objeto';
 Blockly.MLX90614_AMBIENT_TEMP = 'Temperatura ambiente';
-Blockly.IR_AND_TONE_WARNING = 'Advertencia:\n'+'El módulo de timbre y el módulo de recepción de infrarrojos no se pueden usar al mismo tiempo.\n'+'Considere usar un módulo de timbre (sin temporizador) o quitar el módulo receptor de infrarrojos';
+Blockly.IR_AND_TONE_WARNING = 'Advertencia:\n' + 'El módulo de timbre y el módulo de recepción de infrarrojos no se pueden usar al mismo tiempo.\n' + 'Considere usar un módulo de timbre (sin temporizador) o quitar el módulo receptor de infrarrojos';
 Blockly.USE_SERIAL_PORT = 'Usar puerto serie';
 Blockly.DFPLAYER_MINI_SET_TIMEOUT = "El tiempo de espera de comunicación en serie se establece en";
 Blockly.DFPLAYER_MINI_SET_TIMEOUT_TOOLTIP = "DFPlayer Mini establece el tiempo de espera para la comunicación en serie";
@@ -2778,13 +2790,13 @@ Blockly.SKLEARN_LOAD_MODEL = "Cargar el modelo";
 Blockly.MATH_ROUND = 'En miles de dólares EE.UU.';
 Blockly.MATH_ROUND_NEW_TOOLTIP = 'Redondear los valores al dígito especificado después de mantener el decimal';
 Blockly.PY_STORAGE_FILE_OBJECT = ",devuelve el objeto del archivo";
-Blockly.Msg.COLOUR_RGB_ORANGE ="Naranja";
-Blockly.Msg.COLOUR_RGB_YELLOW ="Amarillo";
-Blockly.Msg.COLOUR_RGB_CYAN ="Verde";
-Blockly.Msg.COLOUR_RGB_PURPLE ="Púrpura";
-Blockly.Msg.COLOUR_RGB_WHITE ="Blanco";
-Blockly.Msg.CLOCKWISE ="En sentido horario.";
-Blockly.Msg.ANTI_CLOCKWISE ="Reloj reversible";
+Blockly.Msg.COLOUR_RGB_ORANGE = "Naranja";
+Blockly.Msg.COLOUR_RGB_YELLOW = "Amarillo";
+Blockly.Msg.COLOUR_RGB_CYAN = "Verde";
+Blockly.Msg.COLOUR_RGB_PURPLE = "Púrpura";
+Blockly.Msg.COLOUR_RGB_WHITE = "Blanco";
+Blockly.Msg.CLOCKWISE = "En sentido horario.";
+Blockly.Msg.ANTI_CLOCKWISE = "Reloj reversible";
 Blockly.CREATE_CLASS = "Crear clase";
 Blockly.FATHER_CLASS = "Clase de padres";
 Blockly.MIXPY_CLASS = "Clase";
@@ -2816,4 +2828,4 @@ Blockly.MIXLY_PYTHON_FINALLY = 'Ejecución final';
 Blockly.MIXLY_SOFT_ANALOGWRITE_PIN = 'Salida analógica de software pin #';
 Blockly.MIXLY_CANCEL_SOFT_ANALOGWRITE_PIN = 'Cancelar el pin de salida analógica de software #';
 Blockly.MIXLY_TOOLTIP_CANCEL_SOFT_ANALOGWRITE_PIN = 'Cancele la simulación de software PWM del pin especificado';
-Blockly.MIXLY_MITHON_NEAR="Cerca.";
+Blockly.MIXLY_MITHON_NEAR = "Cerca.";

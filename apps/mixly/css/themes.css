@@ -1,0 +1,372 @@
+/* Dark Theme */
+.theme-Dark nav {
+  background: #1F1F1F;
+  border: 0px !important;
+}
+
+.theme-Dark .LoginModal__header{
+  background: #1F1F1F !important;
+}
+
+.theme-Dark .SelectModal__header{
+  background: #1F1F1F !important;
+}
+
+.theme-Dark #filename{
+  background-color: #121212 !important;
+  color: white !important;
+}
+
+.theme-Dark .modal_header_1h7ps {
+  background: #1F1F1F !important;
+}
+
+.theme-Dark .library_library-scroll-grid_1jyXm{
+  background-color: #121212 !important;
+}
+
+.theme-Dark .library-item_featured-item_3V2-t{
+  background: #1F1F1F !important;
+  color: white;
+}
+
+.theme-Dark library-item_library-item_1DcMO:hover{
+  border: blue;
+}
+
+.theme-Dark library-item_library-item_1DcMO{
+  border: white;
+}
+
+.theme-Dark .SelectModel__container {
+  -webkit-box-shadow:0 0 20px white; 
+  -moz-box-shadow: 0 0 20px white; 
+  box-shadow:0 0 20px white;
+}
+
+.theme-Dark .LoginModal__container {
+  -webkit-box-shadow:0 0 20px white; 
+  -moz-box-shadow: 0 0 20px white; 
+  box-shadow:0 0 20px white;
+}
+
+.theme-Dark .AlertModel__container {
+  -webkit-box-shadow:0 0 20px white; 
+  -moz-box-shadow: 0 0 20px white; 
+  box-shadow:0 0 20px white;
+}
+
+.theme-Dark .blocklySvg{
+  background-color: #121212 !important;
+}
+
+.theme-Dark #imagemodal {
+  -webkit-box-shadow:0 0 20px white; 
+  -moz-box-shadow: 0 0 20px white; 
+  box-shadow:0 0 20px white;
+}
+
+
+.theme-Dark .SelectModel__content{
+  background-color: #121212 !important;
+  color: white !important;
+}
+
+.theme-Dark .SelectModal__buttons{
+  background-color: #121212 !important;
+}
+
+.theme-Dark .alertFooter{
+  background-color: #121212 !important;
+}
+
+.theme-Dark #imageheader{
+  background: #1F1F1F !important;
+}
+
+.theme-Dark .blocklyMainBackground{
+  stroke: #121212;
+  stroke-opacity: 0;
+}
+
+.theme-Dark #imagefooter {
+  background-color: #121212 !important;
+}
+
+.theme-Dark #imagecontent{
+  background-color: #121212 !important;
+}
+
+.theme-Dark .ace-monokai{
+  background-color: #121212 !important;
+}
+
+.theme-Dark .ace_gutter{
+  background-color: #1E1E1E !important;
+  color: white
+}
+
+
+.theme-Dark .menu .button,
+.theme-Dark button {
+  color: white;
+}
+
+.theme-Dark .button { 
+  color: white;
+}
+
+.theme-Dark .brand {
+  color: white
+}
+
+.theme-Dark .blocklyToolboxDiv{
+  background-color: #1E1E1E !important;
+  color: white
+}
+
+
+.theme-Dark #toggleViewButton{
+  background-color: blue;
+  -webkit-box-shadow:0 0 120px blue; 
+  -moz-box-shadow: 0 0 120px blue; 
+  box-shadow:0 0 120px blue;
+  color: white;
+}
+
+.theme-Dark #deletebutton{
+  background-color: red !important;
+  -webkit-box-shadow:0 0 60px red !important; 
+  -moz-box-shadow: 0 0 60px red !important; 
+  box-shadow:0 0 60px red !important;
+  color: white;
+}
+
+.theme-Dark #sharebutton{
+  background-color: #49B04D !important;
+  -webkit-box-shadow:0 0 120px #49B04D !important; 
+  -moz-box-shadow: 0 0 120px  #49B04D!important; 
+  box-shadow:0 0 120px  #49B04D !important;
+  color: white;
+}
+
+.theme-Dark .SelectModal__grid button {
+  background-color: blue !important;
+  -webkit-box-shadow: 0 0 70px blue !important;
+  -moz-box-shadow: 0 0 70px blue !important;
+  box-shadow: 0 0 70px blue !important;
+  color: white !important;
+}
+
+.theme-Dark .SelectModal__buttons button{
+  background-color: red !important;
+  -webkit-box-shadow: 0 0 70px red !important;
+  -moz-box-shadow: 0 0 70px red !important;
+  box-shadow: 0 0 70px red !important;
+  color: white !important;
+}
+
+.theme-Dark #ExitSplit{
+  background-color: blue;
+  -webkit-box-shadow:0 0 120px blue; 
+  -moz-box-shadow: 0 0 120px blue; 
+  box-shadow:0 0 120px blue;
+  color: white;
+}
+
+.theme-Dark .button-green{
+  -webkit-box-shadow:0 0 120px #49B04D; 
+  -moz-box-shadow: 0 0 120px #49B04D; 
+  box-shadow:0 0 120px #49B04D;
+  color: white;
+}
+
+/* Light Theme */
+
+.theme-Light nav {
+  background: #E3E5E8;
+  border: 0px !important;
+}
+
+.theme-Light #name{
+  color: #2E3338 !important;
+}
+
+
+.theme-Light .menu a{
+  color: #2E3338 !important;
+}
+
+.theme-Light .LoginModal__header{
+  background: #E3E5E8 !important;
+  color: #2E3338 !important;
+}
+
+.theme-Light .LoginModal__header a{
+  color: #2E3338 !important;
+}
+
+
+.theme-Light .SelectModal__header{
+  background: #E3E5E8 !important;
+  color: #2E3338 !important;
+}
+
+.theme-Light input, textarea, .select select {
+  border: 2px solid #2E3338;
+}
+
+.theme-Light #filename{
+  background-color: white !important;
+  color: #2E3338 !important;
+}
+
+.theme-Light .modal_header_1h7ps {
+  background: #E3E5E8 !important;
+}
+
+.theme-Light .library_library-scroll-grid_1jyXm{
+  background-color: white !important;
+}
+
+.theme-Light .library-item_featured-item_3V2-t{
+  background: white !important;
+  color: #2E3338 !important;
+}
+
+
+
+.theme-Light #backbutton{
+  color: #2E3338 !important;
+}
+
+.theme-Light .blocklySvg{
+  background-color: white !important;
+}
+
+
+.theme-Light .SelectModel__content{
+  background-color: white !important;
+  color: #2E3338 !important;
+}
+
+.theme-Light .SelectModal__buttons{
+  background-color: white !important;
+}
+
+.theme-Light .alertFooter{
+  background-color: white !important;
+}
+
+.theme-Light #imageheader{
+  background: #E3E5E8 !important;
+  color: #2E3338 !important;
+}
+
+.theme-Light .blocklyMainBackground{
+  stroke: #121212;
+  stroke-opacity: 0;
+}
+
+.theme-Light .SelectModal__close {
+  color: #2E3338 !important;
+}
+
+.theme-Light #imagefooter {
+  background-color: white !important;
+}
+
+.theme-Light #imagecontent{
+  background-color: white !important;
+}
+
+.theme-Light .ace-monokai{
+  background-color: white !important;
+  color: #2E3338 !important;
+}
+
+.theme-Light .ace_gutter{
+  background-color: #F2F3F5 !important;
+  color: #2E3338 !important;
+}
+
+.theme-Light .ace-monokai .ace_marker-layer .ace_active-line {
+  background-color: #F2F3F5 !important;
+}
+
+.theme-Light .ace-monokai .ace_marker-layer .ace_selection {
+  background-color: #F2F3F5 !important;
+}
+
+.theme-Light .ace-monokai .ace_gutter-active-line {
+  background-color: #F2F3F5 !important;
+}
+
+.theme-Light #toggleViewButton{
+  color: #2E3338 !important;
+}
+
+.theme-Light #ExitSplit{
+  color: #2E3338 !important;
+}
+
+.theme-Light .menu .button,
+.theme-Light button {
+  color: white;
+}
+
+.theme-Light .modal_header-item_2zQTd{
+  color: #2E3338 !important;
+}
+
+.theme-Light .button_content_3jdgj{
+  color: #2E3338 !important;
+}
+
+.theme-Light .alertFooter label.button {
+  color: white !important;
+}
+
+.theme-Light .burgermenu::before {
+  color: #2E3338 !important;
+}
+
+.theme-Light .button { 
+  color: #2E3338 !important;
+}
+
+.theme-Light .brand {
+  color: #2E3338
+}
+
+.theme-Light #menubar{
+  background-color: #E3E5E8;
+  color: #2E3338 !important;
+}
+
+.theme-Light .login button{
+  color: #2E3338 !important;
+}
+
+.theme-Light .blocklyToolboxDiv{
+  background-color: #F2F3F5 !important;
+  color: #2E3338 !important;
+}
+
+
+
+/* Default Theme */
+
+.theme-Default nav{
+  background-color: #1B173D;
+
+
+}
+
+.theme-Default .SelectModal__header{
+  background-color: #1B173D;
+
+
+}
+
+

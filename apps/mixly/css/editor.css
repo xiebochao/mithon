@@ -1,0 +1,57 @@
+/* `SelectModal` Component
+---------------------------------------------------------------- */
+.SelectModel__container {
+    background: none !important;
+    border: solid 1px #000 !important;
+}
+
+.AlertModel__container {
+    border: solid 1px #000 !important;
+    background: none !important;
+}
+
+.content {
+    background: #fff;
+}
+
+.alertFooter {
+    background: #fff;
+    overflow: hidden;
+}
+
+
+.SelectModal__header {
+    background: #111;
+    color: #fff;
+    border-bottom: none !important;
+}
+
+.SelectModal__close {
+    color: #fff;
+}
+
+.SelectModel__content {
+    background: #fff;
+    padding: .6em .8em !important;
+}
+
+.SelectModal__buttons {
+    background: #eee;
+    overflow: hidden;
+}
+
+
+.SelectModal__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(100px, 1fr));
+    align-items: center;
+}
+
+
+.SelectModal__cell--text > span {
+    line-height: 40px;
+}
+
+.SelectModal__cell--action > button {
+    float: right;
+}

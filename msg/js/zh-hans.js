@@ -3,84 +3,96 @@
 goog.provide('Blockly.Msg.zh.hans');
 goog.require('Blockly.Msg');
 var MSG = {
-	catInOut: "输入/输出",
-	catControl: "控制",
-	catMath: "数学",
-	catText: "文本",
-	catLists: "数组",
-	catMicropyLists: "列表",
-	catDicts: "字典",
-	catLogic: "逻辑",
-	catSerialPort: "串口",
-	catGroup: "通信",
-	catIR: "红外通信",
-	catI2C: "I2C通信",
-	catSPI: "SPI通信",
-	catRFID: "RFID",
-	catStorage: "存储",
-	catStorageSD:'SD',
-	catStorageSPIFFS:'SPIFFS',
-	catStorageEEPROM:'EEPROM',
-	catSensor: "传感器",
-	catActuator: "执行器",
-	catActuator_motor: "电机",
-	catActuator_voice: "声音",
-	catActuator_light: "光线",
-	catMonitor: "显示器",
-	catVar: "变量",
-	catFun: "函数",
-	catNetwork: "网络",
-	catEthernet:"以太网",
-	catEthernet_init: "初始化",
-	catEthernet_clinet: "客户端",
-	tab_blocks: "模块",
-	tab_arduino: "代码",
-	copyright: "Copyright © 北京师范大学傅骞博士团队				http://mixly.org/",
-	catGame: "游戏",
-	catSystem: "系统",
-	catTurtle: "海龟画图",
-	catTuple: "元组",
-	catIot: "物联网",
-	catSet: "集合",
-	catData: "数据分析",
-	catHardware: "硬件交互",
-	catAI: "人工智能",
-	catHear: "机器听觉",
-	catImage: "机器视觉",
-	catTFT: "显示屏",
-	catAV: "音视频",
-	catCamera: "摄像头",
-	catImage_Draw: "图像绘制",
-	catImage_Base: "图像基础",
-	catImage_Filte: "图像滤波",
-	catImage_Shpe: "形状识别",
-	catImage_Color: "颜色识别",
-	catImage_Codes: "维码识别",
-	catImage_Features: "特征识别",
-	catShaw:'硬件说明',		
-	catDS: "数据结构",
-	catOnBoard:'板载资源',
-	catOnBoardDisplay:'板载显示',
-	catOnBoardSensor:'板载传感',
-	catOnBoardActuator:'板载执行',
-	cat4Digitdisplay:'四位数码管',
-	catLCD:'LCD液晶屏',
-	catOLED:'显示屏',
-	catMatrix:'点阵屏',
-	catFactory:'自定义模块',
-	catBlynk:'Blynk 物联网',
-	catFile:'文件',
-	catOnenet:'OneNET',
-	catTools:'工具',
-	catWIFI:'Wi-Fi',
-	catMQTT:'MQTT',
-	catsklearn:'机器学习',
-	catclass_make: "类与对象",
-	catclass: "类",
-	catproperty: "属性",
-	catmethod: "方法",
-	catobject: "对象",
-	catEvents: "事件"
+    catInOut: "输入/输出",
+    catControl: "控制",
+    catMath: "数学",
+    catText: "文本",
+    catLists: "数组",
+    catMicropyLists: "列表",
+    catDicts: "字典",
+    catLogic: "逻辑",
+    catSerialPort: "串口",
+    catGroup: "通信",
+    catIR: "红外通信",
+    catI2C: "I2C通信",
+    catSPI: "SPI通信",
+    catRFID: "RFID",
+    catStorage: "存储",
+    catStorageSD: 'SD',
+    catStorageSPIFFS: 'SPIFFS',
+    catStorageEEPROM: 'EEPROM',
+    catSensor: "传感器",
+    catActuator: "执行器",
+    catActuator_motor: "电机",
+    catActuator_voice: "声音",
+    catActuator_light: "光线",
+    catMonitor: "显示器",
+    catVar: "变量",
+    catFun: "函数",
+    catNetwork: "网络",
+    catEthernet: "以太网",
+    catEthernet_init: "初始化",
+    catEthernet_clinet: "客户端",
+    tab_blocks: "模块",
+    tab_arduino: "代码",
+    copyright: "Copyright © 北京师范大学傅骞博士团队				http://mixly.org/",
+    catGame: "游戏",
+    catSystem: "系统",
+    catTurtle: "海龟画图",
+    catTuple: "元组",
+    catIot: "物联网",
+    catSet: "集合",
+    catData: "数据分析",
+    catHardware: "硬件交互",
+    catAI: "人工智能",
+    catHear: "机器听觉",
+    catImage: "机器视觉",
+    catTFT: "显示屏",
+    catAV: "音视频",
+    catCamera: "摄像头",
+    catImage_Draw: "图像绘制",
+    catImage_Base: "图像基础",
+    catImage_Filte: "图像滤波",
+    catImage_Shpe: "形状识别",
+    catImage_Color: "颜色识别",
+    catImage_Codes: "维码识别",
+    catImage_Features: "特征识别",
+    catShaw: '硬件说明',
+    catDS: "数据结构",
+    catOnBoard: '板载资源',
+    catOnBoardDisplay: '板载显示',
+    catOnBoardSensor: '板载传感',
+    catOnBoardActuator: '板载执行',
+    cat4Digitdisplay: '四位数码管',
+    catLCD: 'LCD液晶屏',
+    catOLED: '显示屏',
+    catMatrix: '点阵屏',
+    catFactory: '自定义模块',
+    catBlynk: 'Blynk 物联网',
+    catFile: '文件',
+    catOnenet: 'OneNET',
+    catTools: '工具',
+    catWIFI: 'Wi-Fi',
+    catMQTT: 'MQTT',
+    catsklearn: '机器学习',
+    catclass_make: "类与对象",
+    catclass: "类",
+    catproperty: "属性",
+    catmethod: "方法",
+    catobject: "对象",
+    catEvents: "事件",
+    undo: "撤销",
+    redo: "重复",
+    new: "新建",
+    open: "打开",
+    save: "保存",
+    save_blocks: "保存XML",
+    save_py: "保存PY",
+    save_hex: "保存HEX",
+    connect: "连接",
+    upload: "上传",
+    run: "运行",
+    stop: "取消"
 };
 Blockly.Msg.ADD_COMMENT = "添加注释";
 Blockly.Msg.AUTH = "请授权这个应用程序以保存您的作品并共享。";
@@ -333,7 +345,7 @@ Blockly.Msg.MATH_SINGLE_TOOLTIP_ROUND = "按照四舍五入的原则返回一个
 Blockly.Msg.MATH_SINGLE_TOOLTIP_CEIL = "返回大于或者等于一个数的最小整数。";
 Blockly.Msg.MATH_SINGLE_TOOLTIP_FLOOR = "返回小于或者等于一个数的最大整数。";
 Blockly.Msg.MATH_SUBTRACTION_SYMBOL = "-";  // untranslated
-Blockly.Msg.MATH_QUYU_SYMBOL="%";
+Blockly.Msg.MATH_QUYU_SYMBOL = "%";
 Blockly.Msg.MATH_TRIG_ACOS = "acos";  // untranslated
 Blockly.Msg.MATH_TRIG_ASIN = "asin";  // untranslated
 Blockly.Msg.MATH_TRIG_ATAN = "atan";  // untranslated
@@ -414,7 +426,7 @@ Blockly.Msg.TEXT_INDEXOF_TAIL = "项";
 Blockly.Msg.TEXT_INDEXOF_TOOLTIP = "返回在第二个字串中的第一/最后一个匹配项的索引值。如果未找到则返回 0。";
 Blockly.Msg.TEXT_ISEMPTY_HELPURL = "https://github.com/google/blockly/wiki/Text#checking-for-empty-text";  // untranslated
 Blockly.Msg.TEXT_ISEMPTY_TITLE = "%1是空的";
-Blockly.Msg.LISTS_IS_EMPTY_TITLE =Blockly.Msg.TEXT_ISEMPTY_TITLE;
+Blockly.Msg.LISTS_IS_EMPTY_TITLE = Blockly.Msg.TEXT_ISEMPTY_TITLE;
 Blockly.Msg.TEXT_ISEMPTY_TOOLTIP = "如果提供的文本为空，则返回真。";
 Blockly.Msg.TEXT_JOIN_HELPURL = "https://github.com/google/blockly/wiki/Text#text-creation";  // untranslated
 Blockly.Msg.TEXT_JOIN_TITLE_CREATEWITH = "建立字符串使用";
@@ -584,7 +596,7 @@ Blockly.MIXLY_JOYSTICK = '摇杆';
 Blockly.MIXLY_POTENTIOMETER = '电位器';
 Blockly.MIXLY_SOUND = '声音';
 Blockly.MIXLY_TEMPERATURE = '温度';
-Blockly.MIXLY_Humidity = '湿度'; 
+Blockly.MIXLY_Humidity = '湿度';
 Blockly.MIXLY_Altitude = '气压';
 Blockly.MIXLY_MAKELISTFROM = '从字符串';
 Blockly.MIXLY_SPLITBYDOU = '创建数组';
@@ -866,9 +878,9 @@ Blockly.MIXLY_GPS_TIME_MINUTE = '时间-分';
 Blockly.MIXLY_GPS_TIME_SECOND = '时间-秒';
 Blockly.MIXLY_GPS_TIME_CENTISECOND = '时间-厘秒';
 Blockly.MIXLY_PARAMS = '参数';
-Blockly.MIXLY_MSTIMER2_EVERY='每隔';
-Blockly.MIXLY_MSTIMER2_DO='执行';
-Blockly.MIXLY_MSTIMER2_START='启动';
+Blockly.MIXLY_MSTIMER2_EVERY = '每隔';
+Blockly.MIXLY_MSTIMER2_DO = '执行';
+Blockly.MIXLY_MSTIMER2_START = '启动';
 Blockly.MIXLY_CONTROL_INTERRUPTS = '允许中断';
 Blockly.MIXLY_CONTROL_NOINTERRUPTS = '禁止中断';
 Blockly.MIXLY_CONTROL_SCoop_loop = '循环';
@@ -1817,8 +1829,8 @@ Blockly.mixpy_DATAFRAME_GET = "获取标签";
 Blockly.mixpy_DATAFRAME_GET_INDEX = "对应的";
 Blockly.mixpy_DATAFRAME_GET_TOOLTIP = "按照标题名或索引名获取Dataframe的行或列";
 Blockly.mixpy_PL_SAVEFIG = "将绘制的图形保存为图片";
-Blockly.mixpy_PL_SAVEFIG_TOOLTIP="保存绘制的图形，参数可以设置保存图片的路径、名称和扩展名";
-Blockly.mixpy_TURTLE_SAVEFIG_TOOLTIP="通过海龟屏幕保存绘制的图形，支持的文件格式为.eps，需要预先初始化海龟屏幕";
+Blockly.mixpy_PL_SAVEFIG_TOOLTIP = "保存绘制的图形，参数可以设置保存图片的路径、名称和扩展名";
+Blockly.mixpy_TURTLE_SAVEFIG_TOOLTIP = "通过海龟屏幕保存绘制的图形，支持的文件格式为.eps，需要预先初始化海龟屏幕";
 Blockly.mixpy_PL_TEXT_X = '横坐标';
 Blockly.mixpy_PL_TEXT_Y = '纵坐标';
 Blockly.mixpy_PL_TEXT_TAG = '处的数据标签为';
@@ -2036,7 +2048,7 @@ Blockly.MIXLY_MICROBIT_SENSOR_BMP_press_TOOLTIP = "获取大气压强（0~20000h
 Blockly.MIXLY_MICROBIT_SENSOR_SHT_temperature_TOOLTIP = "获取温度（-40~+125℃）";
 Blockly.MIXLY_MICROBIT_SENSOR_SHT_HUM_TOOLTIP = "获取湿度（0~100%）";
 Blockly.MIXLY_ESP32_SENSOR_USE_I2C_TOOLTIP = '初始化传感器类型为：';
-Blockly.MIXLY_MICROBIT_SENSOR_DS18X20_TOOLTIP = '返回温度，范围为（-55~+125℃）' ;
+Blockly.MIXLY_MICROBIT_SENSOR_DS18X20_TOOLTIP = '返回温度，范围为（-55~+125℃）';
 Blockly.MIXLY_TOOLTIP_RTC_SETTIME = Blockly.MIXLY_RTCSETTIME;
 Blockly.MIXLY_TOOLTIP_RTC_SETDATE = Blockly.MIXLY_RTCSETDATE;
 Blockly.MIXLY_TOOLTIP_RGB_INIT = Blockly.MIXLY_RGB_PIN_COUNT;
@@ -2172,7 +2184,7 @@ Blockly.blynk_IOT_FAN_3 = '高速';
 Blockly.blynk_IOT_FAN_2 = '中速';
 Blockly.blynk_IOT_FAN_1 = '低速';
 Blockly.blynk_IOT_IR_FAN = '风速';
-Blockly.blynk_IOT_IR_TEMP =Blockly.MIXLY_TEMPERATURE;
+Blockly.blynk_IOT_IR_TEMP = Blockly.MIXLY_TEMPERATURE;
 Blockly.blynk_IOT_IR_POWER = '电源';
 Blockly.blynk_IOT_IR_RECEIVE_RAW = '红外信号解码 管脚';
 Blockly.blynk_IOT_IR_SEND = '红外发送 管脚';
@@ -2487,20 +2499,20 @@ Blockly.Msg.MIXPY_AI_PHOTO = "使用摄像头拍摄照片 文件名";
 Blockly.Msg.MIXPY_AI_PHOTO_BUTTON = "拍摄按键";
 Blockly.Msg.MIXPY_AI_PHOTO_TOOLTIP = "使用摄像头拍摄照片，文件名不要包含中文路径";
 Blockly.Msg.MIXPY_AI_RESULT = "获取结果";
-Blockly.blynk_AP_config="一键配网(AP模式)";
-Blockly.blynk_AP_config_tooltip="没有连接到Wi-Fi时，自动打开热点,手机连接此热点登录进行配置";
-Blockly.blynk_AP_config2="一键配网及授权码(AP模式)";
-Blockly.Blynk_connect_state="Blynk服务器连接状态";
-Blockly.Blynk_connected_Tooltip="返回Blynk服务器连接状态，正常返回 1 反之返回 0";
-Blockly.blynk_terminal_clear="Blynk 终端清屏";
-Blockly.blynk_lcd="LCD组件";
-Blockly.blynk_esp32_ble="Blynk BLE连接方式";
-Blockly.blynk_esp32_Bluetooth="Blynk Bluetooth连接方式";
-Blockly.get_array2_value="获取二维数组";
-Blockly.array2_assignment="二维数组赋值";
-Blockly.array2_rows="行数";
-Blockly.array2_cols="列数";
-Blockly.MIXLY_ARRAY2="二维数组";
+Blockly.blynk_AP_config = "一键配网(AP模式)";
+Blockly.blynk_AP_config_tooltip = "没有连接到Wi-Fi时，自动打开热点,手机连接此热点登录进行配置";
+Blockly.blynk_AP_config2 = "一键配网及授权码(AP模式)";
+Blockly.Blynk_connect_state = "Blynk服务器连接状态";
+Blockly.Blynk_connected_Tooltip = "返回Blynk服务器连接状态，正常返回 1 反之返回 0";
+Blockly.blynk_terminal_clear = "Blynk 终端清屏";
+Blockly.blynk_lcd = "LCD组件";
+Blockly.blynk_esp32_ble = "Blynk BLE连接方式";
+Blockly.blynk_esp32_Bluetooth = "Blynk Bluetooth连接方式";
+Blockly.get_array2_value = "获取二维数组";
+Blockly.array2_assignment = "二维数组赋值";
+Blockly.array2_rows = "行数";
+Blockly.array2_cols = "列数";
+Blockly.MIXLY_ARRAY2 = "二维数组";
 Blockly.Msg.HTML_DOCUMENT = "HTML 文档";
 Blockly.Msg.HTML_LEVEL = "标题 级别";
 Blockly.Msg.HTML_HEAD = "头";
@@ -2539,60 +2551,60 @@ Blockly.Msg.HTML_WEEK = "星期";
 Blockly.Msg.HTML_NAME = "名称";
 Blockly.Msg.HTML_VALUE = "值";
 Blockly.Msg.HTML_FORM_CONTENT = "表单项";
-Blockly.NTP_SERVER='NTP时间服务器';
-Blockly.MIXLY_TimeZone='时区';
-Blockly.NTP_server_get_time='NTP获取';
-Blockly.MIXLY_CLICK='单击';
-Blockly.MIXLY_DOUBLE_CLICK='双击';
-Blockly.MIXLY_LONG_PRESS_START='长按开始';
-Blockly.MIXLY_DURING_LONG_PRESS='长按中';
-Blockly.MIXLY_LONG_PRESS_END='长按结束';
-Blockly.ONEBUTTON="多功能按键";
-Blockly.PS2='PS2手柄';
-Blockly.PS2_TRIANGLE="三角形键";
-Blockly.PS2_CIRCLE="圆形键";
-Blockly.PS2_CROSS="×键";
-Blockly.PS2_SQUARE="方形键";
-Blockly.PS2_L1='左侧1';
-Blockly.PS2_L2='左侧2';
-Blockly.PS2_L3='左侧3';
-Blockly.PS2_R1='右侧1';
-Blockly.PS2_R2='右侧2';
-Blockly.PS2_R3='右侧3';
-Blockly.PS2_UP='方向键上';
-Blockly.PS2_DOWN='方向键下';
-Blockly.PS2_LEFT='方向键左';
-Blockly.PS2_RIGHT='方向键右';
-Blockly.PS2_SELECT='选择键';
-Blockly.PS2_START='开始键';
-Blockly.PS2_RX='右侧X值';
-Blockly.PS2_RY='右侧Y值';
-Blockly.PS2_LX='左侧X值';
-Blockly.PS2_LY='左侧Y值';
-Blockly.PS2_stick='PS2摇杆';
-Blockly.PS2_BUTTON='PS2按键';
-Blockly.PS2_setRumble='振动反馈';
-Blockly.arduino_blynk_bluetooth="Bluetooth串口连接方式";
-Blockly.blynk_table='Table小部件添加数据';
-Blockly.blynk_table_update='Table小部件更新数据';
-Blockly.blynk_table_select='Table小部件选择';
-Blockly.blynk_table_highlight='Table小部件高亮显示';
-Blockly.blynk_table_unselect='Table小部件取消选择';
-Blockly.blynk_table_cleardata='Table小部件清除数据';
-Blockly.blynk_connected="服务器连接状态";
-Blockly.HX711_offset="补偿值";
-Blockly.HX711_scale="比例系数";
-Blockly.Handbit='掌控板';
-Blockly.HANDBIT_FORWARD='向前倾';
-Blockly.HANDBIT_BACKWARD='向后倾';
-Blockly.HANDBIT_LEFT='向左倾';
-Blockly.HANDBIT_RIGHT='向右倾';
-Blockly.HANDBIT_UP='正面向上';
-Blockly.HANDBIT_DOWN='正面向下';
-Blockly.BME280="读取BME280";
-Blockly.ESP32_HALL='ESP32片内霍尔值';
-Blockly.ESP32_TEMP='ESP32片内温度';
-Blockly.MIXLY_BACKGROUND_COLOR='背景色';
+Blockly.NTP_SERVER = 'NTP时间服务器';
+Blockly.MIXLY_TimeZone = '时区';
+Blockly.NTP_server_get_time = 'NTP获取';
+Blockly.MIXLY_CLICK = '单击';
+Blockly.MIXLY_DOUBLE_CLICK = '双击';
+Blockly.MIXLY_LONG_PRESS_START = '长按开始';
+Blockly.MIXLY_DURING_LONG_PRESS = '长按中';
+Blockly.MIXLY_LONG_PRESS_END = '长按结束';
+Blockly.ONEBUTTON = "多功能按键";
+Blockly.PS2 = 'PS2手柄';
+Blockly.PS2_TRIANGLE = "三角形键";
+Blockly.PS2_CIRCLE = "圆形键";
+Blockly.PS2_CROSS = "×键";
+Blockly.PS2_SQUARE = "方形键";
+Blockly.PS2_L1 = '左侧1';
+Blockly.PS2_L2 = '左侧2';
+Blockly.PS2_L3 = '左侧3';
+Blockly.PS2_R1 = '右侧1';
+Blockly.PS2_R2 = '右侧2';
+Blockly.PS2_R3 = '右侧3';
+Blockly.PS2_UP = '方向键上';
+Blockly.PS2_DOWN = '方向键下';
+Blockly.PS2_LEFT = '方向键左';
+Blockly.PS2_RIGHT = '方向键右';
+Blockly.PS2_SELECT = '选择键';
+Blockly.PS2_START = '开始键';
+Blockly.PS2_RX = '右侧X值';
+Blockly.PS2_RY = '右侧Y值';
+Blockly.PS2_LX = '左侧X值';
+Blockly.PS2_LY = '左侧Y值';
+Blockly.PS2_stick = 'PS2摇杆';
+Blockly.PS2_BUTTON = 'PS2按键';
+Blockly.PS2_setRumble = '振动反馈';
+Blockly.arduino_blynk_bluetooth = "Bluetooth串口连接方式";
+Blockly.blynk_table = 'Table小部件添加数据';
+Blockly.blynk_table_update = 'Table小部件更新数据';
+Blockly.blynk_table_select = 'Table小部件选择';
+Blockly.blynk_table_highlight = 'Table小部件高亮显示';
+Blockly.blynk_table_unselect = 'Table小部件取消选择';
+Blockly.blynk_table_cleardata = 'Table小部件清除数据';
+Blockly.blynk_connected = "服务器连接状态";
+Blockly.HX711_offset = "补偿值";
+Blockly.HX711_scale = "比例系数";
+Blockly.Handbit = '掌控板';
+Blockly.HANDBIT_FORWARD = '向前倾';
+Blockly.HANDBIT_BACKWARD = '向后倾';
+Blockly.HANDBIT_LEFT = '向左倾';
+Blockly.HANDBIT_RIGHT = '向右倾';
+Blockly.HANDBIT_UP = '正面向上';
+Blockly.HANDBIT_DOWN = '正面向下';
+Blockly.BME280 = "读取BME280";
+Blockly.ESP32_HALL = 'ESP32片内霍尔值';
+Blockly.ESP32_TEMP = 'ESP32片内温度';
+Blockly.MIXLY_BACKGROUND_COLOR = '背景色';
 Blockly.MIXEPI = '米派';
 Blockly.DATA_TYPE_CONVERSION = '数据类型转换';
 Blockly.TEXT_TO = '至';
@@ -2630,44 +2642,44 @@ Blockly.esp_camera = "ESP32 CAM相机，上传程序后通过串口监视器输�
 Blockly.MIXLY_RESOLUTION = '精度';
 Blockly.inout_esp32_dac = 'DAC输出管脚';
 Blockly.take_a_photo1 = 'ESP32 CAM拍照';
-Blockly.super_delay_function='注册延时函数';
-Blockly.execute_super_delay_function='执行延时函数';
-Blockly.time_interval='时间间隔（ms）';
-Blockly.number_of_executions='执行次数';
-Blockly.super_delay_function_help='注册需要延时执行的函数';
-Blockly.execute_super_delay_function_help='执行延时函数，设置延时时间及执行的次数';
-Blockly.MIXLY_SERVO_WRITEMICROSECONDS='脉冲时长';
-Blockly.MIXLY_Z_AXIS='z轴';
-Blockly.MIXLY_SELFADD="自加";
-Blockly.MIXLY_SELFSUB="自减";
-Blockly.MIXLY_SELFMULT="自乘";
-Blockly.MIXLY_SELFDIVI="自除";
-Blockly.MIXLY_SD_FILE_Exist='文件存在?';
+Blockly.super_delay_function = '注册延时函数';
+Blockly.execute_super_delay_function = '执行延时函数';
+Blockly.time_interval = '时间间隔（ms）';
+Blockly.number_of_executions = '执行次数';
+Blockly.super_delay_function_help = '注册需要延时执行的函数';
+Blockly.execute_super_delay_function_help = '执行延时函数，设置延时时间及执行的次数';
+Blockly.MIXLY_SERVO_WRITEMICROSECONDS = '脉冲时长';
+Blockly.MIXLY_Z_AXIS = 'z轴';
+Blockly.MIXLY_SELFADD = "自加";
+Blockly.MIXLY_SELFSUB = "自减";
+Blockly.MIXLY_SELFMULT = "自乘";
+Blockly.MIXLY_SELFDIVI = "自除";
+Blockly.MIXLY_SD_FILE_Exist = '文件存在?';
 Blockly.MIXPY_DATA_ARRAY_CREATE_FROM = '首项';
 Blockly.MIXPY_DATA_ARRAY_CREATE_TO = '末项';
-Blockly.MIXLY_ATTATCH='绑定';
-Blockly.MIXLY_DETACH='解绑';
-Blockly.OLED_TYPE_SSD1306='0.96寸SSD1306';
-Blockly.OLED_TYPE_SH1106='1.3寸SH1106';
-Blockly.MOTOR_HR8833='HR8833电机驱动';
-Blockly.MOTOR_HR8833_TEAM_NO='组号';
-Blockly.MIXLY_I2C_REGADD="寄存器地址";
-Blockly.MIXLY_Keypad='4*4矩阵键盘';
-Blockly.MIXLY_Keypad_define='定义键盘';
-Blockly.MIXLY_Keypad_GETKEY='获取按键值';
-Blockly.MIXLY_Keypad_EVENT='矩阵键盘事件';
-Blockly.MIXLY_DEVICE='设备';
-Blockly.MIXLY_MASTER="主机";
-Blockly.MIXLY_SALVE="从机";
-Blockly.MIXLY_SEND_DATA="发送数据";
-Blockly.MIXLY_RETURN_DATA="返回值";
-Blockly.TFT_Brightness="背光";
+Blockly.MIXLY_ATTATCH = '绑定';
+Blockly.MIXLY_DETACH = '解绑';
+Blockly.OLED_TYPE_SSD1306 = '0.96寸SSD1306';
+Blockly.OLED_TYPE_SH1106 = '1.3寸SH1106';
+Blockly.MOTOR_HR8833 = 'HR8833电机驱动';
+Blockly.MOTOR_HR8833_TEAM_NO = '组号';
+Blockly.MIXLY_I2C_REGADD = "寄存器地址";
+Blockly.MIXLY_Keypad = '4*4矩阵键盘';
+Blockly.MIXLY_Keypad_define = '定义键盘';
+Blockly.MIXLY_Keypad_GETKEY = '获取按键值';
+Blockly.MIXLY_Keypad_EVENT = '矩阵键盘事件';
+Blockly.MIXLY_DEVICE = '设备';
+Blockly.MIXLY_MASTER = "主机";
+Blockly.MIXLY_SALVE = "从机";
+Blockly.MIXLY_SEND_DATA = "发送数据";
+Blockly.MIXLY_RETURN_DATA = "返回值";
+Blockly.TFT_Brightness = "背光";
 Blockly.BLYNK_DISCONNECTED = '硬件已离线';
-Blockly.MIXLY_U8G2_SETCONTRAST_HELP="OLED背光亮度范围（0-255）";
-Blockly.MIXLY_DHT11_T=Blockly.MIXLY_TEMPERATURE;
-Blockly.MIXLY_DHT11_H=Blockly.MIXLY_Humidity;
-Blockly.MIXLY_LCD_STAT_ON=Blockly.MIXLY_ON;
-Blockly.MIXLY_LCD_STAT_OFF=Blockly.MIXLY_OFF;
+Blockly.MIXLY_U8G2_SETCONTRAST_HELP = "OLED背光亮度范围（0-255）";
+Blockly.MIXLY_DHT11_T = Blockly.MIXLY_TEMPERATURE;
+Blockly.MIXLY_DHT11_H = Blockly.MIXLY_Humidity;
+Blockly.MIXLY_LCD_STAT_ON = Blockly.MIXLY_ON;
+Blockly.MIXLY_LCD_STAT_OFF = Blockly.MIXLY_OFF;
 Blockly.MIXGO_ONBOARDDISPLAY_HELP = "MixGo Max硬件使用板载显示模块时需要将显示屏连接至21、22号管脚";
 Blockly.MIXLY_ELECLEVEL = "电平触发";
 Blockly.MIXLY_GET_PRESSES_TIME = "时长(秒)";
@@ -2680,16 +2692,16 @@ Blockly.Msg.RIGHT_CYCLE = "右循环";
 Blockly.Msg.LEFT_CYCLE = "左循环";
 Blockly.MIXLY_FAILED = "失败";
 Blockly.MIXLY_SUCCESS = "成功";
-Blockly.MIXLY_WRITE="写入";
-Blockly.MIXLY_READONLY="只读";
-Blockly.MIXLY_FILE_PATH="文件路径";
+Blockly.MIXLY_WRITE = "写入";
+Blockly.MIXLY_READONLY = "只读";
+Blockly.MIXLY_FILE_PATH = "文件路径";
 Blockly.GET_THE_DIFFERENCE_BETWEEN_TWO_DATES = '获取两个日期差值';
 Blockly.START = '起始';
 Blockly.END = '结束';
 Blockly.MLX90614_TYPE = '红外测温传感器';
 Blockly.MLX90614_TARGET_OBJECT_TEMP = '目标物体温度';
 Blockly.MLX90614_AMBIENT_TEMP = '周围环境温度';
-Blockly.IR_AND_TONE_WARNING = '警告：\n'+'蜂鸣器模块和红外接收模块不可同时使用，\n'+'请考虑使用蜂鸣器模块(无定时器)或删除红外接收模块。';
+Blockly.IR_AND_TONE_WARNING = '警告：\n' + '蜂鸣器模块和红外接收模块不可同时使用，\n' + '请考虑使用蜂鸣器模块(无定时器)或删除红外接收模块。';
 Blockly.USE_SERIAL_PORT = '使用串口';
 Blockly.DFPLAYER_MINI_SET_TIMEOUT = " 串口通信超时时间设为";
 Blockly.DFPLAYER_MINI_SET_TIMEOUT_TOOLTIP = "DFPlayer Mini 设置串口通信的超时时间";
@@ -2840,4 +2852,4 @@ Blockly.MIXLY_PYTHON_FINALLY = '最终执行';
 Blockly.MIXLY_SOFT_ANALOGWRITE_PIN = '软件模拟输出 管脚 #';
 Blockly.MIXLY_CANCEL_SOFT_ANALOGWRITE_PIN = '取消软件模拟输出 管脚 #';
 Blockly.MIXLY_TOOLTIP_CANCEL_SOFT_ANALOGWRITE_PIN = '取消指定管脚的软件模拟PWM';
-Blockly.MIXLY_MITHON_NEAR="被接近";
+Blockly.MIXLY_MITHON_NEAR = "被接近";

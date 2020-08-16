@@ -21,12 +21,13 @@
 /*Blocks*/
 span#span_blocks, span#span_arduino, select#languageMenu {
     /* font-family: 'SourceHanSansCN-Regular', 'Arial', 'SimHei'; */
-    color: #333333;
+    /* color: #333333; */
+    color: #fff;
 }
 
 span.blocklyTreeLabel {
     /* font-family: 'SourceHanSansCN-Regular', 'Arial', 'SimHei'; */
-    color: #333333;
+    color: #eee;
     font-size: 17px;
 }
 
