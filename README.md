@@ -1,6 +1,6 @@
 # Mixly_Lite
 
----
+This is a [preview edition](https://www.mithon.org/ "Mixly Lite"). 
 
 ### v 0.2
 - [ ] Support micro:bit
