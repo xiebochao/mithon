@@ -1055,11 +1055,11 @@ Blockly.Blocks.object_set= {
   },
    decompose: function(workspace) {
     var containerBlock =
-    Blockly.Block.obtain(workspace, 'object_set_with_container');
+    workspace.newBlock('object_set_with_container');
     containerBlock.initSvg();
     var connection = containerBlock.getInput('STACK').connection;
     for (var i = 0; i < this.itemCount_; i++) {
-      var itemBlock = Blockly.Block.obtain(workspace, 'object_set_with_item');
+      var itemBlock = workspace.newBlock('object_set_with_item');
       itemBlock.initSvg();
       connection.connect(itemBlock.previousConnection);
       connection = itemBlock.nextConnection;

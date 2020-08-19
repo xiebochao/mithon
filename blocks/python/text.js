@@ -48,7 +48,7 @@ Blockly.Blocks['text_textarea'] = {
     this.setColour(Blockly.Blocks.texts.HUE);
     this.appendDummyInput()
     .appendField(this.newQuote_(true))
-    .appendField(new Blockly.FieldTextArea('Hello\nMixly'), 'VALUE')
+    .appendField(new Blockly.FieldMultilineInput('Hello\nMixly'), 'VALUE')
         // .appendField(new Blockly.FieldTextInput(''), 'TEXT')
         .appendField(this.newQuote_(false));
         this.setOutput(true, String);
@@ -686,11 +686,11 @@ Blockly.Blocks['text_format'] = {
    */
    decompose: function(workspace) {
     var containerBlock =
-    Blockly.Block.obtain(workspace, 'text_create_with_container');
+    workspace.newBlock('text_create_with_container');
     containerBlock.initSvg();
     var connection = containerBlock.getInput('STACK').connection;
     for (var i = 0; i < this.itemCount_; i++) {
-      var itemBlock = Blockly.Block.obtain(workspace, 'text_create_with_item');
+      var itemBlock = workspace.newBlock('text_create_with_item');
       itemBlock.initSvg();
       connection.connect(itemBlock.previousConnection);
       connection = itemBlock.nextConnection;
@@ -868,11 +868,11 @@ Blockly.Blocks['text_format_noreturn'] = {
    */
    decompose: function(workspace) {
     var containerBlock =
-    Blockly.Block.obtain(workspace, 'text_create_with_container');
+    workspace.newBlock('text_create_with_container');
     containerBlock.initSvg();
     var connection = containerBlock.getInput('STACK').connection;
     for (var i = 0; i < this.itemCount_; i++) {
-      var itemBlock = Blockly.Block.obtain(workspace, 'text_create_with_item');
+      var itemBlock = workspace.newBlock('text_create_with_item');
       itemBlock.initSvg();
       connection.connect(itemBlock.previousConnection);
       connection = itemBlock.nextConnection;

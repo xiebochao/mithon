@@ -27,8 +27,15 @@
 goog.provide('Blockly.Variables');
 
 // TODO(scr): Fix circular dependencies
+// goog.require('Blockly.Block');
 goog.require('Blockly.Workspace');
-goog.require('goog.string');
+//goog.require('goog.string');
+goog.require('Blockly.VariableModel');
+goog.require('Blockly.Blocks');
+goog.require('Blockly.Msg');
+goog.require('Blockly.utils');
+goog.require('Blockly.utils.xml');
+goog.require('Blockly.Xml');
 
 
 /**
@@ -95,7 +102,7 @@ Blockly.Variables.renameVariable = function(oldName, newName, workspace) {
  */
 Blockly.Variables.flyoutCategory = function(workspace) {
   var variableList = Blockly.Variables.allVariables(workspace);
-  variableList.sort(goog.string.caseInsensitiveCompare);
+  //variableList.sort(goog.string.caseInsensitiveCompare);
   // In addition to the user's variables, we also want to display the default
   // variable name at the top.  We also don't want this duplicated if the
   // user has created a variable of the same name.
@@ -105,36 +112,36 @@ Blockly.Variables.flyoutCategory = function(workspace) {
 
   var xmlList = [];
   
-  var block = goog.dom.createDom('block');
+  var block = Blockly.utils.xml.createElement('block');
   block.setAttribute('type', 'variables_global');
   xmlList.push(block);
   
   if (Blockly.Blocks['variables_set']) {
   //增加variables_declare模块
-  	var block = goog.dom.createDom('block');
+  	var block = Blockly.utils.xml.createElement('block');
   	block.setAttribute('type', 'variables_set');
  	xmlList.push(block);
   }//change tyep
     /*
       if (Blockly.Blocks['variables_change']) {
           //增加variables_declare模块
-          var block = goog.dom.createDom('block');
+          var block = Blockly.utils.xml.createElement('block');
           block.setAttribute('type', 'variables_change');
           xmlList.push(block);
       }*/
   if (Blockly.Blocks['variables_change']) {
       //增加variables_declare模块
-      var block = goog.dom.createDom('block');
+      var block = Blockly.utils.xml.createElement('block');
       block.setAttribute('type', 'variables_change');
       xmlList.push(block);
   }
   if (Blockly.Blocks['controls_type']) {
-      var block = goog.dom.createDom('block');
+      var block = Blockly.utils.xml.createElement('block');
       block.setAttribute('type', 'controls_type');
       xmlList.push(block);
   }
   if (Blockly.Blocks['controls_typeLists']) {
-      var block = goog.dom.createDom('block');
+      var block = Blockly.utils.xml.createElement('block');
       block.setAttribute('type', 'controls_typeLists');
       xmlList.push(block);
   }
@@ -144,24 +151,28 @@ Blockly.Variables.flyoutCategory = function(workspace) {
    	// 	continue;
    	// }
     if (Blockly.Blocks['variables_set']) {
-      var block = goog.dom.createDom('block');
+      var block = Blockly.utils.xml.createElement('block');
       block.setAttribute('type', 'variables_set');
       if (Blockly.Blocks['variables_get']) {
         block.setAttribute('gap', 8);
       }
-      var field = goog.dom.createDom('field', null, variableList[i]);
+      var field = Blockly.utils.xml.createElement('field', null, variableList[i]);
       field.setAttribute('name', 'VAR');
+      var name = Blockly.utils.xml.createTextNode(variableList[i]);
+      field.appendChild(name);
       block.appendChild(field);
       xmlList.push(block);
     }
     if (Blockly.Blocks['variables_get']) {
-      var block = goog.dom.createDom('block');
+      var block = Blockly.utils.xml.createElement('block');
       block.setAttribute('type', 'variables_get');
       if (Blockly.Blocks['variables_set']) {
         block.setAttribute('gap', 24);
       }
-      var field = goog.dom.createDom('field', null, variableList[i]);
+      var field = Blockly.utils.xml.createElement('field', null, variableList[i]);
       field.setAttribute('name', 'VAR');
+      var name = Blockly.utils.xml.createTextNode(variableList[i]);
+      field.appendChild(name);
       block.appendChild(field);
       xmlList.push(block);
     }

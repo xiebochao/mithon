@@ -232,16 +232,6 @@ Blockly.Blocks['procedures_defnoreturn'] = {
     }
   },
   /**
-   * Dispose of any callers.
-   * @this Blockly.Block
-   */
-  dispose: function() {
-    var name = this.getFieldValue('NAME');
-    Blockly.Procedures.disposeCallers(name, this.workspace);
-    // Call parent's destructor.
-    this.constructor.prototype.dispose.apply(this, arguments);
-  },
-  /**
    * Return the signature of this procedure definition.
    * @return {!Array} Tuple containing three elements:
    *     - the name of the defined procedure,
@@ -299,15 +289,15 @@ Blockly.Blocks['procedures_defnoreturn'] = {
     var option = {enabled: true};
     var name = this.getFieldValue('NAME');
     option.text = Blockly.Msg.PROCEDURES_CREATE_DO.replace('%1', name);
-    var xmlMutation = goog.dom.createDom('mutation');
+    var xmlMutation = Blockly.utils.xml.createElement('mutation');
     xmlMutation.setAttribute('name', name);
     for (var i = 0; i < this.arguments_.length; i++) {
-      var xmlArg = goog.dom.createDom('arg');
+      var xmlArg = Blockly.utils.xml.createElement('arg');
       xmlArg.setAttribute('name', this.arguments_[i]);
       //xmlArg.setAttribute('type', this.argumentstype_[i]);//新增
       xmlMutation.appendChild(xmlArg);
     }
-    var xmlBlock = goog.dom.createDom('block', null, xmlMutation);
+    var xmlBlock = Blockly.utils.xml.createElement('block', null, xmlMutation);
     xmlBlock.setAttribute('type', this.callType_);
     option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
     options.push(option);
@@ -318,10 +308,10 @@ Blockly.Blocks['procedures_defnoreturn'] = {
         var option = {enabled: true};
         var name = this.arguments_[i];
         option.text = Blockly.Msg.VARIABLES_SET_CREATE_GET.replace('%1', name);
-        var xmlField = goog.dom.createDom('field', null, name);
+        var xmlField = Blockly.utils.xml.createElement('field', null, name);
         xmlField.setAttribute('name', 'VAR');
 	xmlField.setAttribute('type', 'TYPEVAR');//新增
-        var xmlBlock = goog.dom.createDom('block', null, xmlField);
+        var xmlBlock = Blockly.utils.xml.createElement('block', null, xmlField);
         xmlBlock.setAttribute('type', 'variables_get');
         option.callback = Blockly.ContextMenu.callbackFactory(this, xmlBlock);
         options.push(option);
@@ -361,7 +351,6 @@ Blockly.Blocks['procedures_defreturn'] = {
   domToMutation: Blockly.Blocks['procedures_defnoreturn'].domToMutation,
   decompose: Blockly.Blocks['procedures_defnoreturn'].decompose,
   compose: Blockly.Blocks['procedures_defnoreturn'].compose,
-  dispose: Blockly.Blocks['procedures_defnoreturn'].dispose,
   /**
    * Return the signature of this procedure definition.
    * @return {!Array} Tuple containing three elements:
@@ -478,7 +467,7 @@ Blockly.Blocks['procedures_callnoreturn'] = {
    *     parameter through the life of a mutator, regardless of param renaming),
    *     e.g. ['piua', 'f8b_', 'oi.o'].
    * @private
-   * @this Blockly.Block
+   * @this {Blockly.Block}
    */
   setProcedureParameters_: function(paramNames, paramIds) {
     // Data structures:
@@ -502,25 +491,21 @@ Blockly.Blocks['procedures_callnoreturn'] = {
       // Reset the quarks (a mutator is about to open).
       return;
     }
-    if (goog.array.equals(this.arguments_, paramNames)) {
+    // Test arguments (arrays of strings) for changes. '\n' is not a valid
+    // argument name character, so it is a valid delimiter here.
+    if (paramNames.join('\n') == this.arguments_.join('\n')) {
       // No change.
       this.quarkIds_ = paramIds;
       return;
     }
     if (paramIds.length != paramNames.length) {
-      throw 'Error: paramNames and paramIds must be the same length.';
+      throw RangeError('paramNames and paramIds must be the same length.');
     }
     this.setCollapsed(false);
     if (!this.quarkIds_) {
       // Initialize tracking for this block.
       this.quarkConnections_ = {};
-      if (paramNames.join('\n') == this.arguments_.join('\n')) {
-        // No change to the parameters, allow quarkConnections_ to be
-        // populated with the existing connections.
-        this.quarkIds_ = paramIds;
-      } else {
-        this.quarkIds_ = [];
-      }
+      this.quarkIds_ = [];
     }
     // Switch off rendering while the block is rebuilt.
     var savedRendered = this.rendered;
@@ -535,12 +520,20 @@ Blockly.Blocks['procedures_callnoreturn'] = {
             paramIds.indexOf(this.quarkIds_[i]) == -1) {
           // This connection should no longer be attached to this block.
           connection.disconnect();
-          connection.getSourceBlock().bumpNeighbours_();
+          connection.getSourceBlock().bumpNeighbours();
         }
       }
     }
     // Rebuild the block's arguments.
     this.arguments_ = [].concat(paramNames);
+    // And rebuild the argument model list.
+    this.argumentVarModels_ = [];
+    for (var i = 0; i < this.arguments_.length; i++) {
+      var variable = Blockly.Variables.getOrCreateVariablePackage(
+          this.workspace, null, this.arguments_[i], '');
+      this.argumentVarModels_.push(variable);
+    }
+
     this.updateShape_();
     this.quarkIds_ = paramIds;
     // Reconnect any child blocks.

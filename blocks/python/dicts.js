@@ -164,9 +164,9 @@
           }
         // Rebuild block.
         if (this.itemCount_ == 0) {
-          this.getField('TIP').setText(Blockly.Msg.DICTS_CREATE_EMPTY_TITLE);
+          this.getField('TIP').setValue(Blockly.Msg.DICTS_CREATE_EMPTY_TITLE);
         } else {
-          this.getField('TIP').setText(Blockly.Msg.DICTS_CREATE_WITH_INPUT_WITH);
+          this.getField('TIP').setValue(Blockly.Msg.DICTS_CREATE_WITH_INPUT_WITH);
           for (var i = 0; i < this.itemCount_; i++) {
             this.appendValueInput('ADD' + i)
             .setCheck(null)
@@ -690,9 +690,9 @@ Blockly.Blocks['dicts_pop'] = {
           }
         // Rebuild block.
         if (this.itemCount_ == 0) {
-          this.getField('TIP').setText(Blockly.Msg.DICTS_CREATE_EMPTY_TITLE);
+          this.getField('TIP').setValue(Blockly.Msg.DICTS_CREATE_EMPTY_TITLE);
         } else {
-          this.getField('TIP').setText(Blockly.Msg.DICTS_CREATE_WITH_INPUT_WITH);
+          this.getField('TIP').setValue(Blockly.Msg.DICTS_CREATE_WITH_INPUT_WITH);
           for (var i = 0; i < this.itemCount_; i++) {
             this.appendValueInput('ADD' + i)
             .setCheck(null)
