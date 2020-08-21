@@ -155,7 +155,7 @@ const selectDevice = async () => {
         const device = await navigator.usb.requestDevice({
             filters: [{vendorId: 0xD28}]
         });
-        alert('连接成功!');
+        // alert('连接成功!');
 		deviceObj = device;
 	} catch (error) {
 		// statusEl.style.visibility = "hidden";
@@ -189,13 +189,6 @@ const setImage = (file) => {
     reader.readAsArrayBuffer(file);
 }
 
-
-function myconnect(t){
-    var a = t.connect();
-    console.log(a);
-    return a;
-}
-
 // Update a device with the firmware image transferred from block/code
 const update = async deviceObj => {
 	if(!deviceObj){
@@ -218,7 +211,7 @@ const update = async deviceObj => {
     try {
         // Push binary to board
         // setStatus(`Flashing binary file ${buffer.byteLength} words long...`);
-        await myconnect(target);
+        await target.connect();
         document.getElementById("modal_progress").style.display = "block";
         var AllTime = `${buffer.byteLength}` / 24.5;  // Just a test value ...
         var down = document.getElementById("webusb-flashing-progress");
@@ -233,6 +226,7 @@ const update = async deviceObj => {
         }, AllTime/100)
         await target.flash(buffer);
         // setStatus("Disconnecting...");
+        down.value = 1
         await target.disconnect();
         document.getElementById("modal_progress").style.display = "none";
         setStatus("Flash complete!");
