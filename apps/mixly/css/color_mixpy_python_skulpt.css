@@ -26,6 +26,7 @@ a.viewRight{
     border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
 }
+
 #tabRow>td {
       border: 1px solid #ccc;
 	  font-family: sans-serif; 
@@ -79,10 +80,6 @@ td.taboff:hover {
 	resize:none;
 }
 
-@font-face { 
-	font-family: myfont; 
-	src: url('../font/xiongtuti.ttf'); 
-} 
 html, body {
   height: 100%;
 }
@@ -91,7 +88,7 @@ textarea{
 }
 body {
   background-color: #fff;
-  font-family: sans-serif;
+  /* font-family: sans-serif; */
   margin: 0;
   overflow: hidden;
 }
@@ -137,17 +134,19 @@ table {
 #table_whole {
     height: calc(100vh - 3em);
     position: relative;
-    margin-top: 3em; 
+    /* margin-top: 3em;  */
   }
 td {
   padding: 0;
   vertical-align: center;
 }
 .content {
-  margin: 0;
-  padding: 1ex;
-  position: absolute;
-  direction: ltr;
+    visibility: hidden;  /*add*/
+    margin: 0;
+    padding: 1ex;
+    position: absolute;
+    direction: ltr;
+    background-color: #000;  /*add*/
 }
 #content_blocks {
   padding: 0;

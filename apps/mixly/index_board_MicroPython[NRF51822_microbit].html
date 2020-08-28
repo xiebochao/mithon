@@ -19,7 +19,7 @@
     <!--from BlocklyDuino-->
     <script type="text/javascript" src="js/Blob.js"></script>
     <script type="text/javascript" src="spin.js"></script>
-    <script type="text/javascript" src="js/FileSaver.min.js"></script>Mixiy_Lite
+    <script type="text/javascript" src="js/FileSaver.min.js"></script>
     <script type="text/javascript" src="js/blockly_helper.js"></script>
     <!---profiles-->
     <script type="text/javascript" src="jquery-1.11.3.min.js"></script>
@@ -73,57 +73,86 @@
     <script src="../../blocks/python/utility.js"></script>
     <script src="../../generators/python/utility.js"></script>
     <script src="init-py.js"></script>
+    <script src="layui/layui.js"></script>
+    <link rel="stylesheet" type="text/css" href="layui/css/layui.css" />
     <link rel="stylesheet" type="text/css" href="css/color_microbit_python_advance.css" />
     <link rel="stylesheet" type="text/css" href="css/ACEfont.css" />
     <link rel="stylesheet" type="text/css" href="css/fontello.css" />
-    <link rel="stylesheet" type="text/css" href="css/picnic.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/editor.css" />
     <!-- upload -->
     <script type="text/javascript" src="dap.umd.js"></script>
+    <script type="text/javascript" src="nav.js"></script>
 </head>
 
 <body onload="init()">
-    <nav class="">
-        <a href="/" class="brand"><span>Mixly Lite</span></a>
-        <input id="bmenu" type="checkbox" class="show">
-        <label for="bmenu" class="burger toggle pseudo button">≡</label>
-        <div class="menu">
-            <span style="vertical-align: center;width:134px" id="tab_blocks" class="taboff"
-                onclick="tabClick('blocks')">
-                <span class="warning button icon-cube" id="span_blocks"></span>
-            </span>
-            <span style="vertical-align: center;text-align:center;" id="tab_arduino" class="taboff"
-                onclick="tabClick('arduino')">
-                <span class="warning button icon-code" id="span_arduino"></span>
-            </span>
-            <span style="vertical-align: center;text-align:center;display:none;" id="tab_xml" class="taboff"
-                onclick="tabClick('xml')"></span>
-            <select id="languageMenu" style="display:none;"></select>
-            <span onclick="Blockly.mainWorkspace.undo(0);" class="pseudo button icon-ccw" name="undo" id="undo_btn"
-                title="undo(ctrl+z)"></span>
-            <span onclick="Blockly.mainWorkspace.undo(1);" class="pseudo button icon-cw" name="redo" id="redo_btn"
-                title="redo(ctrl+y)"></span>
-            <span id="open_btn" class="pseudo button icon-folder-open" onclick="mixlyjs.loadLocalFile()"></span>
-            <!-- <label for="modal_1" id="save_btn" class="pseudo button icon-floppy"></label> -->
-            <span id="save_xml_btn" class="pseudo button icon-floppy" onclick="save()"></span>
-            <span id="save_py_btn" class="pseudo button icon-code" onclick="mixlyjs.saveInoFileAs()"></span>
-            <span id="save_hex_btn" class="pseudo button icon-download" onclick="mixlyjs.compileMicrobitPy()"></span>
-            <span id="connect_btn" class="pseudo button icon-link"></span>
-            <span id="upload_btn" class="success button icon-upload"></span>
-            <script style="display:none;">
-                document.getElementById('span_blocks').textContent = MSG['tab_blocks'];
-                document.getElementById('span_arduino').textContent = MSG['tab_arduino'];
-                document.getElementById('undo_btn').textContent = MSG['undo'];
-                document.getElementById('redo_btn').textContent = MSG['redo'];
-                document.getElementById('open_btn').textContent = MSG['open'];
-                document.getElementById('save_xml_btn').textContent = MSG['save_blocks'];
-                document.getElementById('save_py_btn').textContent = MSG['save_py'];
-                document.getElementById('save_hex_btn').textContent = MSG['save_hex'];
-                document.getElementById('connect_btn').textContent = MSG['connect'];
-                document.getElementById('upload_btn').textContent = MSG['upload'];
-            </script>
+    <ul id="nav" class="layui-nav layui-bg-cyan" lay-filter="" style="min-width: 800px;z-index:9999;">
+        <a href="/" style="color:white; text-align:center; vertical-align: middle;font-size: 18px;">&nbsp;&nbsp;&nbsp;Mixly Lite&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        <li style="display:none" id="tab_blocks"></li>
+        <li style="display:none" id="tab_arduino"></li>
+        <li style="display:none" id="tab_xml"></li>
+        <li class="layui-nav-item"><a href="#" onclick="UndoClick();" name="undo" id="undo_btn" title="undo(ctrl+z)" class="icon-ccw"></a></li>
+        <li class="layui-nav-item"><a href="#" onclick="RndoClick();" name="redo" id="redo_btn" title="redo(ctrl+y)" class="icon-cw"></a></li>
+        <li class="layui-nav-item"><a href="#" id="connect_btn" class="icon-link"></a></li>
+        <li class="layui-nav-item"><a href="#" id="upload_btn" class="icon-upload" ></a></li>
+        <li class="layui-nav-item"><a href="#" id="serial_read_btn" class="icon-link" ></a></li>
+        <li class="layui-nav-item" style="float:right">
+            <a href="javascript:;" id="setting_btn"></a>
+            <dl class="layui-nav-child">
+                <!-- 二级菜单 -->
+                <dd><a id="language_btn" class="icon-language" onclick="open_language(); "></a></dd>
+                <dd><a id="theme_btn" class="icon-art-gallery" onclick="open_theme();"></a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item" style="float:right">
+            <a href="javascript:;" id="file_btn"></a>
+            <dl class="layui-nav-child">
+                <!-- 二级菜单 -->
+                <dd><a onclick="new_file()" id="new_btn" class="icon-doc-new"></a></dd>
+                <dd><a onclick="mixlyjs.loadLocalFile()" id="open_btn" class="icon-folder-open-empty"></a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item" style="float:right">
+            <a href="javascript:;" id="save_btn"></a>
+            <dl class="layui-nav-child">
+                <!-- 二级菜单 -->
+                <dd><a id="save_img_btn" class="icon-floppy" onclick="mixlyjs.saveBlockImg()">保存图片</a></dd>
+                <dd><a id="save_xml_btn" class="icon-floppy" onclick="save()"></a></dd>
+                <dd><a id="save_py_btn" class="icon-file-code" onclick="mixlyjs.saveInoFileAs()"></a></dd>
+                <dd><a id="save_hex_btn" class="icon-download" onclick="mixlyjs.compileMicrobitPy()"></a></dd>
+            </dl>
+        </li>
+        <!-- a标签里不用写按钮名字,136行script段里通过id改名,为了多语言支持 -->
+        <!-- 就是这块，不知道怎么把代码那三个部分加进来 -->
+        <!-- a标签里不用写按钮名字,13行script段里通过id改名,为了多语言支持 -->
+        <li class="layui-nav-item"><select id="languageMenu" style="display:none"></select></li>
+    </ul>
+    <button type="button" id="changemod_btn" value=1 onclick="changeMod()" class="layui-btn layui-btn-primary" style="width:80px; height:40px; position: absolute; right: 0px; top:60px;z-index:9998;"></button>
+    <script style="display:none;">
+        show_tag();
+    </script>
+    <div id="webusb-flashing" style="display:none; margin:12px" align="center"><progress id="webusb-flashing-progress"></progress></div>
+    <div class="site-text site-block" id="serial-form" style="display: none;">
+        <div style="margin-top: 20px;"></div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">串口</label>
+            <div class="layui-input-block">
+                <textarea readonly id="serial_content" name="desc" placeholder="串口输出" class="layui-textarea"
+                    style="width:80%; height:300px"></textarea>
+            </div>
         </div>
-    </nav>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">输入</label>
+            <div class="layui-input-block">
+                <input id="serial_write" type="text" name="title" placeholder="请输入内容" autocomplete="off" class="layui-input"
+                    style="width:80%;">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button id="serial_write_btn" onclick="serialWrite()" class="layui-btn layui-btn-normal">发送</button>
+                <button id="serial_clear_btn" onclick="clearSerialContent()" class="layui-btn layui-btn-danger">清空</button>
+            </div>
+        </div>
+    </div>
     <table width="100%" id="table_whole">
         <tr width="0%">
             <td colspan=3>
@@ -134,7 +163,7 @@
             </td>
         </tr>
         <tr>
-            <td height="100%" width="75%" id="content_area"></td>
+            <td height="100%" width="100%" id="content_area"></td>
             <td style="display:none;height:100%;width:0.3%;background: #ddd;cursor: w-resize;" id="mid_td"></td>
             <td width="25%" style="background-color:#eee;display:none;" id="side_code_parent">
                 <div id="side_code" wrap="off" readonly></div>
@@ -142,10 +171,11 @@
             <div id="sidebar" class="right-top" onclick="sidecodeClick()"></div>
         </tr>
     </table>
+    
     <script src="python-main.js" type="application/javascript"></script>
     <div id="content_blocks" class="content"></div>
     <div id="content_arduino" class="content" wrap="off"></div>
-    <textarea id="content_xml" class="content" wrap="off" readonly></textarea>
+    <textarea id="content_xml" class="content"  wrap="off" readonly></textarea>
     <xml id="toolbox" style="display: none">
         <category name="" id="catInOut" colour="20">
             <block type="inout_highlow"></block>

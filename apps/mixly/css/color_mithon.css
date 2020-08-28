@@ -89,7 +89,7 @@ textarea{
 }
 body {
   background-color: #fff;
-  font-family: sans-serif;
+  /* font-family: sans-serif; */
   margin: 0;
   overflow: hidden;
 }
@@ -135,7 +135,7 @@ table {
 #table_whole {
     height: calc(100vh - 3em);
     position: relative;
-    margin-top: 3em; 
+    /* margin-top: 3em;  */
   }
 td {
   padding: 0;
@@ -147,6 +147,7 @@ td {
   padding: 1ex;
   position: absolute;
   direction: ltr;
+  background-color: #000;
 }
 #content_blocks {
   padding: 0;
@@ -231,7 +232,7 @@ div>span.blocklyTreeIcon.blocklyTreeIconNone{
 }
 
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div.blocklyTreeRow > span.blocklyTreeIcon.blocklyTreeIconNone {
-	background:url('../../../media/mark/ctrl2.png') no-repeat;
+	background:url('../../../media/mark/ctrl.png') no-repeat;
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div.blocklyTreeRow.blocklyTreeSelected > span.blocklyTreeIcon.blocklyTreeIconNone{
@@ -239,7 +240,7 @@ div>span.blocklyTreeIcon.blocklyTreeIconNone{
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(2) > div.blocklyTreeRow > span.blocklyTreeIcon.blocklyTreeIconNone {
-	background:url('../../../media/mark/math2.png') no-repeat;
+	background:url('../../../media/mark/math.png') no-repeat;
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(2) > div.blocklyTreeRow.blocklyTreeSelected > span.blocklyTreeIcon.blocklyTreeIconNone{
@@ -247,7 +248,7 @@ div>span.blocklyTreeIcon.blocklyTreeIconNone{
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(3) > div.blocklyTreeRow > span.blocklyTreeIcon.blocklyTreeIconNone {
-	background:url('../../../media/mark/logic2.png') no-repeat;
+	background:url('../../../media/mark/logic.png') no-repeat;
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(3) > div.blocklyTreeRow.blocklyTreeSelected > span.blocklyTreeIcon.blocklyTreeIconNone{
@@ -255,7 +256,7 @@ div>span.blocklyTreeIcon.blocklyTreeIconNone{
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(4) > div.blocklyTreeRow > span.blocklyTreeIcon.blocklyTreeIconNone {
-	background:url('../../../media/mark/text2.png') no-repeat;
+	background:url('../../../media/mark/text.png') no-repeat;
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(4) > div.blocklyTreeRow.blocklyTreeSelected > span.blocklyTreeIcon.blocklyTreeIconNone{
@@ -263,7 +264,7 @@ div>span.blocklyTreeIcon.blocklyTreeIconNone{
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(5) > div.blocklyTreeRow > span.blocklyTreeIcon.blocklyTreeIconNone {
-	background:url('../../../media/mark/list4.png') no-repeat;
+	background:url('../../../media/mark/list3.png') no-repeat;
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(5) > div.blocklyTreeRow.blocklyTreeSelected > span.blocklyTreeIcon.blocklyTreeIconNone{
@@ -271,7 +272,7 @@ div>span.blocklyTreeIcon.blocklyTreeIconNone{
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(6) > div.blocklyTreeRow > span.blocklyTreeIcon.blocklyTreeIconNone {
-  background:url('../../../media/mark/tuple2.png') no-repeat;
+  background:url('../../../media/mark/tuple.png') no-repeat;
   background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(6) > div.blocklyTreeRow.blocklyTreeSelected > span.blocklyTreeIcon.blocklyTreeIconNone{
@@ -279,7 +280,7 @@ div>span.blocklyTreeIcon.blocklyTreeIconNone{
   background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(7) > div.blocklyTreeRow > span.blocklyTreeIcon.blocklyTreeIconNone {
-	background:url('../../../media/mark/dict2.png') no-repeat;
+	background:url('../../../media/mark/dict.png') no-repeat;
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(7) > div.blocklyTreeRow.blocklyTreeSelected > span.blocklyTreeIcon.blocklyTreeIconNone{
@@ -287,7 +288,7 @@ div>span.blocklyTreeIcon.blocklyTreeIconNone{
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(8) > div.blocklyTreeRow > span.blocklyTreeIcon.blocklyTreeIconNone {
-  background:url('../../../media/mark/set2.png') no-repeat;
+  background:url('../../../media/mark/set.png') no-repeat;
   background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(8) > div.blocklyTreeRow.blocklyTreeSelected > span.blocklyTreeIcon.blocklyTreeIconNone{
@@ -295,7 +296,7 @@ div>span.blocklyTreeIcon.blocklyTreeIconNone{
   background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(9) > div.blocklyTreeRow > span.blocklyTreeIcon.blocklyTreeIconNone {
-	background:url('../../../media/mark/var2.png') no-repeat;
+	background:url('../../../media/mark/var.png') no-repeat;
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(9) > div.blocklyTreeRow.blocklyTreeSelected > span.blocklyTreeIcon.blocklyTreeIconNone{
@@ -303,7 +304,7 @@ div>span.blocklyTreeIcon.blocklyTreeIconNone{
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(10) > div.blocklyTreeRow > span.blocklyTreeIcon.blocklyTreeIconNone {
-	background:url('../../../media/mark/func2.png') no-repeat;
+	background:url('../../../media/mark/func.png') no-repeat;
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(10) > div.blocklyTreeRow.blocklyTreeSelected > span.blocklyTreeIcon.blocklyTreeIconNone{
@@ -311,7 +312,7 @@ div>span.blocklyTreeIcon.blocklyTreeIconNone{
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(11) > div.blocklyTreeRow > span.blocklyTreeIcon.blocklyTreeIconNone {
-	background:url('../../../media/mark/port2.png') no-repeat;
+	background:url('../../../media/mark/port.png') no-repeat;
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(11) > div.blocklyTreeRow.blocklyTreeSelected > span.blocklyTreeIcon.blocklyTreeIconNone{
@@ -319,7 +320,7 @@ div>span.blocklyTreeIcon.blocklyTreeIconNone{
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(12) > div.blocklyTreeRow > span.blocklyTreeIcon.blocklyTreeIconNone {
-	background:url('../../../media/mark/event2.png') no-repeat;
+	background:url('../../../media/mark/event.png') no-repeat;
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(12) > div.blocklyTreeRow.blocklyTreeSelected > span.blocklyTreeIcon.blocklyTreeIconNone{
@@ -327,7 +328,7 @@ div>span.blocklyTreeIcon.blocklyTreeIconNone{
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(13) > div.blocklyTreeRow > span.blocklyTreeIcon.blocklyTreeIconNone {
-	background:url('../../../media/mark/sensor2.png') no-repeat;
+	background:url('../../../media/mark/sensor.png') no-repeat;
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(13) > div.blocklyTreeRow.blocklyTreeSelected > span.blocklyTreeIcon.blocklyTreeIconNone{
@@ -335,7 +336,7 @@ div>span.blocklyTreeIcon.blocklyTreeIconNone{
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(14) > div.blocklyTreeRow > span.blocklyTreeIcon.blocklyTreeIconNone {
-	background:url('../../../media/mark/act2.png') no-repeat;
+	background:url('../../../media/mark/act.png') no-repeat;
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(14) > div.blocklyTreeRow.blocklyTreeSelected > span.blocklyTreeIcon.blocklyTreeIconNone{
@@ -343,7 +344,7 @@ div>span.blocklyTreeIcon.blocklyTreeIconNone{
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(15) > div.blocklyTreeRow > span.blocklyTreeIcon.blocklyTreeIconNone {
-	background:url('../../../media/mark/monitor2.png') no-repeat;
+	background:url('../../../media/mark/monitor.png') no-repeat;
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(15) > div.blocklyTreeRow.blocklyTreeSelected > span.blocklyTreeIcon.blocklyTreeIconNone{
@@ -351,16 +352,10 @@ div>span.blocklyTreeIcon.blocklyTreeIconNone{
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(16) > div.blocklyTreeRow > span.blocklyTreeIcon.blocklyTreeIconNone {
-	background:url('../../../media/mark/net2.png') no-repeat;
+	background:url('../../../media/mark/net.png') no-repeat;
 	background-size: 100% auto; 
 }
 /* #\:0 */ div:nth-child(1) > div:nth-child(2) > div:nth-child(16) > div.blocklyTreeRow.blocklyTreeSelected > span.blocklyTreeIcon.blocklyTreeIconNone{
 	background:url('../../../media/mark/net2.png') no-repeat;
 	background-size: 100% auto; 
 }
-
-/*text.blocklyCheckbox {
-	fill: #ff3030!important;
-	text-shadow: 0 0 3px red;
-	font-size: 17pt!important;
-}*/

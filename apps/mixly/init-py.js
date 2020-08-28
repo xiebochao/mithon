@@ -9,11 +9,13 @@ function sidecodeClick() {
         document.getElementById('side_code_parent').style.display = 'none';
         document.getElementById('sidebar').className = 'right-top';
         document.getElementById('mid_td').style.display = 'none';
+        document.getElementById('content_area').width = '100%';
         sidecodeDisplay = false;
     } else {
         document.getElementById('side_code_parent').style.display = '';
         document.getElementById('sidebar').className = 'right-top2';
         document.getElementById('mid_td').style.display = '';
+        document.getElementById('content_area').width = '75%';
         sidecodeDisplay = true;
     }
     Blockly.fireUiEvent(window, 'resize');
@@ -131,7 +133,7 @@ function renderContent() {
         var chinese_code = code.replace(/(_[0-9A-F]{2}_[0-9A-F]{2}_[0-9A-F]{2})+/g, function (s) { return decodeURIComponent(s.replace(/_/g, '%')); });
         editor_side_code.setValue(chinese_code, -1);
         document.getElementById("tab_blocks").style.display = "none";
-        document.getElementById("tab_arduino").style.display = "inline";
+        // document.getElementById("tab_arduino").style.display = "inline";
     } else if (content.id == 'content_xml') {
         var xmlTextarea = document.getElementById('content_xml');
         var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
@@ -140,7 +142,8 @@ function renderContent() {
         xmlTextarea.focus();
     } else if (content.id == 'content_arduino') {
         document.getElementById("tab_arduino").style.display = "none";
-        document.getElementById("tab_blocks").style.display = "inline";
+        // document.getElementById("tab_blocks").style.display = "inline";
+        
         //content.innerHTML = Blockly.Arduino.workspaceToCode(Blockly.mainWorkspace);
         //var arduinoTextarea = document.getElementById('content_arduino');
         //arduinoTextarea.value = Blockly.Arduino.workspaceToCode(Blockly.mainWorkspace);
@@ -173,6 +176,43 @@ function getBBox_(element) {
         x: x,
         y: y
     };
+}
+
+/**
+ * 重写撤销和重复关联.
+ */
+function UndoClick(){
+    if (document.getElementById('tab_blocks').className == 'tabon') {
+        Blockly.mainWorkspace.undo(0);
+    }
+    else{
+        editor.undo();
+    }
+}
+
+function RedoClick(){
+    if (document.getElementById('tab_blocks').className == 'tabon') {
+        Blockly.mainWorkspace.undo(1);
+    }
+    else{
+        editor.redo();
+    }
+}
+
+/**
+ * 模块/代码切换调整到界面右侧.
+ */
+function changeMod(){
+    if (document.getElementById('changemod_btn').value == 0) {
+        document.getElementById('changemod_btn').value = 1;
+        document.getElementById('changemod_btn').textContent = MSG['tab_blocks'];
+        tabClick('blocks');
+    }
+    else{
+        document.getElementById('changemod_btn').value = 0;
+        document.getElementById('changemod_btn').textContent = MSG['tab_arduino'];
+        tabClick('arduino');
+    }
 }
 
 /**
@@ -287,11 +327,11 @@ function init() {
             el.style.width = (2 * bBox.width - el.offsetWidth) + 'px';
         }
         // Make the 'Blocks' tab line up with the toolbox.
-        if (Blockly.mainWorkspace.toolbox_.width) {
-            document.getElementById('tab_blocks').style.minWidth =
-                (Blockly.mainWorkspace.toolbox_.width - 38) + 'px';
-            // Account for the 19 pixel margin and on each side.
-        }
+        // if (Blockly.mainWorkspace.toolbox_.width) {
+        //     document.getElementById('tab_blocks').style.minWidth =
+        //         (Blockly.mainWorkspace.toolbox_.width - 38) + 'px';
+        //     // Account for the 19 pixel margin and on each side.
+        // }
     };
     window.addEventListener('resize', onresize, false);
 
@@ -334,4 +374,24 @@ function init() {
     }
 
 
+}
+function show_tag(){
+    document.getElementById('tab_blocks').textContent = MSG['tab_blocks'];
+    document.getElementById('tab_arduino').textContent = MSG['tab_arduino'];
+    document.getElementById('undo_btn').textContent = MSG['undo'];
+    document.getElementById('redo_btn').textContent = MSG['redo'];
+    document.getElementById('file_btn').textContent = MSG['file'];
+    document.getElementById('new_btn').textContent = MSG['new'];
+    document.getElementById('open_btn').textContent = MSG['open'];
+    document.getElementById('save_btn').textContent = MSG['save'];
+    document.getElementById('save_xml_btn').textContent = MSG['save_blocks'];
+    document.getElementById('save_py_btn').textContent = MSG['save_py'];
+    document.getElementById('save_hex_btn').textContent = MSG['save_hex'];
+    document.getElementById('setting_btn').textContent = MSG['setting'];
+    document.getElementById('language_btn').textContent = MSG['language'];
+    document.getElementById('theme_btn').textContent = MSG['theme'];
+    document.getElementById('changemod_btn').textContent = MSG['tab_blocks'];
+    document.getElementById('connect_btn').textContent = MSG['connect'];
+    document.getElementById('upload_btn').textContent = MSG['upload'];
+    document.getElementById('serial_read_btn').textContent = MSG['catSerialPort'];
 }

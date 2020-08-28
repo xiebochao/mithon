@@ -25,8 +25,8 @@ a.viewLeft{
     border: 1px solid #aaa;
 	border-top-left-radius: 10px;
 	border-bottom-left-radius: 10px;
-
 }
+
 #tabRow>td {
       border: 1px solid #ccc;
 	  font-family: sans-serif; 
@@ -80,7 +80,6 @@ td.taboff:hover {
 	resize:none;
 }
 
-
 html, body {
   height: 100%;
 }
@@ -89,7 +88,7 @@ textarea{
 }
 body {
   background-color: #fff;
-  font-family: sans-serif;
+  /* font-family: sans-serif; */
   margin: 0;
   overflow: hidden;
 }
@@ -135,7 +134,7 @@ table {
 #table_whole {
     height: calc(100vh - 3em);
     position: relative;
-    margin-top: 3em; 
+    /* margin-top: 3em;  */
   }
 td {
   padding: 0;
@@ -147,6 +146,7 @@ td {
   padding: 1ex;
   position: absolute;
   direction: ltr;
+  background-color: #000;
 }
 #content_blocks {
   padding: 0;
@@ -219,9 +219,9 @@ background-image:url("../../../media/sidebar/sidebar2_red.png");
 }
 
 div>span.blocklyTreeIcon.blocklyTreeIconNone{
-	width:24px;height:24px;
+	width:20px;height:20px;
 	float:left;
-	margin:4px;
+	margin:8px;
 	background:url('../../../media/mark/default.png') no-repeat;
 	background-size: 100% auto; 
 }
@@ -382,9 +382,3 @@ div>span.blocklyTreeIcon.blocklyTreeIconNone{
 	background:url('../../../media/mark/factory4.png') no-repeat;
 	background-size: 100% auto; 
 }
-
-/*text.blocklyCheckbox {
-	fill: #ff3030!important;
-	text-shadow: 0 0 3px red;
-	font-size: 17pt!important;
-}*/
