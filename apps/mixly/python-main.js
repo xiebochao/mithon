@@ -1,3 +1,13 @@
+const modalAlert = (alertContent) => {
+	var contentSection = document.querySelectorAll('#tip_content > section');
+	[].forEach.call(contentSection, function(mod){
+		console.log(alertContent)
+		mod.innerText = alertContent;
+		var modals = document.querySelectorAll('#modal_alert > [type=checkbox]');
+    	[].forEach.call(modals, function(mod){ mod.checked = true; });
+	});
+}
+
 function writeToHex(){
 	fso = new ActiveXObject("Scripting.FileSystemObject");
 	f1 = fso.CreateTextFile("mithon.hex", true);
@@ -145,7 +155,12 @@ var code_head = 'import math\n'+
 
 let connect_btn = document.getElementById("connect_btn");
 let upload_btn = document.getElementById("upload_btn");
+let serial_read_btn = document.getElementById("serial_read_btn");
+let serial_write_btn = document.getElementById("serial_write_btn");
+let serial_clear_btn = document.getElementById("serial_clear_btn");
 let deviceObj = null;
+let transport = null;
+let target = null;
 
 // Choose a device
 const selectDevice = async () => {
@@ -155,13 +170,35 @@ const selectDevice = async () => {
         const device = await navigator.usb.requestDevice({
             filters: [{vendorId: 0xD28}]
         });
-        alert('连接成功!');
+        modalAlert('连接成功!');
 		deviceObj = device;
+		transport = new DAPjs.WebUSB(deviceObj);
+		target = new DAPjs.DAPLink(transport);
+		await target.connect();
+		await target.setSerialBaudrate(115200);
 	} catch (error) {
 		// statusEl.style.visibility = "hidden";
 		console.log(error);
 		// setStatus(error);
 		return null;
+	}
+}
+
+const buildTarget = async () => {
+	if(target && target.transport){
+		return;
+	}
+	else{
+		if(!deviceObj){
+			modalAlert('无可用设备!');
+			return;
+		}
+		else{
+			transport = new DAPjs.WebUSB(deviceObj);
+			target = new DAPjs.DAPLink(transport);
+			await target.connect();
+			await target.setSerialBaudrate(115200);
+		}	
 	}
 }
 
@@ -190,19 +227,13 @@ const setImage = (file) => {
 }
 
 // Update a device with the firmware image transferred from block/code
-const update = async deviceObj => {
-	if(!deviceObj){
-		alert('无可用设备!')
-		return;
-	}
+const update = async () => {
 	let buffer = null;
 	firmware = document.getElementById('firmware').innerText;
 	hexfile = getHexFile(firmware);
 	var hex2Blob = new Blob([hexfile],{type:'text/plain'});
 	buffer =  await hex2Blob.arrayBuffer()
     if (!buffer) return;
-    const transport = new DAPjs.WebUSB(deviceObj);
-    const target = new DAPjs.DAPLink(transport);
 
     target.on(DAPjs.DAPLink.EVENT_PROGRESS, progress => {
         setTransfer(progress);
@@ -210,17 +241,87 @@ const update = async deviceObj => {
 
     try {
         // Push binary to board
-        setStatus(`Flashing binary file ${buffer.byteLength} words long...`);
-        await target.connect();
+        setStatus(`Flashing binary file ${buffer.byteLength} byte words long, needs ${buffer.byteLength * 8 / 115200} s`);
+		await target.connect();	
+		await target.setSerialBaudrate(115200);
+		let startTime = new Date();
         await target.flash(buffer);
-
-        setStatus("Disconnecting...");
-        await target.disconnect();
-
-        setStatus("Flash complete!");
+		let endTime = new Date();
+		let timeConsume = (endTime.getTime() - startTime.getTime()) / 1000;
+        setStatus("Flash complete! using" + timeConsume + 'seconds');
     } catch (error) {
         setStatus(error);
     }
 }
 upload_btn.addEventListener("click", () => {update(deviceObj)});
+
+const serialRead = async () => {
+	let modals = document.querySelectorAll('#modal_serial > [type=checkbox]');
+	[].forEach.call(modals, function(mod){ 
+		mod.checked = true;
+		mod.onchange = async () => {
+			if(!mod.checked)
+				console.log('close serial modal!');
+				await target.stopSerialRead();
+		};
+	}); 	
+	if(!target.connected){
+		try{
+			await target.connect();
+		}
+		catch (e){
+			console.error(e);
+		}
+	}
+	//防止重复绑定事件监听
+	target.removeAllListeners(DAPjs.DAPLink.EVENT_SERIAL_DATA);
+	target.on(DAPjs.DAPLink.EVENT_SERIAL_DATA, data => {
+		let serialSection = document.querySelectorAll('#serial_content > section')
+		console.log(data);
+		serialSection[0].innerText = serialSection[0].innerText + data;
+	});
+	await target.startSerialRead();	
+	
+}
+
+
+serial_read_btn.addEventListener("click", () => {serialRead()});
+
+//这两个事件对应的按钮渲染太慢，只能放到html onclick里
+const clearSerialContent = async () => {
+	let serialSection = document.querySelectorAll('#serial_content > section')
+	serialSection[0].innerText = '';
+}
+
+
+
+const serialWrite = async () => {
+	if(!target.connected){
+		try{
+			await target.connect();
+		}
+		catch (e){
+			console.error(e);
+		}
+	}
+	if(await target.getSerialBaudrate() != 115200) {
+		try{
+			await target.setSerialBaudrate(115200);
+		}
+		catch (e){
+			console.error(e);
+		}
+	}
+	let serialWriteInput = document.getElementById('serial_write');
+	let serialWriteContent = serialWriteInput.value;
+	serialWriteInput.value = '';
+	if(serialWriteContent != ''){
+		await target.serialWrite(serialWriteContent);
+		var contentSection = document.querySelectorAll('#serial_content > section');
+		contentSection[0].innerText = contentSection[0].innerText + serialWriteContent + '\n';
+		//可能是因为mutex lock的原因，每次发送后需要重新启动监听，并且清理缓冲区
+		await target.stopSerialRead();
+		await target.startSerialRead();
+	}
+}
 

@@ -108,11 +108,11 @@
             <span onclick="Blockly.mainWorkspace.undo(1);" class="pseudo button icon-cw" name="redo" id="redo_btn"
                 title="redo(ctrl+y)"></span>
             <span id="open_btn" class="pseudo button icon-folder-open" onclick="mixlyjs.loadLocalFile()"></span>
-            <!-- <label for="modal_1" id="save_btn" class="pseudo button icon-floppy"></label> -->
             <span id="save_xml_btn" class="pseudo button icon-floppy" onclick="save()"></span>
             <span id="save_py_btn" class="pseudo button icon-code" onclick="mixlyjs.saveInoFileAs()"></span>
             <span id="save_hex_btn" class="pseudo button icon-download" onclick="mixlyjs.compileMicrobitPy()"></span>
             <span id="connect_btn" class="pseudo button icon-link"></span>
+            <span id="serial_read_btn" class="pseudo button icon-link"></span>
             <span id="upload_btn" class="success button icon-upload"></span>
             <script style="display:none;">
                 document.getElementById('span_blocks').textContent = MSG['tab_blocks'];
@@ -124,6 +124,7 @@
                 document.getElementById('save_py_btn').textContent = MSG['save_py'];
                 document.getElementById('save_hex_btn').textContent = MSG['save_hex'];
                 document.getElementById('connect_btn').textContent = MSG['connect'];
+                document.getElementById('serial_read_btn').textContent = MSG['catSerialPort'];
                 document.getElementById('upload_btn').textContent = MSG['upload'];
             </script>
         </div>
@@ -171,6 +172,41 @@
     <script src="python-main.js" type="application/javascript"></script>
     <div id="content_blocks" class="content"></div>
     <div id="content_arduino" class="content" wrap="off"></div>
+    <div class="modal" id="modal_alert" style="z-index: 99999999999999999999;">
+        <input id="modal_1" type="checkbox" />
+        <label for="modal_1" class="overlay"></label>
+        <article id="tip_content">
+          <header>
+            <h3>提示</h3>
+            <label for="modal_1" class="close">&times;</label>
+          </header>
+          <section></section>
+          <footer>
+            <label for="modal_1" class="button">
+                确定
+            </label>
+            <label for="modal_1" class="button dangerous">
+                取消
+            </label>
+          </footer>
+        </article>
+      </div>
+      <div class="modal" id="modal_serial">
+        <input id="modal_2" type="checkbox" />
+        <label for="modal_2" class="overlay"></label>
+        <article id="serial_content" style="height: 434px; width: 600px;">
+          <header>
+            <h3>串口</h3>
+            <label for="modal_2" class="close">&times;</label>
+          </header>
+          <section style="overflow:auto; max-height: 276px"></section>
+          <footer>
+            <input id="serial_write"/>
+            <button id="serial_write_btn" class="button" onclick="serialWrite()">发送</button>
+            <button id="serial_clear_btn" class="button dangerous" onclick="clearSerialContent()">清空</button>
+          </footer>
+        </article>
+      </div>
     <textarea id="content_xml" class="content" wrap="off" readonly></textarea>
     <xml id="toolbox" style="display: none">
         <category id="catControl" colour="120">

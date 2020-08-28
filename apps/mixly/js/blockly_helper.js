@@ -71,6 +71,13 @@ function save() {
 }
 
 /**
+ * open serial modal
+ */
+async function openSerialModal() {
+    await serialRead(deviceObj);
+}
+
+/**
  * Load blocks from local file.
  */
 function load(event) {
