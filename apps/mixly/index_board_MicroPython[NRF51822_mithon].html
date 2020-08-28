@@ -5,12 +5,12 @@
     <title>mithon for Mixly_Lite</title>
     <link rel="shortcut icon" type="image/ico" href="../../files/mixly.ico">
     <script type="text/javascript" src="../../blockly_compressed_mithon.js"></script>
+    <script type="text/javascript" src="../../core/base.js"></script>
     <script type="text/javascript" src="../../python_compressed.js"></script>
     <script type="text/javascript" src="../../core/microbit_python/variables.js"></script>
     <script type="text/javascript" src="../../core/procedures.js"></script>
     <script type="text/javascript" src="../../core/blockly.js"></script>
     <script type="text/javascript" src="../../core/events.js"></script>
-    <script type="text/javascript" src="../../core/field_textarea.js"></script>
     <script type="text/javascript" src="../../core/microbit_python/names.js"></script>
     <script src="../../generators/microbit_python/python.js"></script>
     <script type="text/javascript" src="company_pin.js"></script>
@@ -108,12 +108,13 @@
             <span onclick="Blockly.mainWorkspace.undo(1);" class="pseudo button icon-cw" name="redo" id="redo_btn"
                 title="redo(ctrl+y)"></span>
             <span id="open_btn" class="pseudo button icon-folder-open" onclick="mixlyjs.loadLocalFile()"></span>
+            <!-- <label for="modal_0" id="save_btn" class="pseudo button icon-floppy"></label> -->
             <span id="save_xml_btn" class="pseudo button icon-floppy" onclick="save()"></span>
             <span id="save_py_btn" class="pseudo button icon-code" onclick="mixlyjs.saveInoFileAs()"></span>
             <span id="save_hex_btn" class="pseudo button icon-download" onclick="mixlyjs.compileMicrobitPy()"></span>
             <span id="connect_btn" class="pseudo button icon-link"></span>
             <span id="serial_read_btn" class="pseudo button icon-link"></span>
-            <span id="upload_btn" class="success button icon-upload"></span>
+            <label for="modal_0" id="upload_btn" class="success button icon-upload"></label>
             <script style="display:none;">
                 document.getElementById('span_blocks').textContent = MSG['tab_blocks'];
                 document.getElementById('span_arduino').textContent = MSG['tab_arduino'];
@@ -129,28 +130,19 @@
             </script>
         </div>
     </nav>
-    <!-- <div class="modal">
-        <input id="modal_1" type="checkbox" />
-        <label for="modal_1" class="overlay"></label>
+    <div class="modal" id="modal_progress" style="display:none">
+        <input id="modal_0" type="checkbox" />
+        <label for="modal_0" class="overlay"></label>
         <article class="SelectModel__container">
             <header class="SelectModal__header">
-                <h3>保存</h3><a class="SelectModal__close close"
-                    onclick="this.setState({ modal: this.state.prevModal, prevModal: null });">×</a>
+                <h5>Flashing mithon CC</h5>
             </header>
             <section class="SelectModel__content">
-                <div class="SelectModal__grid">
-                    <div class="SelectModal__cell SelectModal__cell--text"><span>保存XML</span></div>
-                    <div class="SelectModal__cell SelectModal__cell--action"><button>确认</button></div>
-                    <div class="SelectModal__cell SelectModal__cell--text"><span>保存PY</span></div>
-                    <div class="SelectModal__cell SelectModal__cell--action"><button>确认</button></div>
-                    <div class="SelectModal__cell SelectModal__cell--text"><span>保存HEX</span></div>
-                    <div class="SelectModal__cell SelectModal__cell--action"><button>确认</button></div>
-                </div>
+                <progress id="webusb-flashing-progress" max="1" value=0></progress>
+                <!-- <span id="webusb-flashing-ok" class="icon-ok-circled" style="display:none"></span> -->
             </section>
-            <footer class="SelectModal__buttons"><button class="error"
-                    style="float: right; margin-left: 8px;">关闭</button></footer>
         </article>
-    </div> -->
+    </div>
     <table width="100%" id="table_whole">
         <tr width="0%">
             <td colspan=3>

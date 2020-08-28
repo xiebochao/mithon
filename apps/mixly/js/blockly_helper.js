@@ -292,7 +292,7 @@ function resetClick() {
 /** Create a namespace for the application. */
 
 goog.require('Blockly.Generator');
-goog.require('Blockly.Arduino');
+goog.require('Blockly.Python');
 
 var mixlyjs = mixlyjs || {};
 mixlyjs.hex = "";

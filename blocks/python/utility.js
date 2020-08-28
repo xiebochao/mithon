@@ -53,7 +53,7 @@ Blockly.Blocks['raw_block'] = {
     this.appendDummyInput()
         .appendField('Code Block:');
     this.appendDummyInput()
-        .appendField(new Blockly.FieldTextArea(''), 'TEXT');
+        .appendField(new Blockly.FieldMultilineInput(''), 'TEXT');
   }
 };
 
@@ -64,7 +64,7 @@ Blockly.Blocks['raw_expression'] = {
     this.appendDummyInput()
         .appendField('Code Expression:');
     this.appendDummyInput()
-        .appendField(new Blockly.FieldTextArea(''), 'TEXT');
+        .appendField(new Blockly.FieldMultilineInput(''), 'TEXT');
     this.setOutput(true);
   }
 };
@@ -153,7 +153,7 @@ Blockly.Blocks['text_print_multiple'] = {
         containerBlock.initSvg();
         var connection = containerBlock.getInput('STACK').connection;
         for (var x = 0; x < this.itemCount_; x++) {
-          var itemBlock = Blockly.Block.obtain(workspace, 'text_print_multiple_item');
+          var itemBlock = workspace.newBlock('text_print_multiple_item');
           itemBlock.initSvg();
           connection.connect(itemBlock.previousConnection);
           connection = itemBlock.nextConnection;
@@ -311,7 +311,7 @@ Blockly.Blocks['function_call'] = {
         
         var connection = containerBlock.getInput('STACK').connection;
         for (var x = 0; x < this.itemCount_; x++) {
-          var itemBlock = Blockly.Block.obtain(workspace, 'function_call_item');
+          var itemBlock = workspace.newBlock('function_call_item');
           itemBlock.initSvg();
           connection.connect(itemBlock.previousConnection);
           connection = itemBlock.nextConnection;

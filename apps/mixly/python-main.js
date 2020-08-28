@@ -241,16 +241,29 @@ const update = async () => {
 
     try {
         // Push binary to board
-        setStatus(`Flashing binary file ${buffer.byteLength} byte words long, needs ${buffer.byteLength * 8 / 115200} s`);
 		await target.connect();	
 		await target.setSerialBaudrate(115200);
-		let startTime = new Date();
+        document.getElementById("modal_progress").style.display = "block";
+        var AllTime = `${buffer.byteLength}` / 24.5;  // Just a test value ...
+        var down = document.getElementById("webusb-flashing-progress");
+        var startTime = new Date().getTime();
+        down.value = 0;
+        var DownSetTime = setInterval(function () {
+            down.value = (new Date().getTime() - startTime) / AllTime;
+            if (down.value >= 1) {
+                clearInterval(DownSetTime);
+                down.style.display = "block";
+            }
+        }, AllTime/100)
         await target.flash(buffer);
-		let endTime = new Date();
-		let timeConsume = (endTime.getTime() - startTime.getTime()) / 1000;
-        setStatus("Flash complete! using" + timeConsume + 'seconds');
+        down.value = 1
+        await target.disconnect();
+        document.getElementById("modal_progress").style.display = "none";
+        setStatus("Flash complete!");
+
     } catch (error) {
         setStatus(error);
+        document.getElementById("modal_progress").style.display = "none";
     }
 }
 upload_btn.addEventListener("click", () => {update(deviceObj)});

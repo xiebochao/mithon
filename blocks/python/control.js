@@ -108,17 +108,17 @@ Blockly.Blocks['controls_if'] = {
    * @this Blockly.Block
    */
   decompose: function(workspace) {
-    var containerBlock = Blockly.Block.obtain(workspace, 'controls_if_if');
+    var containerBlock = workspace.newBlock('controls_if_if');
     containerBlock.initSvg();
     var connection = containerBlock.getInput('STACK').connection;
     for (var i = 1; i <= this.elseifCount_; i++) {
-      var elseifBlock = Blockly.Block.obtain(workspace, 'controls_if_elseif');
+      var elseifBlock = workspace.newBlock('controls_if_elseif');
       elseifBlock.initSvg();
       connection.connect(elseifBlock.previousConnection);
       connection = elseifBlock.nextConnection;
     }
     if (this.elseCount_) {
-      var elseBlock = Blockly.Block.obtain(workspace, 'controls_if_else');
+      var elseBlock = workspace.newBlock('controls_if_else');
       elseBlock.initSvg();
       connection.connect(elseBlock.previousConnection);
     }
@@ -349,17 +349,17 @@ Blockly.Blocks['controls_try_finally'] = {
    * @this Blockly.Block
    */
   decompose: function(workspace) {
-    var containerBlock = Blockly.Block.obtain(workspace, 'controls_try');
+    var containerBlock = workspace.newBlock('controls_try');
     containerBlock.initSvg();
     var connection = containerBlock.getInput('STACK').connection;
     for (var i = 1; i <= this.elseifCount_; i++) {
-      var elseifBlock = Blockly.Block.obtain(workspace, 'controls_except');
+      var elseifBlock = workspace.newBlock('controls_except');
       elseifBlock.initSvg();
       connection.connect(elseifBlock.previousConnection);
       connection = elseifBlock.nextConnection;
     }
     if (this.elseCount_) {
-      var elseBlock = Blockly.Block.obtain(workspace, 'controls_finally');
+      var elseBlock = workspace.newBlock('controls_finally');
       elseBlock.initSvg();
       connection.connect(elseBlock.previousConnection);
     }

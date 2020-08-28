@@ -87,8 +87,8 @@ Blockly.Python.finish = function (code) {
  * @param {string} line Line of generated code.
  * @return {string} Legal line of code.
  */
-Blockly.Python.scrubNakedValue = function (line) {
-    return line + '\n';
+Blockly.Python.scrubNakedValue = function(line) {
+  return line + '\n';
 };
 
 /**
@@ -97,8 +97,34 @@ Blockly.Python.scrubNakedValue = function (line) {
  * @return {string} Python string.
  * @private
  */
-Blockly.Python.quote_ = function (string) {
-    return "\"" + string + "\"";
+Blockly.Python.quote_ = function(string) {
+  // Can't use goog.string.quote since % must also be escaped.
+  string = string.replace(/\\/g, '\\\\')
+                 .replace(/\n/g, '\\\n');
+
+  // Follow the CPython behaviour of repr() for a non-byte string.
+  var quote = '\'';
+  if (string.indexOf('\'') !== -1) {
+    if (string.indexOf('"') === -1) {
+      quote = '"';
+    } else {
+      string = string.replace(/'/g, '\\\'');
+    }
+  };
+  return quote + string + quote;
+};
+
+/**
+ * Encode a string as a properly escaped multiline Python string, complete
+ * with quotes.
+ * @param {string} string Text to encode.
+ * @return {string} Python string.
+ * @private
+ */
+Blockly.Python.multiline_quote_ = function(string) {
+  // Can't use goog.string.quote since % must also be escaped.
+  string = string.replace(/'''/g, '\\\'\\\'\\\'');
+  return '\'\'\'' + string + '\'\'\'';
 };
 
 /**
@@ -107,41 +133,38 @@ Blockly.Python.quote_ = function (string) {
  * Calls any statements following this block.
  * @param {!Blockly.Block} block The current block.
  * @param {string} code The Python code created for this block.
+ * @param {boolean=} opt_thisOnly True to generate code for only this statement.
  * @return {string} Python code with comments and subsequent blocks added.
  * @private
  */
-Blockly.Python.scrub_ = function (block, code) {
-    var commentCode = '';
-    // Only collect comments for blocks that aren't inline.
-    if (!block.outputConnection || !block.outputConnection.targetConnection) {
-        // Collect comment for this block.
-        var comment = block.getCommentText();
-        comment = Blockly.utils.wrap(comment, Blockly.Python.COMMENT_WRAP - 3);
-        if (comment) {
-            if (block.getProcedureDef) {
-                // Use a comment block for function comments.
-                commentCode += '"""' + comment + '\n"""\n';
-            } else {
-                commentCode += Blockly.Python.prefixLines(comment + '\n', '# ');
-            }
-        }
-        // Collect comments for all value arguments.
-        // Don't collect comments for nested statements.
-        for (var i = 0; i < block.inputList.length; i++) {
-            if (block.inputList[i].type == Blockly.INPUT_VALUE) {
-                var childBlock = block.inputList[i].connection.targetBlock();
-                if (childBlock) {
-                    var comment = Blockly.Python.allNestedComments(childBlock);
-                    if (comment) {
-                        commentCode += Blockly.Python.prefixLines(comment, '# ');
-                    }
-                }
-            }
-        }
+Blockly.Python.scrub_ = function(block, code, opt_thisOnly) {
+  var commentCode = '';
+  // Only collect comments for blocks that aren't inline.
+  if (!block.outputConnection || !block.outputConnection.targetConnection) {
+    // Collect comment for this block.
+    var comment = block.getCommentText();
+    if (comment) {
+      comment = Blockly.utils.string.wrap(comment,
+          Blockly.Python.COMMENT_WRAP - 3);
+      commentCode += Blockly.Python.prefixLines(comment + '\n', '# ');
     }
-    var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
-    var nextCode = Blockly.Python.blockToCode(nextBlock);
-    return commentCode + code + nextCode;
+    // Collect comments for all value arguments.
+    // Don't collect comments for nested statements.
+    for (var i = 0; i < block.inputList.length; i++) {
+      if (block.inputList[i].type == Blockly.INPUT_VALUE) {
+        var childBlock = block.inputList[i].connection.targetBlock();
+        if (childBlock) {
+          var comment = Blockly.Python.allNestedComments(childBlock);
+          if (comment) {
+            commentCode += Blockly.Python.prefixLines(comment, '# ');
+          }
+        }
+      }
+    }
+  }
+  var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
+  var nextCode = opt_thisOnly ? '' : Blockly.Python.blockToCode(nextBlock);
+  return commentCode + code + nextCode;
 };
 
 /**
@@ -153,36 +176,36 @@ Blockly.Python.scrub_ = function (block, code) {
  * @param {boolean=} opt_negate Whether to negate the value.
  * @return {string|number}
  */
-Blockly.Python.getAdjustedInt = function (block, atId, opt_delta, opt_negate) {
-    var delta = opt_delta || 0;
-    if (block.workspace.options.oneBasedIndex) {
-        /* delta--;*/   //Keep in line with Python
-    }
-    var defaultAtIndex = block.workspace.options.oneBasedIndex ? '1' : '0';
-    var atOrder = delta ? Blockly.Python.ORDER_ADDITIVE :
-        Blockly.Python.ORDER_NONE;
-    var at = Blockly.Python.valueToCode(block, atId, atOrder) || defaultAtIndex;
+Blockly.Python.getAdjustedInt = function(block, atId, opt_delta, opt_negate) {
+  var delta = opt_delta || 0;
+  if (block.workspace.options.oneBasedIndex) {
+    delta--;
+  }
+  var defaultAtIndex = block.workspace.options.oneBasedIndex ? '1' : '0';
+  var atOrder = delta ? Blockly.Python.ORDER_ADDITIVE :
+      Blockly.Python.ORDER_NONE;
+  var at = Blockly.Python.valueToCode(block, atId, atOrder) || defaultAtIndex;
 
-    if (Blockly.isNumber(at)) {
-        // If the index is a naked number, adjust it right now.
-        at = parseInt(at, 10) + delta;
-        if (opt_negate) {
-            at = -at;
-        }
-    } else {
-        // If the index is dynamic, adjust it in code.
-        if (delta > 0) {
-            at = 'int(' + at + ' + ' + delta + ')';
-        } else if (delta < 0) {
-            at = 'int(' + at + ' - ' + -delta + ')';
-        } else {
-            at = 'int(' + at + ')';
-        }
-        if (opt_negate) {
-            at = '-' + at;
-        }
+  if (Blockly.isNumber(at)) {
+    // If the index is a naked number, adjust it right now.
+    at = parseInt(at, 10) + delta;
+    if (opt_negate) {
+      at = -at;
     }
-    return at;
+  } else {
+    // If the index is dynamic, adjust it in code.
+    if (delta > 0) {
+      at = 'int(' + at + ' + ' + delta + ')';
+    } else if (delta < 0) {
+      at = 'int(' + at + ' - ' + -delta + ')';
+    } else {
+      at = 'int(' + at + ')';
+    }
+    if (opt_negate) {
+      at = '-' + at;
+    }
+  }
+  return at;
 };
 
 Blockly.Python.CLASS_LCD1602_INIT = 'class LCD1602():\n' +

@@ -54,11 +54,11 @@ Blockly.Blocks['tuple_create_with'] = {
    */
   decompose: function(workspace) {
     var containerBlock =
-        Blockly.Block.obtain(workspace, 'tuple_create_with_container');
+        workspace.newBlock('tuple_create_with_container');
     containerBlock.initSvg();
     var connection = containerBlock.getInput('STACK').connection;
     for (var i = 0; i < this.itemCount_; i++) {
-      var itemBlock = Blockly.Block.obtain(workspace, 'tuple_create_with_item');
+      var itemBlock = workspace.newBlock('tuple_create_with_item');
       itemBlock.initSvg();
       connection.connect(itemBlock.previousConnection);
       connection = itemBlock.nextConnection;
@@ -591,11 +591,11 @@ Blockly.Blocks['tuple_create_with_noreturn'] = {
    */
   decompose: function(workspace) {
     var containerBlock =
-        Blockly.Block.obtain(workspace, 'tuple_create_with_container');
+        workspace.newBlock('tuple_create_with_container');
     containerBlock.initSvg();
     var connection = containerBlock.getInput('STACK').connection;
     for (var i = 0; i < this.itemCount_; i++) {
-      var itemBlock = Blockly.Block.obtain(workspace, 'tuple_create_with_item');
+      var itemBlock = workspace.newBlock('tuple_create_with_item');
       itemBlock.initSvg();
       connection.connect(itemBlock.previousConnection);
       connection = itemBlock.nextConnection;
