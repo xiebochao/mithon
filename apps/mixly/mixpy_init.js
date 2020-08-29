@@ -261,6 +261,11 @@ function init() {
     onresize();
     //实时更新右侧对比代码
     masterWorkspace.addChangeListener(rightCodeEvent);
+    if(localStorage.Theme == 'Dark'){
+        Code.changeEditorTheme_dark();
+    }else if(localStorage.Theme == 'Light'){
+        Code.changeEditorTheme_light();
+    }
     function rightCodeEvent(masterEvent) {
         if (masterEvent.type == Blockly.Events.UI) {
             return;  // Don't update UI events.

@@ -115,115 +115,6 @@
   }
 };
 
-/**
- * Save the blocks and reload with a different language.
- */
- Code.changeLanguage = function() {
-  // Store the blocks for the duration of the reload.
-  // This should be skipped for the index page, which has no blocks and does
-  // not load Blockly.
-  // MSIE 11 does not support sessionStorage on file:// URLs.
-  if (typeof Blockly != 'undefined' && window.sessionStorage) {
-    var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-    var text = Blockly.Xml.domToText(xml);
-    window.sessionStorage.loadOnceBlocks = text;
-  }
-
-  var languageMenu = document.getElementById('languageMenu');
-  var newLang = encodeURIComponent(
-    languageMenu.options[languageMenu.selectedIndex].value);
-  var search = window.location.search;
-  if (search.length <= 1) {
-    search = '?lang=' + newLang;
-  } else if (search.match(/[?&]lang=[^&]*/)) {
-    search = search.replace(/([?&]lang=)[^&]*/, '$1' + newLang);
-  } else {
-    search = search.replace(/\?/, '?lang=' + newLang + '&');
-  }
-  
-  window.location = window.location.protocol + '//' +
-  window.location.host + window.location.pathname + search;
-  
-};
-
-Code.changeLanguage_en = function() {
-  // Store the blocks for the duration of the reload.
-  // This should be skipped for the index page, which has no blocks and does
-  // not load Blockly.
-  // MSIE 11 does not support sessionStorage on file:// URLs.
-  if (typeof Blockly != 'undefined' && window.sessionStorage) {
-    var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-    var text = Blockly.Xml.domToText(xml);
-    window.sessionStorage.loadOnceBlocks = text;
-  }
-
-  var newLang = "en";
-  var search = window.location.search;
-  if (search.length <= 1) {
-    search = '?lang=' + newLang;
-  } else if (search.match(/[?&]lang=[^&]*/)) {
-    search = search.replace(/([?&]lang=)[^&]*/, '$1' + newLang);
-  } else {
-    search = search.replace(/\?/, '?lang=' + newLang + '&');
-  }
-  
-  window.location = window.location.protocol + '//' +
-  window.location.host + window.location.pathname + search;
-  
-};
-
-Code.changeLanguage_zh_hans = function() {
-  // Store the blocks for the duration of the reload.
-  // This should be skipped for the index page, which has no blocks and does
-  // not load Blockly.
-  // MSIE 11 does not support sessionStorage on file:// URLs.
-  if (typeof Blockly != 'undefined' && window.sessionStorage) {
-    var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-    var text = Blockly.Xml.domToText(xml);
-    window.sessionStorage.loadOnceBlocks = text;
-  }
-
-  var newLang = "zh-hans";
-  var search = window.location.search;
-  if (search.length <= 1) {
-    search = '?lang=' + newLang;
-  } else if (search.match(/[?&]lang=[^&]*/)) {
-    search = search.replace(/([?&]lang=)[^&]*/, '$1' + newLang);
-  } else {
-    search = search.replace(/\?/, '?lang=' + newLang + '&');
-  }
-  
-  window.location = window.location.protocol + '//' +
-  window.location.host + window.location.pathname + search;
-  
-};
-
-Code.changeLanguage_zh_hant = function() {
-  // Store the blocks for the duration of the reload.
-  // This should be skipped for the index page, which has no blocks and does
-  // not load Blockly.
-  // MSIE 11 does not support sessionStorage on file:// URLs.
-  if (typeof Blockly != 'undefined' && window.sessionStorage) {
-    var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-    var text = Blockly.Xml.domToText(xml);
-    window.sessionStorage.loadOnceBlocks = text;
-  }
-
-  var newLang = "zh-hant";
-  var search = window.location.search;
-  if (search.length <= 1) {
-    search = '?lang=' + newLang;
-  } else if (search.match(/[?&]lang=[^&]*/)) {
-    search = search.replace(/([?&]lang=)[^&]*/, '$1' + newLang);
-  } else {
-    search = search.replace(/\?/, '?lang=' + newLang + '&');
-  }
-  
-  window.location = window.location.protocol + '//' +
-  window.location.host + window.location.pathname + search;
-  
-};
-
 Code.changeEditorTheme = function() {
   var themeMenu = document.getElementById('aceTheme');
   var theme = themeMenu.options[themeMenu.selectedIndex].value;
@@ -281,6 +172,117 @@ Code.changeEditorTheme_dark = function() {
 
   }
 }
+
+
+/**
+ * Save the blocks and reload with a different language.
+ */
+ Code.changeLanguage = function() {
+  // Store the blocks for the duration of the reload.
+  // This should be skipped for the index page, which has no blocks and does
+  // not load Blockly.
+  // MSIE 11 does not support sessionStorage on file:// URLs.
+  if (typeof Blockly != 'undefined' && window.sessionStorage) {
+    var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+    var text = Blockly.Xml.domToText(xml);
+    window.sessionStorage.loadOnceBlocks = text;
+  }
+
+  var languageMenu = document.getElementById('languageMenu');
+  var newLang = encodeURIComponent(
+    languageMenu.options[languageMenu.selectedIndex].value);
+  var search = window.location.search;
+  if (search.length <= 1) {
+    search = '?lang=' + newLang;
+  } else if (search.match(/[?&]lang=[^&]*/)) {
+    search = search.replace(/([?&]lang=)[^&]*/, '$1' + newLang);
+  } else {
+    search = search.replace(/\?/, '?lang=' + newLang + '&');
+  }
+  
+  window.location = window.location.protocol + '//' +
+  window.location.host + window.location.pathname + search;
+  
+};
+
+Code.changeLanguage_en = function() {
+  // Store the blocks for the duration of the reload.
+  // This should be skipped for the index page, which has no blocks and does
+  // not load Blockly.
+  // MSIE 11 does not support sessionStorage on file:// URLs.
+  if (typeof Blockly != 'undefined' && window.sessionStorage) {
+    var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+    var text = Blockly.Xml.domToText(xml);
+    window.sessionStorage.loadOnceBlocks = text;
+  }
+
+  var newLang = "en";
+  var search = window.location.search;
+  if (search.length <= 1) {
+    search = '?lang=' + newLang;
+  } else if (search.match(/[?&]lang=[^&]*/)) {
+    search = search.replace(/([?&]lang=)[^&]*/, '$1' + newLang);
+  } else {
+    search = search.replace(/\?/, '?lang=' + newLang + '&');
+  }
+  
+  window.location = window.location.protocol + '//' +
+  window.location.host + window.location.pathname + search;
+
+};
+
+Code.changeLanguage_zh_hans = function() {
+  // Store the blocks for the duration of the reload.
+  // This should be skipped for the index page, which has no blocks and does
+  // not load Blockly.
+  // MSIE 11 does not support sessionStorage on file:// URLs.
+  if (typeof Blockly != 'undefined' && window.sessionStorage) {
+    var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+    var text = Blockly.Xml.domToText(xml);
+    window.sessionStorage.loadOnceBlocks = text;
+  }
+
+  var newLang = "zh-hans";
+  var search = window.location.search;
+  if (search.length <= 1) {
+    search = '?lang=' + newLang;
+  } else if (search.match(/[?&]lang=[^&]*/)) {
+    search = search.replace(/([?&]lang=)[^&]*/, '$1' + newLang);
+  } else {
+    search = search.replace(/\?/, '?lang=' + newLang + '&');
+  }
+  
+  window.location = window.location.protocol + '//' +
+  window.location.host + window.location.pathname + search;
+  
+};
+
+Code.changeLanguage_zh_hant = function() {
+  // Store the blocks for the duration of the reload.
+  // This should be skipped for the index page, which has no blocks and does
+  // not load Blockly.
+  // MSIE 11 does not support sessionStorage on file:// URLs.
+  if (typeof Blockly != 'undefined' && window.sessionStorage) {
+    var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+    var text = Blockly.Xml.domToText(xml);
+    window.sessionStorage.loadOnceBlocks = text;
+  }
+
+  var newLang = "zh-hant";
+  var search = window.location.search;
+  if (search.length <= 1) {
+    search = '?lang=' + newLang;
+  } else if (search.match(/[?&]lang=[^&]*/)) {
+    search = search.replace(/([?&]lang=)[^&]*/, '$1' + newLang);
+  } else {
+    search = search.replace(/\?/, '?lang=' + newLang + '&');
+  }
+  
+  window.location = window.location.protocol + '//' +
+  window.location.host + window.location.pathname + search;
+
+  
+};
 
 /**
  * Bind a function to a button's click event.

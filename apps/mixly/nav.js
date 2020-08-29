@@ -4,6 +4,8 @@ layui.use('element', function () {
 layui.use('layer', function(){
     var layer = layui.layer;
 });
+
+
 function new_file(){
     layer.confirm('是否希望清除画布所有内容', {
         title:false,
@@ -34,13 +36,16 @@ function open_theme(){
         title:false,
         btn: ['Dark', 'Light'] 
         ,btn2: function(index, layero){
+            localStorage.Theme = 'Light';
             Code.changeEditorTheme_light();
         }
     }, function(index, layero){
+        localStorage.Theme = 'Dark';
         Code.changeEditorTheme_dark();
         layer.close(index);
     });
 }
+
 //Demo
 layui.use('form', function(){
 var form = layui.form;
