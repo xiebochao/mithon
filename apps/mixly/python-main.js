@@ -272,7 +272,7 @@ const serialRead = async () => {
 	target.removeAllListeners(DAPjs.DAPLink.EVENT_SERIAL_DATA);
 	target.on(DAPjs.DAPLink.EVENT_SERIAL_DATA, data => {
 		console.log(data);
-        document.getElementById('serial_content').value = document.getElementById('serial_content').value + data;
+	    document.getElementById('serial_content').value = document.getElementById('serial_content').value + 'RX:'+data;
         
 	});
 	await target.startSerialRead();	
@@ -305,12 +305,13 @@ const serialWrite = async () => {
 	}
 	let serialWriteInput = document.getElementById('serial_write');
 	let serialWriteContent = serialWriteInput.value;
-	serialWriteInput.value = '';
+		serialWriteInput.value = '';
 	if(serialWriteContent != ''){
-		await target.serialWrite(serialWriteContent);
-        document.getElementById('serial_content').value = document.getElementById('serial_content').value + serialWriteContent + '\n';
+		document.getElementById('serial_content').value=document.getElementById('serial_content').value+'TX:'+serialWriteContent + '\r\n';
+		await target.serialWrite(serialWriteContent+ '\r\n');
+        
 		//可能是因为mutex lock的原因，每次发送后需要重新启动监听，并且清理缓冲区
-		await target.stopSerialRead();
-		await target.startSerialRead();
+		//await target.stopSerialRead();
+		//await target.startSerialRead();
 	}
 }
