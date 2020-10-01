@@ -86,7 +86,12 @@
 </head>
 
 <body onload="init()">
-    <ul id="nav" class="layui-nav layui-bg-green" lay-filter="" style="min-width: 800px;z-index:9999;">
+    <div class="layui-form-select" style="width:200px; height:40px; position: absolute; right: 230px; top:10px; z-index:9999;">
+        <div class="layui-select-title" style="z-index:9999;">
+            <input type="text" placeholder="" value="" class="layui-input" id="filename_input" style="z-index:9999;">
+        </div>
+    </div>
+    <ul id="nav" class="layui-nav layui-bg-green" lay-filter="" style="min-width: 800px;z-index:999;">
         <a href="/" style="color:white; text-align:center; vertical-align: middle;font-size: 18px;">&nbsp;&nbsp;&nbsp;Mixly Lite&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
         <li style="display:none" id="tab_blocks"></li>
         <li style="display:none" id="tab_arduino"></li>
@@ -116,7 +121,7 @@
             <a href="javascript:;" id="save_btn"></a>
             <dl class="layui-nav-child">
                 <!-- 二级菜单 -->
-                <dd><a href="#" id="save_img_btn" class="icon-floppy" onclick="mixlyjs.saveBlockImg()">保存图片</a></dd>
+                <dd><a href="#" id="save_img_btn" class="icon-floppy" onclick="mixlyjs.saveBlockImg()"></a></dd>
                 <dd><a href="#" id="save_xml_btn" class="icon-floppy" onclick="save()"></a></dd>
                 <dd><a href="#" id="save_py_btn" class="icon-file-code" onclick="mixlyjs.saveInoFileAs()"></a></dd>
                 <dd><a href="#" id="save_hex_btn" class="icon-download" onclick="mixlyjs.compileMicrobitPy()"></a></dd>
@@ -127,7 +132,7 @@
         <!-- a标签里不用写按钮名字,13行script段里通过id改名,为了多语言支持 -->
         <li class="layui-nav-item"><select id="languageMenu" style="display:none"></select></li>
     </ul>
-    <button type="button" id="changemod_btn" value=1 onclick="changeMod()" class="layui-btn layui-btn-primary" style="width:80px; height:40px; position: absolute; right: 0px; top:60px;z-index:9998;"></button>
+    <button type="button" id="changemod_btn" value=1 onclick="changeMod()" class="layui-btn layui-btn-primary" style="width:80px; height:40px; position: absolute; right: 0px; top:60px;z-index:998;"></button>
     <script style="display:none;">
         show_tag();
     </script>

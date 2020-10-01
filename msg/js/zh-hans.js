@@ -89,6 +89,7 @@ var MSG = {
     save: "保存",
     save_blocks: "保存XML",
     save_py: "保存PY",
+    save_img: "保存图片",
     save_hex: "保存HEX",
     setting: "设置",
     language: "语言",
@@ -96,7 +97,8 @@ var MSG = {
     connect: "连接",
     upload: "上传",
     run: "运行",
-    stop: "取消"
+    stop: "取消",
+    fn: "文件名"
 };
 Blockly.Msg.ADD_COMMENT = "添加注释";
 Blockly.Msg.AUTH = "请授权这个应用程序以保存您的作品并共享。";

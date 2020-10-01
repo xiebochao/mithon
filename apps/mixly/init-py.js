@@ -390,6 +390,7 @@ function show_tag(){
     document.getElementById('save_btn').textContent = MSG['save'];
     document.getElementById('save_xml_btn').textContent = MSG['save_blocks'];
     document.getElementById('save_py_btn').textContent = MSG['save_py'];
+    document.getElementById('save_img_btn').textContent = MSG['save_img'];
     document.getElementById('save_hex_btn').textContent = MSG['save_hex'];
     document.getElementById('setting_btn').textContent = MSG['setting'];
     document.getElementById('language_btn').textContent = MSG['language'];
@@ -398,4 +399,5 @@ function show_tag(){
     document.getElementById('connect_btn').textContent = MSG['connect'];
     document.getElementById('upload_btn').textContent = MSG['upload'];
     document.getElementById('serial_read_btn').textContent = MSG['catSerialPort'];
+    document.getElementById('filename_input').placeholder = MSG['fn'];
 }

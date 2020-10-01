@@ -70,7 +70,11 @@ function save() {
     // saveAs(builder.getBlob('text/plain;charset=utf-8'), 'blockduino.xml');
     console.log("saving blob");
     var blob = new Blob([data], { type: 'text/xml' });
-    saveAs(blob, 'blockduino.xml');
+    if (document.getElementById("filename_input").value == ""){
+        var fn = 'filename.xml'
+    }else
+        var fn = document.getElementById("filename_input").value + '.xml'
+    saveAs(blob, fn);
 }
 
 /**
@@ -522,13 +526,14 @@ mixlyjs.saveXmlFileAs = function () {
 
 mixlyjs.saveInoFileAs = function (f) {
     var xmlCodes = mixlyjs.getCodeContent();
-    var board = Code.getStringParamFromUrl("board", "Arduino Nano[atmega328]")
-    var filesuffix = ".py";
-    var file = (f !== undefined ? f : "mixgo") + filesuffix;
+    if (document.getElementById("filename_input").value == ""){
+        var fn = 'filename.py'
+    }else
+        var fn = document.getElementById("filename_input").value + '.py'
     var blob = new Blob(
         [xmlCodes],
         { type: 'text/plain;charset=utf-8' });
-    saveAs(blob, file);
+    saveAs(blob, fn);
 };
 
 mixlyjs.saveCommonFileAs = function (fname, fcontent) {
@@ -539,7 +544,11 @@ mixlyjs.saveCommonFileAs = function (fname, fcontent) {
 };
 
 mixlyjs.compileMicrobitPy = function () {
-    mixlyjs.saveCommonFileAs("binary.hex", doDownload())
+    if (document.getElementById("filename_input").value == ""){
+        var fn = 'filename.hex'
+    }else
+        var fn = document.getElementById("filename_input").value + '.hex'
+    mixlyjs.saveCommonFileAs(fn, doDownload())
 }
 
 mixlyjs.setHexContent = function (jsonResponse) {
@@ -612,7 +621,11 @@ mixlyjs.saveBlockImg = function(){
         ctx.drawImage(img, 0, 0);
         //Opens the PNG image in a new tab for copying/saving
         var link = document.createElement('a');
-        link.setAttribute('download', 'Mixgo.png');
+        if (document.getElementById("filename_input").value == ""){
+            var fn = 'filename.png'
+        }else
+            var fn = document.getElementById("filename_input").value + '.png'
+        link.setAttribute('download', fn);
         link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
         link.click();
     };

@@ -297,6 +297,7 @@ function show_tag(){
     document.getElementById('new_btn').textContent = MSG['new'];
     document.getElementById('open_btn').textContent = MSG['open'];
     document.getElementById('save_btn').textContent = MSG['save'];
+    document.getElementById('save_img_btn').textContent = MSG['save_img'];
     document.getElementById('save_xml_btn').textContent = MSG['save_blocks'];
     document.getElementById('save_py_btn').textContent = MSG['save_py'];
     document.getElementById('save_hex_btn').textContent = MSG['save_hex'];
@@ -306,4 +307,5 @@ function show_tag(){
     document.getElementById('changemod_btn').textContent = MSG['tab_blocks'];
     document.getElementById('play_btn').textContent = MSG['run'];
     document.getElementById('stop_btn').textContent = MSG['stop'];
+    document.getElementById('filename_input').placeholder = MSG['fn'];
 }

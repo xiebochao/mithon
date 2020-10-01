@@ -73,6 +73,7 @@ var MSG = {
     save: "guardar",
     save_blocks: "guardar XML",
     save_py: "guardar PY",
+    save_img: "guardar PNG",
     save_hex: "guardar HEX",
     setting: "Preparar",
     language: "Idioma",
@@ -80,7 +81,8 @@ var MSG = {
     connect: "La conexión",
     upload: "cargar",
     run: "ejecute",
-    stop: "parar"
+    stop: "parar",
+    fn: "Nombre del archivo"
 };
 Blockly.Msg.ADD_COMMENT = "Añadir comentario";
 Blockly.Msg.AUTH = "Por favor, autorice esta aplicación para guardar su trabajo y compartirlo";
