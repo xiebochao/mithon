@@ -268,6 +268,7 @@ var GLOBAL_VALUE;
  * Runs the given python code, resetting the console and Trace Table.
  */
 PyEngine.prototype.run = function() {
+    alert(window.actionArrayRecord)
     document.getElementById("matplot_img").src=""
     document.getElementById("output_img").style.height='100%'
     document.getElementById("mat_div").style.height='0%'
@@ -313,7 +314,8 @@ PyEngine.prototype.run = function() {
     }else{
         code = Blockly.Python.workspaceToCode(Blockly.mainWorkspace) || '';//code
     }
-
+    
+    alert(JSON.stringify(window.actionArrayRecord))
     var pack_num = 0;
     var pack_list = ["numpy","pandas","scikit-learn","matplotlib"];
     var code_pack_list = [];
