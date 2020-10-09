@@ -230,6 +230,7 @@ Blockly.Events.fire = function (event) {
     }
   }
   //利用window.actionArrayRecord.push(recordLine);
+  /*
  if(window.actionArrayRecord.length>10){
     var query = window.location.search.substring(1);
     var vars = query.split("&");
@@ -245,7 +246,7 @@ Blockly.Events.fire = function (event) {
           window.actionArrayRecord = [];
               },'json');
     window.actionArrayRecord = [];
-  };
+  };*///调试
 };
 
 /**

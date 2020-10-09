@@ -1097,8 +1097,7 @@ Blockly.Blocks.plot_subplot = {
 Blockly.Blocks['plot_savefig'] = {
    init: function() {
      this.setColour(Blockly.Blocks.data.HUE);
-     this.appendValueInput("FILE")
-         .setCheck(String)
+     this.appendDummyInput("")
          .appendField(Blockly.mixpy_PL_SAVEFIG);
      this.setInputsInline(true);
      this.setPreviousStatement(true);

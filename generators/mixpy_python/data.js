@@ -439,8 +439,7 @@ Blockly.Python.plot_subplot = function () {
 
 Blockly.Python.plot_savefig = function () {
     Blockly.Python.definitions_.import_matplotlib_pyplot = "import matplotlib.pyplot";
-    var file = Blockly.Python.valueToCode(this, 'FILE', Blockly.Python.ORDER_ATOMIC);
-    var code = "matplotlib.pyplot.savefig("+file+")\n";
+    var code = "matplotlib.pyplot.savefig('1.png')\n";
     return code;
 };
 

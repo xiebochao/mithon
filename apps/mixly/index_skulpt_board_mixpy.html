@@ -137,8 +137,8 @@
                 </div>
                 <div id="side_code_mid"></div>
                 <div id="side_code_bottom" style="height:44%;position:relative">
-                    <div style="top: 0px; left: 0px; right: 0px; bottom: 0px; position: absolute;">
-                        <pre id="side_code" class="content" readonly></pre>
+                    <div id="side_code"style="top: 0px; left: 0px; right: 0px; bottom: 0px; position: absolute;">
+                        <!--<pre id="side_code" class="content"></pre>-->
                     </div>
                     <input src='media/ban.png' type='image' id="reset_output" onclick="clearOutput();"></input>
                 </div>
@@ -1882,13 +1882,7 @@
           </shadow>
         </value>
        </block>
-      <block type="plot_savefig">
-        <value name="FILE">
-          <shadow type="text">
-            <field name="TEXT">1.png</field>
-          </shadow>
-        </value>
-      </block>
+      <block type="plot_savefig"></block>
 
     </category>
     <!--<category id="catsklearn" colour="80">
