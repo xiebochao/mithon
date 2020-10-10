@@ -67,12 +67,12 @@
 .icon-link:before { content: '\e807'; color:rgba(255,255,255,0.7);} /* '' */
 .icon-upload:before { content: '\e808'; color:rgba(255,255,255,0.7);} /* '' */
 .icon-cog:before { content: '\e809'; } /* '' */
-.icon-cancel:before { content: '\e80a'; } /* '' */
+.icon-cancel:before { content: '\e80a'; color:rgba(255,255,255,0.7);} /* '' */
 .icon-share:before { content: '\e80b'; } /* '' */
 .icon-menu:before { content: '\f0c9'; } /* '' */
 .icon-code:before { content: '\f121'; color:rgba(255,255,255,0.7);} /* '' */
 .icon-puzzle:before { content: '\f12e'; } /* '' */
-.icon-play-circled:before { content: '\f144'; } /* '' */
+.icon-play-circled:before { content: '\f144'; color:rgba(255,255,255,0.7);} /* '' */
 .icon-thumbs-up-alt:before { content: '\f164'; } /* '' */
 .icon-language:before { content: '\f1ab'; } /* '' */
 .icon-cube:before { content: '\f1b2'; color:rgba(255,255,255,0.7);} /* '' */

@@ -87,8 +87,8 @@
         <li style="display:none" id="tab_xml"></li>
         <li class="layui-nav-item"><a href="#" onclick="UndoClick();" name="undo" id="undo_btn" title="undo(ctrl+z)" class="icon-ccw"></a></li>
         <li class="layui-nav-item"><a href="#" onclick="RndoClick();" name="redo" id="redo_btn" title="redo(ctrl+y)" class="icon-cw"></a></li>
-        <li class="layui-nav-item"><a href="#" onclick="pyengine.run();" name="run" id="play_btn"  class="icon-link"></a></li>
-        <li class="layui-nav-item"><a href="#" onclick="pyengine.kill();" name="stop" id="stop_btn" class="icon-upload"></a></li>
+        <li class="layui-nav-item"><a href="#" onclick="pyengine.run();" name="run" id="play_btn"  class="icon-play-circled"></a></li>
+        <li class="layui-nav-item"><a href="#" onclick="pyengine.kill();" name="stop" id="stop_btn" class="icon-cancel"></a></li>
         <li class="layui-nav-item" style="float:right">
             <a href="javascript:;" id="setting_btn"></a>
             <dl class="layui-nav-child">
@@ -137,9 +137,7 @@
                 </div>
                 <div id="side_code_mid"></div>
                 <div id="side_code_bottom" style="height:44%;position:relative">
-                    <div id="side_code"style="top: 0px; left: 0px; right: 0px; bottom: 0px; position: absolute;">
-                        <!--<pre id="side_code" class="content"></pre>-->
-                    </div>
+                    <pre id="side_code" ></pre>-->
                     <input src='media/ban.png' type='image' id="reset_output" onclick="clearOutput();"></input>
                 </div>
             </td>

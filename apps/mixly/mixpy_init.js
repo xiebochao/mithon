@@ -114,10 +114,10 @@ function renderContent() {
         document.getElementById("tab_arduino").style.display = "none";
         // document.getElementById("tab_blocks").style.display = "inline";
         //content.innerHTML = Blockly.Python.workspaceToCode(Blockly.mainWorkspace);
-        // var arduinoTextarea = document.getElementById('content_arduino');
-        // var code = Blockly.Python.workspaceToCode(Blockly.mainWorkspace) || '';
-        // var chinese_code = code.replace(/(_[0-9A-F]{2}_[0-9A-F]{2}_[0-9A-F]{2})+/g, function (s) { return decodeURIComponent(s.replace(/_/g, '%')); });
-        // editor.setValue(chinese_code, -1);
+         var arduinoTextarea = document.getElementById('content_arduino');
+         var code = Blockly.Python.workspaceToCode(Blockly.mainWorkspace) || '';
+         var chinese_code = code.replace(/(_[0-9A-F]{2}_[0-9A-F]{2}_[0-9A-F]{2})+/g, function (s) { return decodeURIComponent(s.replace(/_/g, '%')); });
+         editor.setValue(chinese_code, -1);
 
         //arduinoTextarea.focus();
     }
