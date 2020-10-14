@@ -417,7 +417,9 @@ PyEngine.prototype.run = function() {
         
         //alert(window.location.href)
         layer.closeAll('page');
-        var code_result = pyodide.runPython(code);
+        try{
+        pyodide.runPython(code);}
+        catch(err){document.getElementById("side_code").innerHTML=err}
         document.getElementById("mat_div").style.height='100%'
         document.getElementById("output_img").style.height='0%'
         document.getElementById("matplot_img").src = pyodide.globals.img_str;
@@ -434,7 +436,9 @@ PyEngine.prototype.run = function() {
         
     }else{
         layer.closeAll('page');
-        pyodide.runPython(code);
+        try{
+        pyodide.runPython(code);}
+        catch(err){document.getElementById("side_code").innerHTML=err}
         
         //var code_result = pyodide.runPython(code);
     }
