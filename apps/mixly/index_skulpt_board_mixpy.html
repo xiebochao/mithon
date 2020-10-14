@@ -113,6 +113,7 @@
                 <dd><a href="#" id="save_xml_btn" class="icon-floppy" onclick="save()"></a></dd>
                 <dd><a href="#" id="save_py_btn" class="icon-file-code" onclick="mixlyjs.saveInoFileAs()"></a></dd>
                 <dd><a href="#" id="save_hex_btn" class="icon-download" onclick="mixlyjs.compileMicrobitPy()"></a></dd>
+                
             </dl>
         </li>
         <!-- a标签里不用写按钮名字,136行script段里通过id改名,为了多语言支持 -->
@@ -124,6 +125,7 @@
     <script style="display:none;">
         show_tag();
     </script>
+    <div id="webusb-flashing" style="display:none; margin:12px" align="center"><progress id="webusb-flashing-progress"></progress></div>
     <table height="80%" width="100%" id="table_whole">
         <tr>
             <td height="100%" width="65%" id="content_area"></td>

@@ -381,6 +381,16 @@ PyEngine.prototype.run = function() {
         // print_code=print_code.slice(6,-2)+'\n' 
         // code=code.replace(reg1,print_code)
         // }
+        layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.open({
+                type: 1,
+                title: '加载中',
+                content: $('#webusb-flashing'),
+                closeBtn: 0
+              });
+          }); 
+
         var reg1=/print\(.+\)/
         if(code.search(reg1)!=-1){
             code = 'from js import document\n'+ code
@@ -419,11 +429,12 @@ PyEngine.prototype.run = function() {
          a.click()
 
      }
-
+     layer.closeAll('page');
         
     }else{
 
         pyodide.runPython(code);
+        layer.closeAll('page');
         //var code_result = pyodide.runPython(code);
     }
         //if(code_result!=undefined){
@@ -434,6 +445,7 @@ PyEngine.prototype.run = function() {
           
 
       });});
+
     }
 }
 
