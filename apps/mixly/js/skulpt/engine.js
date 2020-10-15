@@ -317,7 +317,7 @@ PyEngine.prototype.run = function() {
     
     //alert(JSON.stringify(window.actionArrayRecord))
     var pack_num = 0;
-    if((code.indexOf("import js")!=-1)||(code.indexOf("from js import")!=-1)){
+    if((code.indexOf("import js")!=-1)||(code.indexOf("from js import")!=-1)||(code.indexOf("import pyodide")!=-1)||(code.indexOf("from pyodide import")!=-1)){
         pack_num = 1
     }
     
@@ -381,6 +381,16 @@ PyEngine.prototype.run = function() {
         // print_code=print_code.slice(6,-2)+'\n' 
         // code=code.replace(reg1,print_code)
         // }
+        layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.open({
+                type: 1,
+                title: '加载中',
+                content: $('#webusb-flashing'),
+                closeBtn: 0
+              });
+          }); 
+
         var reg1=/print\(.+\)/
         if(code.search(reg1)!=-1){
             code = 'from js import document\n'+ code
@@ -406,7 +416,10 @@ PyEngine.prototype.run = function() {
         code+=`\nimport io, base64\nbuf = io.BytesIO()\nmatplotlib.pyplot.savefig(buf, format='png')\nmatplotlib.pyplot.clf()\nbuf.seek(0)\nimg_str = 'data:image/png;base64,' + base64.b64encode(buf.read()).decode('UTF-8')\n`    
         
         //alert(window.location.href)
-        var code_result = pyodide.runPython(code);
+        layer.closeAll('page');
+        try{
+        pyodide.runPython(code);}
+        catch(err){document.getElementById("side_code").innerHTML=err}
         document.getElementById("mat_div").style.height='100%'
         document.getElementById("output_img").style.height='0%'
         document.getElementById("matplot_img").src = pyodide.globals.img_str;
@@ -419,11 +432,14 @@ PyEngine.prototype.run = function() {
          a.click()
 
      }
-
+     
         
     }else{
-
-        pyodide.runPython(code);
+        layer.closeAll('page');
+        try{
+        pyodide.runPython(code);}
+        catch(err){document.getElementById("side_code").innerHTML=err}
+        
         //var code_result = pyodide.runPython(code);
     }
         //if(code_result!=undefined){
@@ -434,6 +450,7 @@ PyEngine.prototype.run = function() {
           
 
       });});
+
     }
 }
 
