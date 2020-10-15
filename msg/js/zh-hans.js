@@ -98,7 +98,12 @@ var MSG = {
     upload: "上传",
     run: "运行",
     stop: "取消",
-    fn: "文件名"
+    fn: "文件名",
+    choose_theme: "请选择主题：",
+    choose_language: "请选择语言：",
+    confirm_newfile: "是否希望清除画布所有内容？",
+    newfile_yes: "残忍清除",
+    newfile_no: "我再想想"
 };
 Blockly.Msg.ADD_COMMENT = "添加注释";
 Blockly.Msg.AUTH = "请授权这个应用程序以保存您的作品并共享。";

@@ -7,9 +7,9 @@ layui.use('layer', function(){
 
 
 function new_file(){
-    layer.confirm('是否希望清除画布所有内容', {
+    layer.confirm(MSG['confirm_newfile'], {
         title:false,
-        btn: ['残忍清除', '我再想想'] 
+        btn: [MSG['newfile_yes'], MSG['newfile_no']] 
         ,btn2: function(index, layero){
             layer.close(index);
         }
@@ -19,7 +19,7 @@ function new_file(){
     });
 }
 function open_language(){
-    layer.confirm('请选择语言：', {
+    layer.confirm(MSG['choose_language'], {
         title:false,
         btn: ['简体中文', '繁体中文', 'English'] 
         ,btn3: function(index, layero){
@@ -32,7 +32,7 @@ function open_language(){
     });
 }
 function open_theme(){
-    layer.confirm('请选择主题：', {
+    layer.confirm(MSG['choose_theme'], {
         title:false,
         btn: ['Dark', 'Light'] 
         ,btn2: function(index, layero){

@@ -98,7 +98,12 @@ var MSG = {
     upload: "Upload",
     run: "Run",
     stop: "Stop",
-    fn: "Filename"
+    fn: "Filename",
+    choose_theme: "Please choose your theme:",
+    choose_language: "Please choose your language:",
+    confirm_newfile: "Do you want to clear all the contents?",
+    newfile_yes: "Yes",
+    newfile_no: "Cancel"
 };
 Blockly.Msg.ADD_COMMENT = "Add Comment";
 Blockly.Msg.AUTH = "Please authorize this app to enable your work to be saved and to allow it to be shared by you.";
