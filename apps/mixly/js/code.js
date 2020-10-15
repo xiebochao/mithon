@@ -142,10 +142,10 @@ Code.changeEditorTheme_light = function() {
   if(editor != null){
     editor.setOption("theme", theme);
   }
-  if(editor_side_code != null){
-    editor_side_code.setOption("theme", theme);
-  }
   try{
+    if(editor_side_code != null){
+      editor_side_code.setOption("theme", theme);
+    }
     JSFuncs.saveEditorTheme(theme);
   }catch(e){
 
@@ -163,10 +163,10 @@ Code.changeEditorTheme_dark = function() {
   if(editor != null){
     editor.setOption("theme", theme);
   }
-  if(editor_side_code != null){
-    editor_side_code.setOption("theme", theme);
-  }
   try{
+    if(editor_side_code != null){
+      editor_side_code.setOption("theme", theme);
+    }
     JSFuncs.saveEditorTheme(theme);
   }catch(e){
 
