@@ -106,6 +106,7 @@
         <li class="layui-nav-item"><a href="#" id="connect_btn" class="icon-link"></a></li>
         <li class="layui-nav-item"><a href="#" id="upload_btn" class="icon-upload" ></a></li>
         <li class="layui-nav-item"><a href="#" id="serial_read_btn" class="icon-link" ></a></li>
+        <li class="layui-nav-item"><a href="#" onclick="a();" id="serial_reset" class="icon-link" >初始化</a></li>
         <li class="layui-nav-item" style="float:right">
             <a href="javascript:;" id="setting_btn"></a>
             <dl class="layui-nav-child">
@@ -140,6 +141,16 @@
     <button type="button" id="changemod_btn" value=1 onclick="changeMod()" class="layui-btn layui-btn-primary" style="width:80px; height:40px; position: absolute; right: 0px; top:60px;z-index:998;"></button>
     <script style="display:none;">
         show_tag();
+        function a(){
+          layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.open({
+            type: 2, 
+            content: '../webdfu/dfu-util/index.html', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+            area: ['800px', '600px']
+          });
+      });
+        }
     </script>
     <div id="webusb-flashing" style="display:none; margin:12px" align="center"><progress id="webusb-flashing-progress"></progress></div>
     <div class="site-text site-block" id="serial-form" style="display: none;">
