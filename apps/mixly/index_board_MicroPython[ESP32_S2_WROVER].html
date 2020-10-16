@@ -1,0 +1,1831 @@
+<html manifest=node.manifest>
+
+<head>
+  <meta charset="utf-8">
+  <title>Mixly Circuitpython ESP32_S2_WROVER</title>
+  <link rel="shortcut icon" type="image/ico" href="../../files/mixly.ico">
+    <script type="text/javascript" src="../../blockly_compressed_mithon.js"></script>
+  <script type="text/javascript" src="../../core/base.js"></script>
+  <script type="text/javascript" src="../../python_compressed.js"></script>
+  <script type="text/javascript" src="../../core/esp32/variables.js"></script>
+  <script type="text/javascript" src="../../core/procedures.js"></script>
+  <script type="text/javascript" src="../../core/blockly.js"></script>
+  <script type="text/javascript" src="../../core/events.js"></script>
+  <script type="text/javascript" src="../../core/field_textarea.js"></script>
+  <script type="text/javascript" src="../../core/esp32/names.js"></script>
+  <script src="../../generators/esp32_s2/python.js"></script>
+  <script type="text/javascript" src="company_pin.js"></script>
+  <script type="text/javascript" src="js/drag.js"></script>
+  <script type="text/javascript" src="js/code.js"></script>
+  <script type="text/javascript" src="js/Blob.js"></script>
+  <script type="text/javascript" src="spin.js"></script>
+  <script type="text/javascript" src="js/FileSaver.min.js"></script>
+  <script type="text/javascript" src="js/blockly_helper.js"></script>
+  <!---profiles-->
+  <script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+  <script type="text/javascript" src="MicroPython[ESP32_S2]/myblock.js"></script>
+  <script type="text/javascript" src="../../blocks/python/variables.js"></script>
+  <script type="text/javascript" src="../../generators/python/variables.js"></script>
+  <script src="../../blocks/esp32_s2/esp32_profile.js"></script>
+  <!-- blocks file -->
+  <script src="../../blocks/esp32_s2/pins.js"></script>
+  <script src="../../blocks/esp32_s2/inout.js"></script>
+  <script src="../../blocks/python/control.js"></script>
+  <script src="../../blocks/esp32_s2/system.js"></script>
+  <script src="../../blocks/python/math.js"></script>
+  <script src="../../blocks/python/text.js"></script>
+  <script src="../../blocks/python/lists.js"></script>
+  <script src="../../blocks/python/dicts.js"></script>
+  <script src="../../blocks/python/logic.js"></script>
+  <script src="../../blocks/esp32_s2/serial.js"></script>
+  <script src="../../blocks/esp32_s2/communicate.js"></script>
+  <script src="../../blocks/esp32_s2/iot.js"></script>
+  <script src="../../blocks/esp32_s2/sensor.js"></script>
+  <script src="../../blocks/esp32_s2/network.js"></script>
+  <script src="../../blocks/esp32_s2/storage.js"></script>
+  <script src="../../blocks/esp32_s2/actuator.js"></script>
+  <script src="../../blocks/esp32_s2/display.js"></script>
+  <script src="../../blocks/python/procedures.js"></script>
+  <script src="../../blocks/esp32_s2/factory.js"></script>
+  <script src="../../blocks/esp32_s2/blynk.js"></script>
+  <script src="../../blocks/python/tuple.js"></script>
+  <script src="../../blocks/python/set.js"></script>
+  <script src="../../blocks/python/html.js"></script>
+  <!-- generator file -->
+  <script src="../../generators/esp32_s2/pins.js"></script>
+  <script src="../../generators/esp32_s2/inout.js"></script>
+  <script src="../../generators/python/control.js"></script>
+  <script src="../../generators/esp32_s2/system.js"></script>
+  <script src="../../generators/python/math.js"></script>
+  <script src="../../generators/python/text.js"></script>
+  <script src="../../generators/python/lists.js"></script>
+  <script src="../../generators/python/dicts.js"></script>
+  <script src="../../generators/python/logic.js"></script>
+  <script src="../../generators/esp32_s2/serial.js"></script>
+  <script src="../../generators/esp32_s2/iot.js"></script>
+  <script src="../../generators/esp32_s2/communicate.js"></script>
+  <script src="../../generators/esp32_s2/sensor.js"></script>
+  <script src="../../generators/esp32_s2/storage.js"></script>
+  <script src="../../generators/esp32_s2/actuator.js"></script>
+  <script src="../../generators/esp32_s2/display.js"></script>
+  <script src="../../generators/esp32_s2/network.js"></script>
+  <script src="../../generators/python/procedures.js"></script>
+  <script src="../../generators/esp32_s2/factory.js"></script>
+  <script src="../../generators/esp32_s2/blynk.js"></script>
+  <script src="../../generators/python/set.js"></script>
+  <script src="../../generators/python/tuple.js"></script>
+  <script src="../../generators/python/html.js"></script>
+  <!-- ace file -->
+  <script src="js/lib/ace/ace.js" type="application/javascript"></script>
+  <script src="js/lib/ace/ext-language_tools.js" type="application/javascript"></script>
+  <script src="../../blocks/python/utility.js"></script>
+  <script src="../../generators/python/utility.js"></script>
+  <script src="layui/layui.js"></script>
+  <link rel="stylesheet" type="text/css" href="layui/css/layui.css" />
+  <link rel="stylesheet" type="text/css" href="css/color_esp32_s2.css" />
+  <link rel="stylesheet" type="text/css" href="css/ACEfont.css" />
+  <link rel="stylesheet" type="text/css" href="css/fontello.css" />
+  <!-- upload -->
+  <script type="text/javascript" src="dap.umd.js"></script>
+  <script type="text/javascript" src="nav.js"></script>
+  <script src="init-py.js"></script>
+</head>
+<body onload="init()">
+    <div class="layui-form-select" style="width:200px; height:40px; position: absolute; right: 230px; top:10px; z-index:9999;">
+        <div class="layui-select-title" style="z-index:9999;">
+            <input type="text" placeholder="" value="" class="layui-input" id="filename_input" style="z-index:9999;">
+        </div>
+    </div>
+    <ul id="nav" class="layui-nav layui-bg-green" lay-filter="" style="min-width: 800px;z-index:999;">
+        <a href="/" style="color:white; text-align:center; vertical-align: middle;font-size: 18px;">&nbsp;&nbsp;&nbsp;Mixly Lite&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        <li style="display:none" id="tab_blocks"></li>
+        <li style="display:none" id="tab_arduino"></li>
+        <li style="display:none" id="tab_xml"></li>
+        <li class="layui-nav-item"><a href="#" onclick="UndoClick();" name="undo" id="undo_btn" title="undo(ctrl+z)" class="icon-ccw"></a></li>
+        <li class="layui-nav-item"><a href="#" onclick="RndoClick();" name="redo" id="redo_btn" title="redo(ctrl+y)" class="icon-cw"></a></li>
+        <li class="layui-nav-item"><a href="#" id="connect_btn" class="icon-link"></a></li>
+        <li class="layui-nav-item"><a href="#" id="upload_btn" class="icon-upload" ></a></li>
+        <li class="layui-nav-item"><a href="#" id="serial_read_btn" class="icon-link" ></a></li>
+        <li class="layui-nav-item" style="float:right">
+            <a href="javascript:;" id="setting_btn"></a>
+            <dl class="layui-nav-child">
+                <!-- 二级菜单 -->
+                <dd><a href="#" id="language_btn" class="icon-language" onclick="open_language(); "></a></dd>
+                <dd><a href="#" id="theme_btn" class="icon-art-gallery" onclick="open_theme();"></a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item" style="float:right">
+            <a href="javascript:;" id="file_btn"></a>
+            <dl class="layui-nav-child">
+                <!-- 二级菜单 -->
+                <dd><a href="#" onclick="new_file()" id="new_btn" class="icon-doc-new"></a></dd>
+                <dd><a href="#" onclick="mixlyjs.loadLocalFile()" id="open_btn" class="icon-folder-open-empty"></a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item" style="float:right">
+            <a href="javascript:;" id="save_btn"></a>
+            <dl class="layui-nav-child">
+                <!-- 二级菜单 -->
+                <dd><a href="#" id="save_img_btn" class="icon-floppy" onclick="mixlyjs.saveBlockImg()"></a></dd>
+                <dd><a href="#" id="save_xml_btn" class="icon-floppy" onclick="save()"></a></dd>
+                <dd><a href="#" id="save_py_btn" class="icon-file-code" onclick="mixlyjs.saveInoFileAs()"></a></dd>
+                <dd><a href="#" id="save_hex_btn" class="icon-download" onclick="mixlyjs.compileMicrobitPy()"></a></dd>
+            </dl>
+        </li>
+        <!-- a标签里不用写按钮名字,136行script段里通过id改名,为了多语言支持 -->
+        <!-- 就是这块，不知道怎么把代码那三个部分加进来 -->
+        <!-- a标签里不用写按钮名字,13行script段里通过id改名,为了多语言支持 -->
+        <li class="layui-nav-item"><select id="languageMenu" style="display:none"></select></li>
+    </ul>
+    <button type="button" id="changemod_btn" value=1 onclick="changeMod()" class="layui-btn layui-btn-primary" style="width:80px; height:40px; position: absolute; right: 0px; top:60px;z-index:998;"></button>
+    <script style="display:none;">
+        show_tag();
+    </script>
+    <div id="webusb-flashing" style="display:none; margin:12px" align="center"><progress id="webusb-flashing-progress"></progress></div>
+    <div class="site-text site-block" id="serial-form" style="display: none;">
+        <div style="margin-top: 20px;"></div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">串口</label>
+            <div class="layui-input-block">
+                <textarea readonly id="serial_content" name="desc" placeholder="串口输出" class="layui-textarea"
+                    style="width:80%; height:300px"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">输入</label>
+            <div class="layui-input-block">
+                <input id="serial_write" type="text" name="title" placeholder="请输入内容" autocomplete="off" class="layui-input"
+                    style="width:80%;">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button id="serial_write_btn" onclick="serialWrite()" class="layui-btn layui-btn-normal">发送</button>
+                <button id="serial_clear_btn" onclick="clearSerialContent()" class="layui-btn layui-btn-danger">清空</button>
+            </div>
+        </div>
+    </div>
+    <table width="100%" id="table_whole">
+        <tr width="0%">
+            <td colspan=3>
+                <table width="100%">
+                    <tr id="tabRow" height="0em">
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td height="100%" width="100%" id="content_area"></td>
+            <td style="display:none;height:100%;width:0.3%;background: #ddd;cursor: w-resize;" id="mid_td"></td>
+            <td width="25%" style="background-color:#eee;display:none;" id="side_code_parent">
+                <div id="side_code" wrap="off" readonly></div>
+            </td>
+            <div id="sidebar" class="right-top" onclick="sidecodeClick()"></div>
+        </tr>
+    </table>
+    <script src="python-main.js" type="application/javascript"></script>
+  <div id="content_blocks" class="content"></div>
+  <div id="content_arduino" class="content" wrap="off"></div>
+  <textarea id="content_xml" class="content" wrap="off" readonly></textarea>
+  <xml id="toolbox" style="display: none">
+    <category name="" id="catInOut" colour="20">
+      <block type="inout_highlow"></block>
+      <block type="inout_digital_init">
+        <value name="PIN">
+          <shadow type="pins_digital_pin">
+          </shadow>
+        </value>
+      </block>
+      <block type="inout_digitalinout_mode">
+        <value name="PIN">
+          <shadow type="pins_digital">
+          </shadow>
+        </value>
+      </block>
+      <block type="inout_digital_write">
+        <value name="PIN">
+          <shadow type="pins_digital"></shadow>
+        </value>
+        <value name="STAT">
+          <shadow type="inout_highlow">
+          </shadow>
+        </value>
+      </block>
+      <block type="inout_digital_read">
+        <value name="PIN">
+          <shadow type="pins_digital"></shadow>
+        </value>
+      </block>
+
+      <!--
+      <block type="inout_analog_read_init">
+        <value name="PIN">
+          <shadow type="pins_analog_pin"></shadow>
+        </value>
+      </block>
+      <block type="inout_analog_atten">
+        <value name="PIN">
+          <shadow type="pins_analog"></shadow>
+        </value>
+      </block>
+      <block type="inout_analog_read">
+        <value name="PIN">
+          <shadow type="pins_analog"></shadow>
+        </value>
+      </block>
+      -->
+
+      <block type="inout_pwm_analog_write_init">
+        <value name="PIN">
+          <shadow type="pins_pwm_pin"></shadow>
+        </value>
+      </block>
+      <block type="inout_pwm_analog_write">
+        <value name="PIN">
+          <shadow type="pins_pwm"></shadow>
+        </value>
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="inout_pwm_analog_write_set_freq">
+        <value name="PIN">
+          <shadow type="pins_pwm"></shadow>
+        </value>
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">2000</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="inout_pin_pressed_init">
+        <value name="PIN">
+          <shadow type="pins_touch_pin">
+          </shadow>
+        </value>
+      </block>
+      <block type="inout_pin_pressed">
+        <value name="pin">
+          <shadow type="pins_touch">
+          </shadow>
+        </value>
+      </block>
+
+      <!--
+      <block type="inout_pin_attachInterrupt">
+        <value name="PIN">
+          <shadow type="pins_digital_pin"></shadow>
+        </value>
+        <value name="DO">
+          <shadow type="factory_block_return">
+            <field name="VALUE">attachInterrupt_func</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="procedures_defnoreturn">
+        <mutation>
+          <arg name="x"></arg>
+        </mutation>
+        <field name="NAME">attachInterrupt_func</field>
+        <statement name="STACK">
+          <block type="controls_pass"></block>
+        </statement>
+      </block>
+      -->
+
+      <!--
+      <block type="inout_analog_write_init">
+        <value name="PIN">
+          <shadow type="pins_dac_pin"></shadow>
+        </value>
+      </block>
+      <block type="inout_analog_write">
+        <value name="PIN">
+          <shadow type="pins_dac"></shadow>
+        </value>
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      -->
+    </category>
+    <category id="catControl" colour="120">
+      <block type="controls_whileUntil">
+        <value name="BOOL">
+          <shadow type="logic_boolean">
+          </shadow>
+        </value>
+      </block>
+      <block type="time_sleep">
+        <value name="DELAY_TIME">
+          <shadow type="math_number">
+            <field name="NUM">2</field>
+          </shadow>
+        </value>
+      </block>      
+      <block type="controls_if"></block>
+      <block type="controls_forEach">
+        <value name="LIST">
+          <shadow type="list_many_input">
+            <field name="CONTENT">0,1,2,3</field>
+          </shadow>
+          <block type="controls_range">
+            <value name="FROM">
+              <shadow type="math_number">
+                <field name="NUM">0</field>
+              </shadow>
+            </value>
+            <value name="TO">
+              <shadow type="math_number">
+                <field name="NUM">5</field>
+              </shadow>
+            </value>
+            <value name="STEP">
+              <shadow type="math_number">
+                <field name="NUM">1</field>
+              </shadow>
+            </value>
+          </block>
+        </value>
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">i</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="controls_pass"></block>
+      <block type="controls_flow_statements"></block>
+      <block type="controls_try_finally"></block>
+      <block type="controls_millis"></block>
+      <block type="time_localtime"></block> 
+    </category>
+    <category id="catMath" colour="230">
+      <block type="math_number"></block>
+      <block type="math_constant"></block>
+      <block type="math_trig">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">90</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_to_number">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">x</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_dec">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">15</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_arithmetic">
+        <value name="A">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="B">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>      
+      <block type="math_bit">
+        <value name="A">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="B">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_selfcalcu">
+        <value name="A">
+          <shadow type="variables_get">
+            <field name="VAR">a</field>
+          </shadow>
+        </value>
+        <value name="B">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_to_int">
+        <value name="A">
+          <shadow type="math_number">
+            <field name="NUM">0.998</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_max_min">
+        <value name="A">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="B">
+          <shadow type="math_number">
+            <field name="NUM">2</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_round">
+        <value name="VALUE">
+          <shadow type="math_number">
+            <field name="NUM">4.8</field>
+          </shadow>
+        </value>
+        <value name="VAR">
+          <shadow type="math_number">
+            <field name="NUM">2</field>
+          </shadow>
+        </value>        
+      </block>
+      <block type="math_random_seed">
+        <value name="NUM">
+          <block type="controls_millis"></block>
+          <shadow type="math_number">
+            <field name="NUM">997</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_random">
+        <value name="FROM">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="TO">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_number_base_conversion">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">1010</field>
+          </shadow>
+      </block>
+      <block type="math_constrain">
+        <value name="VALUE">
+          <shadow type="math_number">
+            <field name="NUM">1000</field>
+          </shadow>
+        </value>
+        <value name="LOW">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="HIGH">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_map">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">50</field>
+          </shadow>
+        </value>
+        <value name="fromLow">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="fromHigh">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+        <value name="toLow">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="toHigh">
+          <shadow type="math_number">
+            <field name="NUM">1000</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category id="catLogic" colour="210">
+      <block type="logic_compare"></block>
+      <block type="logic_compare_continous">
+        <value name="A">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="B">
+          <shadow type="variables_get">
+            <field name="VAR">x</field>
+          </shadow>
+        </value>
+        <value name="C">
+          <shadow type="math_number">
+            <field name="NUM">2</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="logic_operation"></block>
+      <block type="logic_negate"></block>
+      <block type="logic_boolean"></block>
+      <block type="logic_null"></block>
+      <block type="logic_true_or_false"></block>
+      <block type="logic_is_in">
+        <value name="A">
+          <shadow type="variables_get">
+            <field name="VAR">x</field>
+          </shadow>
+        </value>
+        <value name="B">
+          <shadow type="list_many_input">
+            <field name="CONTENT">0,1,2,3</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="logic_is">
+        <value name="A">
+          <shadow type="list_many_input">
+            <field name="CONTENT">0,1,2,3</field>
+          </shadow>
+        </value>
+        <value name="B">
+          <shadow type="list_many_input">
+            <field name="CONTENT">0,1,2,3</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="logic_tobool">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">x</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category id="catText" colour="160">
+      <block type="text">
+        <field name="TEXT">Mixly</field>
+      </block>
+      <block type="text_textarea">
+      </block>      
+      <block type="text_join">
+        <value name="A">
+          <shadow type="text">
+            <field name="TEXT">Hello</field>
+          </shadow>
+        </value>
+        <value name="B">
+          <shadow type="text">
+            <field name="TEXT">Mixly</field>
+          </shadow>
+        </value>
+      </block>
+      
+      <block type="ascii_to_char">
+        <value name="VAR">
+          <shadow type="math_number">
+            <field name="NUM">65</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="char_to_ascii">
+        <value name="VAR">
+          <shadow type="text">
+            <field name="TEXT">a</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="number_to_text">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">x</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_length">
+        <value name="VAR">
+          <shadow type="text">
+            <field name="TEXT">Mixly</field>
+          </shadow>
+        </value>
+      </block>     
+      <block type="text_equals_starts_ends">
+        <value name="STR1">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+        <value name="STR2">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+      </block> 
+      <block type="text_char_at">
+        <value name="VAR">
+          <shadow type="text">
+            <field name="TEXT">Mixly</field>
+          </shadow>
+        </value>
+        <value name="AT">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>     
+      <block type="text_substring">
+        <value name="VAR">
+          <shadow type="text">
+            <field name="TEXT">Mixly</field>
+          </shadow>
+        </value>
+        <value name="AT1">
+          <shadow type="math_indexer_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="AT2">
+          <shadow type="math_indexer_number">
+            <field name="NUM">2</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_random_char">
+        <value name="VAR">
+          <shadow type="text">
+            <field name="TEXT">Mixly</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_encode">
+        <value name="VAR">
+          <shadow type="text">
+            <field name="TEXT">Mixly</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_capital">
+        <value name="VAR">
+          <shadow type="text">
+            <field name="TEXT">Hello,mixly</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_center">
+        <value name="VAR">
+          <shadow type="text">
+            <field name="TEXT">Hello,mixly</field>
+          </shadow>
+        </value>
+        <value name="WID">
+          <shadow type="math_number">
+            <field name="NUM">50</field>
+          </shadow>
+        </value>
+        <value name="Symbol">
+          <shadow type="text">
+            <field name="TEXT">*</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_find">
+        <value name="VAR">
+          <shadow type="text">
+            <field name="TEXT">Hello,mixly</field>
+          </shadow>
+        </value>
+        <value name="STR">
+          <shadow type="text">
+            <field name="TEXT">l</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_join_seq">
+        <value name="VAR">
+          <shadow type="text">
+            <field name="TEXT">--</field>
+          </shadow>
+        </value>
+        <value name="LIST">
+          <shadow type="variables_get">
+            <field name="VAR">mylist</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_replace">
+        <value name="VAR">
+          <shadow type="text">
+            <field name="TEXT">Hello,mixly</field>
+          </shadow>
+        </value>
+        <value name="STR1">
+          <shadow type="text">
+            <field name="TEXT">mixly</field>
+          </shadow>
+        </value>
+        <value name="STR2">
+          <shadow type="text">
+            <field name="TEXT">mixpy</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_split">
+        <value name="VAR">
+          <shadow type="text">
+            <field name="TEXT">I love mixly！</field>
+          </shadow>
+        </value>
+        <value name="VAL">
+          <shadow type="text">
+            <field name="TEXT"> </field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_strip">
+        <value name="VAR">
+          <shadow type="text">
+            <field name="TEXT"> I love mixly </field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_format_noreturn">
+        <mutation items="1"></mutation>
+        <value name="VAR">
+          <shadow type="text">
+            <field name="TEXT">Random No. is {}</field>
+          </shadow>
+        </value>
+        <value name="ADD0">
+          <block type="math_random">
+            <field name="TYPE">int</field>
+            <value name="FROM">
+              <shadow type="math_number">
+                <field name="NUM">1</field>
+              </shadow>
+            </value>
+            <value name="TO">
+              <shadow type="math_number">
+                <field name="NUM">100</field>
+              </shadow>
+            </value>
+          </block>
+        </value>
+      </block>
+      <block type="text_eval">
+        <value name="VAR">
+          <shadow type="text">
+            <field name="TEXT">input('1+2*3')</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category id="catMicropyLists" colour="260">
+      <block type="lists_create_with"></block>
+      <block type="variables_set">        
+        <field name="VAR">mylist</field>
+        <value name="VALUE">
+          <block type="list_many_input">
+            <field name="CONTENT">1,2,3,4,5</field>
+          </block>
+        </value>
+      </block>
+      <!--<block type="lists_create_with_text"></block>  -->    
+      <block type="lists_get_index">
+        <value name="LIST">
+          <shadow type="variables_get">
+            <field name="VAR">mylist</field>
+          </shadow>
+        </value>
+        <value name="AT">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_get_sublist">
+        <value name="LIST">
+          <shadow type="variables_get">
+            <field name="VAR">mylist</field>
+          </shadow>
+        </value>
+        <value name="AT1">
+          <shadow type="math_indexer_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="AT2">
+          <shadow type="math_indexer_number">
+            <field name="NUM">2</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_get_random_item">
+        <value name="LIST">
+          <shadow type="variables_get">
+            <field name="VAR">mylist</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_get_random_sublist">
+        <value name="LIST">
+          <shadow type="variables_get">
+            <field name="VAR">mylist</field>
+          </shadow>
+        </value>
+        <value name="VAR">
+          <shadow type="math_number">
+            <field name="NUM">2</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="list_trig">
+        <value name="data">
+          <shadow type="variables_get">
+            <field name="VAR">mylist</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_find">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">mylist</field>
+          </shadow>
+        </value>
+        <value name="data">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_set_index">
+        <value name="LIST">
+          <shadow type="variables_get">
+            <field name="VAR">mylist</field>
+          </shadow>
+        </value>
+        <value name="AT">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="TO">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_insert_value">
+        <value name="LIST">
+          <shadow type="variables_get">
+            <field name="VAR">mylist</field>
+          </shadow>
+        </value>
+        <value name="AT">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="VALUE">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_append_extend">
+        <value name="LIST">
+          <shadow type="variables_get">
+            <field name="VAR">mylist</field>
+          </shadow>
+        </value>
+        <value name="DATA">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_remove_at">
+        <value name="LIST">
+          <shadow type="variables_get">
+            <field name="VAR">mylist</field>
+          </shadow>
+        </value>
+        <value name="DATA">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_pop">
+        <value name="LIST">
+          <shadow type="variables_get">
+            <field name="VAR">mylist</field>
+          </shadow>
+        </value>
+        <value name="VALUE">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>        
+      <block type="lists_sort">
+        <value name="LIST">
+          <shadow type="variables_get">
+            <field name="VAR">mylist</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_reverse">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">mylist</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_clear">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">mylist</field>
+          </shadow>
+        </value>
+      </block>
+      <!--<block type="lists_change_to">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">mylist</field>
+          </shadow>
+        </value>
+      </block>-->
+      <block type="list_tolist">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">x</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_zip">
+        <mutation items="2"></mutation>
+        <value name="ADD0">
+          <block type="list_many_input">
+            <field name="CONTENT">0,1,2,3</field>
+          </block>
+        </value>
+        <value name="ADD1">
+          <block type="list_many_input">
+            <field name="CONTENT">0,1,2,3</field>
+          </block>
+        </value>
+      </block>
+    </category>
+    <category id="catTuple" colour="195">
+      <block type="tuple_create_with"></block>
+      <block type="variables_set">        
+        <field name="VAR">mytup</field>
+        <value name="VALUE">
+          <block type="tuple_create_with_text_return">
+            <field name="TEXT">1,2,3,4,5</field>
+          </block>
+        </value>
+      </block>
+      <!--<block type="tuple_create_with_text2"></block>-->
+      <block type="tuple_getIndex">
+        <value name="TUP">
+          <shadow type="variables_get">
+            <field name="VAR">mytup</field>
+          </shadow>
+        </value>
+        <value name="AT">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="tuple_get_sublist">
+        <value name="LIST">
+          <shadow type="variables_get">
+            <field name="VAR">mytup</field>
+          </shadow>
+        </value>
+        <value name="AT1">
+          <shadow type="math_indexer_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="AT2">
+          <shadow type="math_indexer_number">
+            <field name="NUM">2</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="tuple_get_random_item">
+        <value name="TUP">
+          <shadow type="variables_get">
+            <field name="VAR">mytup</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="tuple_length">
+        <value name="TUP">
+          <shadow type="variables_get">
+            <field name="VAR">mytup</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="tuple_max">
+        <value name="TUP">
+          <shadow type="variables_get">
+            <field name="VAR">mytup</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="tuple_del">
+        <value name="TUP">
+          <shadow type="variables_get">
+            <field name="VAR">mytup</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="tuple_join">
+        <value name="TUP1">
+          <shadow type="variables_get">
+            <field name="VAR">mytup1</field>
+          </shadow>
+        </value>
+        <value name="TUP2">
+          <shadow type="variables_get">
+            <field name="VAR">mytup2</field>
+          </shadow>
+        </value>
+      </block>
+      <!--<block type="tuple_change_to">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">mytup</field>
+          </shadow>
+        </value>
+      </block>-->
+      <block type="tuple_totuple">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">x</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category id="catDicts" colour="345">
+      <block type="dicts_create_with"></block>
+      <block type="dicts_keys">
+        <value name="DICT">
+          <shadow type="variables_get">
+            <field name="VAR">mydict</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="dicts_get">
+        <value name="DICT">
+          <shadow type="variables_get">
+            <field name="VAR">mydict</field>
+          </shadow>
+        </value>
+        <value name="KEY">
+          <shadow type="text">
+            <field name="TEXT">key</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="dicts_get_default">
+        <value name="DICT">
+          <shadow type="variables_get">
+            <field name="VAR">mydict</field>
+          </shadow>
+        </value>
+        <value name="KEY">
+          <shadow type="text">
+            <field name="TEXT">key</field>
+          </shadow>
+        </value>
+        <value name="VAR">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="dicts_add_or_change">
+        <value name="DICT">
+          <shadow type="variables_get">
+            <field name="VAR">mydict</field>
+          </shadow>
+        </value>
+        <value name="KEY">
+          <shadow type="text">
+            <field name="TEXT">key</field>
+          </shadow>
+        </value>
+        <value name="VAR">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="dicts_delete">
+        <value name="DICT">
+          <shadow type="variables_get">
+            <field name="VAR">mydict</field>
+          </shadow>
+        </value>
+        <value name="KEY">
+          <shadow type="text">
+            <field name="TEXT">key</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="dicts_pop">
+        <value name="DICT">
+          <shadow type="variables_get">
+            <field name="VAR">mydict</field>
+          </shadow>
+        </value>
+        <value name="KEY">
+          <shadow type="text">
+            <field name="TEXT">key</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="dicts_setdefault">
+        <value name="DICT">
+          <shadow type="variables_get">
+            <field name="VAR">mydict</field>
+          </shadow>
+        </value>
+        <value name="KEY">
+          <shadow type="text">
+            <field name="TEXT">key</field>
+          </shadow>
+        </value>
+        <value name="VAR">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="dicts_clear">
+        <value name="DICT">
+          <shadow type="variables_get">
+            <field name="VAR">mydict</field>
+          </shadow>
+        </value>
+      </block>
+      <!--<block type="dicts_items">
+        <value name="DICT">
+          <shadow type="variables_get">
+            <field name="VAR">mydict</field>
+          </shadow>
+        </value>
+      </block>-->
+      <block type="dicts_values">
+        <value name="DICT">
+          <shadow type="variables_get">
+            <field name="VAR">mydict</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="dicts_length">
+        <value name="DICT">
+          <shadow type="variables_get">
+            <field name="VAR">mydict</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="dicts_deldict">
+        <value name="DICT">
+          <shadow type="variables_get">
+            <field name="VAR">mydict</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="dicts_todict">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">x</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category id="catSet" colour="100">
+      <block type="set_create_with"></block>
+      <block type="variables_set">        
+        <field name="VAR">s1</field>
+        <value name="VALUE">
+          <block type="set_create_with_text_return">
+            <field name="TEXT">1,2,3,4,5</field>
+          </block>
+        </value>
+      </block>
+      <block type="set_length">
+        <value name="SET">
+          <shadow type="variables_get">
+            <field name="VAR">s1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="set_pop">
+        <value name="SET">
+          <shadow type="variables_get">
+            <field name="VAR">s1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="set_operate">
+        <value name="SET1">
+          <shadow type="variables_get">
+            <field name="VAR">s1</field>
+          </shadow>
+        </value>
+        <value name="SET2">
+          <shadow type="variables_get">
+            <field name="VAR">s2</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="set_operate_update">
+        <value name="SET1">
+          <shadow type="variables_get">
+            <field name="VAR">s1</field>
+          </shadow>
+        </value>
+        <value name="SET2">
+          <shadow type="variables_get">
+            <field name="VAR">s2</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="set_add_discard">
+        <value name="SET">
+          <shadow type="variables_get">
+            <field name="VAR">s1</field>
+          </shadow>
+        </value>
+        <value name="data">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="set_update">
+        <value name="SET">
+          <shadow type="variables_get">
+            <field name="VAR">s1</field>
+          </shadow>
+        </value>
+        <value name="VAR">
+          <shadow type="text">
+            <field name="TEXT">Mixly</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="set_sub">
+        <value name="SET1">
+          <shadow type="variables_get">
+            <field name="VAR">s1</field>
+          </shadow>
+        </value>
+        <value name="SET2">
+          <shadow type="variables_get">
+            <field name="VAR">s2</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="set_toset">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">x</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category id="catVar" colour="330" custom="VARIABLE">
+    </category>
+    <category id="catFun" custom="PROCEDURE" colour="290"></category>
+    <category id="catSerialPort" colour="65">
+      <block type="system_print">
+        <value name="VAR">
+          <shadow type="text">
+            <field name="TEXT">Mixly</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="system_print_inline">
+        <value name="VAR">
+          <shadow type="text">
+            <field name="TEXT">Mixly</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="system_print_end">
+        <value name="VAR">
+          <shadow type="text">
+            <field name="TEXT">Mixly</field>
+          </shadow>
+        </value>
+        <value name="END">
+          <shadow type="text">
+            <field name="TEXT">,</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="system_print_many">
+        <mutation items="2"></mutation>
+        <value name="ADD0">
+          <block type="text">
+            <field name="TEXT">Hello</field>
+          </block>
+        </value>
+        <value name="ADD1">
+          <block type="text">
+            <field name="TEXT">Mixly</field>
+          </block>
+        </value>
+      </block>
+      <block type="system_input">
+        <value name="VAR">
+          <shadow type="text">
+            <field name="TEXT">prompt</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="serial_softserial"></block>
+      <block type="serial_print">
+        <value name="CONTENT">
+          <shadow type="text">
+            <field name="TEXT">Mixly</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="serial_println">
+        <value name="CONTENT">
+          <shadow type="text">
+            <field name="TEXT">Mixly</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="serial_print_hex">
+        <value name="CONTENT">
+          <shadow type="math_number">
+            <field name="NUM">0XFF00FF</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="serial_any"></block>
+      <block type="serial_readstr"></block>
+      <block type="serial_readline"></block>
+    </category>
+    <category id="catSensor" colour="40">
+    </category>
+    <category id="catActuator" colour="100">
+    </category>
+    <category id="catMonitor" colour="180">
+    </category>
+    <category id="catFile" colour="0">
+      <block type="storage_fileopen">
+        <value name="FILENAME">
+          <shadow type="text">
+            <field name="TEXT">filename.txt</field>
+          </shadow>
+        </value>
+        <value name="FILE">
+          <shadow type="variables_get">
+            <field name="VAR">f</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="storage_file_write">
+        <value name="data">
+          <shadow type="text">
+            <field name="TEXT">Mixly</field>
+          </shadow>
+        </value>
+        <value name="FILE">
+          <shadow type="variables_get">
+            <field name="VAR">f</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="storage_get_contents_without_para">
+        <value name="FILE">
+          <shadow type="variables_get">
+            <field name="VAR">f</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="storage_get_contents">
+        <value name="FILE">
+          <shadow type="variables_get">
+            <field name="VAR">f</field>
+          </shadow>
+        </value>
+        <value name="SIZE">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="storage_can_write_ornot">
+        <value name="FILE">
+          <shadow type="variables_get">
+            <field name="VAR">f</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="storage_get_filename">
+        <value name="FILE">
+          <shadow type="variables_get">
+            <field name="VAR">f</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="storage_close_file">
+        <value name="FILE">
+          <shadow type="variables_get">
+            <field name="VAR">f</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="storage_file_tell">
+        <value name="FILE">
+          <shadow type="variables_get">
+            <field name="VAR">f</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="storage_file_seek">
+        <value name="FILE">
+          <shadow type="variables_get">
+            <field name="VAR">f</field>
+          </shadow>
+        </value>
+        <value name="SIZE">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="storage_list_all_files"> </block>
+      <block type="storage_get_current_dir"> </block>
+      <block type="storage_change_dir">
+        <value name="FILE">
+          <shadow type="text">
+            <field name="TEXT">path</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="storage_make_dir">
+        <value name="PATH">
+          <shadow type="text">
+            <field name="TEXT">path</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="storage_delete_file">
+        <value name="FILE">
+          <shadow type="text">
+            <field name="TEXT">filename.txt</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="storage_rename">
+        <value name="FILE">
+          <shadow type="text">
+            <field name="TEXT">srcname.txt</field>
+          </shadow>
+        </value>
+        <value name="NEWFILE">
+          <shadow type="text">
+            <field name="TEXT">dstname.txt</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="storage_file_status">
+        <value name="FILE">
+          <shadow type="text">
+            <field name="TEXT">path</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category id="catGroup" colour="140">
+      <block type="communicate_buffer">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">buf</field>
+          </shadow>
+        </value>
+        <value name="data">
+          <shadow type="math_number">
+            <field name="NUM">50</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="communicate_i2c_init">
+        <value name="SUB">
+          <shadow type="variables_get">
+            <field name="VAR">i2c</field>
+          </shadow>
+        </value>
+        <value name="TX">
+          <shadow type="pins_digital_pin">
+            <field name="PIN">IO1</field>
+          </shadow>
+        </value>
+        <value name="RX">
+          <shadow type="pins_digital_pin">
+            <field name="PIN">IO0</field>
+          </shadow>
+        </value>
+        <value name="freq">
+          <shadow type="math_number">
+            <field name="NUM">100000</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="communicate_i2c_try_lock">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">i2c</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="communicate_i2c_scan">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">i2c</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="communicate_i2c_write">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">i2c</field>
+          </shadow>
+        </value>
+        <value name="address">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="data">
+          <shadow type="list_many_input">
+            <field name="CONTENT">1,2,3,4,5</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="communicate_i2c_read">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">i2c</field>
+          </shadow>
+        </value>
+        <value name="address">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="length">
+          <shadow type="math_number">
+            <field name="NUM">5</field>
+          </shadow>
+        </value>
+        <value name="data">
+          <shadow type="variables_get">
+            <field name="VAR">buf</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="communicate_i2c_writeto_then_readfrom">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">i2c</field>
+          </shadow>
+        </value>
+        <value name="address">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+        <value name="write">
+          <shadow type="list_many_input">
+            <field name="CONTENT">1,2,3,4,5</field>
+          </shadow>
+        </value>
+        <value name="read">
+          <shadow type="variables_get">
+            <field name="VAR">buf</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="communicate_spi_unlock">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">spi</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="communicate_i2c_unlock">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">i2c</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="communicate_spi_init">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">spi</field>
+          </shadow>
+        </value>
+        <value name="sck">
+          <shadow type="pins_digital_pin">
+            <field name="PIN">IO0</field>
+          </shadow>
+        </value>
+        <value name="mosi">
+          <shadow type="pins_digital_pin">
+            <field name="PIN">IO1</field>
+          </shadow>
+        </value>
+        <value name="miso">
+          <shadow type="pins_digital_pin">
+            <field name="PIN">IO2</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="communicate_spi_configure">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">spi</field>
+          </shadow>
+        </value>
+        <value name="freq">
+          <shadow type="math_number">
+            <field name="NUM">200000</field>
+          </shadow>
+        </value>
+        <value name="polarity">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="phase">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="communicate_spi_try_lock">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">spi</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="communicate_spi_write">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">spi</field>
+          </shadow>
+        </value>
+        <value name="data">
+          <shadow type="list_many_input">
+            <field name="CONTENT">1,2,3,4,5</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="communicate_spi_read">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">spi</field>
+          </shadow>
+        </value>
+        <value name="length">
+          <shadow type="math_number">
+            <field name="NUM">5</field>
+          </shadow>
+        </value>
+        <value name="data">
+          <shadow type="variables_get">
+            <field name="VAR">buf</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="communicate_spi_write_readinto">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">spi</field>
+          </shadow>
+        </value>
+        <value name="write">
+          <shadow type="list_many_input">
+            <field name="CONTENT">1,2,3,4,5</field>
+          </shadow>
+        </value>
+        <value name="read">
+          <shadow type="variables_get">
+            <field name="VAR">buf</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="communicate_spi_unlock">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">spi</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="communicate_ow_init">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">ow</field>
+          </shadow>
+        </value>
+        <value name="BUS">
+          <shadow type="pins_digital_pin">
+            <field name="PIN">IO12</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="communicate_ow_read">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">ow</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="communicate_ow_write">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">ow</field>
+          </shadow>
+        </value>
+        <value name="byte">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="communicate_ow_reset">
+        <value name="VAR">
+          <shadow type="variables_get">
+            <field name="VAR">ow</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category id="catNetwork" colour="225"> 
+    </category>
+    <category id="catIot" colour="225">
+      <category id="catOnenet" colour="225">
+      </category>
+      <category name="Blynk IoT" colour="#24c48e">
+      </category>
+    </category>
+    <category id="catFactory" name="Factory" colour="#777777">
+      <block type="factory_import"></block>
+      <block type="factory_from_import"></block>
+      <block type="factory_function_noreturn"></block>
+      <block type="factory_function_return"></block>
+      <block type="factory_declare"></block>
+      <block type="factory_callMethod_noreturn"></block>
+      <block type="factory_callMethod_return"></block>
+      <block type="factory_block"></block>
+      <block type="factory_block_return"></block>
+      <block type="factory_block_with_textarea"></block>
+      <block type="factory_block_return_with_textarea"></block>
+    </category>
+  </xml>
+  <script>
+  if (company_block != null) {
+    $('#toolbox').append(company_block);
+  }
+  if (myblock != null) {
+    $('#toolbox').append(myblock);
+  }
+  </script>
+</body>
+</html>
