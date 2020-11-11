@@ -260,7 +260,7 @@ function init() {
     editor = ace.edit("content_arduino");
     if (window.conf == null || window.conf.lastEditorTheme == null) {
         window.conf = window.conf || {};
-        window.conf['lastEditorTheme'] = "ace/theme/monokai";
+        window.conf['lastEditorTheme'] = "ace/theme/crimson_editor";
     }
     editor.setTheme(window.conf.lastEditorTheme);
     editor.getSession().setMode("ace/mode/python");

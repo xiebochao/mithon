@@ -195,7 +195,7 @@ function init() {
     //};
     ace.require("ace/ext/language_tools");
     editor = ace.edit("content_arduino");
-    editor.setTheme("ace/theme/dracula");
+    editor.setTheme("ace/theme/crimson_editor");
     editor.getSession().setMode("ace/mode/turtle");
     editor.setFontSize(17);
     editor.setShowPrintMargin(false);

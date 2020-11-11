@@ -20111,7 +20111,7 @@ var PythonView = /** @class */ (function (_super) {
             throw new Error('No editor div');
         }
         this.editor = ace.edit(this.editorDiv);
-        this.editor.setTheme('ace/theme/monokai');
+        this.editor.setTheme('ace/theme/crimson_editor');
         this.editor.getSession().setMode('ace/mode/python');
         this.editor.setOptions({
             fontSize: "16pt"
