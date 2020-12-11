@@ -28,7 +28,7 @@ Blockly.Python.inout_digitalinout_mode = function() {
     var output = dropdown_TYPE.indexOf("PUSH_PULL") != -1 || dropdown_TYPE.indexOf("OPEN_DRAIN") != -1;
     if(dropdown_TYPE == 'None')
     {
-        var code = value_PIN+'.switch_to_input(pull=None)\n';
+        var code = value_PIN+'.switch_to_input()\n';
     }
     var code = value_PIN+'.switch_to_'+(output?'output':'input')+'('+(output?'drive_mode':'pull')+'=digitalio.'+(output?'DriveMode.':'Pull.')+dropdown_TYPE+')\n';
     return code;
@@ -145,7 +145,7 @@ Blockly.Python.inout_pin_pressed_init = function(){
     Blockly.Python.definitions_['import_board_*'] = 'from board import *';
     var pin_obj = this.getFieldValue('PIN_OBJ') || 'tc#';
     var dropdown_pin = Blockly.Python.valueToCode(this, 'PIN', Blockly.Python.ORDER_ATOMIC);
-    var varName = (pin_obj == 'tc#') ? 'tc'+dropdown_pin : Blockly.Python.variableDB_.getName(pin_obj, Blockly.Variables.NAME_TYPE);
+    var varName = (pin_obj == 'tc#') ? 'tc'+dropdown_pin.replace("IO", "") : Blockly.Python.variableDB_.getName(pin_obj, Blockly.Variables.NAME_TYPE);
     var code = varName + ' = touchio.TouchIn(' + dropdown_pin + ')\n';
     return code;
 };
