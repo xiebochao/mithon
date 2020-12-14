@@ -137,3 +137,75 @@ Blockly.Blocks['sensor_MSA301_get_acceleration'] = {
         });
     }
 };
+
+var RTC_TIME_TYPE = [
+[Blockly.MIXLY_YEAR, "Year"],
+[Blockly.MIXLY_MONTH, "Month"],
+[Blockly.MIXLY_DAY, "Day"],
+[Blockly.MIXLY_HOUR, "Hour"],
+[Blockly.MIXLY_MINUTE, "Minute"],
+[Blockly.MIXLY_SECOND, "Second"],
+[Blockly.MIXLY_WEEK, "Week"],
+[Blockly.MIXLY_MIX1, "Mix1"],
+[Blockly.MIXLY_MIX2, "Mix2"],
+];
+
+//传感器-实时时钟块_获取时间
+Blockly.Blocks.RTC_get_time = {
+    init: function() {
+        this.setColour(Blockly.Blocks.sensor.HUE);
+        this.appendDummyInput()
+            .appendField("RTC");
+        this.appendDummyInput()
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField(Blockly.MIXLY_RTCGETTIME);
+        this.setInputsInline(true);
+        this.setOutput(true, Number);
+        this.setTooltip(Blockly.MIXLY_ESP32_RTC_GET_TIME_TOOLTIP);
+    }
+};
+
+Blockly.Blocks.RTC_set_datetime = {
+    init: function() {    
+        this.setColour(Blockly.Blocks.sensor.HUE);
+        this.appendDummyInput()
+            .appendField("RTC")
+            .appendField(Blockly.MIXLY_RTC_TIME);
+        this.appendValueInput('year')
+            .setCheck(Number)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField(Blockly.MIXLY_YEAR);
+        this.appendValueInput('month')
+            .setCheck(Number)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField(Blockly.MIXLY_MONTH);   
+        this.appendValueInput('day')
+            .setCheck(Number)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField(Blockly.MIXLY_DAY);   
+        this.appendValueInput('weekday')
+            .setCheck(Number)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField(Blockly.MIXLY_WEEK2);   
+        this.appendValueInput('hour')
+            .setCheck(Number)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField(Blockly.MIXLY_HOUR);                       
+        this.appendValueInput('minute')
+            .setCheck(Number)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField(Blockly.MIXLY_MINUTE);
+        this.appendValueInput('second')
+            .setCheck(Number)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField(Blockly.MIXLY_SECOND);
+        this.appendValueInput('millisecond')
+            .setCheck(Number)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField(Blockly.MIXLY_MILLISECOND);
+        this.setInputsInline(false);
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setTooltip(Blockly.MIXLY_ESP32_RTC_SET_DATATIME_TOOLTIP);    
+    }   
+};
