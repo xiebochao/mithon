@@ -1405,6 +1405,39 @@
       <block type="serial_readline"></block>
     </category>
     <category id="catSensor" colour="40">
+      <block type="sensor_mixgoce_button_is_pressed">
+        <value name="btn">
+          <shadow type="pins_button">
+          </shadow>
+        </value>
+      </block>
+      <block type="sensor_mixgoce_button_was_pressed">
+        <value name="btn">
+          <shadow type="pins_button">
+          </shadow>
+        </value>
+      </block>
+      <block type="sensor_mixgoce_button_get_presses">
+        <value name="btn">
+          <shadow type="pins_button">
+          </shadow>
+        </value>
+        <value name="VAR">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="sensor_mixgoce_pin_pressed">
+        <value name="button">
+          <shadow type="number1">
+          </shadow>
+        </value>
+      </block>
+      <block type="sensor_mixgoce_light"></block>
+      <block type="sensor_mixgoce_sound"></block>
+      <block type="sensor_mixgoce_temperature_lm35"></block>
+      <block type="sensor_MSA301_get_acceleration"></block>
     </category>
     <category id="catActuator" colour="100">
     </category>
