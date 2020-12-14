@@ -54,13 +54,6 @@ Blockly.Python.sensor_mixgoce_pin_pressed = function(){
     return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
-Blockly.Python.sensor_mixgo_pin_near = function(){
-    Blockly.Python.definitions_['import_mixgo'] = 'import mixgo';
-    var direction = this.getFieldValue('direction');
-    var code = 'mixgo.'+'infrared_'+ direction +'.near()';
-    return [code, Blockly.Python.ORDER_ATOMIC];
-};
-
 Blockly.Python.sensor_MSA301_get_acceleration = function(){
     Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
     // Blockly.Python.definitions_['import_machine'] = 'import machine';
