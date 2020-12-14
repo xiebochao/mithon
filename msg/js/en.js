@@ -2904,3 +2904,4 @@ Blockly.MIXLY_I2C_RELEASE_BUS = "Release bus";
 Blockly.MIXLY_SPIC_WRITE_NUM = "Write number";
 Blockly.MIXLY_SPIC_READ_NUM = "Read number";
 Blockly.MIXLY_ESP32S2_LED_SETBRIGHT = "Set the current brightness of the embedded LED light (0 ~ 65535)";
+Blockly.MIXLY_PYTHON_NAME_MAIN = "Use as main program";

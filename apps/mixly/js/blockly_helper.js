@@ -527,7 +527,7 @@ mixlyjs.saveXmlFileAs = function () {
 mixlyjs.saveInoFileAs = function (f) {
     var xmlCodes = mixlyjs.getCodeContent();
     if (document.getElementById("filename_input").value == ""){
-        var fn = 'filename.py'
+        var fn = 'code.py'
     }else
         var fn = document.getElementById("filename_input").value + '.py'
     var blob = new Blob(
