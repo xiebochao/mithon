@@ -2887,3 +2887,4 @@ Blockly.MIXLY_I2C_TRY_TO_OCCUPY_THE_BUS = "佔用總線";
 Blockly.MIXLY_I2C_RELEASE_BUS = "釋放總線";
 Blockly.MIXLY_SPIC_WRITE_NUM = "寫入數字";
 Blockly.MIXLY_SPIC_READ_NUM = "讀取數字";
+Blockly.MIXLY_ESP32S2_LED_SETBRIGHT = "設置內嵌LED燈的當前亮度（0~65535）";
