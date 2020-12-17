@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title>Mixly Circuitpython ESP32_S2_WROVER</title>
   <link rel="shortcut icon" type="image/ico" href="../../files/mixly.ico">
-    <script type="text/javascript" src="../../blockly_compressed_mithon.js"></script>
+  <script type="text/javascript" src="../../blockly_compressed_mithon.js"></script>
   <script type="text/javascript" src="../../core/base.js"></script>
   <script type="text/javascript" src="../../python_compressed.js"></script>
   <script type="text/javascript" src="../../core/esp32/variables.js"></script>
@@ -1565,6 +1565,92 @@
       </block>
     </category>
     <category id="catMonitor" colour="180">
+      <block type="display_show_image_or_string">
+        <value name="data">
+          <shadow type="pins_builtinimg"></shadow>
+        </value>
+      </block>
+      <block type="display_scroll_string">
+        <value name="data">
+          <shadow type="text">
+            <field name="TEXT">Mixly</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="display_show_static">
+        <value name="data">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="display_show_image_or_string_delay">
+        <value name="data">
+          <shadow type="pins_builtinimg"></shadow>
+        </value>
+        <value name="time">
+          <shadow type="math_number">
+            <field name="NUM">120</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="display_scroll_string_delay">
+        <value name="data">
+          <shadow type="text">
+            <field name="TEXT">Mixly</field>
+          </shadow>
+        </value>
+        <value name="time">
+          <shadow type="math_number">
+            <field name="NUM">120</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="display_image_create"></block>
+      <block type="display_image_builtins"></block>
+      <block type="display_animate"></block>
+      <block type="image_arithmetic">
+        <value name="A">
+          <shadow type="pins_builtinimg"></shadow>
+        </value>>
+        <value name="B">
+          <shadow type="pins_builtinimg"></shadow>
+        </value>
+      </block>
+      <block type="display_shift">
+        <value name="val">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="display_get_pixel">
+        <value name="x">
+          <shadow type="pins_exlcdh"></shadow>
+        </value>
+        <value name="y">
+          <shadow type="pins_exlcdv"></shadow>
+        </value>
+      </block>
+      <block type="display_bright_point">
+        <value name="x">
+          <shadow type="pins_exlcdh"></shadow>
+        </value>
+        <value name="y">
+          <shadow type="pins_exlcdv"></shadow>
+        </value>
+        <value name="STAT">
+          <shadow type="display_onoff">
+          </shadow>
+        </value>
+      </block>
+      <block type="display_bright_screen">
+        <value name="x">
+          <shadow type="pins_exlcdh"></shadow>
+        </value>
+      </block>
+      <block type="display_get_screen_pixel"></block>
+      <block type="display_clear"></block>
     </category>
     <category id="catFile" colour="0">
       <block type="storage_fileopen">
