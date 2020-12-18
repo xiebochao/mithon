@@ -3,6 +3,63 @@
 goog.provide('Blockly.Python.actuator');
 goog.require('Blockly.Python');
 
+Blockly.Python.esp32_s2_onboard_music_pitch = function(block) {
+  Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
+  var number_pitch = Blockly.Python.valueToCode(block, 'pitch', Blockly.Python.ORDER_ATOMIC);
+  var code = 'mixgoce.buzzer_1.play(' + number_pitch + ')\n';
+  return code;
+};
+
+Blockly.Python.esp32_s2_onboard_music_pitch_with_time = function(block) {
+  Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
+  var number_pitch = Blockly.Python.valueToCode(block, 'pitch', Blockly.Python.ORDER_ATOMIC);
+  var number_time = Blockly.Python.valueToCode(block, 'time', Blockly.Python.ORDER_ATOMIC);
+  var code = 'mixgoce.buzzer_1.play(' + number_pitch + ', ' + number_time + ')\n';
+  return code;
+};
+
+Blockly.Python.esp32_s2_onboard_music_stop = function(block) {
+  Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
+  var code = 'mixgoce.buzzer_1.stop()\n';
+  return code;
+};
+
+Blockly.Python.esp32_s2_onboard_music_play_list=function(){
+    Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
+    var lst = Blockly.Python.valueToCode(this, 'LIST', Blockly.Python.ORDER_ASSIGNMENT);
+    var code = "mixgoce.buzzer_1.play_demo("+ lst +")\n";
+    return code;
+};
+
+Blockly.Python.esp32_s2_music_set_tempo=function(){
+    Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
+    var bpm = Blockly.Python.valueToCode(this, 'BPM', Blockly.Python.ORDER_ASSIGNMENT);
+    var ticks = Blockly.Python.valueToCode(this, 'TICKS', Blockly.Python.ORDER_ASSIGNMENT);
+    var code = "mixgoce.buzzer_1.set_duration_tempo("+ ticks +", "+ bpm +")\n";
+    return code;
+};
+
+Blockly.Python.esp32_s2_music_get_tempo=function(){
+    Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
+    var code =  "mixgoce.buzzer_1.get_tempo()";
+    return [code, Blockly.Python.ORDER_ATOMIC];
+};
+
+Blockly.Python.esp32_s2_music_reset=function(){
+    Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
+    return "mixgoce.buzzer_1.reset()\n";
+};
+
+Blockly.Python.esp32_mixgo_music_play_list_show=function(){
+    Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
+    Blockly.Python.definitions_['import_matrix'] = 'import matrix';
+    var lst = Blockly.Python.valueToCode(this, 'LIST', Blockly.Python.ORDER_ASSIGNMENT);
+    var pin = Blockly.Python.valueToCode(this, 'PIN', Blockly.Python.ORDER_ASSIGNMENT);
+    // var display = Blockly.Python.valueToCode(this, 'DISPLAY', Blockly.Python.ORDER_ASSIGNMENT);
+    var code = "mixgoce.play_show("+ lst +", "+ pin +")\n";
+    return code;
+};
+
 
 Blockly.Python.number = function () {
     var code = this.getFieldValue('op');
@@ -60,5 +117,22 @@ Blockly.Python.actuator_onboard_neopixel_rgb_show_all = function(){
   var value_gvalue = Blockly.Python.valueToCode(this, 'GVALUE', Blockly.Python.ORDER_ATOMIC);
   var value_bvalue = Blockly.Python.valueToCode(this, 'BVALUE', Blockly.Python.ORDER_ATOMIC);
   var code= 'mixgoce.rgb.show_all('+value_rvalue+', '+value_gvalue+', '+value_bvalue+')\n';
+  return code;
+};
+
+Blockly.Python.actuator_onboard_neopixel_rgb_show_all_chase = function(){
+  Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
+  var value_rvalue = Blockly.Python.valueToCode(this, 'RVALUE', Blockly.Python.ORDER_ATOMIC);
+  var value_gvalue = Blockly.Python.valueToCode(this, 'GVALUE', Blockly.Python.ORDER_ATOMIC);
+  var value_bvalue = Blockly.Python.valueToCode(this, 'BVALUE', Blockly.Python.ORDER_ATOMIC);
+  var number_time = Blockly.Python.valueToCode(this, 'time', Blockly.Python.ORDER_ATOMIC);
+  var code= 'mixgoce.rgb.color_chase('+value_rvalue+', '+value_gvalue+', '+value_bvalue+', '+number_time+')\n';
+  return code;
+};
+
+Blockly.Python.actuator_onboard_neopixel_rgb_show_all_rainbow = function(){
+  Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
+  var number_time = Blockly.Python.valueToCode(this, 'time', Blockly.Python.ORDER_ATOMIC);
+  var code= 'mixgoce.rgb.rainbow_cycle('+number_time+')\n';
   return code;
 };
