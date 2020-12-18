@@ -6,7 +6,7 @@ goog.require('Blockly.Python');
 Blockly.Python.esp32_s2_onboard_music_pitch = function(block) {
   Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
   var number_pitch = Blockly.Python.valueToCode(block, 'pitch', Blockly.Python.ORDER_ATOMIC);
-  var code = 'mixgoce.buzzer_1.play(' + number_pitch + ')\n';
+  var code = 'mixgoce.buzzer.play(' + number_pitch + ')\n';
   return code;
 };
 
@@ -14,20 +14,20 @@ Blockly.Python.esp32_s2_onboard_music_pitch_with_time = function(block) {
   Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
   var number_pitch = Blockly.Python.valueToCode(block, 'pitch', Blockly.Python.ORDER_ATOMIC);
   var number_time = Blockly.Python.valueToCode(block, 'time', Blockly.Python.ORDER_ATOMIC);
-  var code = 'mixgoce.buzzer_1.play(' + number_pitch + ', ' + number_time + ')\n';
+  var code = 'mixgoce.buzzer.play(' + number_pitch + ', ' + number_time + ')\n';
   return code;
 };
 
 Blockly.Python.esp32_s2_onboard_music_stop = function(block) {
   Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
-  var code = 'mixgoce.buzzer_1.stop()\n';
+  var code = 'mixgoce.buzzer.stop()\n';
   return code;
 };
 
 Blockly.Python.esp32_s2_onboard_music_play_list=function(){
     Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
     var lst = Blockly.Python.valueToCode(this, 'LIST', Blockly.Python.ORDER_ASSIGNMENT);
-    var code = "mixgoce.buzzer_1.play_demo("+ lst +")\n";
+    var code = "mixgoce.buzzer.play_demo("+ lst +")\n";
     return code;
 };
 
@@ -35,19 +35,19 @@ Blockly.Python.esp32_s2_music_set_tempo=function(){
     Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
     var bpm = Blockly.Python.valueToCode(this, 'BPM', Blockly.Python.ORDER_ASSIGNMENT);
     var ticks = Blockly.Python.valueToCode(this, 'TICKS', Blockly.Python.ORDER_ASSIGNMENT);
-    var code = "mixgoce.buzzer_1.set_duration_tempo("+ ticks +", "+ bpm +")\n";
+    var code = "mixgoce.buzzer.set_duration_tempo("+ ticks +", "+ bpm +")\n";
     return code;
 };
 
 Blockly.Python.esp32_s2_music_get_tempo=function(){
     Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
-    var code =  "mixgoce.buzzer_1.get_tempo()";
+    var code =  "mixgoce.buzzer.get_tempo()";
     return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
 Blockly.Python.esp32_s2_music_reset=function(){
     Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
-    return "mixgoce.buzzer_1.reset()\n";
+    return "mixgoce.buzzer.reset()\n";
 };
 
 Blockly.Python.esp32_mixgo_music_play_list_show=function(){
