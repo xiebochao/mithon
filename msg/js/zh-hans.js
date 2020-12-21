@@ -99,6 +99,8 @@ var MSG = {
     run: "运行",
     stop: "取消",
     fn: "文件名",
+    download: "下载",
+    save_ser:"保存到云端",
     choose_theme: "请选择主题：",
     choose_language: "请选择语言：",
     confirm_newfile: "是否希望清除画布所有内容？",
