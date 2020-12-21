@@ -231,6 +231,7 @@ Blockly.Events.fire = function (event) {
   }
   //利用window.actionArrayRecord.push(recordLine);
  if(window.actionArrayRecord.length>10){
+    //alert(window.actionArrayRecord);
     var query = window.location.search.substring(1);
     var vars = query.split("&");
     for (var i=0;i<vars.length;i++) {
