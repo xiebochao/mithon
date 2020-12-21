@@ -275,10 +275,9 @@ Blockly.Python['image_shift'] = function(a) {
 Blockly.Python['display_shift'] = function(a) {
   Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
   var op = a.getFieldValue("OP");
-  var image = Blockly.Python.valueToCode(a, 'img', Blockly.Python.ORDER_ATOMIC);
   var value = Blockly.Python.valueToCode(a, 'val', Blockly.Python.ORDER_ATOMIC);
-  var code = 'mixgoce.display.' + op + '(' + value + ')';
-  return [code, Blockly.Python.ORDER_ATOMIC];
+  var code = 'mixgoce.display.' + op + '(' + value + ')\n';
+  return code;
 };
 
 goog.provide('Blockly.Python.display');

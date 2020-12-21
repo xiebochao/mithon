@@ -852,8 +852,10 @@ Blockly.Blocks['display_shift'] = {
         ];
     //this.setHelpUrl(Blockly.Msg.MATH_TRIG_HELPURL);
     this.setColour(Blockly.Blocks.display.HUE);
-    this.setOutput(true);
+    // this.setOutput(true);
     this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
     this.appendDummyInput('')
         .appendField(Blockly.Msg.DISPLAY_IMAGE_LET2)
         .appendField(new Blockly.FieldDropdown(OPERATORS), 'OP');
