@@ -5,6 +5,17 @@ goog.require('Blockly.Blocks');
 
 Blockly.Blocks.communicate.HUE = 140
 
+
+Blockly.Blocks['communicate_irremote'] = {
+    init: function(){
+        this.setColour(Blockly.Blocks.communicate.HUE);
+        this.appendDummyInput()
+            .appendField(Blockly.MIXLY_GET_IRREMOTE_VALUE);
+        this.setOutput(true,Number);
+        this.setInputsInline(true);
+    }
+};
+
 Blockly.Blocks['communicate_buffer'] = {
     init: function() {
         this.setColour(Blockly.Blocks.communicate.HUE);

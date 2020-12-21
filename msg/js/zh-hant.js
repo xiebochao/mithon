@@ -2891,3 +2891,5 @@ Blockly.MIXLY_SPIC_WRITE_NUM = "寫入數字";
 Blockly.MIXLY_SPIC_READ_NUM = "讀取數字";
 Blockly.MIXLY_ESP32S2_LED_SETBRIGHT = "設置內嵌LED燈的當前亮度（0~65535）";
 Blockly.MIXLY_PYTHON_NAME_MAIN = "作為主程式運行";
+Blockly.MIXLY_GET_TEMPRATURE = "獲取溫度感測器的值";
+Blockly.MIXLY_GET_IRREMOTE_VALUE = "獲取紅外接收值";

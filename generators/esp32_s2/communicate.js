@@ -3,6 +3,12 @@
 goog.provide('Blockly.Python.communicate');
 goog.require('Blockly.Python');
 
+Blockly.Python.communicate_irremote = function(){
+    Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
+    var code = 'mixgoce.irremote()';
+    return [code, Blockly.Python.ORDER_ATOMIC];
+};
+
 Blockly.Python.communicate_buffer = function() {   
     var varname = Blockly.Python.valueToCode(this, 'VAR', Blockly.Python.ORDER_ATOMIC);
     var data = Blockly.Python.valueToCode(this, 'data', Blockly.Python.ORDER_ATOMIC);

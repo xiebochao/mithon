@@ -54,6 +54,20 @@ Blockly.Python.sensor_mixgoce_pin_pressed = function(){
     return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
+Blockly.Python.sensor_mixgoce_pin_near = function(){
+    Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
+    var code = 'mixgoce.infrared_near()';
+    return [code, Blockly.Python.ORDER_ATOMIC];
+};
+
+Blockly.Python.sensor_mixgoce_pin_near_more = function(){
+    Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
+    var freq = Blockly.Python.valueToCode(this, 'freq', Blockly.Python.ORDER_ATOMIC);
+    var dc = Blockly.Python.valueToCode(this, 'dc', Blockly.Python.ORDER_ATOMIC);
+    var code = 'mixgoce.infrared_near(f=' + freq + ', h=' + dc + ')';
+    return [code, Blockly.Python.ORDER_ATOMIC];
+};
+
 Blockly.Python.sensor_MSA301_get_acceleration = function(){
     Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
     // Blockly.Python.definitions_['import_machine'] = 'import machine';

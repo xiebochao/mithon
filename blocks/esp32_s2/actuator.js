@@ -12,8 +12,8 @@ Blockly.Blocks['number'] = {
         this.setColour(Blockly.Blocks.actuator.HUE);
         this.appendDummyInput("")
             .appendField(new Blockly.FieldDropdown([
-                ["L1", "1"],
-                ["L2", "2"]
+                ["L1", "led_L1"],
+                ["L2", "led_L2"]
             ]), 'op')
         this.setOutput(true);
     }

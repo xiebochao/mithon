@@ -77,7 +77,7 @@ Blockly.Blocks['sensor_mixgoce_temperature_lm35'] = {
   	init: function() {
 	    this.setColour(Blockly.Blocks.sensor.HUE);
 	    this.appendDummyInput("")
-	    .appendField("LM35"+Blockly.MIXLY_GETTEMPERATUE);
+	    .appendField(Blockly.MIXLY_GETTEMPERATUE);
 	    this.setInputsInline(true);
 	    this.setOutput(true, Number);
 	    this.setTooltip(Blockly.MIXLY_TOOLTIP_LM35);
@@ -98,12 +98,50 @@ Blockly.Blocks['sensor_mixgoce_pin_pressed'] = {
     init: function(){
         this.setColour(Blockly.Blocks.sensor.HUE);
         this.appendValueInput("button")
-        .appendField(Blockly.MIXLY_ESP32_TOUCH_SENSOR)
+            .appendField(Blockly.MIXLY_ESP32_TOUCH_SENSOR)
         this.appendDummyInput()
-        .appendField(Blockly.MIXLY_IS_TOUCHED);
+            .appendField(Blockly.MIXLY_IS_TOUCHED);
         this.setOutput(true, Boolean);
         this.setInputsInline(true);
         this.setTooltip(Blockly.MIXLY_TOOLTIP_sensor_pin_pressed);
+    }
+};
+
+Blockly.Blocks['sensor_mixgoce_pin_near'] = {
+    init: function(){
+        this.setColour(Blockly.Blocks.sensor.HUE);
+        this.appendDummyInput()
+            .appendField(Blockly.MIXLY_MICROBIT_PY_STORAGE_GET+Blockly.MIXLY_ESP32_NEAR);
+        this.setOutput(true,Number);
+        this.setInputsInline(true);
+        var thisBlock = this;
+        this.setTooltip(function() {
+            var mode0 = Blockly.MIXLY_ESP32_SENSOR_MIXGO_PIN_NEAR_TOOLTIP;
+            var mode1 = Blockly.MIXLY_ESP32_NEAR;
+            return mode0 + mode1
+        });
+    }
+};
+
+Blockly.Blocks['sensor_mixgoce_pin_near_more'] = {
+    init: function(){
+        this.setColour(Blockly.Blocks.sensor.HUE);
+        this.appendDummyInput()
+            .appendField(Blockly.MIXLY_MICROBIT_PY_STORAGE_GET+Blockly.MIXLY_ESP32_NEAR);
+        this.appendValueInput('freq')
+            .appendField(Blockly.MIXLY_FREQUENCY)
+            .setCheck(Number);  
+        this.appendValueInput('dc')
+            .appendField(Blockly.MIXLY_ESP32_THRESHOLD)
+            .setCheck(Number);              
+        this.setOutput(true,Number);
+        this.setInputsInline(true);
+        var thisBlock = this;
+        this.setTooltip(function() {
+            var mode0 = Blockly.MIXLY_ESP32_SENSOR_MIXGO_PIN_NEAR_TOOLTIP;
+            var mode1 = Blockly.MIXLY_ESP32_NEAR;
+            return mode0 + mode1
+        });
     }
 };
 
