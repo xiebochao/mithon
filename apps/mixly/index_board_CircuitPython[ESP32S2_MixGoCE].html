@@ -146,7 +146,10 @@
             var layer = layui.layer;
             layer.open({
             type: 2, 
-            content: '../webdfu/dfu-util/index.html', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+            title:'固件初始化向导',
+            content: '../webdfu/dfu-util/initialize.html', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+            btn: ['返回'],
+            btnAlign: 'c',//按钮排列：居中对齐
             area: ['800px', '600px']
           });
       });
