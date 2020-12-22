@@ -283,7 +283,7 @@ var device = null;
                 statusDisplay.textContent = reason;
             }
 
-            connectButton.textContent = "Connect";
+            connectButton.textContent = "连接";
             infoDisplay.textContent = "";
             dfuDisplay.textContent = "";
             detachButton.disabled = true;
@@ -383,7 +383,7 @@ var device = null;
 
             // Display basic USB information
             statusDisplay.textContent = '';
-            connectButton.textContent = 'Disconnect';
+            connectButton.textContent = '断开连接';
             infoDisplay.textContent = (
                 "Name: " + device.device_.productName + "\n" +
                 "MFG: " + device.device_.manufacturerName + "\n" +
