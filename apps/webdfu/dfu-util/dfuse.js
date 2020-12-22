@@ -256,14 +256,14 @@ var dfuse = {};
                 throw `DFU DOWNLOAD failed state=${dfu_status.state}, status=${dfu_status.status}`;
             }
 
-            this.logDebug("Wrote " + bytes_written + " bytes");
+            this.logDebug("文件大小" + bytes_written + " bytes");
             bytes_sent += bytes_written;
 
             this.logProgress(bytes_sent, expected_size);
         }
-        this.logInfo(`Wrote ${bytes_sent} bytes`);
+        this.logInfo(`文件大小 ${bytes_sent} bytes`);
 
-        this.logInfo("Manifesting new firmware");
+        this.logInfo("构建新固件……");
         try {
             await this.dfuseCommand(dfuse.SET_ADDRESS, startAddress, 4);
             await this.download(new ArrayBuffer(), 0);

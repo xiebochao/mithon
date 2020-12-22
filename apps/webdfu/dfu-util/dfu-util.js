@@ -286,6 +286,7 @@ var device = null;
             connectButton.textContent = "连接";
             infoDisplay.textContent = "";
             dfuDisplay.textContent = "";
+            connectButton.disabled = false;
             detachButton.disabled = true;
             uploadButton.disabled = true;
             downloadButton.disabled = true;
@@ -384,6 +385,7 @@ var device = null;
             // Display basic USB information
             statusDisplay.textContent = '';
             connectButton.textContent = '断开连接';
+            connectButton.disabled = true;
             infoDisplay.textContent = (
                 "Name: " + device.device_.productName + "\n" +
                 "MFG: " + device.device_.manufacturerName + "\n" +
@@ -403,7 +405,7 @@ var device = null;
             } else {
                 // DFU
                 detachButton.disabled = true;
-                uploadButton.disabled = false;
+                uploadButton.disabled = true;
                 downloadButton.disabled = false;
                 firmwareFileField.disabled = false;
             }
@@ -637,7 +639,7 @@ var device = null;
                 }
                 await device.do_download(transferSize, firmwareFile, manifestationTolerant).then(
                     () => {
-                        logInfo("Done!");
+                        logInfo("完成！");
                         setLogContext(null);
                         if (!manifestationTolerant) {
                             device.waitDisconnected(5000).then(

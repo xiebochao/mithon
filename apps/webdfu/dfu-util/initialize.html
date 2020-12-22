@@ -25,8 +25,14 @@
   </head>
   <body>
     <!-- <a href="https://github.com/devanlai/webdfu"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a> -->
+    <style type="text/css">
+      .state{
+        font-size: 15px;
+        font-family:"Microsoft YaHei"; 
+      }
+    </style>
     <fieldset>
-      <p>第一步：点击连接按钮，成功连接后显示ESP32_S2基本信息</p>
+      <p class="state">第一步：点击连接按钮，成功连接后显示ESP32_S2基本信息</p>
     <p>
       <span id="status"></span>
     </p>
@@ -49,11 +55,11 @@
       </form>
     </dialog>
     <p>
-      <div id="usbInfo" style="white-space: pre"></div>
-      <div id="dfuInfo" style="white-space: pre"></div>
+      <div id="usbInfo" style="white-space: pre;font-size:15px;color:#787878;"></div>
+      <div id="dfuInfo" style="white-space: pre;font-size:15px;color:#787878;"></div>
     </p>
     
-    <p>第二步：点击分离DFU按钮，出现设备弹出提示音</p>  
+    <p class="state">第二步：点击分离DFU按钮，出现设备弹出提示音</p>  
       <button id="detach" disabled="true">分离DFU</button>
     
       <form id="configForm">
@@ -65,27 +71,27 @@
           <label for="dfuseUploadSize">DfuSe Upload Size:</label>
           <input type="number" name="dfuseUploadSize" id="dfuseUploadSize" min="1"/>
         </div>
-    <p>第三步：重新点击第一步中的连接按钮，完成配对</p>  
+    <p class="state">第三步：重新点击第一步中的连接按钮，完成配对</p>  
      <!--<button id="reconnect">重新连接</button>-->
         
         
           <!--<legend>Firmware Download (write to USB device)</legend>-->
-          <p>第四步：选择固件文件，点击烧写固件按钮</p>  
+          <p class="state">第四步：选择固件文件，点击烧写固件按钮</p>  
           <p>
             <input type="file" id="firmwareFile" name="file" disabled="true"/>
           </p>
           <p>
             <button id="download" disabled="true">烧写固件</button>
           </p>
-          <div class="log" id="downloadLog"></div>
+          <div class="log" id="downloadLog" style="white-space: pre;font-size:15px;color:#787878;"></div>
         
           <!--<legend>Firmware Upload (read from USB device)</legend>-->
           <p>
-            <button id="upload" disabled="true">读取固件</button>
+            <button id="upload" disabled="true" disabled="true">读取固件</button>
           </p>
           <div class="log" id="uploadLog"></div>
           
-        <p>第五步：固件烧写完成后，短按复位按键或者重新上电，显示U盘接入即成功</p>  
+        <p class="state">第五步：固件烧写完成后，短按复位按键或者重新上电，显示U盘接入即成功</p>  
         </fieldset>
       </form>
     </fieldset>

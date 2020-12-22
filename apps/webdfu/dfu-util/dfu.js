@@ -512,7 +512,7 @@ var dfu = {};
         let blocks = [];
         let bytes_read = 0;
 
-        this.logInfo("Copying data from DFU device to browser");
+        this.logInfo("正在下载文件……");
         // Initialize progress to 0
         this.logProgress(0);
 
@@ -570,7 +570,7 @@ var dfu = {};
         let expected_size = data.byteLength;
         let transaction = 0;
 
-        this.logInfo("Copying data from browser to DFU device");
+        this.logInfo("正在烧写固件……");
 
         // Initialize progress to 0
         this.logProgress(bytes_sent, expected_size);
@@ -593,7 +593,7 @@ var dfu = {};
                 throw `DFU DOWNLOAD failed state=${dfu_status.state}, status=${dfu_status.status}`;
             }
 
-            this.logDebug("Wrote " + bytes_written + " bytes");
+            this.logDebug("文件大小" + bytes_written + " bytes");
             bytes_sent += bytes_written;
 
             this.logProgress(bytes_sent, expected_size);
@@ -606,8 +606,8 @@ var dfu = {};
             throw "Error during final DFU download: " + error;
         }
 
-        this.logInfo("Wrote " + bytes_sent + " bytes");
-        this.logInfo("Manifesting new firmware");
+        this.logInfo("文件大小" + bytes_sent + " bytes");
+        this.logInfo("构建新固件……");
 
         if (manifestationTolerant) {
             // Transition to MANIFEST_SYNC state
