@@ -221,10 +221,6 @@ Blockly.Blocks.RTC_set_datetime = {
             .setCheck(Number)
             .setAlign(Blockly.ALIGN_RIGHT)
             .appendField(Blockly.MIXLY_DAY);   
-        this.appendValueInput('weekday')
-            .setCheck(Number)
-            .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField(Blockly.MIXLY_WEEK2);   
         this.appendValueInput('hour')
             .setCheck(Number)
             .setAlign(Blockly.ALIGN_RIGHT)
@@ -237,10 +233,18 @@ Blockly.Blocks.RTC_set_datetime = {
             .setCheck(Number)
             .setAlign(Blockly.ALIGN_RIGHT)
             .appendField(Blockly.MIXLY_SECOND);
-        this.appendValueInput('millisecond')
+        this.appendValueInput('weekday')
             .setCheck(Number)
             .setAlign(Blockly.ALIGN_RIGHT)
-            .appendField(Blockly.MIXLY_MILLISECOND);
+            .appendField(Blockly.MIXLY_WEEK2);   
+        this.appendValueInput('yearday')
+            .setCheck(Number)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField(Blockly.MIXLY_YEARDAY);
+        this.appendValueInput('isdist')
+            .setCheck(Number)
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField(Blockly.MIXLY_ISDIST);
         this.setInputsInline(false);
         this.setPreviousStatement(true);
         this.setNextStatement(true);

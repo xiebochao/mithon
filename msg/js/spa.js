@@ -2889,3 +2889,5 @@ Blockly.MIXLY_ESP32S2_LED_SETBRIGHT = "Establecer el brillo actual de la luz LED
 Blockly.MIXLY_PYTHON_NAME_MAIN = "Programa principal";
 Blockly.MIXLY_GET_TEMPRATURE = "Obtenga el valor del sensor de temperatura";
 Blockly.MIXLY_GET_IRREMOTE_VALUE = "Obtenga el valor del sensor de irromote";
+Blockly.MIXLY_YEARDAY = 'year day';
+Blockly.MIXLY_ISDIST = 'is dist';
