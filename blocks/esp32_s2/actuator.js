@@ -126,7 +126,8 @@ Blockly.Blocks.actuator_onboard_neopixel_rgb_show_all_chase = {
             .appendField(Blockly.MIXLY_RGB_B);
         this.appendValueInput('time')
             .setCheck(Number)
-            .appendField(Blockly.MIXLY_DURATION);
+            .appendField(Blockly.PYTHON_RANGE_STEP)
+            .appendField(Blockly.MIXLY_MILLIS);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -173,7 +174,8 @@ Blockly.Blocks.actuator_onboard_neopixel_rgb_show_all_rainbow = {
             .appendField(Blockly.MIXLY_RAINBOW);
         this.appendValueInput('time')
             .setCheck(Number)
-            .appendField(Blockly.MIXLY_DURATION);
+            .appendField(Blockly.MIXLY_DURATION)
+            .appendField(Blockly.MIXLY_MILLIS);
         this.setInputsInline(true);
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
