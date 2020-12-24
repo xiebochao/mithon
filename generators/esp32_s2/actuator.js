@@ -6,7 +6,7 @@ goog.require('Blockly.Python');
 Blockly.Python.esp32_s2_onboard_music_pitch = function(block) {
   Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
   var number_pitch = Blockly.Python.valueToCode(block, 'pitch', Blockly.Python.ORDER_ATOMIC);
-  var code = 'mixgoce.buzzer.play("' + number_pitch + '")\n';
+  var code = 'mixgoce.buzzer.play(' + number_pitch + ')\n';
   return code;
 };
 
@@ -14,7 +14,7 @@ Blockly.Python.esp32_s2_onboard_music_pitch_with_time = function(block) {
   Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
   var number_pitch = Blockly.Python.valueToCode(block, 'pitch', Blockly.Python.ORDER_ATOMIC);
   var number_time = Blockly.Python.valueToCode(block, 'time', Blockly.Python.ORDER_ATOMIC);
-  var code = 'mixgoce.buzzer.play("' + number_pitch + '", ' + number_time + ')\n';
+  var code = 'mixgoce.buzzer.play(' + number_pitch + ', ' + number_time + ')\n';
   return code;
 };
 
