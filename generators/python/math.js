@@ -143,7 +143,7 @@ Blockly.Python.math_single = function (a) {
   default:
   }
   if (c)
-    return [c, Blockly.Python.ORDER_FUNCTION_CALL];
+    return [c, Blockly.Python.ORDER_EXPONENTIATION];
   switch (b) {
   case "ASIN":
     c = "math.degrees(math.asin(" + a + "))";
