@@ -92,8 +92,8 @@ Blockly.Blocks.controls_millis = {
     this.setColour(Blockly.Blocks.system.HUE);
     this.appendDummyInput()
 	      .appendField(Blockly.MIXLY_RUNTIME);
-    this.appendDummyInput("")
-        .appendField(new Blockly.FieldDropdown([[Blockly.MIXLY_mSecond, "ms"], [Blockly.MIXLY_uSecond, "us"]]), 'Time');
+    // this.appendDummyInput("")
+    //     .appendField(new Blockly.FieldDropdown([[Blockly.MIXLY_mSecond, "ms"], [Blockly.MIXLY_uSecond, "us"]]), 'Time');
     this.setOutput(true, Number);
     this.setInputsInline(true);
 	  this.setTooltip(Blockly.MIXLY_ESP32_CONTROLS_MILLIS_TOOLTIP);

@@ -63,17 +63,7 @@ Blockly.Python.Panic_with_status_code = function () {
 //ok
 Blockly.Python.controls_millis = function () {
     Blockly.Python.definitions_['import_time'] = 'import time';
-    var dropdown_time = this.getFieldValue('Time');
-    switch (dropdown_time) {
-    case "ms":
-       var code ='time.ticks_ms()';
-       return [code, Blockly.Python.ORDER_ATOMIC];
-       break;
-    case "us":
-       var code ='time.ticks_us()';
-       return [code, Blockly.Python.ORDER_ATOMIC];
-       break;
-  }
+    return ['time.monotonic()', Blockly.Python.ORDER_ATOMIC];
 };
 //ok
 Blockly.Python.controls_end_program = function () {
@@ -156,10 +146,10 @@ Blockly.Python.base_delay=Blockly.Python.controls_delay;
 Blockly.Python.time_localtime= function() {
     Blockly.Python.definitions_.import_time = "import time";    
     var op=this.getFieldValue('op');
-    var code="time.localtime()["+op+"]";
+    var code="time.struct_time()["+op+"]";
     switch (op) {    
     case "all":
-       var code1 = "time.localtime()";
+       var code1 = "time.struct_time()";
        return [code1, Blockly.Python.ORDER_ASSIGNMENT];
        break;
     default:
