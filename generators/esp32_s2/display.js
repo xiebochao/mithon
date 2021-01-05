@@ -191,6 +191,13 @@ Blockly.Python['display_image_builtins'] = function(block) {
   return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
+Blockly.Python['display_animate'] = function(block) {
+  Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
+  var dropdown_image = block.getFieldValue('ANIMATION');
+  var code = 'mixgoce.Image.' + dropdown_image;
+  return [code, Blockly.Python.ORDER_ATOMIC];
+};
+
 Blockly.Python['display_get_pixel'] = function(block) {
   Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
   var value_x = Blockly.Python.valueToCode(block, 'x', Blockly.Python.ORDER_ATOMIC);
