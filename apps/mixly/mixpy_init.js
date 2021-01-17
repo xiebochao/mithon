@@ -77,10 +77,10 @@ function tabClick(clickedName) {
         }
         //显示右侧悬浮按钮
         document.getElementById('sidebar').style.visibility = 'visible';
-        //py2block_editor.updateBlock();
+        py2block_editor.updateBlock();
     }
     if (clickedName == "arduino") {
-        //py2block_editor.fromCode = true;
+        py2block_editor.fromCode = true;
         sidecodeDisplay = false;
         sidecodeClick();
     }
@@ -185,10 +185,9 @@ function changeMod(){
  * Initialize Blockly.  Called on page load.
  */
 var editor;
-var editor;
 var EditorRange;
 var pyengine;
-//var py2block_editor;
+var py2block_editor;
 function init() {
     //window.onbeforeunload = function() {
     //  return 'Leaving this page will result in the loss of your work.';
@@ -218,8 +217,8 @@ function init() {
     editor.setScrollSpeed(0.05);
     var mixpyProject = new MixpyProject();
     pyengine = new PyEngine({}, mixpyProject);
-    //var py2block_converter = new PythonToBlocks();
-    //py2block_editor = new Py2blockEditor(py2block_converter, editor);
+    var py2block_converter = new PythonToBlocks();
+    py2block_editor = new Py2blockEditor(py2block_converter, editor);
     Sk.python3 = true;
     var container = document.getElementById('content_area');
     var onresize = function (e) {

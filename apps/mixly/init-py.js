@@ -9,12 +9,14 @@ function sidecodeClick() {
         document.getElementById('side_code_parent').style.display = 'none';
         document.getElementById('sidebar').className = 'right-top';
         document.getElementById('mid_td').style.display = 'none';
+        document.getElementById('content_area').style.width = document.getElementById('table_whole').clientWidth + "px";
         document.getElementById('content_area').width = '100%';
         sidecodeDisplay = false;
     } else {
         document.getElementById('side_code_parent').style.display = '';
         document.getElementById('sidebar').className = 'right-top2';
         document.getElementById('mid_td').style.display = '';
+        document.getElementById('content_area').style.width = document.getElementById('table_whole').clientWidth + "px";
         document.getElementById('content_area').width = '75%';
         sidecodeDisplay = true;
     }
@@ -98,8 +100,10 @@ function tabClick(clickedName) {
         }
         //显示右侧悬浮按钮
         document.getElementById('sidebar').style.visibility = 'visible';
+        py2block_editor.updateBlock();
     }
     if (clickedName == "arduino") {
+        py2block_editor.fromCode = true;
         //隐藏右侧悬浮按钮
         document.getElementById('sidebar').style.visibility = 'hidden';
         //点击代码将隐藏右侧代码，否则出现两个代码区域
@@ -111,6 +115,8 @@ function tabClick(clickedName) {
         $('input[name="undo"]').click(function () {
             editor.undo();
         });
+        document.getElementById('content_area').style.width = document.getElementById('table_whole').clientWidth + "px";
+        document.getElementById('content_area').width = '100%';
         $('input[name="redo"]').click(function () {
             editor.redo();
         });
@@ -141,16 +147,13 @@ function renderContent() {
         xmlTextarea.value = xmlText;
         xmlTextarea.focus();
     } else if (content.id == 'content_arduino') {
-        document.getElementById("tab_arduino").style.display = "none";
-        // document.getElementById("tab_blocks").style.display = "inline";
-        
-        //content.innerHTML = Blockly.Arduino.workspaceToCode(Blockly.mainWorkspace);
-        //var arduinoTextarea = document.getElementById('content_arduino');
-        //arduinoTextarea.value = Blockly.Arduino.workspaceToCode(Blockly.mainWorkspace);
-        //arduinoTextarea.focus();
-        // var code = Blockly.Python.workspaceToCode(Blockly.mainWorkspace) || '';
-        // var chinese_code = code.replace(/(_[0-9A-F]{2}_[0-9A-F]{2}_[0-9A-F]{2})+/g, function (s) { return decodeURIComponent(s.replace(/_/g, '%')); });
-        // editor.setValue(chinese_code, -1);
+       document.getElementById("tab_arduino").style.display = "none";
+       //content.innerHTML = Blockly.Python.workspaceToCode(Blockly.mainWorkspace);
+       var code = Blockly.Python.workspaceToCode(Blockly.mainWorkspace) || '';
+       var chinese_code = code.replace(/(_[0-9A-F]{2}_[0-9A-F]{2}_[0-9A-F]{2})+/g, function(s) { return decodeURIComponent(s.replace(/_/g, '%')); });
+       editor.setValue(chinese_code, -1);
+       //arduinoTextarea.value = Blockly.Python.workspaceToCode(Blockly.mainWorkspace);
+       //arduinoTextarea.focus();
     }
 }
 
@@ -253,6 +256,8 @@ var resetACEFontSize = function () {
     editor.setFontSize(17);
     editor_side_code.setFontSize(17);
 }
+
+var py2block_editor;
 function init() {
     //window.onbeforeunload = function() {
     //  return 'Leaving this page will result in the loss of your work.';
@@ -308,10 +313,13 @@ function init() {
             }
         }]);
     //动态生成按钮元素
-    $('.ace_scroller').append('<div id="resetFontSize" class="setFontSize" width="32" height="32" onclick="resetACEFontSize()" ></div>');
-    $('.ace_scroller').append('<div id="increaseFontSize" class="setFontSize" width="32" height="32" onclick="increaseACEFontSize()" ></div>');
-    $('.ace_scroller').append('<div id="decreaseFontSize" class="setFontSize" width="32" height="32" onclick="decreaseACEFontSize()" ></div>');
+    $('.ace_scroller').append('<div id="resetFontSize" class="setFontSize" width="32" height="32" onclick="resetACEFontSize()" style="cursor:hand;"></div>');
+    $('.ace_scroller').append('<div id="increaseFontSize" class="setFontSize" width="32" height="32" onclick="increaseACEFontSize()" style="cursor:hand;"></div>');
+    $('.ace_scroller').append('<div id="decreaseFontSize" class="setFontSize" width="32" height="32" onclick="decreaseACEFontSize()" style="cursor:hand;"></div>');
     //endACE放大缩小
+    var py2block_converter = new PythonToBlocks();
+    py2block_editor = new Py2blockEditor(py2block_converter, editor);
+    Sk.python3 = true;
     var container = document.getElementById('content_area');
     var onresize = function (e) {
         var bBox = getBBox_(container);

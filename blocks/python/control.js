@@ -310,8 +310,7 @@ Blockly.Blocks['controls_try_finally'] = {
             .appendField('');
         this.setPreviousStatement(true);
         this.setNextStatement(true);
-        this.setMutator(new Blockly.Mutator(['controls_except',
-            'controls_finally']));
+        this.setMutator(new Blockly.Mutator(['controls_except','controls_finally']));
         this.setTooltip(Blockly.MIXLY_MIXPY_CONTROL_TRY_TOOLTIP);
         this.elseifCount_ = 1;
         this.elseCount_ = 0;
@@ -658,8 +657,8 @@ Blockly.Blocks['controls_try'] = {
     this.appendDummyInput()
         .appendField('try');
     this.appendStatementInput('STACK');
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);    
+    this.setPreviousStatement(false);
+    this.setNextStatement(false);    
     this.contextMenu = false;
   }
 };

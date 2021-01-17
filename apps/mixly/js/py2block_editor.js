@@ -191,7 +191,7 @@ Blockly.Xml.domToWorkspaceDestructive = function(xml, workspace, errorXml) {
     if (workspace.RTL) {
         width = workspace.getWidth();
     }
-    Blockly.Field.startCache();
+    Blockly.utils.dom.startTextWidthCache();
     // Safari 7.1.3 is known to provide node lists with extra references to
     // children beyond the lists' length.  Trust the length, do not use the
     // looping pattern of checking the index for an object.
@@ -206,7 +206,9 @@ Blockly.Xml.domToWorkspaceDestructive = function(xml, workspace, errorXml) {
         workspace.topBlocks_[0].dispose();
         //blockLHeight.push(workspace.topBlocks_[0].getHeightWidth()['height']);
     }
-    workspace.variableList.length = 0;
+
+    //workspace.variableList.length = 0;
+
     Blockly.Events.enable();
 
     // Disable workspace resizes as an optimization.
@@ -236,9 +238,9 @@ Blockly.Xml.domToWorkspaceDestructive = function(xml, workspace, errorXml) {
     if (!existingGroup) {
         Blockly.Events.setGroup(false);
     }
-    Blockly.Field.stopCache();
+    Blockly.utils.dom.stopTextWidthCache();
 
-    workspace.updateVariableList(false);
+    //workspace.updateVariableList(false);
     // Re-enable workspace resizing.
     if (workspace.setResizesEnabled) {
         workspace.setResizesEnabled(true);

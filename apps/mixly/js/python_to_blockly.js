@@ -733,15 +733,59 @@ PythonToBlocks.prototype.Assign = function(node)
             });
         }
         else if(targets[0]._astname == "Attribute"){
-            py2block_config.pinType = "object_get";
-            var mode = this.convert(node.targets["0"].value);   
-            py2block_config.pinType=null;
-            return block("property_set", targets.lineno, {
-                "VAR":node.targets["0"].attr.v
-            },{
-                "VALUE":mode,
-                "DATA":this.convert(node.value),
-            });
+            if(py2block_config.board == py2block_config.ESP32){
+                if(targets[0].value.id.v.indexOf("pin") != -1 && targets[0].attr.v == 'value' && Blockly.Blocks['inout_digital_write']){
+                    py2block_config.pinType = "pins_digital";
+                    var mode = this.convert(node.targets["0"].value);  
+                    var data = this.convert(node.value);
+                    py2block_config.pinType=null;
+                    return block("inout_digital_write", targets.lineno, {},{
+                        "PIN": mode,
+                        "STAT": data
+                    });
+                }
+                else if(targets[0].value.id.v.indexOf("dac") != -1 && targets[0].attr.v == 'value' && Blockly.Blocks['inout_analog_write']){
+                    py2block_config.pinType = "pins_dac";
+                    var mode = this.convert(node.targets["0"].value);  
+                    py2block_config.pinType=null;
+                    var data = this.convert(node.value);
+                    return block("inout_analog_write", targets.lineno, {},{
+                        "PIN": mode,
+                        "NUM": data
+                    });
+                }
+                else if(targets[0].attr.v == 'duty_cycle' && Blockly.Blocks['inout_pwm_analog_write']){
+                    py2block_config.pinType = "pins_pwm";
+                    var mode = this.convert(node.targets["0"].value);  
+                    py2block_config.pinType=null;
+                    var data = this.convert(node.value);
+                    return block("inout_pwm_analog_write", targets.lineno, {},{
+                        "PIN": mode,
+                        "NUM": data
+                    });
+                }
+                else if(targets[0].attr.v == 'frequency' && Blockly.Blocks['inout_pwm_analog_write_set_freq']){
+                    py2block_config.pinType = "pins_pwm";
+                    var mode = this.convert(node.targets["0"].value);  
+                    py2block_config.pinType=null;
+                    var data = this.convert(node.value);
+                    return block("inout_pwm_analog_write_set_freq", targets.lineno, {},{
+                        "PIN": mode,
+                        "NUM": data
+                    });
+                }
+            }
+            else if(Blockly.Blocks['property_set']){
+                py2block_config.pinType = "object_get";
+                var mode = this.convert(node.targets["0"].value);   
+                py2block_config.pinType=null;
+                return block("property_set", targets.lineno, {
+                    "VAR": node.targets["0"].attr.v
+                },{
+                    "VALUE": mode,
+                    "DATA": this.convert(node.value),
+                });
+            }
         }
         return block("variables_set", node.lineno, {
             "VAR": this.Name_str(targets[0]) //targets
@@ -2067,14 +2111,47 @@ PythonToBlocks.prototype.Attribute = function(node)
             }
         }
     }
-    py2block_config.pinType = "object_get";
-    var mode = this.convert(value);   
-    py2block_config.pinType=null;
-    return block("property_get", node.lineno, {
-        "VAR": node.attr.v
-    }, {
-        "VALUE": mode
-    }, { "inline": "true"}, {});
+    if(attr.v == 'value' && py2block_config.board == py2block_config.ESP32){
+        if(value.id.v.indexOf("pin") != -1 && Blockly.Blocks['inout_digital_read']){
+            pbc.pinType = "pins_digital";
+            var pinblock = this.convert(value);
+            pbc.pinType = null;
+            return block("inout_digital_read", node.lineno, {}, {
+                "PIN": pinblock
+            });
+        }
+        else if(value.id.v.indexOf("adc") != -1 && Blockly.Blocks['inout_analog_read']){
+            pbc.pinType = "pins_analog";
+            var pinblock = this.convert(value);
+            pbc.pinType = null;
+            return block("inout_analog_read", node.lineno, {}, {
+                "PIN": pinblock
+            });
+        }
+        else if(value.id.v.indexOf("tc") != -1 && Blockly.Blocks['inout_pin_pressed']){
+            pbc.pinType = "pins_touch";
+            var pinblock = this.convert(value);
+            pbc.pinType = null;
+            return block("inout_pin_pressed", node.lineno, {}, {
+                "pin": pinblock
+            });
+        }
+    }
+    else if(Blockly.Blocks['property_get']){
+        py2block_config.pinType = "object_get";
+        var mode = this.convert(value);   
+        py2block_config.pinType=null;
+        return block("property_get", node.lineno, {
+            "VAR": node.attr.v
+        }, {
+            "VALUE": mode
+        }, { "inline": "true"}, {});
+    }
+
+    return block("attribute_access", node.lineno, {
+        "MODULE": this.convert(value),
+        "NAME": this.convert(attr)
+    });
 
     //throw new Error("Attribute access not implemented");
 }
@@ -2225,6 +2302,8 @@ PythonToBlocks.prototype.Name = function(node)
     var pwmMatcher = /pwm[0-9]*/;
     var adcMatcher = /adc[0-9]*/;
     var tcMatcher = /tc[0-9]*/;
+
+    var ioMatcher = /IO[0-9]*/;
     if(py2block_config.board == py2block_config.MICROBITPY
         && pinMatcher.test(nodeName) && py2block_config.pinType != null){
         return block(py2block_config.pinType, node.lineno, {
@@ -2288,6 +2367,12 @@ PythonToBlocks.prototype.Name = function(node)
     if(py2block_config.pinType == "pins_callback"){
         return block("factory_block_return", node.lineno, {
             "VALUE": this.identifier(id)
+        });
+    }
+    if(py2block_config.board == py2block_config.ESP32
+        && ioMatcher.test(nodeName) && py2block_config.pinType != null){
+        return block(py2block_config.pinType, node.lineno, {
+            "PIN": this.identifier(id).replace("pin", '')
         });
     }
 
