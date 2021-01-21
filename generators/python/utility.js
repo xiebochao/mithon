@@ -40,7 +40,7 @@ Blockly.Python['raw_expression'] = function(block) {
 
 Blockly.Python['raw_empty'] = function(block) {
   var code = Blockly.Python.valueToCode(block, 'VALUE',
-      Blockly.Python.ORDER_MEMBER) || '';
+      Blockly.Python.ORDER_ATOMIC) || '';
   return code+"\n";
 };
 
