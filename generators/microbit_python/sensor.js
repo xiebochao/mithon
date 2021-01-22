@@ -143,6 +143,8 @@ Blockly.Python.sensor_magnetic= function(){
 };
 Blockly.Python.sensor_distance_hrsc04= function(){
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+    Blockly.Python.definitions_['import_HCSR04'] = 'import HCSR04';
+    /*
     Blockly.Python.setups_['class_hrsc04'] =
         'class HCSR04:\n'+
         '    def __init__(self, tpin=pin15, epin=pin14, spin=pin13):\n'+
@@ -183,6 +185,7 @@ Blockly.Python.sensor_distance_hrsc04= function(){
         '\n'+
         'sonar=HCSR04()\n'+
         '\n'
+        */
     return ['sonar.distance_cm()', Blockly.Python.ORDER_ATOMIC];
 };
 
@@ -235,20 +238,22 @@ Blockly.Python.sensor_distance_hrsc04_= function(){
 
 Blockly.Python.DS1307_init = function () {
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+    Blockly.Python.definitions_['import_DS1307'] = 'import DS1307';
     var SDA = Blockly.Python.valueToCode(this, 'SDA', Blockly.Python.ORDER_ATOMIC);
     var SCL = Blockly.Python.valueToCode(this, 'SCL', Blockly.Python.ORDER_ATOMIC);
     //var RTCName = this.getFieldValue('RTCName');
     //Blockly.Python.definitions_['include_Mixly'] = '#include "Mixly.h"';
-    Blockly.Python.setups_['class_DS1307'] = Blockly.Python.CLASS_DS1307_INIT;
+    //Blockly.Python.setups_['class_DS1307'] = Blockly.Python.CLASS_DS1307_INIT;
     //Blockly.Python.definitions_['DS1307'+RTCName] = 'DS1307 ' + RTCName + '('+SDA+','+SCL+');';
     //return 'DS1307' + '('+SDA+','+SCL+')\n';
 };
 
 Blockly.Python.RTC_get_time = function () {
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+    Blockly.Python.definitions_['import_DS1307'] = 'import DS1307';
     //var RTCName = this.getFieldValue('RTCName');
     var timeType =this.getFieldValue('TIME_TYPE');
-    Blockly.Python.setups_['class_DS1307'] = Blockly.Python.CLASS_DS1307_INIT;
+    //Blockly.Python.setups_['class_DS1307'] = Blockly.Python.CLASS_DS1307_INIT;
 
     switch (timeType) {
         //
@@ -294,11 +299,12 @@ Blockly.Python.RTC_get_time = function () {
 
 Blockly.Python.RTC_set_time = function () {
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+    Blockly.Python.definitions_['import_DS1307'] = 'import DS1307';
     //var RTCName = this.getFieldValue('RTCName');
     var hour = Blockly.Python.valueToCode(this, "hour", Blockly.Python.ORDER_ASSIGNMENT);
     var minute = Blockly.Python.valueToCode(this, "minute", Blockly.Python.ORDER_ASSIGNMENT);
     var second = Blockly.Python.valueToCode(this, "second", Blockly.Python.ORDER_ASSIGNMENT);
-    Blockly.Python.setups_['class_DS1307'] = Blockly.Python.CLASS_DS1307_INIT;
+    //Blockly.Python.setups_['class_DS1307'] = Blockly.Python.CLASS_DS1307_INIT;
 
     var code='ds.set_time('+hour+', '+minute+', '+second+')\n';
     return code;
@@ -306,11 +312,12 @@ Blockly.Python.RTC_set_time = function () {
 
 Blockly.Python.RTC_set_date = function () {
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+    Blockly.Python.definitions_['import_DS1307'] = 'import DS1307';
     //var RTCName = this.getFieldValue('RTCName');
     var year = Blockly.Python.valueToCode(this, "year", Blockly.Python.ORDER_ASSIGNMENT);
     var month = Blockly.Python.valueToCode(this, "month",Blockly.Python.ORDER_ASSIGNMENT);
     var day = Blockly.Python.valueToCode(this, "day",Blockly.Python.ORDER_ASSIGNMENT);
-    Blockly.Python.setups_['class_DS1307'] = Blockly.Python.CLASS_DS1307_INIT;
+    //Blockly.Python.setups_['class_DS1307'] = Blockly.Python.CLASS_DS1307_INIT;
     var code='ds.set_date('+year+', '+month+', '+day+')\n';
     return code;
 };

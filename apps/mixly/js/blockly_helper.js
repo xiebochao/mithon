@@ -456,6 +456,8 @@ mixlyjs.loadLocalFile = function () {
                 }
             } else if (filesuffix === "py") {
                 mixlyjs.renderIno(text);
+            } else if (filesuffix === "hex") {
+                loadHex("main.py", text);
             } else {
                 alert("Invalid file type! (.ino|.xml|.mix|.js|.py|.hex file supported)");
                 return;

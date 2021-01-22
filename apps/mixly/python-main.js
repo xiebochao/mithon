@@ -1,3 +1,126 @@
+
+'use strict';
+window.FS = microbitFsWrapper();
+
+FS.setupFilesystem();
+
+// Reset the filesystem and load the files from this hex file to the fs and editor
+function loadHex(filename, hexStr) {
+    var importedFiles = [];
+    // If hexStr is parsed correctly it formats the file system before adding the new files
+    try {
+        importedFiles = FS.importHexFiles(hexStr);
+    } catch(hexImportError) {
+        try {
+            importedFiles = FS.importHexAppended(hexStr);
+        } catch(appendedError) {
+            return alert(hexImportError.message);
+        }
+    }
+    // Check if imported files includes a main.py file
+    var code = '';
+    if (importedFiles.indexOf('main.py') > -1) {
+        code = FS.read('main.py');
+    } else {
+        alert("no main.py");
+    }
+    //setName(filename.replace('.hex', ''));
+    document.getElementById('changemod_btn').value = 0;
+    document.getElementById('changemod_btn').textContent = MSG['tab_arduino'];
+    tabClick('arduino');
+    editor.setValue(code, -1);
+}
+
+// Function for adding file to filesystem
+function loadFileToFilesystem(filename, fileBytes) {
+    // For main.py confirm if the user wants to replace the editor content
+    if (filename === 'main.py') {
+        return;
+    }
+    try {
+    	if (FS.exists(filename)) {
+            FS.remove(filename);
+            FS.create(filename, fileBytes);
+        } else {
+	        FS.write(filename, fileBytes);
+	    }
+	    // Check if the filesystem has run out of space
+	    var _ = FS.getUniversalHex();
+    } catch(e) {
+        if (FS.exists(filename)) {
+            FS.remove(filename);
+        }
+        return alert(filename + '\n' + e.message);
+    }
+}
+
+// Update main.py code with required rules for including or excluding the file
+function updateMain() {
+    try {
+        // Remove main.py if editor content is empty to download a hex file
+        // with MicroPython included (also includes the rest of the filesystem)
+        var code = "";
+		if(document.getElementById('tab_arduino').className == 'tabon'){
+			//code = document.getElementById('content_arduino').value;
+	        code = editor.getValue();
+		}else{
+			code = Blockly.Python.workspaceToCode(Blockly.mainWorkspace) || '';
+		}
+		code = code_head+code
+		code = code.replace('from mixpy import math_map','')
+		code = code.replace('from mixpy import math_mean','')
+		code = code.replace('from mixpy import math_median','')
+		code = code.replace('from mixpy import math_modes','')
+		code = code.replace('from mixpy import math_standard_deviation','')
+		code = code.replace('from mixpy import lists_sort','')
+        //var mainCode = EDITOR.getCode();
+        if (FS.exists('main.py')) {
+            FS.remove('main.py');
+        }
+        for (var i = 0; i < py_module.length; i++) {
+        	if (FS.exists(py_module[i]['filename'])) {
+	            FS.remove(py_module[i]['filename']);
+	        }
+        }
+        if (code) {
+            FS.create('main.py', code);
+        }
+        var str = code;
+        var arrayObj = new Array();
+		str.trim().split("\n").forEach(function(v, i) {
+		  arrayObj.push(v);
+		})
+        
+        var module_name = "";
+        for (var i = 0; i < arrayObj.length; i++) {
+        	if (arrayObj[i].indexOf("from") == 0) {
+        		module_name = arrayObj[i].substring(4, arrayObj[i].indexOf("import"));
+        		module_name = module_name.replace(/(^\s*)|(\s*$)/g, "");
+        		if (FS.exists(module_name + '.py'))
+        			continue;
+        		for (var j = 0; j < py_module.length; j++) {
+        			if (py_module[j]['filename'] == module_name + ".py") {
+        				loadFileToFilesystem(py_module[j]['filename'], py_module[j]['code']);
+        			}
+        		}
+        	} else if (arrayObj[i].indexOf("import") == 0) {
+        		module_name = arrayObj[i].substring(6);
+        		module_name = module_name.replace(/(^\s*)|(\s*$)/g, "");
+        		if (FS.exists(module_name + '.py'))
+        			continue;
+        		for (var j = 0; j < py_module.length; j++) {
+        			if (py_module[j]['filename'] == module_name + ".py") {
+        				loadFileToFilesystem(py_module[j]['filename'], py_module[j]['code']);
+        			}
+        		}
+        	}
+        }
+    } catch(e) {
+        // We generate a user readable error here to be caught and displayed
+        throw new Error(e.message);
+    }
+}
+
 function writeToHex(){
 	fso = new ActiveXObject("Scripting.FileSystemObject");
 	f1 = fso.CreateTextFile("mithon.hex", true);
@@ -6,8 +129,17 @@ function writeToHex(){
 }
 
 function doDownload(){
+	/*
 	var firmware = $("#firmware").text();
 	var output = getHexFile(firmware);
+	*/
+	try {
+        updateMain();
+        var output = FS.getUniversalHex();
+    } catch(e) {
+        alert(e.message);
+        return;
+    }
 	return output;
 }
 

@@ -162,7 +162,9 @@ Blockly.Python.speech_pronounce_easy=function(){
 
 Blockly.Python.servo_move = function() {
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+    Blockly.Python.definitions_['import_servo'] = 'import Servo';
     Blockly.Python.setups_['class_servo'] =
+        /*
         'class Servo:\n'+
         '    def __init__(self, pin, freq=50, min_us=600, max_us=2400, angle=180):\n'+
         '        self.min_us = min_us\n'+
@@ -186,6 +188,7 @@ Blockly.Python.servo_move = function() {
         '        us = self.min_us + total_range * degrees // self.angle\n'+
         '        self.write_us(us)\n'+
         '\n'+
+        */
         'def mixly_servo_write_angle(pin, degree):\n'+
         '    Servo(pin).write_angle(degree)'+
         '\n';
