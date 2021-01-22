@@ -409,6 +409,8 @@ mixlyjs.renderXml = function (xmlContent) {
     }
 };
 mixlyjs.renderIno = function (xmlContent) {
+    document.getElementById('changemod_btn').value = 0;
+    document.getElementById('changemod_btn').textContent = MSG['tab_arduino'];
     tabClick('arduino');
     editor.setValue(xmlContent, -1);
 };
