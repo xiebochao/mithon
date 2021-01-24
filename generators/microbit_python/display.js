@@ -207,32 +207,36 @@ Blockly.Python['microbit_display_scroll_string_animation'] = function(block) {
 
 Blockly.Python.group_lcd_print = function() {
   Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+  Blockly.Python.definitions_['import_lcd1602'] = 'import lcd1602';
   var str1 = Blockly.Python.valueToCode(this, 'TEXT', Blockly.Python.ORDER_ASSIGNMENT);
   var str2 = Blockly.Python.valueToCode(this, 'TEXT2', Blockly.Python.ORDER_ASSIGNMENT);
-  Blockly.Python.setups_['class_LCD1602'] = Blockly.Python.CLASS_LCD1602_INIT;//python.js
+  //Blockly.Python.setups_['class_LCD1602'] = Blockly.Python.CLASS_LCD1602_INIT;//python.js
   var code = 'mylcd.mixly_puts_two_lines(' + str1 + ', ' + str2 + ')\n';
   return code;
 };
 
 Blockly.Python.group_lcd_init = function() {
   Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+  Blockly.Python.definitions_['import_lcd1602'] = 'import lcd1602';
   var device = Blockly.Python.valueToCode(this, 'device', Blockly.Python.ORDER_ASSIGNMENT) || '0x27';
-  Blockly.Python.setups_['class_LCD1602'] = Blockly.Python.CLASS_LCD1602_INIT;//python.js
-  return 'mylcd = LCD1602(' + device + ')\n';
+  //Blockly.Python.setups_['class_LCD1602'] = Blockly.Python.CLASS_LCD1602_INIT;//python.js
+  return 'mylcd = lcd1602.LCD1602(' + device + ')\n';
 };
 
 Blockly.Python.group_lcd_print2 = function() {
   Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+  Blockly.Python.definitions_['import_lcd1602'] = 'import lcd1602';
   var str = Blockly.Python.valueToCode(this, 'TEXT', Blockly.Python.ORDER_ASSIGNMENT) || 'String(\"\")';
   var row = Blockly.Python.valueToCode(this, 'row', Blockly.Python.ORDER_ASSIGNMENT) || '1';
   var column = Blockly.Python.valueToCode(this, 'column', Blockly.Python.ORDER_ASSIGNMENT) || '1';
-  Blockly.Python.setups_['class_LCD1602'] = Blockly.Python.CLASS_LCD1602_INIT;//python.js
+  //Blockly.Python.setups_['class_LCD1602'] = Blockly.Python.CLASS_LCD1602_INIT;//python.js
   var code = 'mylcd.mixly_puts(' + str + ', ' + column + ', ' + row+')\n'
   return code;
 };
 
 Blockly.Python.group_lcd_power = function() {
   Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+  Blockly.Python.definitions_['import_lcd1602'] = 'import lcd1602';
   var dropdown_stat = this.getFieldValue('STAT');
   var code = 'mylcd.'+dropdown_stat+'\n';
   return code;
@@ -240,11 +244,12 @@ Blockly.Python.group_lcd_power = function() {
 
 Blockly.Python.lp2i_u8g_draw_4strings = function(){
    Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+   Blockly.Python.definitions_['import_oled'] = 'import oled';
    var value_text_line1 = Blockly.Python.valueToCode(this, 'Text_line1', Blockly.Python.ORDER_ASSIGNMENT) || '\'\'';
    var value_text_line2 = Blockly.Python.valueToCode(this, 'Text_line2', Blockly.Python.ORDER_ASSIGNMENT) || '\'\'';
    var value_text_line3 = Blockly.Python.valueToCode(this, 'Text_line3', Blockly.Python.ORDER_ASSIGNMENT) || '\'\'';
    var value_text_line4 = Blockly.Python.valueToCode(this, 'Text_line4', Blockly.Python.ORDER_ASSIGNMENT) || '\'\''; 
-   Blockly.Python.setups_["class_OLED12864_I2C"] = Blockly.Python.CLASS_OLED12864_I2C_INIT;
+   //Blockly.Python.setups_["class_OLED12864_I2C"] = Blockly.Python.CLASS_OLED12864_I2C_INIT;
    return 'mixly_oled_text(' + value_text_line1 + ', ' + value_text_line2 + ', ' + value_text_line3 + ', ' + value_text_line4 + ')\n';
 };
 
@@ -259,6 +264,7 @@ Blockly.Python['display_image_size'] = function() {
 Blockly.Python.display_fill=function(){
   var varName =Blockly.Python.valueToCode(this, 'SUB',Blockly.Python.ORDER_ATOMIC);
   Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+  Blockly.Python.definitions_['import_oled'] = 'import oled';
   var key = this.getFieldValue('key');
   var code = varName + '.show_fill('+key+')\n';
   return code;

@@ -202,6 +202,8 @@ Blockly.Python.servo_move = function() {
 
 Blockly.Python.bit_motor_control = function() {
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+    Blockly.Python.definitions_['import_motor_control'] = 'import motor_control';
+    /*
     Blockly.Python.setups_['class_bit_motor_control'] =
         'def initPCA9685():\n'+
         '    i2c.write(0x40, bytearray([0x00, 0x00]))\n'+
@@ -267,12 +269,13 @@ Blockly.Python.bit_motor_control = function() {
         '            setPwm(4, 1023, 3071)\n'+
         '            setPwm(5, 3071, 1023)\n\n'+
         'initPCA9685()\n'
+    */
 
     var Motor= this.getFieldValue('Motor');
     var mode= this.getFieldValue('mode');
     var speed = Blockly.Python.valueToCode(this, 'speed', Blockly.Python.ORDER_ATOMIC);
 
-    var code = 'MotorRun('+Motor+', '+mode+''+speed+')\n';
+    var code = 'motor_control.MotorRun('+Motor+', '+mode+''+speed+')\n';
     return code;
 };
 

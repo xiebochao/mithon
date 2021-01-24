@@ -175,6 +175,71 @@ class DS1307():
 
 ds = DS1307()
 */})},
+{filename:"motor_control.py",code:_TEXT(function(){/*
+def initPCA9685():
+    i2c.write(0x40, bytearray([0x00, 0x00]))
+    setFreq(50)
+    for idx in range(0, 16, 1):
+        setPwm(idx, 0 ,0)
+def MotorRun(Motors, speed):
+    speed = speed * 16
+    if (speed >= 4096):
+        speed = 4095
+    if (speed <= -4096):
+        speed = -4095
+    if (Motors <= 4 and Motors > 0):
+        pp = (Motors - 1) * 2
+        pn = (Motors - 1) * 2 + 1
+        if (speed >= 0):
+            setPwm(pp, 0, speed)
+            setPwm(pn, 0, 0)
+        else :
+            setPwm(pp, 0, 0)
+            setPwm(pn, 0, -speed)
+def Servo(Servos, degree):
+    v_us = (degree * 1800 / 180 + 600)
+    value = int(v_us * 4096 / 20000)
+    setPwm(Servos + 7, 0, value)
+def setFreq(freq):
+    prescaleval = int(25000000/(4096*freq)) - 1
+    i2c.write(0x40, bytearray([0x00]))
+    oldmode = i2c.read(0x40, 1)
+    newmode = (oldmode[0] & 0x7F) | 0x10
+    i2c.write(0x40, bytearray([0x00, newmode]))
+    i2c.write(0x40, bytearray([0xfe, prescaleval]))
+    i2c.write(0x40, bytearray([0x00, oldmode[0]]))
+    sleep(4)
+    i2c.write(0x40, bytearray([0x00, oldmode[0] | 0xa1]))
+def setPwm(channel, on, off):
+    if (channel >= 0 and channel <= 15):
+        buf = bytearray([0X06 + 4 * channel, on & 0xff, (on >> 8) & 0xff, off & 0xff, (off >> 8) & 0xff])
+        i2c.write(0x40, buf)
+def setStepper(stpMotors, dir, speed):
+    spd = speed
+    setFreq(spd)
+    if (stpMotors == 1):
+        if (dir):
+            setPwm(0, 2047, 4095)
+            setPwm(1, 1, 2047)
+            setPwm(2, 1023, 3071)
+            setPwm(3, 3071, 1023)
+        else:
+            setPwm(3, 2047, 4095)
+            setPwm(2, 1, 2047)
+            setPwm(1, 1023, 3071)
+            setPwm(0, 3071, 1023)
+    elif (stpMotors == 2):
+        if (dir):
+            setPwm(4, 2047, 4095)
+            setPwm(5, 1, 2047)
+            setPwm(6, 1023, 3071)
+            setPwm(7, 3071, 1023)
+        else:
+            setPwm(7, 2047, 4095)
+            setPwm(6, 1, 2047)
+            setPwm(4, 1023, 3071)
+            setPwm(5, 3071, 1023)
+*/})},
 {filename:"Servo.py",code:_TEXT(function(){/*
 from microbit import *
 
@@ -201,5 +266,199 @@ class Servo:
         total_range = self.max_us - self.min_us
         us = self.min_us + total_range * degrees // self.angle
         self.write_us(us)
+*/})},
+{filename:"lcd1602.py",code:_TEXT(function(){/*
+class LCD1602():
+    def __init__(self, lcd_i2c_addr):
+        self.buf = bytearray(1)
+        self.BK = 0x08
+        self.RS = 0x00
+        self.E = 0x04
+        self.setcmd(0x33)
+        sleep(5)
+        self.send(0x30)
+        sleep(5)
+        self.send(0x20)
+        sleep(5)
+        self.setcmd(0x28)
+        self.setcmd(0x0C)
+        self.setcmd(0x06)
+        self.setcmd(0x01)
+        self.version='1.0'
+        self.lcd_i2c_addr=lcd_i2c_addr
+
+    def setReg(self, dat):
+        self.buf[0] = dat
+        i2c.write(self.lcd_i2c_addr, self.buf)
+        sleep(1)
+
+    def send(self, dat):
+        d=dat&0xF0
+        d|=self.BK
+        d|=self.RS
+        self.setReg(d)
+        self.setReg(d|0x04)
+        self.setReg(d)
+
+    def setcmd(self, cmd):
+        self.RS=0
+        self.send(cmd)
+        self.send(cmd<<4)
+
+    def setdat(self, dat):
+        self.RS=1
+        self.send(dat)
+        self.send(dat<<4)
+
+    def clear(self):
+        self.setcmd(1)
+
+    def backlight(self, on):
+        if on:
+            self.BK=0x08
+        else:
+            self.BK=0
+        self.setdat(0)
+
+    def on(self):
+        self.setcmd(0x0C)
+
+    def off(self):
+        self.setcmd(0x08)
+
+    def char(self, ch, x=-1, y=0):
+        if x>=0:
+            a=0x80
+            if y>0:
+                a=0xC0
+            a+=x
+            self.setcmd(a)
+        self.setdat(ch)
+
+    def puts(self, s, x=0, y=0):
+        if len(s)>0:
+            self.char(ord(s[0]),x,y)
+            for i in range(1, len(s)):
+                self.char(ord(s[i]))
+
+    def mixly_puts(self, s, x=1, y=1):
+        s = str(s)
+        x = x - 1
+        y = y - 1
+        self.puts(self, s, x, y)
+
+    def mixly_puts_two_lines(self, line1, line2):
+        line1 = str(line1)
+        line2 = str(line2)
+        self.puts(self, line1, 0, 0)
+        self.puts(self, line2, 0, 1)
+*/})},
+{filename:"oled.py",code:_TEXT(function(){/*
+from microbit import *
+
+class OLED12864_I2C():
+    def __init__(self):
+        cmd = [
+            [0xAE],           # SSD1306_DISPLAYOFF
+            [0xA4],           # SSD1306_DISPLAYALLON_RESUME
+            [0xD5, 0xF0],     # SSD1306_SETDISPLAYCLOCKDIV
+            [0xA8, 0x3F],     # SSD1306_SETMULTIPLEX
+            [0xD3, 0x00],     # SSD1306_SETDISPLAYOFFSET
+            [0 | 0x0],        # line #SSD1306_SETSTARTLINE
+            [0x8D, 0x14],     # SSD1306_CHARGEPUMP
+            [0x20, 0x00],     # SSD1306_MEMORYMODE
+            [0x21, 0, 127],   # SSD1306_COLUMNADDR
+            [0x22, 0, 63],    # SSD1306_PAGEADDR
+            [0xa0 | 0x1],     # SSD1306_SEGREMAP
+            [0xc8],           # SSD1306_COMSCANDEC
+            [0xDA, 0x12],     # SSD1306_SETCOMPINS
+            [0x81, 0xCF],     # SSD1306_SETCONTRAST
+            [0xd9, 0xF1],     # SSD1306_SETPRECHARGE
+            [0xDB, 0x40],     # SSD1306_SETVCOMDETECT
+            [0xA6],           # SSD1306_NORMALDISPLAY
+            [0xd6, 1],        # zoom on
+            [0xaf]            # SSD1306_DISPLAYON
+        ]
+
+        for c in cmd:
+            self.command(c)
+        self._ZOOM = 1
+        self.ADDR = 0x3C
+        self.screen = bytearray(1025)    # send byte plus pixels
+        self.screen[0] = 0x40
+    
+    def command(self, c):
+        i2c.write(self.ADDR, b'·' + bytearray(c))
+
+    def set_pos(self, col=0, page=0):
+        self.command([0xb0 | page])    # page number
+        # take upper and lower value of col * 2
+        c = col * (self._ZOOM+1)
+        c1, c2 = c & 0x0F, c >> 4
+        self.command([0x00 | c1])    # lower start column address
+        self.command([0x10 | c2])    # upper start column address
+
+    def pixel(self, x, y, color=1, draw=1):
+        page, shift_page = divmod(y, 8)
+        ind = x * (self._ZOOM+1) + page * 128 + 1
+        b = self.screen[ind] | (1 << shift_page) if color else self.screen[ind] & ~ (1 << shift_page)
+        self.screen[ind] = b
+        self.set_pos(x, page)
+        if self._ZOOM:
+            self.screen[ind+1]=b
+            i2c.write(0x3c, bytearray([0x40, b, b]))
+        else:
+            i2c.write(0x3c, bytearray([0x40, b]))
+
+    def zoom(self, d=1):
+        self._ZOOM = 1 if d else 0
+        self.command([0xd6, self._ZOOM])
+
+    def invert(self, v=1):
+        n = 0xa7 if v else 0xa6
+        self.command([n])
+
+    def clear(self, c=0):
+        for i in range(1, 1025):
+            self.screen[i] = 0
+        self.draw()
+
+    def draw(self):
+        self.set_pos()
+        i2c.write(self.ADDR, self.screen)
+
+    def text(self, x, y, s, draw=1):
+        for i in range(0, min(len(s), 12 - x)):
+            for c in range(0, 5):
+                col = 0
+                for r in range(1, 6):
+                    p = Image(s[i]).get_pixel(c, r - 1)
+                    col = col | (1 << r) if (p != 0) else col
+                ind = (x + i) * 5 * (self._ZOOM+1) + y * 128 + c*(self._ZOOM+1) + 1
+                self.screen[ind] = col
+                if self._ZOOM:
+                    self.screen[ind + 1] = col
+        self.set_pos(x * 5, y)
+        ind0 = x * 5 * (self._ZOOM+1) + y * 128 + 1
+        i2c.write(self.ADDR, b'@' + self.screen[ind0:ind + 1])
+
+    def hline(self, x, y, l,c=1):
+        d = 1 if l>0 else -1
+        for i in range(x, x+l, d):
+            self.pixel(i,y,c)
+
+    def vline(self, x, y, l,c=1):
+        d = 1 if l>0 else -1
+        for i in range(y, y+l,d):
+            self.pixel(x,i,c,0)
+
+    def rect(self, x1,y1,x2,y2,c=1):
+        self.hline(x1,y1,x2-x1+1,c)
+        self.hline(x1,y2,x2-x1+1,c)
+        self.vline(x1,y1,y2-y1+1,c)
+        self.vline(x2,y1,y2-y1+1,c)
+
+oled = OLED12864_I2C()
+
 */})}
 ];
