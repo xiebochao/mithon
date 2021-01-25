@@ -409,9 +409,10 @@ Blockly.Blocks['sensor_distance_hrsc04'] = {
         this.setColour(Blockly.Blocks.sensor.HUE);
         this.appendDummyInput()
         .appendField(Blockly.MIXLY_CHAOSHENGBO)
+        .appendField("sonar");
         this.setOutput(true, Number);
         this.setInputsInline(true);
-        this.setTooltip(Blockly.MIXLY_TOOLTIP_CHAOSHENGBO);
+        this.setTooltip("");
     }
 };
 
@@ -607,5 +608,22 @@ Blockly.Blocks['sensor_light'] = {
         this.setOutput(true, Number);
         this.setInputsInline(true);
         this.setTooltip(Blockly.MICROBIT_SENSOR_LIGHT_TOOLTIP);
+    }
+};
+
+Blockly.Blocks['sensor_hrsc04_init'] = {
+    init: function(){
+        this.setColour(Blockly.Blocks.sensor.HUE);
+        this.appendDummyInput()
+        .appendField(Blockly.MIXLY_HCSR04_INIT)
+        .appendField("sonar")
+        .appendField("Trig")
+        .appendField(new Blockly.FieldDropdown([["P0", "0"], ["P1", "1"], ["P2", "2"], ["P3", "3"], ["P4", "4"], ["P5", "5"], ["P6", "6"], ["P7", "7"], ["P8", "8"], ["P9", "9"], ["P10", "10"], ["P11", "11"], ["P12", "12"], ["P13", "13"], ["P14", "14"], ["P15", "15"], ["P16", "16"], ["P19", "19"], ["P20", "20"]]), "Trig")
+        .appendField("Echo")
+        .appendField(new Blockly.FieldDropdown([["P0", "0"], ["P1", "1"], ["P2", "2"], ["P3", "3"], ["P4", "4"], ["P5", "5"], ["P6", "6"], ["P7", "7"], ["P8", "8"], ["P9", "9"], ["P10", "10"], ["P11", "11"], ["P12", "12"], ["P13", "13"], ["P14", "14"], ["P15", "15"], ["P16", "16"], ["P19", "19"], ["P20", "20"]]), "Echo");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setInputsInline(true);
+        this.setTooltip();
     }
 };

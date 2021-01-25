@@ -2911,3 +2911,4 @@ Blockly.MIXLY_GET_TEMPRATURE = "Gets the value of the temperature sensor";
 Blockly.MIXLY_GET_IRREMOTE_VALUE = "Gets the value of the irromote";
 Blockly.MIXLY_YEARDAY = 'year day';
 Blockly.MIXLY_ISDIST = 'is dist';
+Blockly.MIXLY_HCSR04_INIT = "Initialize ultrasound";

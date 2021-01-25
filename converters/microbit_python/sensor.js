@@ -283,3 +283,29 @@ pbc.moduleFunctionD.get('ds')['set_time'] = function (py2block, func, args, keyw
             "inline": "false"
         })];
 }
+
+
+pbc.assignD.get('HCSR04')['check_assign'] = function (py2block, node, targets, value) {
+    if(value.func._astname != "Attribute" || value.func.value._astname != "Name"){
+        return false;
+    }
+    var moduleName = py2block.Name_str(value.func.value);
+    var funcName = py2block.identifier(value.func.attr);
+    if (value._astname === "Call" && moduleName === "hcsr04"
+        && funcName === "HCSR04" && value.args.length === 0)
+        return true;
+    return false;
+}
+
+pbc.assignD.get('HCSR04')['create_block'] = function (py2block, node, targets, value) {
+    var name = py2block.Name_str(node.targets[0]);
+    var Trig = value.keywords[0].value.id.v;
+    Trig = Trig.replace(/[^0-9]/ig,"");
+    var Echo = value.keywords[1].value.id.v;;
+    Echo = Echo.replace(/[^0-9]/ig,"");
+     //注意：赋值语句里，即使图形块上下可接，也不需要加[]
+    return block('sensor_hrsc04_init', node.lineno, {
+            "Trig": Trig,
+            "Echo": Echo
+    }, {});
+}

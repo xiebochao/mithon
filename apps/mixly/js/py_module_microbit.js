@@ -3,7 +3,7 @@ function _TEXT(wrap) {
 }
 
 var py_module = [
-{filename:"HCSR04.py",code:_TEXT(function(){/*
+{filename:"hcsr04.py",code:_TEXT(function(){/*
 from microbit import *
 
 class HCSR04:

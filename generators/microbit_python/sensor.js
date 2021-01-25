@@ -143,7 +143,7 @@ Blockly.Python.sensor_magnetic= function(){
 };
 Blockly.Python.sensor_distance_hrsc04= function(){
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
-    Blockly.Python.definitions_['import_HCSR04'] = 'import HCSR04';
+    Blockly.Python.definitions_['import_hcsr04'] = 'import hcsr04';
     /*
     Blockly.Python.setups_['class_hrsc04'] =
         'class HCSR04:\n'+
@@ -331,4 +331,12 @@ Blockly.Python.sensor_compass_reset = function(block) {
 Blockly.Python.sensor_light= function(){
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
     return ['display.read_light_level()', Blockly.Python.ORDER_ATOMIC];
+};
+
+Blockly.Python.sensor_hrsc04_init= function(){
+    var Trig= this.getFieldValue('Trig');
+    var Echo= this.getFieldValue('Echo');
+    Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+    Blockly.Python.definitions_['import_hcsr04'] = 'import hcsr04';
+    return "sonar = hcsr04.HCSR04(tpin=pin"+Trig+", epin=pin"+Echo+")\n"
 };
