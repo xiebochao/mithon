@@ -31,6 +31,8 @@
     <script type="text/javascript" src="MicroPython[NRF51822_microbit]/myblock.js"></script>
     <script type="text/javascript" src="../../blocks/python/variables.js"></script>
     <script type="text/javascript" src="../../generators/python/variables.js"></script>
+    <script type="text/javascript" src="../../blocks/python/class.js"></script>
+    <script type="text/javascript" src="../../generators/python/class.js"></script>
     <script src="../../blocks/microbit_python/microbit_profile.js"></script>
     <!-- blocks file -->
     <script src="../../blocks/microbit_python/pins.js"></script>
@@ -73,8 +75,9 @@
     <script src="../../generators/python/set.js"></script>
     <script src="../../generators/python/tuple.js"></script>
     <!-- converters file -->
-    <script src="../../converters/microbit_python/py2block_config.js" type="application/javascript"></script>
     <script src="./js/py2block_editor.js" type="application/javascript"></script>
+    <script src="../../converters/microbit_python/py2block_config.js" type="application/javascript"></script>
+    <script src="../../converters/mixpy_python/py2block_config.js" type="application/javascript"></script>
     <script src="../../converters/microbit_python/inout.js" type="application/javascript"></script>
     <script src="../../converters/microbit_python/system.js" type="application/javascript"></script>
     <script src="../../converters/python/control.js" type="application/javascript"></script>
@@ -1360,11 +1363,11 @@
             <block type="sensor_field_strength"></block>
             <block type="sensor_compass_reset"></block>
             <block type="sensor_temperature"></block>
-            <block type="sensor_distance_hrsc04"></block>
-            <block type="sensor_distance_hrsc04_">
+            <block type="sensor_hrsc04_init">
                 <field name="Trig">16</field>
                 <field name="Echo">15</field>
             </block>
+            <block type="sensor_distance_hrsc04"></block>
             <!--<block type="DS1307_init">
           <value name="SDA">
             <shadow type="pins_digital">

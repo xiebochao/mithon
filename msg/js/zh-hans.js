@@ -2922,3 +2922,4 @@ Blockly.MIXLY_GET_TEMPRATURE = "获取温度传感器的值";
 Blockly.MIXLY_GET_IRREMOTE_VALUE = "获取红外接收值"
 Blockly.MIXLY_YEARDAY = '天数';
 Blockly.MIXLY_ISDIST = '令时';
+Blockly.MIXLY_HCSR04_INIT = "初始化超声波";
