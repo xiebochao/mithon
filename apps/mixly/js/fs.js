@@ -46,17 +46,33 @@ var microbitFsWrapper = function() {
      * initial main.py
      */
     fsWrapper.setupFilesystem = function() {
-        var uPyV1 = micropython_v1.replace("\n", "");
-        var uPyV2 = micropython_v2.replace("\n", "");
+        var uPyV1 = null;
+        var uPyV2 = null;
 
-        uPyFs = new microbitFs.MicropythonFsHex([
-            { hex: uPyV1, boardId: 0x9901 },
-            { hex: uPyV2, boardId: 0x9903 },
-        ], {
-            'maxFsSize': commonFsSize,
+        var deferred1 = $.get('micropython/microbit-micropython-v1.hex', function(fileStr) {
+            uPyV1 = fileStr;
+        }).fail(function() {
+            console.error('Could not load the MicroPython v1 file.');
         });
-        duplicateMethods();
-        return true;
+        var deferred2 = $.get('micropython/microbit-micropython-v2.hex', function(fileStr) {
+            uPyV2 = fileStr;
+        }).fail(function() {
+            console.error('Could not load the MicroPython v2 file.');
+        });
+
+        return $.when(deferred1, deferred2).done(function() {
+            if (!uPyV1 || !uPyV2) {
+                console.error('There was an issue loading the MicroPython Hex files.');
+            }
+            // TODO: We need to use ID 9901 for app compatibility, but can soon be changed to 9900 (as per spec)
+            uPyFs = new microbitFs.MicropythonFsHex([
+                { hex: uPyV1, boardId: 0x9901 },
+                { hex: uPyV2, boardId: 0x9903 },
+            ], {
+                'maxFsSize': commonFsSize,
+            });
+            duplicateMethods();
+        });
     };
     
     /**

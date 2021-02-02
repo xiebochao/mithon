@@ -1,8 +1,4 @@
-
-'use strict';
-window.FS = microbitFsWrapper();
-
-FS.setupFilesystem();
+var FS = microbitFsWrapper();
 
 // Reset the filesystem and load the files from this hex file to the fs and editor
 function loadHex(filename, hexStr) {
@@ -275,6 +271,7 @@ var code_head = 'import math\n'+
 '    list_cpy = list(my_list)\n'+
 '    return sorted(list_cpy, key=key_func, reverse=reverse)\n'
 
+
 let connect_btn = document.getElementById("connect_btn");
 let upload_btn = document.getElementById("upload_btn");
 let serial_read_btn = document.getElementById("serial_read_btn");
@@ -345,43 +342,122 @@ const setImage = (file) => {
     reader.readAsArrayBuffer(file);
 }
 
+const exec = require('child_process').exec;
+var file_save = require('fs');
+var wmicResult = null;
 // Update a device with the firmware image transferred from block/code
 const update = async() => {
-	let buffer = null;
-	firmware = document.getElementById('firmware').innerText;
-	hexfile = getHexFile(firmware);
-	var hex2Blob = new Blob([hexfile],{type:'text/plain'});
-	buffer =  await hex2Blob.arrayBuffer()
-    if (!buffer) return;
-
-    target.on(DAPjs.DAPLink.EVENT_PROGRESS, progress => {
-        setTransfer(progress);
-    });
-
-    try {
-        // Push binary to board
-        // setStatus(`Flashing binary file ${buffer.byteLength} words long...`);
-        await target.connect();
-        await target.setSerialBaudrate(115200);
-        layui.use('layer', function(){
+	exec('wmic logicaldisk where VolumeName="MICROBIT" get DeviceID', function (err, stdout, stderr) {
+	    if (err || stderr) {
+	        console.log("root path open failed" + err + stderr);
+	        layer.msg('无可用设备!', {
+	            time: 1000
+	        });
+	        return;
+		}
+		layui.use('layer', function(){
             var layer = layui.layer;
             layer.open({
                 type: 1,
-                title: '上传',
+                title: '上传中...',
                 content: $('#webusb-flashing'),
                 closeBtn: 0
-              });
-          }); 
-        await target.flash(buffer);
-        layer.closeAll('page');
-        await target.disconnect();
-        // setStatus("Flash complete!");
-    } catch (error) {
-        setStatus(error);
-        layer.closeAll('page');
-    }
+            });
+        }); 
+	    wmicResult = stdout;
+	    wmicResult = wmicResult.replace(/\s+/g, "");
+	    wmicResult = wmicResult.replace("DeviceID", "");
+	    // wmicResult = 'G:K:F:';
+	    let result = wmicResult.split(':');
+	    console.log(result);
+
+	    try {
+	        updateMain();
+	        var output = FS.getUniversalHex();
+	    } catch(e) {
+	        alert(e.message);
+	        return;
+	    }
+
+	    file_save.writeFile(wmicResult+"\\firmware.hex", output,'utf8',function(err){
+		    //如果err=null，表示文件使用成功，否则，表示希尔文件失败
+		    layer.closeAll('page');
+		    if(err)
+		    	layer.msg('写入文件出错', {
+		            time: 1000
+		        });
+		    else {
+		    	layer.msg('上传成功!', {
+		            time: 1000
+		        });
+		    }
+		})
+
+	});
 }
 upload_btn.addEventListener("click", () => {update(deviceObj)});
+
+const download = async() => {
+    exec('wmic logicaldisk where VolumeName="CIRCUITPY" get DeviceID', function (err, stdout, stderr) {
+    	if (err || stderr) {
+	        console.log("root path open failed" + err + stderr);
+	        layer.msg('无可用设备!', {
+	            time: 1000
+	        });
+	        return;
+	    }
+	    layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.open({
+                type: 1,
+                title: '上传中...',
+                content: $('#webusb-flashing'),
+                closeBtn: 0
+            });
+        }); 
+    	wmicResult = stdout;
+	    wmicResult = wmicResult.replace(/\s+/g, "");
+	    wmicResult = wmicResult.replace("DeviceID", "");
+	    // wmicResult = 'G:K:F:';
+	    let result = wmicResult.split(':');
+	    console.log(result);
+
+	    var code = "";
+		if (document.getElementById('tab_arduino').className == 'tabon') {
+			//code = document.getElementById('content_arduino').value;
+	        code = editor.getValue();
+		} else {
+			code = Blockly.Python.workspaceToCode(Blockly.mainWorkspace) || '';
+		}
+		code = code_head+code
+		code = code.replace('from mixpy import math_map','')
+		code = code.replace('from mixpy import math_mean','')
+		code = code.replace('from mixpy import math_median','')
+		code = code.replace('from mixpy import math_modes','')
+		code = code.replace('from mixpy import math_standard_deviation','')
+		code = code.replace('from mixpy import lists_sort','')
+
+	    file_save.writeFile(wmicResult+"\\code.py", code,'utf8',function(err){
+		    //如果err=null，表示文件使用成功，否则，表示希尔文件失败
+		    layer.closeAll('page');
+		    if(err)
+		    	layer.msg('写入文件出错', {
+		            time: 1000
+		        });
+		    else {
+		    	layer.msg('上传成功!', {
+		            time: 1000
+		        });
+		    }
+		})
+
+	});
+}
+if (document.getElementById("download_btn")) {
+	let download_btn = document.getElementById("download_btn");
+	download_btn.addEventListener("click", () => {download(deviceObj)});
+}
+
 
 const serialRead = async () => {
     layui.use('layer', function(){
@@ -446,3 +522,9 @@ const serialWrite = async () => {
 		await target.startSerialRead();
 	}
 }
+
+FS.setupFilesystem().then(function() {
+    console.log('FS fully initialised');
+}).fail(function() {
+    console.error('There was an issue initialising the file system.');
+});
