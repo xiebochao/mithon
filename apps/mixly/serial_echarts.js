@@ -5,7 +5,7 @@ var echarts_data = [];
 var echarts_now_time;
 var echarts_y_value;
 var echarts_start_time;
-var echarts_old_time = 0;
+var echarts_old_time;
 var echarts_update = null;
 var myChart = null;
 function echarts_init() {
@@ -14,8 +14,9 @@ function echarts_init() {
     var option;
     echarts_data = [];
     echarts_y_value = 0;
-    echarts_start_time = new Date();
+    echarts_start_time = Number(new Date());
     echarts_now_time = 0;
+    echarts_old_time = 0;
     option = {
         title: {
             left: 'center',
@@ -46,7 +47,7 @@ function echarts_init() {
             type: 'value',
             splitLine: {
                 show: false
-            }
+            },
         },
         yAxis: {
             type: 'value',
@@ -57,10 +58,10 @@ function echarts_init() {
         },
         dataZoom: [{
             type: 'inside',
-            start: 70,
+            start: 0,
             end: 100
         }, {
-            start: 70,
+            start: 0,
             end: 100
         }],
         series: [{
@@ -72,12 +73,26 @@ function echarts_init() {
         }]
     };
     echarts_update = setInterval(function () {
-        myChart.setOption({
-            series: [{
-                data: echarts_data
-            }]
-        });
-    }, 200);
+        if (com_connected) {
+            var _time_rate = 0; 
+            var _data_length = echarts_data.length;
+            if (_data_length > 20) {
+                var _old_time = echarts_data[_data_length - 21].value[0];
+                var _now_time = echarts_data[_data_length - 1].value[0];
+                _time_rate = 100*_old_time/_now_time;
+            }
+            myChart.setOption({
+                dataZoom: [{
+                    type: 'inside',
+                    start: _time_rate,
+                    end: 100
+                }],
+                series: [{
+                    data: echarts_data
+                }]
+            });
+        }
+    }, 500);
     option && myChart.setOption(option);
 }
 
