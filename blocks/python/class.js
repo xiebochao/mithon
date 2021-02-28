@@ -248,7 +248,7 @@ Blockly.Blocks['method_procedures_defnoreturn'] = {
       }
     }
     this.updateParams_();
-    Blockly.Class.promutateCallers(this);
+    Blockly.Class.mutateCallers(this);
 
     // Show or hide the statement input.
     this.setStatements_(xmlElement.getAttribute('statements') !== 'false');
@@ -336,12 +336,14 @@ Blockly.Blocks['method_procedures_defnoreturn'] = {
    * Dispose of any callers.
    * @this Blockly.Block
    */
+   /*
   dispose: function() {
     var name = this.getFieldValue('NAME');
     Blockly.Class.prodisposeCallers(name, this.workspace);
     // Call parent's destructor.
     this.constructor.prototype.dispose.apply(this, arguments);
-  },
+  },*/
+
   /**
    * Return the signature of this procedure definition.
    * @return {!Array} Tuple containing three elements:
@@ -634,10 +636,12 @@ Blockly.Blocks['method_procedures_callnoreturn'] = {
       // Reset the quarks (a mutator is about to open).
       return;
     }
-    if (goog.array.equals(this.arguments_, paramNames)) {
-      // No change.
-      this.quarkIds_ = paramIds;
-      return;
+    if (this.arguments_.length) {
+      if(Blockly.Names.equals(this.arguments_, paramNames)) {
+        // No change.
+        this.quarkIds_ = paramIds;
+        return;
+      }
     }
     if (paramIds.length != paramNames.length) {
       throw 'Error: paramNames and paramIds must be the same length.';

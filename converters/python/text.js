@@ -24,6 +24,17 @@ function numConvert(mode) {
                     "inline": "true"
                 });
             }
+        }else if(args[0]._astname == "Call" && args[0].func._astname == "Attribute" && args[0].func.attr.v == "input"){
+            if(pbc.board == pbc.MIXPY) {
+                paramblock = py2block.convert(args[0].args[0]);
+                return block("inout_type_input", func.lineno, {
+                    "DIR": "float"
+                }, {
+                    'VAR': paramblock
+                }, {
+                    "inline": "true"
+                });
+            }
         }
         return block("text_to_number", func.lineno, {
             'TOWHAT': mode

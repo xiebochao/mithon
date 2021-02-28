@@ -82,6 +82,35 @@ Blockly.Blocks['inout_type_input'] = {
   }
 };
 
+Blockly.Blocks['pyinout_type_input'] = {
+  init: function() {
+    
+    var input_type =
+    [[Blockly.LANG_MATH_STRING, 'str'],[Blockly.LANG_MATH_INT, 'int']
+    ,[Blockly.LANG_MATH_FLOAT, 'float']];
+    this.setColour(20);
+    this.appendDummyInput("")
+    .appendField(Blockly.MIXLY_MICROBIT_PY_STORAGE_GET)
+    .appendField(new Blockly.FieldDropdown(input_type), 'DIR')
+    this.appendValueInput("VAR")
+    .appendField(Blockly.Msg.PROCEDURES_MUTATORCONTAINER_TITLE)
+    .setCheck(String);    
+
+    this.setInputsInline(true);
+    this.setOutput(true);
+    var thisBlock = this;
+    this.setTooltip(function() {
+      var mode = thisBlock.getFieldValue('DIR');
+      var TOOLTIPS = {
+        'str': Blockly.MIXLY_MIXPY_INOUT_STR_INPUT_TOOLTIP,
+        'int': Blockly.MIXLY_MIXPY_INOUT_INT_INPUT_TOOLTIP,
+        'float': Blockly.MIXLY_MIXPY_INOUT_FLOAT_INPUT_TOOLTIP
+      };
+      return TOOLTIPS[mode];
+    });
+  }
+};
+
 Blockly.Blocks['inout_print_many'] = {
   
   init: function() {

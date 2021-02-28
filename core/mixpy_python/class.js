@@ -29,7 +29,7 @@ goog.provide('Blockly.Class');
 
 // TODO(scr): Fix circular dependencies
 goog.require('Blockly.Workspace');
-goog.require('goog.string');
+//goog.require('goog.string');
 
 //类
 Blockly.Block.prototype.class_getVars=function(){for(var a=[],b=0,c;c=this.inputList[b];b++)for(var d=0,e;e=c.fieldRow[d];d++)e instanceof Blockly.FieldVariable&&a.push(e.getValue());return a};Blockly.Block.prototype.class_renameVar=function(a,b){for(var c=0,d;d=this.inputList[c];c++)for(var e=0,f;f=d.fieldRow[e];e++)f instanceof Blockly.FieldVariable&&Blockly.Names.equals(a,f.getValue())&&f.setValue(b)};
@@ -133,7 +133,7 @@ Blockly.Class.class_generateUniqueName = function(workspace) {
 
 Blockly.Class.class_flyoutCategory = function(workspace) {
   var variableList = Blockly.Class.allClass(workspace);
-  variableList.sort(goog.string.caseInsensitiveCompare);
+  //variableList.sort(goog.string.caseInsensitiveCompare);
   
   var xmlList = [];
   
@@ -261,7 +261,7 @@ Blockly.Class.property_generateUniqueName = function(workspace) {
 
 Blockly.Class.property_flyoutCategory = function(workspace) {
   var variableList = Blockly.Class.allProperty(workspace);
-  variableList.sort(goog.string.caseInsensitiveCompare);
+  //variableList.sort(goog.string.caseInsensitiveCompare);
   
   var xmlList = [];
   
@@ -489,11 +489,11 @@ Blockly.Class.prodisposeCallers = function(name, workspace) {
  * callers.
  * @param {!Blockly.Block} defBlock Procedure definition block.
  */
-Blockly.Class.promutateCallers = function(defBlock) {
+Blockly.Class.mutateCallers = function(defBlock) {
   var oldRecordUndo = Blockly.Events.recordUndo;
   var name = defBlock.method_getProcedureDef()[0];
   var xmlElement = defBlock.mutationToDom(true);
-  var callers = Blockly.Class.progetCallers(name, defBlock.workspace);
+  var callers = Blockly.Procedures.getCallers(name, defBlock.workspace);
   for (var i = 0, caller; caller = callers[i]; i++) {
     var oldMutationDom = caller.mutationToDom();
     var oldMutation = oldMutationDom && Blockly.Xml.domToText(oldMutationDom);
@@ -505,7 +505,7 @@ Blockly.Class.promutateCallers = function(defBlock) {
       // undo action since it is deterministically tied to the procedure's
       // definition mutation.
       Blockly.Events.recordUndo = false;
-      Blockly.Events.fire(new Blockly.Events.Change(
+      Blockly.Events.fire(new Blockly.Events.BlockChange(
           caller, 'mutation', null, oldMutation, newMutation));
       Blockly.Events.recordUndo = oldRecordUndo;
     }
@@ -687,7 +687,7 @@ Blockly.Class.object_generateUniqueName = function(workspace) {
 
 Blockly.Class.object_flyoutCategory = function(workspace) {
   var variableList = Blockly.Class.allObject(workspace);
-  variableList.sort(goog.string.caseInsensitiveCompare);
+  //variableList.sort(goog.string.caseInsensitiveCompare);
   
   var xmlList = [];
 
@@ -703,7 +703,7 @@ Blockly.Class.object_flyoutCategory = function(workspace) {
   }
 
   var variableList_class = Blockly.Class.allClass(workspace);
-  variableList_class.sort(goog.string.caseInsensitiveCompare);
+  //variableList_class.sort(goog.string.caseInsensitiveCompare);
   for (var i = 0; i < variableList_class.length; i++) {
     if (Blockly.Blocks['object_set']) {
       var block = goog.dom.createDom('block');

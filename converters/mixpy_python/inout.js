@@ -24,6 +24,30 @@ pbc.globalFunctionD['input'] = function(py2block, func, args, keywords, starargs
     });}
 }
 
+pbc.moduleFunctionD.get('pyinput')['input'] = function(py2block, func, args, keywords, starargs, kwargs, node){
+    if (args.length !== 1 && args.length !== 0) {
+        throw new Error("Incorrect number of arguments");
+    }
+    if (args.length == 1){
+    var argblock = py2block.convert(args[0]);
+    return block("inout_type_input", func.lineno, {
+         "DIR":"str"
+    }, {
+        'VAR':argblock
+    }, {
+        "inline": "true"
+    });}
+    if (args.length == 0){
+    
+    return block("inout_type_input", func.lineno, {
+         "DIR":"str"
+    }, {
+        //'VAR':argblock
+    }, {
+        "inline": "true"
+    });}
+}
+
 
 //int(input('prompt'))在math.js中实现
 //float(input('prompt'))在lists.js中实现
