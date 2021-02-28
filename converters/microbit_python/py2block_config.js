@@ -49,7 +49,7 @@ pbc.initIgnoreS = function(){
         //display.js
         "LCD1602", "LCD_I2C_ADDR", "OLED12864_I2C","mixly_rgb_show", "oled", "mixly_oled_text",
         //sensor.js
-        'HCSR04', 'sonar', 'DS1307', 'DS1307_I2C_ADDRESS', 'DS1307_REG_SECOND', 'DS1307_REG_MINUTE',
+        'DS1307', 'DS1307_I2C_ADDRESS', 'DS1307_REG_SECOND', 'DS1307_REG_MINUTE',
         'DS1307_REG_HOUR', 'DS1307_REG_WEEKDAY', 'DS1307_REG_DAY', 'DS1307_REG_MONTH', 'DS1307_REG_YEAR',
         'DS1307_REG_CTRL', 'DS1307_REG_RAM', 'ds'
     ];

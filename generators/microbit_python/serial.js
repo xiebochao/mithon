@@ -61,6 +61,10 @@ Blockly.Python.serial_softserial = function () {
   Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
   var dropdown_pin1 = Blockly.Python.valueToCode(this, 'RX',Blockly.Python.ORDER_ATOMIC);
   var dropdown_pin2 = Blockly.Python.valueToCode(this, 'TX',Blockly.Python.ORDER_ATOMIC);
+  if (!isNaN(parseInt(dropdown_pin1)))
+    dropdown_pin1 = "pin" + dropdown_pin1;
+  if (!isNaN(parseInt(dropdown_pin2)))
+    dropdown_pin2 = "pin" + dropdown_pin2;
   var baudrate = this.getFieldValue('baudrate');
   return "uart.init(rx=" + dropdown_pin1 + ", tx=" + dropdown_pin2 + ", baudrate=" + baudrate + ")\n";
 };

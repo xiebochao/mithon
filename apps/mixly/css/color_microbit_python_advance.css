@@ -1,3 +1,7 @@
+#serial_device_type > div.layui-form-select dl { 
+	max-height:50px; 
+}
+
 .blocklyTreeRoot{
 	min-width:155px;
 }
@@ -143,7 +147,7 @@ td {
 .content {
   visibility: hidden;
   margin: 0;
-  padding: 1ex;
+  /*padding: 1ex;*/
   position: absolute;
   direction: ltr;
   background-color: #fff;
@@ -158,17 +162,17 @@ button {
   padding: 1px 1em;
   font-size: 90%;
   border-radius: 4px;
-  border: 1px solid #ddd;
+  border: 0px solid #ddd;
   background-color: #eee;
   color: black;
 }
 button.launch {
-  border: 1px solid #d43;
+  border: 0px solid #d43;
   background-color: #d43;
   color: white;
 }
 button:active {
-  border: 1px solid blue !important;
+  border: 0px solid blue !important;
 }
 button:hover {
   box-shadow: 2px 2px 5px #888;

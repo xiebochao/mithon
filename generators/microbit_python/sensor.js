@@ -143,49 +143,7 @@ Blockly.Python.sensor_magnetic= function(){
 };
 Blockly.Python.sensor_distance_hrsc04= function(){
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
-    Blockly.Python.definitions_['import_hcsr04'] = 'import hcsr04';
-    /*
-    Blockly.Python.setups_['class_hrsc04'] =
-        'class HCSR04:\n'+
-        '    def __init__(self, tpin=pin15, epin=pin14, spin=pin13):\n'+
-        '        self.trigger_pin = tpin\n'+
-        '        self.echo_pin = epin\n'+
-        '        self.sclk_pin = spin\n'+
-        '\n'+
-        '    def distance_mm(self):\n'+
-        '        spi.init(baudrate=125000, sclk=self.sclk_pin,\n'+
-        '                 mosi=self.trigger_pin, miso=self.echo_pin)\n'+
-        '        pre = 0\n'+
-        '        post = 0\n'+
-        '        k = -1\n'+
-        '        length = 500\n'+
-        '        resp = bytearray(length)\n'+
-        '        resp[0] = 0xFF\n'+
-        '        spi.write_readinto(resp, resp)\n'+
-        '        # find first non zero value\n'+
-        '        try:\n'+
-        '            i, value = next((ind, v) for ind, v in enumerate(resp) if v)\n'+
-        '        except StopIteration:\n'+
-        '            i = -1\n'+
-        '        if i > 0:\n'+
-        '            pre = bin(value).count("1")\n'+
-        '            # find first non full high value afterwards\n'+
-        '            try:\n'+
-        '                k, value = next((ind, v)\n'+
-        '                                for ind, v in enumerate(resp[i:length - 2]) if resp[i + ind + 1] == 0)\n'+
-        '                post = bin(value).count("1") if k else 0\n'+
-        '                k = k + i\n'+
-        '            except StopIteration:\n'+
-        '                i = -1\n'+
-        '        dist= -1 if i < 0 else round((pre + (k - i) * 8. + post) * 8 * 0.172)\n'+
-        '        return dist\n'+
-        '\n'+
-        '    def distance_cm(self):\n'+
-        '        return self.distance_mm() / 10.0\n'+
-        '\n'+
-        'sonar=HCSR04()\n'+
-        '\n'
-        */
+    Blockly.Python.definitions_['import_ultrasonic'] = 'from ultrasonic import *';
     return ['sonar.distance_cm()', Blockly.Python.ORDER_ATOMIC];
 };
 
@@ -238,7 +196,7 @@ Blockly.Python.sensor_distance_hrsc04_= function(){
 
 Blockly.Python.DS1307_init = function () {
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
-    Blockly.Python.definitions_['import_DS1307'] = 'import DS1307';
+    Blockly.Python.definitions_['import_RTC'] = 'from RTC import *';
     var SDA = Blockly.Python.valueToCode(this, 'SDA', Blockly.Python.ORDER_ATOMIC);
     var SCL = Blockly.Python.valueToCode(this, 'SCL', Blockly.Python.ORDER_ATOMIC);
     //var RTCName = this.getFieldValue('RTCName');
@@ -250,7 +208,7 @@ Blockly.Python.DS1307_init = function () {
 
 Blockly.Python.RTC_get_time = function () {
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
-    Blockly.Python.definitions_['import_DS1307'] = 'import DS1307';
+    Blockly.Python.definitions_['import_RTC'] = 'from RTC import *';
     //var RTCName = this.getFieldValue('RTCName');
     var timeType =this.getFieldValue('TIME_TYPE');
     //Blockly.Python.setups_['class_DS1307'] = Blockly.Python.CLASS_DS1307_INIT;
@@ -299,7 +257,7 @@ Blockly.Python.RTC_get_time = function () {
 
 Blockly.Python.RTC_set_time = function () {
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
-    Blockly.Python.definitions_['import_DS1307'] = 'import DS1307';
+    Blockly.Python.definitions_['import_RTC'] = 'from RTC import *';
     //var RTCName = this.getFieldValue('RTCName');
     var hour = Blockly.Python.valueToCode(this, "hour", Blockly.Python.ORDER_ASSIGNMENT);
     var minute = Blockly.Python.valueToCode(this, "minute", Blockly.Python.ORDER_ASSIGNMENT);
@@ -312,7 +270,7 @@ Blockly.Python.RTC_set_time = function () {
 
 Blockly.Python.RTC_set_date = function () {
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
-    Blockly.Python.definitions_['import_DS1307'] = 'import DS1307';
+    Blockly.Python.definitions_['import_RTC'] = 'from RTC import *';
     //var RTCName = this.getFieldValue('RTCName');
     var year = Blockly.Python.valueToCode(this, "year", Blockly.Python.ORDER_ASSIGNMENT);
     var month = Blockly.Python.valueToCode(this, "month",Blockly.Python.ORDER_ASSIGNMENT);
@@ -337,6 +295,14 @@ Blockly.Python.sensor_hrsc04_init= function(){
     var Trig= this.getFieldValue('Trig');
     var Echo= this.getFieldValue('Echo');
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
-    Blockly.Python.definitions_['import_hcsr04'] = 'import hcsr04';
-    return "sonar = hcsr04.HCSR04(tpin=pin"+Trig+", epin=pin"+Echo+")\n"
+    Blockly.Python.definitions_['import_ultrasonic'] = 'from ultrasonic import *';
+    return "sonar = HCSR04(tpin=pin"+Trig+", epin=pin"+Echo+")\n"
+};
+
+Blockly.Python.TCS34725_Get_RGB = function() {
+  Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+  Blockly.Python.definitions_['import_TCS'] = 'from TCS import *';
+
+  var RGB = this.getFieldValue('TCS34725_COLOR');
+  return ["tcs.getRawRGBData(" + RGB + ")", Blockly.Python.ORDER_ATOMIC];
 };

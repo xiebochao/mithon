@@ -482,3 +482,162 @@ Blockly.Blocks.display_rgb2 = {
         this.setNextStatement(true, null);
     }
 };
+
+Blockly.Blocks.MP3_INIT = {
+  init: function () {
+    this.setColour(Blockly.Blocks.actuator.HUE);
+    this.appendDummyInput("")
+    .appendField(Blockly.MIXLY_SETUP + ' ' + Blockly.DJ004_MP3);
+    this.appendValueInput("RX")
+    .setAlign(Blockly.ALIGN_RIGHT)
+    .appendField("RX#");
+    this.appendValueInput("TX")
+    .setAlign(Blockly.ALIGN_RIGHT)
+    .appendField("TX#");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip();
+    this.setHelpUrl();
+  }
+};
+
+//MP3播放控制
+var MP3_CONTROL_TYPE = [
+[Blockly.MIXLY_MP3_PLAY, "play"],
+[Blockly.MIXLY_MP3_PAUSE, "pause"],
+[Blockly.MIXLY_MP3_NEXT, "next_track"],
+[Blockly.MIXLY_MP3_PREV, "prev_track"],
+[Blockly.MIXLY_MP3_VOL_UP, "inc_vol"],
+[Blockly.MIXLY_MP3_VOL_DOWN, "dec_vol"]
+];
+
+//MP3模块
+Blockly.Blocks.MP3_CONTROL = {
+  init: function () {
+    this.setColour(Blockly.Blocks.actuator.HUE);
+    this.appendDummyInput("")
+    .appendField(Blockly.DJ004_MP3);
+    this.appendDummyInput("")
+    .appendField(Blockly.MIXLY_STAT)
+    .appendField(new Blockly.FieldDropdown(MP3_CONTROL_TYPE), "CONTROL_TYPE");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip();
+    this.setHelpUrl();
+  }
+};
+
+//MP3循环模式
+var MP3_LOOP_MODE = [
+[Blockly.MIXLY_MP3_LOOP_ALL, "0"],
+[Blockly.MIXLY_MP3_LOOP_FOLDER, "1"],
+[Blockly.MIXLY_MP3_LOOP_ONE, "2"],
+[Blockly.MIXLY_MP3_LOOP_RAM, "3"]
+];
+
+//MP3模块循环模式
+Blockly.Blocks.MP3_LOOP_MODE = {
+  init: function () {
+    this.setColour(Blockly.Blocks.actuator.HUE);
+    this.appendDummyInput("")
+    .appendField(Blockly.DJ004_MP3);
+    this.appendDummyInput("")
+    .appendField(Blockly.MIXLY_MP3_LOOP_MODE)
+    .appendField(Blockly.MIXLY_STAT)
+    .appendField(new Blockly.FieldDropdown(MP3_LOOP_MODE), "LOOP_MODE");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip();
+    this.setHelpUrl();
+  }
+};
+
+//MP3 设置EQ
+var MP3_EQ_MODE = [
+[Blockly.MIXLY_MP3_EQ_NORMAL, "0"],
+[Blockly.MIXLY_MP3_EQ_POP, "1"],
+[Blockly.MIXLY_MP3_EQ_ROCK, "2"],
+[Blockly.MIXLY_MP3_EQ_JAZZ, "3"],
+[Blockly.MIXLY_MP3_EQ_CLASSIC, "4"],
+[Blockly.MIXLY_MP3_EQ_BASS, "5"]
+];
+
+//MP3模块EQ模式
+Blockly.Blocks.MP3_EQ_MODE = {
+  init: function () {
+    this.setColour(Blockly.Blocks.actuator.HUE);
+    this.appendDummyInput("")
+    .appendField(Blockly.DJ004_MP3);
+    this.appendDummyInput("")
+    .appendField(Blockly.MIXLY_MP3_EQ_MODE)
+    .appendField(Blockly.MIXLY_STAT)
+    .appendField(new Blockly.FieldDropdown(MP3_EQ_MODE), "EQ_MODE");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip();
+    this.setHelpUrl();
+  }
+};
+
+//MP3模块设置音量
+Blockly.Blocks.MP3_VOL = {
+  init: function () {
+    this.setColour(Blockly.Blocks.actuator.HUE);
+    this.appendDummyInput("")
+    .appendField(Blockly.DJ004_MP3);
+    this.appendDummyInput("")
+    .appendField(Blockly.MIXLY_MP3_VOL);
+    this.appendValueInput("vol", Number)
+    .appendField(Blockly.MIXLY_STAT)
+    .setCheck(Number);
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip();
+    this.setHelpUrl();
+  }
+};
+
+//MP3模块播放第N首
+Blockly.Blocks.MP3_PLAY_NUM = {
+  init: function () {
+    this.setColour(Blockly.Blocks.actuator.HUE);
+    this.appendDummyInput("")
+    .appendField(Blockly.DJ004_MP3);
+    this.appendValueInput("NUM", Number)
+    .appendField(Blockly.MIXLY_MP3_PLAY_NUM)
+    .setCheck(Number);
+    this.appendDummyInput("")
+    .appendField("首");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip();
+    this.setHelpUrl();
+  }
+};
+
+Blockly.Blocks.MP3_PLAY_FOLDER = {
+  init: function () {
+    this.setColour(Blockly.Blocks.actuator.HUE);
+    this.appendDummyInput("")
+    .appendField(Blockly.DJ004_MP3);
+    this.appendValueInput("FOLDER", Number)
+    .appendField(Blockly.DFPLAYER_MINI_FOLDER)
+    .setCheck(Number);
+    this.appendValueInput("NUM", Number)
+    .appendField(Blockly.MIXLY_MP3_PLAY_NUM)
+    .setCheck(Number);
+    this.appendDummyInput("")
+    .appendField("首");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip();
+    this.setHelpUrl();
+  }
+};

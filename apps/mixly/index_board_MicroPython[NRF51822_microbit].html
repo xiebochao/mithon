@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>micro:bit for Mixiy_Lite</title>
+    <title>Mixly 2.0 For Microbit</title>
     <link rel="shortcut icon" type="image/ico" href="../../files/mixly.ico">
     <script type="text/javascript" src="../../blockly_compressed_mithon.js"></script>
     <script type="text/javascript" src="../../core/base.js"></script>
@@ -11,6 +11,7 @@
     <script type="text/javascript" src="../../core/procedures.js"></script>
     <script type="text/javascript" src="../../core/blockly.js"></script>
     <script type="text/javascript" src="../../core/events.js"></script>
+    <script type="text/javascript" src="../../core/mixpy_python/class.js"></script>
     <script type="text/javascript" src="../../core/microbit_python/names.js"></script>
     <script src="../../generators/microbit_python/python.js"></script>
     <script type="text/javascript" src="company_pin.js"></script>
@@ -21,10 +22,8 @@
     <script type="text/javascript" src="spin.js"></script>
     <script type="text/javascript" src="js/FileSaver.min.js"></script>
     <script type="text/javascript" src="js/py_module_microbit.js"></script>
-    <script type="text/javascript" src="js/micropython_v1.js"></script>
-    <script type="text/javascript" src="js/micropython_v2.js"></script>
     <script type="text/javascript" src="js/microbit-fs.umd.min.js"></script>
-    <script type="text/javascript" src="js/fs.js"></script>
+    <script type="text/javascript" src="js/fs_client.js"></script>
     <script type="text/javascript" src="js/blockly_helper.js"></script>
     <!---profiles-->
     <script type="text/javascript" src="jquery-1.11.3.min.js"></script>
@@ -76,8 +75,8 @@
     <script src="../../generators/python/tuple.js"></script>
     <!-- converters file -->
     <script src="./js/py2block_editor.js" type="application/javascript"></script>
-    <script src="../../converters/microbit_python/py2block_config.js" type="application/javascript"></script>
     <script src="../../converters/mixpy_python/py2block_config.js" type="application/javascript"></script>
+    <script src="../../converters/microbit_python/py2block_config.js" type="application/javascript"></script>
     <script src="../../converters/microbit_python/inout.js" type="application/javascript"></script>
     <script src="../../converters/microbit_python/system.js" type="application/javascript"></script>
     <script src="../../converters/python/control.js" type="application/javascript"></script>
@@ -109,32 +108,40 @@
     <link rel="stylesheet" type="text/css" href="css/ACEfont.css" />
     <link rel="stylesheet" type="text/css" href="css/fontello.css" />
     <!-- upload -->
+    <script src="renderer.js"></script>
     <script type="text/javascript" src="dap.umd.js"></script>
     <script type="text/javascript" src="nav.js"></script>
+    <script type="text/javascript" src="serial.js"></script>
+    <script type="text/javascript" src="serial_echarts.js"></script>
 </head>
 
 <body onload="init()">
-    <div class="layui-form-select" style="width:200px; height:40px; position: absolute; right: 230px; top:10px; z-index:9999;">
+    <div class="layui-form-select" style="width:100px; position: absolute; right: 230px; top:14px; z-index:9999;">
         <div class="layui-select-title" style="z-index:9999;">
-            <input type="text" placeholder="" value="" class="layui-input" id="filename_input" style="z-index:9999;">
+            <input type="text" placeholder="" value="" class="layui-input" id="filename_input" style="z-index:9999;height:33px;">
         </div>
     </div>
     <ul id="nav" class="layui-nav layui-bg-green" lay-filter="" style="min-width: 800px;z-index:999;">
-        <a href="../../index.html" style="color:white; text-align:center; vertical-align: middle;font-size: 18px;">&nbsp;&nbsp;&nbsp;Mixly Lite&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        <li class="layui-nav-item"><a href="../../index.html" style="color:white; text-align:center; vertical-align: middle;font-size: 18px;">Mixly</a></li>
         <li style="display:none" id="tab_blocks"></li>
         <li style="display:none" id="tab_arduino"></li>
         <li style="display:none" id="tab_xml"></li>
         <li class="layui-nav-item"><a href="#" onclick="UndoClick();" name="undo" id="undo_btn" title="undo(ctrl+z)" class="icon-ccw"></a></li>
         <li class="layui-nav-item"><a href="#" onclick="RedoClick();" name="redo" id="redo_btn" title="redo(ctrl+y)" class="icon-cw"></a></li>
+        <!--
         <li class="layui-nav-item"><a href="#" id="connect_btn" class="icon-link"></a></li>
+        -->
         <li class="layui-nav-item"><a href="#" id="upload_btn" class="icon-upload" ></a></li>
         <li class="layui-nav-item"><a href="#" id="serial_read_btn" class="icon-link" ></a></li>
+        <li class="layui-nav-item"><a href="#" id="layer_btn" class="icon-window" onclick="status_bar_show(0);">状态栏</a></li>
+        <a id="copyright" style="font-family:'YaHei Consolas Hybrid', 'Microsoft Yahei Light', 'Arial';font-size:12px;color:#fff;position:fixed;top:22px;right:450px;">copyright</a>
         <li class="layui-nav-item" style="float:right">
             <a href="javascript:;" id="setting_btn"></a>
             <dl class="layui-nav-child">
                 <!-- 二级菜单 -->
                 <dd><a href="#" id="language_btn" class="icon-language" onclick="open_language(); "></a></dd>
                 <dd><a href="#" id="theme_btn" class="icon-art-gallery" onclick="open_theme();"></a></dd>
+                <dd><a href="#" id="changemod_btn" class="icon-code" value=1 onclick="changeMod();"></a></dd>
             </dl>
         </li>
         <li class="layui-nav-item" style="float:right">
@@ -160,35 +167,105 @@
         <!-- a标签里不用写按钮名字,13行script段里通过id改名,为了多语言支持 -->
         <li class="layui-nav-item"><select id="languageMenu" style="display:none"></select></li>
     </ul>
-    <button type="button" id="changemod_btn" value=1 onclick="changeMod()" class="layui-btn layui-btn-primary" style="width:80px; height:40px; position: absolute; right: 0px; top:60px;z-index:998;"></button>
     <script style="display:none;">
         show_tag();
     </script>
-    <div id="webusb-flashing" style="display:none; margin:12px" align="center"><progress id="webusb-flashing-progress"></progress></div>
-    <div class="site-text site-block" id="serial-form" style="display: none;">
-        <div style="margin-top: 20px;"></div>
-        <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">串口</label>
-            <div class="layui-input-block">
-                <textarea readonly id="serial_content" name="desc" placeholder="串口输出" class="layui-textarea"
-                    style="width:80%; height:300px"></textarea>
-            </div>
-        </div>
-        <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">输入</label>
-            <div class="layui-input-block">
-                <input id="serial_write" type="text" name="title" placeholder="请输入内容" autocomplete="off" class="layui-input"
-                    style="width:80%;">
+    <div id="webusb-flashing" style="display:none; margin:12px" align="center">
+        <progress id="webusb-flashing-progress"></progress>
+        <button id="webusb-cancel" onclick="webusb_cancel()">取消</button>
+    </div>
+    <div class="layui-form" id="serial-device-form" style="display: none;">
+        <div class="layui-form-item">
+            <div id="serial_device_type">
+                <select id="select_serial_device">
+                </select>
             </div>
         </div>
         <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button id="serial_write_btn" onclick="serialWrite()" class="layui-btn layui-btn-normal">发送</button>
-                <button id="serial_clear_btn" onclick="clearSerialContent()" class="layui-btn layui-btn-danger">清空</button>
+            <div style="text-align:center;">
+                <button id="serial-upload-cancel" class="layui-btn layui-btn-normal" onclick="serial_upload_cancel()">取消</button>
+                <button id="serial-upload-ok" class="layui-btn layui-btn-normal" onclick="mp_serial_upload_start()">确定</button>
             </div>
         </div>
     </div>
-    <table width="100%" id="table_whole">
+    <div class="layui-form" id="serial-form" style="display: none;">
+      <div class="layui-tab" lay-filter="serial" style="width: 700px;">
+        <ul class="layui-tab-title">
+          <li class="layui-this" lay-id="1">串口监视器</li>
+          <li lay-id="2">串口可视化</li>
+        </ul>
+        <div class="layui-tab-content">
+          <div class="layui-tab-item layui-show">
+            <div style="margin-top: 20px;"></div>
+            <div class="layui-form-item layui-form-text">
+              <label class="layui-form-label">发送数据</label>
+              <div class="layui-inline" style="width:58%;">
+                  <input id="serial_write" type="text" name="title" placeholder="请输入内容" autocomplete="off" class="layui-input"
+                      style="width:100%;">
+              </div>
+              <button id="serial_write_btn" onclick="serialWrite()" class="layui-btn layui-btn-normal">发送</button>
+            </div>
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">接收数据</label>
+                <div class="layui-input-block" style="width: 86%">
+                    <textarea readonly id="serial_content" name="desc" placeholder="串口输出" class="layui-textarea"
+                        style="width:80%; height:300px"></textarea>
+                </div>
+            </div>
+            
+            <div class="layui-form-item layui-form-text">
+              <label class="layui-form-label">串口</label>
+              <div id="div_select_com" class="layui-input-inline" style="width: 120px;">
+                <select id="select_com"  lay-verify="required"></select>
+              </div>
+              <div id="div_cb_cf_baud_rates" class="layui-input-inline" style="width: 120px;">
+                <select id="cb_cf_baud_rates">
+                  <option value="9600">9600</option>
+                  <option value="19200">19200</option>
+                  <option value="28800">28800</option>
+                  <option value="38400">38400</option>
+                  <option value="57600">57600</option>
+                  <option value="115200" selected>115200</option>
+                </select>
+              </div>
+              <div id="div_send_data_with" class="layui-input-inline" style="width: 120px;">
+                <select id="send_data_with">
+                  <option value="no">no</option>
+                  <option value="\n">\n</option>
+                  <option value="\r">\r</option>
+                  <option value="\r\n" selected>\r\n</option>
+                </select>
+              </div>
+              <div class="layui-input-inline">
+                <input id="screen_scroll" type="checkbox" name="screen_scroll" title="滚屏" checked>
+              </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+              <div style="text-align: left;">
+                <label class="layui-form-label">数据类型</label>
+                <div id="serial_data_type" class="layui-input-inline" style="width: 120px;">
+                  <select id="select_serial_data_type">
+                    <option value="string" selected>字符串</option>
+                    <option value="hex">二进制流</option>
+                  </select>
+                </div>
+                <button id="serial_clear_btn" onclick="clearSerialContent()" class="layui-btn layui-btn-danger">清空</button>
+                <button id="serial_interrupt_btn" onclick="serialWrite_ctrl_c()" class="layui-btn layui-btn-danger">中断</button>
+                <button id="serial_reset_btn" onclick="serialWrite_ctrl_d()" class="layui-btn layui-btn-danger">复位</button>
+              </div>
+            </div>
+
+          </div>
+          <div class="layui-tab-item">
+            <div id="com_data_draw" style="width: 100%;height:85%;">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <table width="100%">
         <tr width="0%">
             <td colspan=3>
                 <table width="100%">
@@ -197,6 +274,8 @@
                 </table>
             </td>
         </tr>
+    </table>
+    <table width="100%" id="table_whole">
         <tr>
             <td height="100%" width="100%" id="content_area"></td>
             <td style="display:none;height:100%;width:0.3%;background: #ddd;cursor: w-resize;" id="mid_td"></td>
@@ -205,7 +284,36 @@
             </td>
             <div id="sidebar" class="right-top" onclick="sidecodeClick()"></div>
         </tr>
+
+        <tr id="tr_top">
+            <td id="td_top" colspan="3" style="display:none;border:0;height:5px;">
+                <div id="div_top" style="width:100%;height:100%;overflow-x: auto;overflow-y: scroll;white-space: nowrap;text-align:left;cursor: s-resize;background: #ddd"></div>
+            </td>
+        </tr>
+      
+        <tr id="tr_middle">
+            <td id="td_middle" valign="middle" colspan="3" style="display:none;height:100px;width: 100%;">
+                
+                <pre id="div_inout_middle" align="center" style="width:auto;height:100%;border:solid #ddd;border-width: 0px 5px 5px 5px;border-radius: 0px 0px 5px 5px;/*overflow-x: auto;overflow-y: scroll;*/word-break:normal;text-align:left;resize:none;" readonly></pre>
+            </td>
+        </tr>
+  
+        <tr id="tr_down">
+            <td id="td_down" valign="middle" colspan="3" style="border:0;height:13px;">
+                <div id="div_down" style="width:100%;height:100%;overflow-x: auto;overflow-y: scroll;white-space: nowrap;text-align:left;"></div>
+            </td>
+        </tr>
+     
     </table>
+    <script>
+        div_inout_middle_text = ace.edit("div_inout_middle");
+        div_inout_middle_text.getSession().setMode("ace/mode/python");
+        div_inout_middle_text.setFontSize(12);
+        div_inout_middle_text.setReadOnly(false);
+        div_inout_middle_text.setScrollSpeed(0.3);
+        div_inout_middle_text.setShowPrintMargin(false);
+        div_inout_middle_text.renderer.setShowGutter(false);
+    </script>
     
     <script src="python-main.js" type="application/javascript"></script>
     <div id="content_blocks" class="content"></div>
@@ -1415,6 +1523,7 @@
                     </shadow>
                 </value>
             </block>
+            <block type="TCS34725_Get_RGB"></block>
         </category>
         <category id="catActuator" colour="100">
             <block type="servo_move">
@@ -1526,6 +1635,51 @@
                         <field name="NUM">128</field>
                     </shadow>
                 </value>
+            </block>
+            <block type="MP3_INIT">
+                <value name="TX">
+                    <shadow type="pins_serial">
+                        <field name="PIN">16</field>
+                    </shadow>
+                </value>
+                <value name="RX">
+                    <shadow type="pins_serial">
+                        <field name="PIN">2</field>
+                    </shadow>
+                </value>
+            </block>
+            <block type="MP3_CONTROL">
+            </block>
+            <block type="MP3_PLAY_FOLDER">
+              <value name="FOLDER">
+                <shadow type="math_number">
+                  <field name="NUM">1</field>
+                </shadow>
+              </value>
+              <value name="NUM">
+                <shadow type="math_number">
+                  <field name="NUM">1</field>
+                </shadow>
+              </value>
+            </block>
+            <block type="MP3_PLAY_NUM">
+              <value name="NUM">
+                <shadow type="math_number">
+                  <field name="NUM">1</field>
+                </shadow>
+              </value>
+            </block>
+            <block type="MP3_LOOP_MODE">
+              </value>
+            </block>
+            <block type="MP3_EQ_MODE">
+            </block>
+            <block type="MP3_VOL">
+              <value name="vol">
+                <shadow type="math_number">
+                  <field name="NUM">20</field>
+                </shadow>
+              </value>
             </block>
             <block type="display_rgb_init">
                 <value name="PIN">

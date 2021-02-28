@@ -67,6 +67,7 @@ pbc.moduleFunctionD.get('uart')['init'] = function(py2block, func, args, keyword
                 baudrate = py2block.Num_value(param.value);
             }
         }
+        
         if (rxblock != null && txblock != null && baudrate != null) {
             return [block("serial_softserial", func.lineno, {
                 "baudrate": baudrate

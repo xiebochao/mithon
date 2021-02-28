@@ -19,6 +19,47 @@ pbc.globalFunctionD['mixly_servo_write_angle'] = function (py2block, func, args,
     }
 }
 
+pbc.moduleFunctionD.get('Servolib')['set_servo_angle'] = function (py2block, func, args, keywords, starargs, kwargs, node) {
+    if (args.length !== 2) {
+        throw new Error("Incorrect number of arguments");
+    }
+    pbc.pinType = "pins_pwm";
+    var pinblock = py2block.convert(args[0]);
+    pbc.pinType = null;
+    var angblock = py2block.convert(args[1]);
+    if (pinblock != null && angblock != null) {
+        return [block("servo_move", func.lineno, {},
+            {
+                "PIN": pinblock,
+                "DEGREE": angblock,
+            }, {
+                "inline": "true"
+            })];
+    }
+}
+
+pbc.moduleFunctionD.get('motor_control')['MotorRun'] = function (py2block, func, args, keywords, starargs, kwargs, node) {
+    if (args.length !== 2) {
+        throw new Error("Incorrect number of arguments");
+    }
+    var argblock1 = args[0].n.v;
+    var argblock2 = args[1].left.n.v + "*";
+    var speedblock = {
+        _astname: "Num",
+        n: {
+            'v': args[1].right.n.v
+        }
+    }
+    return [block("bit_motor_control", func.lineno, {
+        'Motor': argblock1,
+        'mode': argblock2
+    }, {
+        'speed': py2block.convert(speedblock)
+    }, {
+        "inline": "true"
+    })];
+}
+
 
 pbc.moduleFunctionD.get('music')['pitch'] = function (py2block, func, args, keywords, starargs, kwargs, node) {
     if (args.length === 1 && keywords.length === 1) {
@@ -273,3 +314,119 @@ function speechSayOrSingOrPronounce(mode){
 pbc.moduleFunctionD.get('speech')['say'] = speechSayOrSingOrPronounce('say');
 pbc.moduleFunctionD.get('speech')['sing'] = speechSayOrSingOrPronounce('sing');
 pbc.moduleFunctionD.get('speech')['pronounce'] = speechSayOrSingOrPronounce('pronounce');
+
+pbc.moduleFunctionD.get('rgb')['mixly_rgb_show'] = function (py2block, func, args, keywords, starargs, kwargs, node) {
+    if (args.length !== 5) {
+        throw new Error("Incorrect number of arguments");
+    }
+    var argblock1 = py2block.convert(args[1]);
+    var argblock2 = py2block.convert(args[2]);
+    var argblock3 = py2block.convert(args[3]);
+    var argblock4 = py2block.convert(args[4]);
+    return [block("display_rgb", func.lineno, {}, {
+        '_LED_': argblock1,
+        'RVALUE': argblock2,
+        'GVALUE': argblock3,
+        'BVALUE': argblock4
+    }, {
+        "inline": "true"
+    })];
+}
+
+pbc.assignD.get('DJ004_MP3')['check_assign'] = function (py2block, node, targets, value) {
+    if(value.func._astname != "Name"){
+        return false;
+    }
+    var funcName = value.func.id.v;
+    if (value._astname === "Call" && funcName === "DJ004_MP3" && value.keywords.length === 2)
+        return true;
+    return false;
+}
+
+pbc.assignD.get('DJ004_MP3')['create_block'] = function (py2block, node, targets, value) {
+    var rxblock = null;
+    var txblock = null;
+    for (var i = 0; i < value.keywords.length; i++) {
+        var param = value.keywords[i];
+        var key = py2block.identifier(param.arg);
+        if (key === "mp3_rx") {
+            pbc.pinType = "pins_serial";
+            rxblock = py2block.convert(param.value);
+            pbc.pinType = null;
+        } else if (key === "mp3_tx") {
+            pbc.pinType = "pins_serial";
+            txblock = py2block.convert(param.value);
+            pbc.pinType = null;
+        }
+    }
+     //注意：赋值语句里，即使图形块上下可接，也不需要加[]
+    return block('MP3_INIT', node.lineno, {}, {
+        'RX': rxblock,
+        'TX': txblock
+    });
+}
+
+function dj004_mp3_set(mode){
+    function converter(py2block, func, args, keywords, starargs, kwargs, node) {
+        if (args.length !== 1 && args.length !== 0 && args.length !== 2) {
+            throw new Error("Incorrect number of arguments");
+        }
+        if (args.length == 0) {
+            return [block("MP3_CONTROL", func.lineno, {
+                'CONTROL_TYPE': mode
+            }, {}, {
+                "inline": "true"
+            })];
+        } else if (args.length == 2) {
+            var argblock1 = py2block.convert(args[0]);
+            var argblock2 = py2block.convert(args[1]);
+            return [block("MP3_PLAY_FOLDER", func.lineno, {}, {
+                "FOLDER": argblock1,
+                "NUM": argblock2
+            }, {
+                "inline": "true"
+            })];
+        } else {
+            if (mode == "set_loop") {
+                return [block("MP3_LOOP_MODE", func.lineno, {
+                    'LOOP_MODE': py2block.Num_value(args[0])
+                }, {}, {
+                    "inline": "true"
+                })];
+            } else if (mode == "set_eq") {
+                return [block("MP3_EQ_MODE", func.lineno, {
+                    'EQ_MODE': py2block.Num_value(args[0])
+                }, {}, {
+                    "inline": "true"
+                })];
+            } else if (mode == "set_vol") {
+                var argblock = py2block.convert(args[0]);
+                return [block("MP3_VOL", func.lineno, {}, {
+                    "vol": argblock
+                }, {
+                    "inline": "true"
+                })];
+            } else {
+                var argblock = py2block.convert(args[0]);
+                return [block("MP3_PLAY_NUM", func.lineno, {}, {
+                    "NUM": argblock
+                }, {
+                    "inline": "true"
+                })];
+            }
+        }
+    }
+    return converter;
+}
+
+pbc.objectFunctionD.get('play')['DJ004_MP3'] = dj004_mp3_set('play');
+pbc.objectFunctionD.get('pause')['DJ004_MP3'] = dj004_mp3_set('pause');
+pbc.objectFunctionD.get('next_track')['DJ004_MP3'] = dj004_mp3_set('next_track');
+pbc.objectFunctionD.get('prev_track')['DJ004_MP3'] = dj004_mp3_set('prev_track');
+pbc.objectFunctionD.get('inc_vol')['DJ004_MP3'] = dj004_mp3_set('inc_vol');
+pbc.objectFunctionD.get('dec_vol')['DJ004_MP3'] = dj004_mp3_set('dec_vol');
+pbc.objectFunctionD.get('set_loop')['DJ004_MP3'] = dj004_mp3_set('set_loop');
+pbc.objectFunctionD.get('set_eq')['DJ004_MP3'] = dj004_mp3_set('set_eq');
+pbc.objectFunctionD.get('set_vol')['DJ004_MP3'] = dj004_mp3_set('set_vol');
+pbc.objectFunctionD.get('playFileByIndexNumber')['DJ004_MP3'] = dj004_mp3_set('playFileByIndexNumber');
+pbc.objectFunctionD.get('set_folder')['DJ004_MP3'] = dj004_mp3_set('set_folder');

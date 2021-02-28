@@ -162,114 +162,19 @@ Blockly.Python.speech_pronounce_easy=function(){
 
 Blockly.Python.servo_move = function() {
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
-    Blockly.Python.definitions_['import_servo'] = 'import Servo';
-    Blockly.Python.setups_['class_servo'] =
-        /*
-        'class Servo:\n'+
-        '    def __init__(self, pin, freq=50, min_us=600, max_us=2400, angle=180):\n'+
-        '        self.min_us = min_us\n'+
-        '        self.max_us = max_us\n'+
-        '        self.us = 0\n'+
-        '        self.freq = freq\n'+
-        '        self.angle = angle\n'+
-        '        self.analog_period = 0\n'+
-        '        self.pin = pin\n'+
-        '        analog_period = round((1/self.freq) * 1000)\n'+
-        '        self.pin.set_analog_period(analog_period)\n\n'+
-
-        '    def write_us(self, us):\n'+
-        '        us = min(self.max_us, max(self.min_us, us))\n'+
-        '        duty = round(us * 1024 * self.freq // 1000000)\n'+
-        '        self.pin.write_analog(duty)\n'+
-        '        self.pin.write_digital(0)\n\n'+
-        '    def write_angle(self, degrees=None):\n'+
-        '        degrees = degrees % 360\n'+
-        '        total_range = self.max_us - self.min_us\n'+
-        '        us = self.min_us + total_range * degrees // self.angle\n'+
-        '        self.write_us(us)\n'+
-        '\n'+
-        */
-        'def mixly_servo_write_angle(pin, degree):\n'+
-        '    Servo(pin).write_angle(degree)'+
-        '\n';
-
+    Blockly.Python.definitions_['import_Servolib'] = 'import Servolib';
     var dropdown_pin = Blockly.Python.valueToCode(this, 'PIN',Blockly.Python.ORDER_ATOMIC);
     var value_degree = Blockly.Python.valueToCode(this, 'DEGREE', Blockly.Python.ORDER_ATOMIC);
-
-    var code = 'mixly_servo_write_angle('+dropdown_pin+', '+value_degree+')\n';
+    if (!isNaN(parseInt(dropdown_pin)))
+        var code = 'Servolib.set_servo_angle(pin'+dropdown_pin+', '+value_degree+')\n';
+    else
+        var code = 'Servolib.set_servo_angle('+dropdown_pin+', '+value_degree+')\n';
     return code;
 };
 
 Blockly.Python.bit_motor_control = function() {
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
     Blockly.Python.definitions_['import_motor_control'] = 'import motor_control';
-    /*
-    Blockly.Python.setups_['class_bit_motor_control'] =
-        'def initPCA9685():\n'+
-        '    i2c.write(0x40, bytearray([0x00, 0x00]))\n'+
-        '    setFreq(50)\n'+
-        '    for idx in range(0, 16, 1):\n'+
-        '        setPwm(idx, 0 ,0)\n'+
-        'def MotorRun(Motors, speed):\n'+
-        '    speed = speed * 16\n'+
-        '    if (speed >= 4096):\n'+
-        '        speed = 4095\n'+
-        '    if (speed <= -4096):\n'+
-        '        speed = -4095\n'+
-        '    if (Motors <= 4 and Motors > 0):\n'+
-        '        pp = (Motors - 1) * 2\n'+
-        '        pn = (Motors - 1) * 2 + 1\n'+
-        '        if (speed >= 0):\n'+
-        '            setPwm(pp, 0, speed)\n'+
-        '            setPwm(pn, 0, 0)\n'+
-        '        else :\n'+
-        '            setPwm(pp, 0, 0)\n'+
-        '            setPwm(pn, 0, -speed)\n'+
-        'def Servo(Servos, degree):\n'+
-        '    v_us = (degree * 1800 / 180 + 600)\n'+
-        '    value = int(v_us * 4096 / 20000)\n'+
-        '    setPwm(Servos + 7, 0, value)\n'+
-        'def setFreq(freq):\n'+
-        '    prescaleval = int(25000000/(4096*freq)) - 1\n'+
-        '    i2c.write(0x40, bytearray([0x00]))\n'+
-        '    oldmode = i2c.read(0x40, 1)\n'+
-        '    newmode = (oldmode[0] & 0x7F) | 0x10\n'+
-        '    i2c.write(0x40, bytearray([0x00, newmode]))\n'+
-        '    i2c.write(0x40, bytearray([0xfe, prescaleval]))\n'+
-        '    i2c.write(0x40, bytearray([0x00, oldmode[0]]))\n'+
-        '    sleep(4)\n'+
-        '    i2c.write(0x40, bytearray([0x00, oldmode[0] | 0xa1]))\n'+
-        'def setPwm(channel, on, off):\n'+
-        '    if (channel >= 0 and channel <= 15):\n'+
-        '        buf = bytearray([0X06 + 4 * channel, on & 0xff, (on >> 8) & 0xff, off & 0xff, (off >> 8) & 0xff])\n'+
-        '        i2c.write(0x40, buf)\n'+
-        'def setStepper(stpMotors, dir, speed):\n'+
-        '    spd = speed\n'+
-        '    setFreq(spd)\n'+
-        '    if (stpMotors == 1):\n'+
-        '        if (dir):\n'+
-        '            setPwm(0, 2047, 4095)\n'+
-        '            setPwm(1, 1, 2047)\n'+
-        '            setPwm(2, 1023, 3071)\n'+
-        '            setPwm(3, 3071, 1023)\n'+
-        '        else:\n'+
-        '            setPwm(3, 2047, 4095)\n'+
-        '            setPwm(2, 1, 2047)\n'+
-        '            setPwm(1, 1023, 3071)\n'+
-        '            setPwm(0, 3071, 1023)\n'+
-        '    elif (stpMotors == 2):\n'+
-        '        if (dir):\n'+
-        '            setPwm(4, 2047, 4095)\n'+
-        '            setPwm(5, 1, 2047)\n'+
-        '            setPwm(6, 1023, 3071)\n'+
-        '            setPwm(7, 3071, 1023)\n'+
-        '        else:\n'+
-        '            setPwm(7, 2047, 4095)\n'+
-        '            setPwm(6, 1, 2047)\n'+
-        '            setPwm(4, 1023, 3071)\n'+
-        '            setPwm(5, 3071, 1023)\n\n'+
-        'initPCA9685()\n'
-    */
 
     var Motor= this.getFieldValue('Motor');
     var mode= this.getFieldValue('mode');
@@ -298,8 +203,9 @@ Blockly.Python.display_rgb=function(){
   var value_bvalue = Blockly.Python.valueToCode(this, 'BVALUE', Blockly.Python.ORDER_ATOMIC);
   Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
   Blockly.Python.definitions_['import_neopixel'] = 'import neopixel';
-  Blockly.Python.setups_['mixly_rgb_show'] = Blockly.Python.FUNCTION_MIXLY_RGB_SHOW;
-  var code ='mixly_rgb_show(' + value_led + ', ' + value_rvalue + ', ' + value_gvalue + ', ' + value_bvalue + ')\n';
+  Blockly.Python.definitions_['import_rgb'] = 'import rgb';
+  //Blockly.Python.setups_['mixly_rgb_show'] = Blockly.Python.FUNCTION_MIXLY_RGB_SHOW;
+  var code ='rgb.mixly_rgb_show(np, ' + value_led + ', ' + value_rvalue + ', ' + value_gvalue + ', ' + value_bvalue + ')\n';
   return code;
 };
 
@@ -310,8 +216,74 @@ Blockly.Python.display_rgb2=function(){
   var color = goog.color.hexToRgb(colour_rgb_led_color);
   Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
   Blockly.Python.definitions_['import_neopixel'] = 'import neopixel';
-
   var code = 'np['+value_led+'] = ('+color+')\n';
   code+='np.show()\n';
+  return code;
+};
+
+Blockly.Python.MP3_INIT = function () {
+  var dropdown_pin1 = Blockly.Python.valueToCode(this, 'RX',Blockly.Python.ORDER_ATOMIC);
+  var dropdown_pin2 = Blockly.Python.valueToCode(this, 'TX',Blockly.Python.ORDER_ATOMIC);
+  if (!isNaN(parseInt(dropdown_pin1)))
+    dropdown_pin1 = "pin" + dropdown_pin1;
+  if (!isNaN(parseInt(dropdown_pin2)))
+    dropdown_pin2 = "pin" + dropdown_pin2;
+  Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+  Blockly.Python.definitions_['import_DJ004_MP3'] = 'from MP3 import DJ004_MP3';
+  var code = 'mp3' + ' = ' + 'DJ004_MP3(mp3_rx='+dropdown_pin1+', mp3_tx='+dropdown_pin2+')\n';
+  return code;
+};
+
+//mp3 控制播放
+Blockly.Python.MP3_CONTROL = function () {
+  var CONTROL_TYPE = this.getFieldValue('CONTROL_TYPE');
+  Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+  Blockly.Python.definitions_['import_DJ004_MP3'] = 'from MP3 import DJ004_MP3';
+  var code = 'mp3' + '.' + CONTROL_TYPE + '()\n';
+  return code;
+};
+
+//mp3 循环模式
+Blockly.Python.MP3_LOOP_MODE = function () {
+  var LOOP_MODE = this.getFieldValue('LOOP_MODE');
+  Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+  Blockly.Python.definitions_['import_DJ004_MP3'] = 'from MP3 import DJ004_MP3';
+  var code = 'mp3' + '.set_loop(' + LOOP_MODE + ')\n';
+  return code;
+};
+
+//mp3 EQ模式
+Blockly.Python.MP3_EQ_MODE = function () {
+  var EQ_MODE = this.getFieldValue('EQ_MODE');
+  Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+  Blockly.Python.definitions_['import_DJ004_MP3'] = 'from MP3 import DJ004_MP3';
+  var code = 'mp3' + '.set_eq(' + EQ_MODE + ')\n';
+  return code;
+};
+
+//mp3 设置音量
+Blockly.Python.MP3_VOL = function () {
+  var vol = Blockly.Python.valueToCode(this, 'vol', Blockly.Python.ORDER_ATOMIC);
+  Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+  Blockly.Python.definitions_['import_DJ004_MP3'] = 'from MP3 import DJ004_MP3';
+  var code = 'mp3' + '.set_vol(' + vol + ')\n';
+  return code;
+};
+
+//mp3 播放第N首
+Blockly.Python.MP3_PLAY_NUM = function () {
+  var NUM = Blockly.Python.valueToCode(this, 'NUM', Blockly.Python.ORDER_ATOMIC);
+  Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+  Blockly.Python.definitions_['import_DJ004_MP3'] = 'from MP3 import DJ004_MP3';
+  var code = 'mp3' + '.playFileByIndexNumber(' + NUM + ')\n';
+  return code;
+};
+
+Blockly.Python.MP3_PLAY_FOLDER = function () {
+  var FOLDER = Blockly.Python.valueToCode(this, 'FOLDER', Blockly.Python.ORDER_ATOMIC);
+  var NUM = Blockly.Python.valueToCode(this, 'NUM', Blockly.Python.ORDER_ATOMIC);
+  Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+  Blockly.Python.definitions_['import_DJ004_MP3'] = 'from MP3 import DJ004_MP3';
+  var code = 'mp3' + '.set_folder('+FOLDER+', ' + NUM + ')\n';
   return code;
 };

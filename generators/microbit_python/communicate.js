@@ -74,6 +74,10 @@ Blockly.Python.i2c_init = function () {
   var dropdown_pin1 = Blockly.Python.valueToCode(this, 'RX',Blockly.Python.ORDER_ATOMIC);
   var dropdown_pin2 = Blockly.Python.valueToCode(this, 'TX',Blockly.Python.ORDER_ATOMIC);
   var freq = Blockly.Python.valueToCode(this, 'freq', Blockly.Python.ORDER_ATOMIC);
+  if (!isNaN(parseInt(dropdown_pin1)))
+    dropdown_pin1 = "pin" + dropdown_pin1;
+  if (!isNaN(parseInt(dropdown_pin2)))
+    dropdown_pin2 = "pin" + dropdown_pin2;
   return "i2c.init(sda=" + dropdown_pin1 + ", scl=" + dropdown_pin2 + ", freq=" + freq + ")\n";
 };
 

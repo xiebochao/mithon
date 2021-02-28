@@ -286,13 +286,11 @@ pbc.moduleFunctionD.get('ds')['set_time'] = function (py2block, func, args, keyw
 
 
 pbc.assignD.get('HCSR04')['check_assign'] = function (py2block, node, targets, value) {
-    if(value.func._astname != "Attribute" || value.func.value._astname != "Name"){
+    if(value.func._astname != "Name"){
         return false;
     }
-    var moduleName = py2block.Name_str(value.func.value);
-    var funcName = py2block.identifier(value.func.attr);
-    if (value._astname === "Call" && moduleName === "hcsr04"
-        && funcName === "HCSR04" && value.args.length === 0)
+    var funcName = py2block.identifier(value.func.id);
+    if (value._astname === "Call" && funcName === "HCSR04" && value.args.length === 0)
         return true;
     return false;
 }
@@ -308,4 +306,14 @@ pbc.assignD.get('HCSR04')['create_block'] = function (py2block, node, targets, v
             "Trig": Trig,
             "Echo": Echo
     }, {});
+}
+
+pbc.moduleFunctionD.get('tcs')['getRawRGBData'] = function (py2block, func, args, keywords, starargs, kwargs, node) {
+    if (args.length !== 1) {
+        throw new Error("Incorrect number of arguments");
+    }
+    var arg = args[0].n.v;
+    return block("TCS34725_Get_RGB", func.lineno, {'TCS34725_COLOR': arg}, {}, {
+        "inline": "true"
+    });
 }

@@ -30,7 +30,7 @@ Blockly.Blocks['serial_print_hex'] = {
    init: function() {
     this.setColour(Blockly.Blocks.serial.HUE);
     this.appendValueInput("CONTENT", Number)
-        .appendField("Serial " + Blockly.MIXLY_SERIAL_PRINT_HEX)
+        .appendField("Serial " + Blockly.MIXLY_SERIAL_PRINT + "  (" + Blockly.Msg.MATH_HEX + ")")
         .setCheck(Number);
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
