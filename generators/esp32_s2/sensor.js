@@ -96,8 +96,10 @@ Blockly.Python.RTC_set_datetime= function () {
     var second = Blockly.Python.valueToCode(this, "second",Blockly.Python.ORDER_ASSIGNMENT);
     var week = Blockly.Python.valueToCode(this, "weekday", Blockly.Python.ORDER_ASSIGNMENT);
     var yearday = Blockly.Python.valueToCode(this, "yearday",Blockly.Python.ORDER_ASSIGNMENT); 
-    var isdist = Blockly.Python.valueToCode(this, "isdist",Blockly.Python.ORDER_ASSIGNMENT); 
-    var code = 'mixgoce.rtc_clock.datetime = time.struct_time(('+year+','+month+','+day+','+hour+','+minute+','+second+','+week+','+yearday+','+isdist+'))\n';
+    var isdist = Blockly.Python.valueToCode(this, "isdist",Blockly.Python.ORDER_ASSIGNMENT);
+    Blockly.Python.setups_["RTC_set_datetime"] ='def RTC_set_datetime(year, month, day, hour, minute, second, weekday, yearday, isdist):\n' +
+                                                '    mixgoce.rtc_clock.datetime = time.struct_time((year, month, day, hour, minute, second, weekday, yearday, isdist))\n';
+    var code = 'RTC_set_datetime('+year+','+month+','+day+','+hour+','+minute+','+second+','+week+','+yearday+','+isdist+')\n';
     return code;
 };
 

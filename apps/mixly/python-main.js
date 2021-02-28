@@ -62,7 +62,7 @@ function updateMain() {
 		}else{
 			code = Blockly.Python.workspaceToCode(Blockly.mainWorkspace) || '';
 		}
-		code = code_head+code
+		//code = code_head+code
 		code = code.replace('from mixpy import math_map','')
 		code = code.replace('from mixpy import math_mean','')
 		code = code.replace('from mixpy import math_median','')
@@ -318,7 +318,7 @@ const buildTarget = async () => {
 	}
 }
 
-connect_btn.addEventListener("click", () => {selectDevice()});
+//connect_btn.addEventListener("click", () => {selectDevice()});
 
 //-----------------------------------------------------------
 const setStatus = state => {
@@ -342,34 +342,306 @@ const setImage = (file) => {
     reader.readAsArrayBuffer(file);
 }
 
-const exec = require('child_process').exec;
-var file_save = require('fs');
+const {resolve} = require('path')
+var child_process=require("child_process")
+var file_save = require('fs')
+var esp32_s2_path = resolve('./').replace("apps/mixly","") + '\\cpBuild\\ESP32S2_MixGoCE';
+var python3_path = resolve('./').replace("apps/mixly","") + '\\mixpyBuild\\win_python3\\python3.exe';
+var py_file_path = resolve('./').replace("apps/mixly","") + '\\mixpyBuild\\mixly.py';
+var mixly_cp = resolve('./').replace("apps/mixly","") + '\\cpBuild\\code.py';
 var wmicResult = null;
+var upload_cancel = false;
+
+function serial_port_operate_start() {
+	layer.closeAll('page');
+	document.getElementById('serial-device-form').style.display = 'none';
+	if (upload_cancel) {
+		layui.use('layer', function(){
+	        var layer = layui.layer;
+	        layer.open({
+	          	type: 1,
+	          	title: '烧录中...',
+	          	content: $('#webusb-flashing'),
+	          	closeBtn: 0,
+	          	end: function() {
+	            	document.getElementById('webusb-flashing').style.display = 'none';
+	          	}
+	        });
+	        var com_data = $('#select_serial_device option:selected').val();
+	        esp32s2_download(com_data);
+      	}); 
+	} else {
+		cp_serial_upload_start();
+	}
+}
+
+function serial_port_operate_cancel() {
+	if (upload_cancel) {
+		layer.closeAll('page');
+		document.getElementById('serial-device-form').style.display = 'none';
+		upload_cancel = true;
+		layer.closeAll('page');
+		layer.msg('已取消烧录', {
+	        time: 1000
+	    });
+		upload_cancel = false;
+	} else {
+		serial_upload_cancel();
+	}
+}
+
+function cp_serial_upload_start() {
+	layer.closeAll('page');
+	document.getElementById('serial-device-form').style.display = 'none';
+	upload_cancel = false;
+	layui.use('layer', function(){
+        var layer = layui.layer;
+        layer.open({
+            type: 1,
+            title: '上传中...',
+            content: $('#webusb-flashing'),
+            closeBtn: 0,
+            end: function() {
+              document.getElementById('webusb-flashing').style.display = 'none';
+            }
+        });
+    }); 
+
+    var code = "";
+	if (document.getElementById('tab_arduino').className == 'tabon') {
+        code = editor.getValue();
+	} else {
+		code = Blockly.Python.workspaceToCode(Blockly.mainWorkspace) || '';
+	}
+	//code = code_head+code
+	code = code.replace('from mixpy import math_map','')
+	code = code.replace('from mixpy import math_mean','')
+	code = code.replace('from mixpy import math_median','')
+	code = code.replace('from mixpy import math_modes','')
+	code = code.replace('from mixpy import math_standard_deviation','')
+	code = code.replace('from mixpy import lists_sort','')
+	
+    file_save.writeFile(mixly_cp, code,'utf8',function(err){
+	    //如果err=null，表示文件使用成功，否则，表示希尔文件失败
+	    if(err) {
+	    	layer.closeAll('page');
+	    	document.getElementById('webusb-flashing').style.display = 'none';
+	    	layer.msg('写文件出错了，错误是：'+err, {
+	            time: 1000
+	        });
+	        upload_cancel = false;
+	        return;
+	    }  else if(upload_cancel) { //如果检测到用户取消上传，则隐藏上传框
+	    	layer.closeAll('page');
+	    	document.getElementById('webusb-flashing').style.display = 'none';
+	    	upload_cancel = false;
+	        return;
+	    } else {
+	    	var device_values = $.map($('#select_serial_device option'), function(ele) {
+			   return ele.value; 
+			});
+			var device_num = device_values.length;
+			var device_select_name = $('#select_serial_device option:selected').val();
+			if (device_select_name == "all") {
+				var upload_finish_num = 0;
+				for (var i = 0; i < device_num; i++) {
+					if (device_values[i] == "all") continue;
+					file_save.copyFile(mixly_cp, device_values[i]+"\\code.py", (err) => { 
+						layer.closeAll('page');
+					    document.getElementById('webusb-flashing').style.display = 'none';
+					    if (err) { 
+					  	    layer.msg('写文件出错了，错误是：'+err, {
+				                time: 1000
+				            });
+					    } else if(!upload_cancel) {
+					    	upload_finish_num++;
+					    	if (upload_finish_num >= device_num-1) {
+					    		layer.closeAll('page');
+				    			document.getElementById('webusb-flashing').style.display = 'none';
+						    	layer.msg('上传成功!', {
+						            time: 1000
+						        });
+						        status_bar_show(1);
+				        		py_refreshSerialList_select_com("cp");
+								setTimeout(function () {connect_com_with_option("cp")}, 1000);
+						        upload_cancel = false;
+						    }
+					    }
+					}); 
+				}
+			} else {
+				file_save.copyFile(mixly_cp, device_select_name+"\\code.py", (err) => { 
+					layer.closeAll('page');
+				    document.getElementById('webusb-flashing').style.display = 'none';
+				    if (err) { 
+				  	    layer.msg('写文件出错了，错误是：'+err, {
+			                time: 1000
+			            });
+				    } else if(!upload_cancel) {
+				    	layer.msg('上传成功!', {
+				            time: 1000
+				        });
+						status_bar_show(1);
+						py_refreshSerialList_select_com("cp");
+						setTimeout(function () {connect_com_with_option("cp")}, 1000);
+				    }
+				    upload_cancel = false;
+				}); 
+			}
+			
+		}
+	})
+}
+
+function mp_serial_upload_start() {
+	layer.closeAll('page');
+	document.getElementById('serial-device-form').style.display = 'none';
+	upload_cancel = false;
+	layui.use('layer', function(){
+        var layer = layui.layer;
+        layer.open({
+            type: 1,
+            title: '上传中...',
+            content: $('#webusb-flashing'),
+            closeBtn: 0,
+            end: function() {
+              document.getElementById('webusb-flashing').style.display = 'none';
+            }
+        });
+    }); 
+
+	try {
+        updateMain();
+        var output = FS.getUniversalHex();
+    } catch(e) {
+        alert(e.message);
+        return;
+    }
+    var device_values = $.map($('#select_serial_device option'), function(ele) {
+	   return ele.value; 
+	});
+	var device_num = device_values.length;
+	var device_select_name = $('#select_serial_device option:selected').val();
+	if (device_select_name == "all") {
+		var upload_finish_num = 0;
+		for (var i = 0; i < device_num-1; i++) {
+			if (device_values[i] == "all") continue;
+		    file_save.writeFile(device_values[i]+"\\firmware.hex", output,'utf8',function(err){
+			    //如果err=null，表示文件使用成功，否则，表示希尔文件失败
+			    if(err) {
+			    	layer.closeAll('page');
+			    	layer.msg('写文件出错了，错误是：'+err, {
+			            time: 1000
+			        });
+			    } else if(!upload_cancel) {
+			    	upload_finish_num++;
+					if (upload_finish_num >= device_num-1) {
+				    	layer.closeAll('page');
+				    	layer.msg('上传成功!', {
+				            time: 1000
+				        });
+				        status_bar_show(1);
+				        py_refreshSerialList_select_com("mp");
+						setTimeout(function () {connect_com_with_option("mp")}, 1000);
+						upload_cancel = false;
+					}
+			    }
+			});
+		}
+	} else {
+		file_save.writeFile(device_select_name+"\\firmware.hex", output,'utf8',function(err){
+		    //如果err=null，表示文件使用成功，否则，表示希尔文件失败
+		    if(err) {
+		    	layer.closeAll('page');
+		    	layer.msg('写文件出错了，错误是：'+err, {
+		            time: 1000
+		        });
+		    } else if(!upload_cancel) {
+		    	layer.closeAll('page');
+		    	layer.msg('上传成功!', {
+		            time: 1000
+		        });
+		        status_bar_show(1);
+		        py_refreshSerialList_select_com("mp");
+				setTimeout(function () {connect_com_with_option("mp")}, 1000);
+		    }
+		    upload_cancel = false;
+		})
+	}
+}
+
+function serial_upload_cancel() {
+	layer.closeAll('page');
+	document.getElementById('serial-device-form').style.display = 'none';
+	upload_cancel = true;
+	layer.closeAll('page');
+	layer.msg('已取消上传', {
+        time: 1000
+    });
+}
+
 // Update a device with the firmware image transferred from block/code
 const update = async() => {
-	exec('wmic logicaldisk where VolumeName="MICROBIT" get DeviceID', function (err, stdout, stderr) {
+	upload_cancel = false;
+	child_process.exec('wmic logicaldisk where VolumeName="MICROBIT" get DeviceID', function (err, stdout, stderr) {
 	    if (err || stderr) {
 	        console.log("root path open failed" + err + stderr);
+	        layer.closeAll('page');
 	        layer.msg('无可用设备!', {
 	            time: 1000
 	        });
 	        return;
 		}
-		layui.use('layer', function(){
-            var layer = layui.layer;
-            layer.open({
-                type: 1,
-                title: '上传中...',
-                content: $('#webusb-flashing'),
-                closeBtn: 0
-            });
-        }); 
+
+		if (stdout.indexOf(":") != stdout.lastIndexOf(":")) {
+			layer.closeAll('page');
+			document.getElementById('webusb-flashing').style.display = 'none';
+			layui.use(['layer','form'], function(){
+		        var layer = layui.layer;
+		        layer.open({
+		            type: 1,
+		            title: '检测到多个同类型设备，请选择：',
+		            area: ['350px','170px'],
+		            content: $('#serial-device-form'),
+		            closeBtn: 0,
+		            end: function() {
+		              document.getElementById('serial-device-form').style.display = 'none';
+		            }
+		        });
+			}); 
+		} else {
+			layui.use('layer', function(){
+		        var layer = layui.layer;
+		        layer.open({
+		            type: 1,
+		            title: '上传中...',
+		            content: $('#webusb-flashing'),
+		            closeBtn: 0,
+		            end: function() {
+		              document.getElementById('webusb-flashing').style.display = 'none';
+		            }
+		        });
+		    }); 
+		}
 	    wmicResult = stdout;
 	    wmicResult = wmicResult.replace(/\s+/g, "");
 	    wmicResult = wmicResult.replace("DeviceID", "");
 	    // wmicResult = 'G:K:F:';
 	    let result = wmicResult.split(':');
 	    console.log(result);
+
+	    if (wmicResult.indexOf(":") != wmicResult.lastIndexOf(":")) {
+			var form = layui.form;
+			var device_Names = $('#select_serial_device');
+		    device_Names.empty();
+		    for(var i = 0; i < result.length; i++) {
+		    	if (result[i])
+		    		device_Names.append('<option value="'+result[i]+':">'+result[i]+':</option>');
+		    }
+		    device_Names.append('<option value="all">全部</option>');
+		    form.render();
+			return;
+		}
 
 	    try {
 	        updateMain();
@@ -381,46 +653,95 @@ const update = async() => {
 
 	    file_save.writeFile(wmicResult+"\\firmware.hex", output,'utf8',function(err){
 		    //如果err=null，表示文件使用成功，否则，表示希尔文件失败
-		    layer.closeAll('page');
-		    if(err)
-		    	layer.msg('写入文件出错', {
+		    if(err) {
+		    	layer.closeAll('page');
+		    	layer.msg('写文件出错了，错误是：'+err, {
 		            time: 1000
 		        });
-		    else {
+		        console.log('写文件出错了，错误是：'+err);
+		    } else if(!upload_cancel) {
+		    	layer.closeAll('page');
 		    	layer.msg('上传成功!', {
 		            time: 1000
 		        });
+		        console.log('ok');
+		        //status_bar_select = false;
+		        status_bar_show(1);
+		        py_refreshSerialList_select_com("mp");
+				setTimeout(function () {
+					connect_com_with_option("mp");
+					serialWrite_ctrl_d();
+				}, 1000);
 		    }
+		    upload_cancel = false;
 		})
 
 	});
 }
-upload_btn.addEventListener("click", () => {update(deviceObj)});
+if (upload_btn)
+	upload_btn.addEventListener("click", () => {update(deviceObj)});
 
 const download = async() => {
-    exec('wmic logicaldisk where VolumeName="CIRCUITPY" get DeviceID', function (err, stdout, stderr) {
+	upload_cancel = false;
+    child_process.exec('wmic logicaldisk where VolumeName="CIRCUITPY" get DeviceID', function (err, stdout, stderr) {
     	if (err || stderr) {
+    		layer.closeAll('page');
+    		document.getElementById('webusb-flashing').style.display = 'none';
 	        console.log("root path open failed" + err + stderr);
 	        layer.msg('无可用设备!', {
 	            time: 1000
 	        });
 	        return;
 	    }
-	    layui.use('layer', function(){
-            var layer = layui.layer;
-            layer.open({
-                type: 1,
-                title: '上传中...',
-                content: $('#webusb-flashing'),
-                closeBtn: 0
-            });
-        }); 
+	    if (stdout.indexOf(":") != stdout.lastIndexOf(":")) {
+	    	layer.closeAll('page');
+			document.getElementById('webusb-flashing').style.display = 'none';
+	    	layui.use(['layer','form'], function(){
+		        var layer = layui.layer;
+		        layer.open({
+		            type: 1,
+		            title: '检测到多个同类型设备，请选择：',
+		            area: ['350px','170px'],
+		            content: $('#serial-device-form'),
+		            closeBtn: 0,
+		            end: function() {
+		              document.getElementById('serial-device-form').style.display = 'none';
+		            }
+		        });
+			}); 
+	    } else {
+		    layui.use('layer', function(){
+		        var layer = layui.layer;
+		        layer.open({
+		            type: 1,
+		            title: '上传中...',
+		            content: $('#webusb-flashing'),
+		            closeBtn: 0,
+		            end: function() {
+		              document.getElementById('webusb-flashing').style.display = 'none';
+		            }
+		        });
+		    }); 
+		}
     	wmicResult = stdout;
 	    wmicResult = wmicResult.replace(/\s+/g, "");
 	    wmicResult = wmicResult.replace("DeviceID", "");
 	    // wmicResult = 'G:K:F:';
 	    let result = wmicResult.split(':');
 	    console.log(result);
+
+	    if (wmicResult.indexOf(":") != wmicResult.lastIndexOf(":")) {
+			var form = layui.form;
+			var device_Names = $('#select_serial_device');
+		    device_Names.empty();
+		    for(var i = 0; i < result.length; i++) {
+		    	if (result[i])
+		    		device_Names.append('<option value="'+result[i]+':">'+result[i]+':</option>');
+		    }
+		    device_Names.append('<option value="all">全部</option>');
+		    form.render();
+			return;
+		}
 
 	    var code = "";
 		if (document.getElementById('tab_arduino').className == 'tabon') {
@@ -429,98 +750,219 @@ const download = async() => {
 		} else {
 			code = Blockly.Python.workspaceToCode(Blockly.mainWorkspace) || '';
 		}
-		code = code_head+code
+		//code = code_head+code
 		code = code.replace('from mixpy import math_map','')
 		code = code.replace('from mixpy import math_mean','')
 		code = code.replace('from mixpy import math_median','')
 		code = code.replace('from mixpy import math_modes','')
 		code = code.replace('from mixpy import math_standard_deviation','')
 		code = code.replace('from mixpy import lists_sort','')
-
-	    file_save.writeFile(wmicResult+"\\code.py", code,'utf8',function(err){
+		
+	    file_save.writeFile(mixly_cp, code,'utf8',function(err){
 		    //如果err=null，表示文件使用成功，否则，表示希尔文件失败
-		    layer.closeAll('page');
-		    if(err)
-		    	layer.msg('写入文件出错', {
+		    if(err) {
+		    	layer.closeAll('page');
+		    	document.getElementById('webusb-flashing').style.display = 'none';
+		    	layer.msg('写文件出错了，错误是：'+err, {
 		            time: 1000
 		        });
-		    else {
-		    	layer.msg('上传成功!', {
-		            time: 1000
-		        });
-		    }
+		        console.log('写文件出错了，错误是：'+err);
+		        upload_cancel = false;
+		        return;
+		    }  else if(upload_cancel) {
+		    	layer.closeAll('page');
+		    	document.getElementById('webusb-flashing').style.display = 'none';
+		    	upload_cancel = false;
+		        return;
+		    } else {
+		    	file_save.copyFile(mixly_cp, wmicResult+"\\code.py", (err) => { 
+					layer.closeAll('page');
+				    document.getElementById('webusb-flashing').style.display = 'none';
+				    if (err) { 
+				  	    layer.msg('写文件出错了，错误是：'+err, {
+			                time: 1000
+			            });
+				        console.log("写文件出错了，错误是：", err); 
+				    } else if(!upload_cancel) {
+				    	layer.msg('上传成功!', {
+				            time: 1000
+				        });
+				        console.log('ok');
+				        //status_bar_select = false;
+						status_bar_show(1);
+						py_refreshSerialList_select_com("cp");
+						setTimeout(function () {
+							connect_com_with_option("cp");
+							serialWrite_ctrl_d();
+						}, 1000);
+				    }
+				    upload_cancel = false;
+				}); 
+			}
 		})
 
 	});
 }
 if (document.getElementById("download_btn")) {
 	let download_btn = document.getElementById("download_btn");
-	download_btn.addEventListener("click", () => {download(deviceObj)});
+	download_btn.addEventListener("click", () => {download()});
 }
 
+function webusb_cancel() {
+	layer.closeAll('page');
+	document.getElementById('webusb-flashing').style.display = 'none';
+	if (upload_cancel) {
+		if (download_shell) {
+			download_shell.stdout.end();
+			//download_shell.stdin.end();
+			download_shell.kill("SIGTERM");
+			download_shell = null;
+		}
+		layer.closeAll('page');
+		layer.msg('已取消烧录', {
+	        time: 1000
+	    });
+	    upload_cancel = false;
+	} else {
+		upload_cancel = true;
+		layer.closeAll('page');
+		layer.msg('已取消上传', {
+	        time: 1000
+	    });
+	}
+}
+
+const esp32s2_download_data = async() => {
+	var device_name = document.getElementById("device-name-select");
+	var downloadLog_data = document.getElementById("downloadLog");
+	var device_com = device_name.value;
+	downloadLog_data.textContent = "正在烧录...\n";
+    var shell = child_process.execFile(esp32_s2_path+"\\esptool.bat",[device_com,"115200"],function(error,stdout,stderr){
+	    if(error !==null){
+	        console.log("exec error"+error);
+	        downloadLog_data.textContent = downloadLog_data.innerText + error + "\n";
+	    }
+	    else {
+	    	console.log("成功");
+	   		downloadLog_data.textContent = downloadLog_data.innerText + "烧录成功！\n";
+	   	}
+	   	downloadLog_data.scrollTop = downloadLog_data.scrollHeight;
+	})
+
+	shell.stdout.on('data', function (data) {
+        //console.log(data);
+        downloadLog_data.textContent = downloadLog_data.innerText + data;
+        downloadLog_data.scrollTop = downloadLog_data.scrollHeight;
+    });
+	
+}
 
 const serialRead = async () => {
-    layui.use('layer', function(){
+    layui.use(['layer','element','form'], function(){
         var layer = layui.layer;
+        var element = layui.element;
+        var serial_com_update = null;
+        element.on('tab(serial)', function(elem){
+        	if (elem.index == 1) {
+        		echarts_init();
+        	} else {
+        		myChart && myChart.dispose();
+        		echarts_update && clearInterval(echarts_update);
+        	}
+		});
         layer.open({
             type: 1,
-            area: ['700px','500px'],
-            content: $('#serial-form') 
-            });
-      });
-	if(!target.connected){
-		try{
-            await target.connect();
-		}
-		catch (e){
-			console.error(e);
-        }
-	}
-	//防止重复绑定事件监听
-	target.removeAllListeners(DAPjs.DAPLink.EVENT_SERIAL_DATA);
-	target.on(DAPjs.DAPLink.EVENT_SERIAL_DATA, data => {
-		console.log(data);
-        document.getElementById('serial_content').value = document.getElementById('serial_content').value + data;
-        
-	});
-	await target.startSerialRead();	
+            id: "serial_page",
+            title: false,
+            area: serial_form_update(1),
+            closeBtn: 1,
+            resize:false,
+            content: $('#serial-form'),
+            success: function (layero, index) {
+                layero[0].childNodes[1].childNodes[0].classList.remove('layui-layer-close2');
+                layero[0].childNodes[1].childNodes[0].classList.add('layui-layer-close1');
+
+                serial_com_update = setInterval(update_select_com, 1200);
+
+                if (py2block_config.board == "CircuitPython[ESP32_S2]") {
+					py_refreshSerialList_select_com("cp");
+					setTimeout(function () {
+						connect_com_with_option("cp");
+						$("#serial_content").val(div_inout_middle_text.getValue());
+						status_bar_show(1);
+						serial_open = true;
+					}, 150);
+				} else {
+					py_refreshSerialList_select_com("mp");
+					setTimeout(function () {
+						connect_com_with_option("mp");
+						$("#serial_content").val(div_inout_middle_text.getValue());
+						status_bar_show(1);
+						serial_open = true;
+					}, 150);
+				}
+            },
+            end: function() {
+	            document.getElementById('serial-form').style.display = 'none';
+	            div_inout_middle_text.setValue($("#serial_content").val());
+    		    div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
+    		    myChart && myChart.dispose();
+    		    echarts_update && clearInterval(echarts_update);
+    		    serial_com_update && clearInterval(serial_com_update);
+    		    element.tabChange('serial', '1');
+    		    serial_open = false;
+	        }
+        });
+    });
 }
 
-
-serial_read_btn.addEventListener("click", () => {serialRead()});
+if (serial_read_btn)
+	serial_read_btn.addEventListener("click", () => {serialRead()});
 
 //这两个事件对应的按钮渲染太慢，只能放到html onclick里
 const clearSerialContent = async () => {
     document.getElementById('serial_content').value = '';
 }
 
-const serialWrite = async () => {
-	if(!target.connected){
-		try{
-			await target.connect();
-		}
-		catch (e){
-			console.error(e);
-		}
+var status_bar_select = false;
+function status_bar_show(is_open) {
+	var oBox = getid("table_whole"); 
+	var content_blocks = getid("content_blocks"); 
+	var content_arduino = getid("content_arduino"); 
+	var content_xml = getid("content_xml"); 
+	var content_area = getid("content_area");
+	var side_code_parent = getid("side_code_parent");
+	var td_top = getid("td_top");
+	var td_middle = getid("td_middle");
+    if(is_open && status_bar_select) return;
+	if (status_bar_select || is_open == 2) {
+		td_top.style.display = 'none';
+		td_middle.style.display = 'none';
+		td_top.style.height = '0px';
+		td_middle.style.height = '0px';
+	    content_blocks.style.height = "100%";
+	    content_arduino.style.height = "100%";
+	    content_xml.style.height = "100%";
+	    content_area.style.height = "100%";
+	    side_code_parent.style.height = "100%";
+		status_bar_select = false;
+	} else {
+		td_top.style.display = '';
+		td_middle.style.display = '';
+		td_top.style.height = '5px';
+		td_middle.style.height = 'auto';
+		var iT = 0.8;
+		var percent=oBox.clientHeight * iT;
+		content_blocks.style.height = percent + "px";
+	    content_arduino.style.height = percent + "px";
+	    content_area.style.height = percent + "px";
+	    side_code_parent.style.height = percent + "px";
+	    mid_td.style.height= percent + "px";
+	    td_middle.style.height = "auto";
+		status_bar_select = true;
 	}
-	if(await target.getSerialBaudrate() != 115200) {
-		try{
-			await target.setSerialBaudrate(115200);
-		}
-		catch (e){
-			console.error(e);
-		}
-	}
-	let serialWriteInput = document.getElementById('serial_write');
-	let serialWriteContent = serialWriteInput.value;
-	serialWriteInput.value = '';
-	if(serialWriteContent != ''){
-		await target.serialWrite(serialWriteContent);
-        document.getElementById('serial_content').value = document.getElementById('serial_content').value + serialWriteContent + '\n';
-		//可能是因为mutex lock的原因，每次发送后需要重新启动监听，并且清理缓冲区
-		await target.stopSerialRead();
-		await target.startSerialRead();
-	}
+	editor.resize();
+	Blockly.fireUiEvent(window, 'resize');
 }
 
 FS.setupFilesystem().then(function() {

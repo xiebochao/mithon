@@ -2018,11 +2018,6 @@ PythonToBlocks.prototype.Num = function(node)
         return block(py2block_config.pinType, node.lineno, {
             "PIN": nVal
         });
-    }else if(py2block_config.pinType != null){
-        return block(py2block_config.pinType, node.lineno, {
-            "PIN": nVal
-        });
-
     }
     if(py2block_config.inScope == "lcd_init"){
         return block("math_number", node.lineno, {"NUM": '0x' + nVal.toString(16)});
@@ -2310,6 +2305,7 @@ PythonToBlocks.prototype.Name = function(node)
             "PIN": this.identifier(id).replace("pin", '')
         });
     }
+
     if(py2block_config.board == py2block_config.ESP32
         && pinMatcher.test(nodeName) && py2block_config.pinType != null){
         return block(py2block_config.pinType, node.lineno, {
@@ -2353,6 +2349,12 @@ PythonToBlocks.prototype.Name = function(node)
         });
     }
     if(py2block_config.board == py2block_config.ESP32
+        && (nodeName === "button_B1" || nodeName === "button_B2" || nodeName === "button_A1" || nodeName === "button_A2" || nodeName === "button_A3" || nodeName === "button_A4") && py2block_config.pinType == "pins_button" ){
+        return block(py2block_config.pinType, node.lineno, {
+            "PIN": this.identifier(id)
+        });
+    }
+    if(py2block_config.board == py2block_config.ESP32
         && (nodeName === "touch1" || nodeName === "touch2"|| nodeName === "touch3"|| nodeName === "touch4") && py2block_config.pinType =="number1"){
         return block(py2block_config.pinType, node.lineno, {
             "op": this.identifier(id)
@@ -2360,6 +2362,12 @@ PythonToBlocks.prototype.Name = function(node)
     }
     if(py2block_config.board == py2block_config.ESP32
         && (nodeName === "touch1" || nodeName === "touch2"|| nodeName === "touch3"|| nodeName === "touch4"|| nodeName === "touch5"|| nodeName === "touch6") && py2block_config.pinType =="handbit_number1"){
+        return block(py2block_config.pinType, node.lineno, {
+            "op": this.identifier(id)
+        });
+    }
+    if(py2block_config.board == py2block_config.ESP32
+        && (nodeName === "touch_T1" || nodeName === "touch_T2"|| nodeName === "touch_T3"|| nodeName === "touch_T4") && py2block_config.pinType =="number1"){
         return block(py2block_config.pinType, node.lineno, {
             "op": this.identifier(id)
         });

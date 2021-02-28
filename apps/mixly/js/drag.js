@@ -53,6 +53,10 @@ window.addEventListener('load', function load(event) {
  var oTop = getid("side_code_top");
  var oBottom = getid("side_code_bottom");
  var oLine = getid("side_code_mid");
+ var oDown = null;
+ if (document.getElementById("side_code_down")) {
+  oDown = document.getElementById("side_code_down");
+ }
  if(oLine === null) return;
  oLine.onmousedown = function(e) {
  	var disY = (e || event).clientY;
@@ -68,9 +72,15 @@ window.addEventListener('load', function load(event) {
   		iT > maxT && (iT = maxT);
 		//console.log(oBox.clientWidth+" "+iT+" "+oTop1.style.width+" "+oTop.style.width);
 		var percent=iT*100/oBox.clientHeight;
-  		oTop.style.height= percent  + '%';  // no need this line
-  		oLine.style.top = percent  + '%';
-  		oBottom.style.height= ( 100 - percent ) + '%';
+      if (oDown) {
+        oTop.style.height= percent + '%';  // no need this line
+        oLine.style.top = percent + '%';
+        oBottom.style.height= (100 - percent - oDown.clientHeight*100/oBox.clientHeight) + '%';
+      } else {
+        oTop.style.height= percent  + '%';  // no need this line
+        oLine.style.top = percent  + '%';
+  		  oBottom.style.height= ( 100 - percent) + '%';
+      }
   		
   		return false;
  	}; 
@@ -81,6 +91,86 @@ window.addEventListener('load', function load(event) {
  	};
  	oLine.setCapture && oLine.setCapture();
  	return false;
+ };
+ 
+});
+
+window.addEventListener('load', function load(event) {
+  
+ var oBox = getid("table_whole"); 
+ 
+ var content_xml = getid("content_xml");
+ var content_blocks = getid("content_blocks"); 
+ var content_arduino = getid("content_arduino"); 
+ var content_area = getid("content_area");
+ var side_code_parent = getid("side_code_parent");
+
+ var td_top = getid("td_top");
+ var td_middle = getid("td_middle");
+ var td_down = getid("td_down");
+
+ td_top.onmousedown = function(e) {
+  var disY = (e || event).clientY;
+  td_top.top= td_top.offsetTop;
+
+  document.onmousemove = function(e) {
+    //console.log(oBox.clientWidth + " " + oLine.style.left + " " + disX + " " + (e || event).clientX); 
+    var iT = td_top.top + ((e || event).clientY - disY);
+    var e=e||window.event,tarnameb=e.target||e.srcElement;
+
+    /*
+    if (com_connected) {
+      var maxT = oBox.clientHeight * 0.87;
+      var minT = oBox.clientHeight * 0.13;
+    } else {
+      var maxT = oBox.clientHeight * 0.94;
+      var minT = oBox.clientHeight * 0.06;
+    }
+    */
+    //var maxT = oBox.clientHeight * 0.88;
+    //var minT = oBox.clientHeight * 0.12;
+    var maxT = oBox.clientHeight * 0.85;
+    var minT = oBox.clientHeight * 0.15;
+    td_top.style.margin = 0;
+    iT < minT && (iT = minT);
+    iT > maxT && (iT = maxT);
+    //oTop.style.height= iT;  // no need this line
+    //oTop1.style.height= iT;
+    //oTop2.style.height= iT;
+    //oBottom.style.height= iT;
+    //oLine.style.height= iT;
+    //div_top.style.top = iT;
+    //td_middle.style.height = (oBox.clientHeight - iT - div_top.clientHeight - div_down.clientHeight) + 'px'; 
+    //td_middle.style.width = oBox.clientWidth/100;   
+    //div_inout_middle.style.height = (oBox.clientHeight - iT - div_top.clientHeight - div_down.clientHeight) + 'px';
+    //oBox.offsetHeight = document.body.clientWidth - document.getElementById("nav").clientHeight;
+    //div_top.style.top = iT;
+    var percent=iT;
+    var oBox_height = oBox.clientHeight;
+    content_xml.style.height = percent + "px";
+    content_blocks.style.height = percent + "px";
+    content_arduino.style.height = percent + "px";
+    content_area.style.height = percent + "px";
+    side_code_parent.style.height = percent + "px";
+    mid_td.style.height= percent + "px";
+    //td_top.style.top= percent*oBox.clientHeight/100;
+    //td_middle.style.height= (oBox_height - (percent + td_top.clientHeight + td_down.clientHeight)) + "px";
+    td_middle.style.height = "auto";
+    //td_middle.style.width = document.body.clientWidth + "px";
+    //div_inout_middle.style.width = document.body.clientWidth + "px";
+    //oBox.style.height = oBox_height;
+    Blockly.fireUiEvent(window, 'resize');
+    //div_inout_middle.style.width = td_middle.clientWidth;
+    return false;
+  }; 
+  document.onmouseup = function() {
+      document.onmousemove = null;
+      document.onmouseup = null; 
+      Blockly.fireUiEvent(window, 'resize');
+      td_top.releaseCapture && td_top.releaseCapture();
+  };
+  td_top.setCapture && td_top.setCapture();
+  return false;
  };
  
 });

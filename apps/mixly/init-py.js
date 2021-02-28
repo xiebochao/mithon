@@ -1,5 +1,26 @@
 
 var sidecodeDisplay = false;
+var serial_open = false;
+var now_visual_height = document.documentElement.clientHeight;
+var now_visual_width = document.documentElement.clientWidth;
+
+//动态调整串口弹出框的大小
+function serial_form_update(type) {
+    var now_height = document.documentElement.clientHeight;
+    var now_width = document.documentElement.clientWidth;
+    var serial_form_height = 600;
+    var serial_form_width = 710;
+    if (now_height-50 <= serial_form_height) {
+        serial_form_height = now_height - 50;
+    }
+    if (now_width-100 <= serial_form_width) {
+        serial_form_width = now_width - 100;
+    }
+    if (type)
+        return [serial_form_width+"px", serial_form_height+"px"];
+    else
+        return [(now_width - serial_form_width)/2, (now_height - serial_form_height)/2];
+}
 
 /**
 * 点击侧边显示代码按钮
@@ -208,12 +229,14 @@ function RedoClick(){
 function changeMod(){
     if (document.getElementById('changemod_btn').value == 0) {
         document.getElementById('changemod_btn').value = 1;
-        document.getElementById('changemod_btn').textContent = MSG['tab_blocks'];
+        document.getElementById('changemod_btn').textContent = MSG['tab_arduino'];
+        document.getElementById('changemod_btn').className = "icon-code";
         tabClick('blocks');
     }
     else{
         document.getElementById('changemod_btn').value = 0;
-        document.getElementById('changemod_btn').textContent = MSG['tab_arduino'];
+        document.getElementById('changemod_btn').textContent = MSG['tab_blocks'];
+        document.getElementById('changemod_btn').className = "icon-puzzle";
         tabClick('arduino');
     }
 }
@@ -243,14 +266,14 @@ var increaseACEFontSize = function () {
     //放大侧边栏字体
     var sideSize = parseInt(editor_side_code.getFontSize(), 10) || 12;
     editor_side_code.setFontSize(sideSize + 1);
-    resetACEFontSizeButtonPositon()
+    //resetACEFontSizeButtonPositon()
 }
 var decreaseACEFontSize = function () {
     var size = parseInt(editor.getFontSize(), 10) || 12;
     editor.setFontSize(Math.max(size - 1 || 1));
     var sideSize = parseInt(editor_side_code.getFontSize(), 10) || 12;
     editor_side_code.setFontSize(Math.max(sideSize - 1 || 1));
-    resetACEFontSizeButtonPositon()
+    //resetACEFontSizeButtonPositon()
 }
 var resetACEFontSize = function () {
     editor.setFontSize(17);
@@ -271,19 +294,21 @@ function init() {
     editor.getSession().setMode("ace/mode/python");
     editor.setFontSize(17);
     editor.setShowPrintMargin(false);
+    editor.getSession().setTabSize(2);
     editor.setOptions({
         enableBasicAutocompletion: true,
         enableSnippets: true,
         enableLiveAutocompletion: true
     });
-    editor.setScrollSpeed(0.05);
+    editor.setScrollSpeed(0.2);
     editor_side_code = ace.edit("side_code");
     editor_side_code.setTheme(window.conf.lastEditorTheme);
     editor_side_code.getSession().setMode("ace/mode/python");
     editor_side_code.setFontSize(17);
     editor_side_code.setShowPrintMargin(false);
     editor_side_code.setReadOnly(true);
-    editor_side_code.setScrollSpeed(0.05);
+    editor_side_code.setScrollSpeed(0.2);
+    editor_side_code.getSession().setTabSize(2);
     $('#aceTheme').val(window.conf.lastEditorTheme);
     /*
           添加ACE放大缩小快捷键
@@ -313,26 +338,89 @@ function init() {
             }
         }]);
     //动态生成按钮元素
-    $('.ace_scroller').append('<div id="resetFontSize" class="setFontSize" width="32" height="32" onclick="resetACEFontSize()" style="cursor:hand;"></div>');
-    $('.ace_scroller').append('<div id="increaseFontSize" class="setFontSize" width="32" height="32" onclick="increaseACEFontSize()" style="cursor:hand;"></div>');
-    $('.ace_scroller').append('<div id="decreaseFontSize" class="setFontSize" width="32" height="32" onclick="decreaseACEFontSize()" style="cursor:hand;"></div>');
+    $('#content_arduino').append('<div id="resetFontSize" class="setFontSize" width="32" height="32" onclick="resetACEFontSize()" style="cursor:hand;"></div>');
+    $('#content_arduino').append('<div id="increaseFontSize" class="setFontSize" width="32" height="32" onclick="increaseACEFontSize()" style="cursor:hand;"></div>');
+    $('#content_arduino').append('<div id="decreaseFontSize" class="setFontSize" width="32" height="32" onclick="decreaseACEFontSize()" style="cursor:hand;"></div>');
+
+    //动态生成按钮元素
+    //$('#div_inout_middle').append('<select id="select_com" style="position:absolute;right:120px;width:100px;height:20px;top:2px;"></select>');
+    //$('#div_inout_middle').append('<button id="button_update" onclick="update_select_com()" style="position:absolute;right:70px;height:20px;top:2px;">刷新</button>');
+    //$('#div_inout_middle').append('<button id="button_connect" onclick="connect_com()" style="position:absolute;right:20px;height:20px;top:2px;">打开</button>');
+    
     //endACE放大缩小
     var py2block_converter = new PythonToBlocks();
     py2block_editor = new Py2blockEditor(py2block_converter, editor);
     Sk.python3 = true;
     var container = document.getElementById('content_area');
     var onresize = function (e) {
-        var bBox = getBBox_(container);
-        for (var i = 0; i < TABS_.length; i++) {
-            var el = document.getElementById('content_' + TABS_[i]);
-            el.style.top = bBox.y + 'px';
-            el.style.left = bBox.x + 'px';
-            // Height and width need to be set, read back, then set again to
-            // compensate for scrollbars.
-            el.style.height = bBox.height + 'px';
-            el.style.height = (2 * bBox.height - el.offsetHeight) + 'px';
-            el.style.width = bBox.width + 'px';
-            el.style.width = (2 * bBox.width - el.offsetWidth) + 'px';
+        var content_blocks = getid("content_blocks"); 
+        var content_arduino = getid("content_arduino"); 
+        var content_xml = getid("content_xml"); 
+        var content_area = getid("content_area");
+        var side_code_parent = getid("side_code_parent");
+        var td_middle = getid("td_middle");
+        if (status_bar_select) {
+            if(now_visual_height > document.body.clientHeight) {
+                var iT = 0.8;
+                var percent=(document.body.clientHeight - 60) * iT;
+                content_blocks.style.height = percent + "px";
+                content_arduino.style.height = percent + "px";
+                content_xml.style.height = percent + "px";
+                content_area.style.height = percent + "px";
+                side_code_parent.style.height = percent + "px";
+                mid_td.style.height= percent + "px";
+                td_middle.style.height = "auto";
+                var bBox = getBBox_(container);
+                for (var i = 0; i < TABS_.length; i++) {
+                    var el = document.getElementById('content_' + TABS_[i]);
+                    el.style.top = bBox.y + 'px';
+                    el.style.left = bBox.x + 'px';
+                    el.style.width = bBox.width + 'px';
+                    el.style.width = (2 * bBox.width - el.offsetWidth) + 'px';
+                }
+            } else {
+                var visual_height = document.documentElement.clientHeight;
+                var bBox = getBBox_(container);
+                for (var i = 0; i < TABS_.length; i++) {
+                    var el = document.getElementById('content_' + TABS_[i]);
+                    el.style.top = bBox.y + 'px';
+                    el.style.left = bBox.x + 'px';
+                    // Height and width need to be set, read back, then set again to
+                    // compensate for scrollbars.
+                    el.style.height = bBox.height + 'px';
+                    el.style.height = (2 * bBox.height - el.offsetHeight) + 'px';
+                    el.style.width = bBox.width + 'px';
+                    el.style.width = (2 * bBox.width - el.offsetWidth) + 'px';
+                }
+                
+            }
+            now_visual_height = document.body.clientHeight;
+        } else {  
+            var bBox = getBBox_(container);
+            for (var i = 0; i < TABS_.length; i++) {
+                var el = document.getElementById('content_' + TABS_[i]);
+                el.style.top = bBox.y + 'px';
+                el.style.left = bBox.x + 'px';
+                // Height and width need to be set, read back, then set again to
+                // compensate for scrollbars.
+                el.style.height = bBox.height + 'px';
+                el.style.height = (2 * bBox.height - el.offsetHeight) + 'px';
+                el.style.width = bBox.width + 'px';
+                el.style.width = (2 * bBox.width - el.offsetWidth) + 'px';
+            }
+        }
+        editor.resize();
+        var serial_page = getid("serial_page");
+        if (serial_page) {
+            var serial_width_height = serial_form_update(1);
+            var serial_left_top = serial_form_update(0);
+            serial_page.parentNode.style.width = serial_width_height[0];
+            serial_page.parentNode.style.height = serial_width_height[1];
+            serial_page.style.width = serial_width_height[0];
+            serial_page.style.height = serial_width_height[1];
+
+            serial_page.parentNode.style.left = serial_left_top[0];
+            serial_page.parentNode.style.top = serial_left_top[1];
         }
         // Make the 'Blocks' tab line up with the toolbox.
         // if (Blockly.mainWorkspace.toolbox_.width) {
@@ -388,24 +476,35 @@ function init() {
 
 }
 function show_tag(){
-    document.getElementById('tab_blocks').textContent = MSG['tab_blocks'];
-    document.getElementById('tab_arduino').textContent = MSG['tab_arduino'];
-    document.getElementById('undo_btn').textContent = MSG['undo'];
-    document.getElementById('redo_btn').textContent = MSG['redo'];
-    document.getElementById('file_btn').textContent = MSG['file'];
-    document.getElementById('new_btn').textContent = MSG['new'];
-    document.getElementById('open_btn').textContent = MSG['open'];
-    document.getElementById('save_btn').textContent = MSG['save'];
-    document.getElementById('save_xml_btn').textContent = MSG['save_blocks'];
-    document.getElementById('save_py_btn').textContent = MSG['save_py'];
-    document.getElementById('save_img_btn').textContent = MSG['save_img'];
-    document.getElementById('save_hex_btn').textContent = MSG['save_hex'];
-    document.getElementById('setting_btn').textContent = MSG['setting'];
-    document.getElementById('language_btn').textContent = MSG['language'];
-    document.getElementById('theme_btn').textContent = MSG['theme'];
-    document.getElementById('changemod_btn').textContent = MSG['tab_blocks'];
-    document.getElementById('connect_btn').textContent = MSG['connect'];
-    document.getElementById('upload_btn').textContent = MSG['upload'];
-    document.getElementById('serial_read_btn').textContent = MSG['catSerialPort'];
+    tag_select('tab_blocks', 'tab_blocks');
+    tag_select('tab_arduino', 'tab_arduino');
+    tag_select('undo_btn', 'undo');
+    tag_select('redo_btn', 'redo');
+    tag_select('file_btn', 'file');
+    tag_select('new_btn', 'new');
+    tag_select('open_btn', 'open');
+    tag_select('save_btn', 'save');
+    tag_select('save_xml_btn', 'save_blocks');
+    tag_select('save_py_btn', 'save_py');
+    tag_select('save_img_btn', 'save_img');
+    tag_select('save_hex_btn', 'save_hex');
+    tag_select('setting_btn', 'setting');
+    tag_select('language_btn', 'language');
+    tag_select('theme_btn', 'theme');
+    tag_select('changemod_btn', 'tab_blocks');
+    //tag_select('connect_btn', 'connect');
+    tag_select('upload_btn', 'upload');
+    tag_select('serial_read_btn', 'catSerialPort');
+    tag_select('serial_reset', 'serial_reset');
+    tag_select('download_btn', 'upload');
+    tag_select('layer_btn', 'status_bar_show');
+    tag_select('changemod_btn', 'tab_arduino');
+    tag_select('connect_btn', 'connect');
     document.getElementById('filename_input').placeholder = MSG['fn'];
+}
+
+function tag_select(id, msg) {
+    if (document.getElementById(id)) {
+        document.getElementById(id).textContent = MSG[msg];
+    }
 }

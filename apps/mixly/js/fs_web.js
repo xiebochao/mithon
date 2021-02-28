@@ -1,0 +1,136 @@
+/**
+ * Wrapper for microbit-fs and microbit-universal-hex to perform filesystem
+ * operations into two hex files.
+ *   https://github.com/microbit-foundation/microbit-fs
+ *   https://github.com/microbit-foundation/microbit-universal-hex
+ */
+'use strict';
+
+/**
+ * @returns An object with the fs wrapper.
+ */
+var microbitFsWrapper = function() {
+    var fsWrapper = {};
+
+    var uPyFs = null;
+    var commonFsSize = 20 * 1024;
+    var passthroughMethods = [
+        'create',
+        'exists',
+        'getStorageRemaining',
+        'getStorageSize',
+        'getStorageUsed',
+        'getUniversalHex',
+        'ls',
+        'read',
+        'readBytes',
+        'remove',
+        'size',
+        'write',
+    ];
+
+    /**
+     * Duplicates some of the methods from the MicropythonFsHex class by
+     * creating functions with the same name in this object.
+     */
+    function duplicateMethods() {
+        passthroughMethods.forEach(function(method) {
+            fsWrapper[method] = function() {
+                return uPyFs[method].apply(uPyFs, arguments);
+            };
+        });
+    }
+
+    /**
+     * Fetches both MicroPython hexes and sets up the file system with the
+     * initial main.py
+     */
+    fsWrapper.setupFilesystem = function() {
+        var uPyV1 = micropython_v1.replace("\n", "");
+        var uPyV2 = micropython_v2.replace("\n", "");
+        uPyFs = new microbitFs.MicropythonFsHex([
+            { hex: uPyV1, boardId: 0x9901 },
+            { hex: uPyV2, boardId: 0x9903 },
+        ], {
+            'maxFsSize': commonFsSize,
+        });
+        duplicateMethods();
+        return true;
+    };
+    
+    /**
+     * @param {string} boardId String with the Board ID for the generation.
+     * @returns Uint8Array with the data for the given Board ID.
+     */
+    fsWrapper.getBytesForBoardId = function(boardId) {
+        if (boardId == '9900' || boardId == '9901') {
+            return uPyFs.getIntelHexBytes(0x9901);
+        } else if (boardId == '9903' || boardId == '9904') {
+            return uPyFs.getIntelHexBytes(0x9903);
+        } else {
+            throw Error('Could not recognise the Board ID ' + boardId);
+        }
+    };
+
+    /**
+     * @param {string} boardId String with the Board ID for the generation.
+     * @returns ArrayBuffer with the Intel Hex data for the given Board ID.
+     */
+    fsWrapper.getIntelHexForBoardId = function(boardId) {
+        if (boardId == '9900' || boardId == '9901') {
+            var hexStr = uPyFs.getIntelHex(0x9901);
+        } else if (boardId == '9903' || boardId == '9904') {
+            var hexStr = uPyFs.getIntelHex(0x9903);
+        } else {
+            throw Error('Could not recognise the Board ID ' + boardId);
+        }
+        // iHex is ASCII so we can do a 1-to-1 conversion from chars to bytes
+        var hexBuffer = new Uint8Array(hexStr.length);
+        for (var i = 0, strLen = hexStr.length; i < strLen; i++) {
+            hexBuffer[i] = hexStr.charCodeAt(i);
+        }
+        return hexBuffer.buffer;
+    };
+
+    /**
+     * Import the files from the provide hex string into the filesystem.
+     * If the import is successful this deletes all the previous files.
+     *
+     * @param {string} hexStr Hex (Intel or Universal) string with files to
+     *     import.
+     * @return {string[]} Array with the filenames of all files imported.
+     */
+    fsWrapper.importHexFiles = function(hexStr) {
+        var filesNames = uPyFs.importFilesFromHex(hexStr, {
+            overwrite: true,
+            formatFirst: true
+        });
+        if (!filesNames.length) {
+            throw new Error('The filesystem in the hex file was empty');
+        }
+        return filesNames;
+    };
+
+    /**
+     * Import an appended script from the provide hex string into the filesystem.
+     * If the import is successful this deletes all the previous files.
+     *
+     * @param {string} hexStr Hex (Intel or Universal) string with files to
+     *     import.
+     * @return {string[]} Array with the filenames of all files imported.
+     */
+    fsWrapper.importHexAppended = function(hexStr) {
+        var code = microbitFs.getIntelHexAppendedScript(hexStr);
+        if (!code) {
+            throw new Error('No appended code found in the hex file');
+        };
+        uPyFs.ls().forEach(function(fileName) {
+            uPyFs.remove(fileName);
+        });
+        uPyFs.write('main.py', code);
+        return ['main.py'];
+    };
+
+    return fsWrapper;
+};
+

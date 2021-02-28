@@ -21,8 +21,10 @@
   <script type="text/javascript" src="spin.js"></script>
   <script type="text/javascript" src="js/FileSaver.min.js"></script>
   <script type="text/javascript" src="js/py_module_mixgoce.js"></script>
+  <script type="text/javascript" src="js/micropython_v1.js"></script>
+  <script type="text/javascript" src="js/micropython_v2.js"></script>
   <script type="text/javascript" src="js/microbit-fs.umd.min.js"></script>
-  <script type="text/javascript" src="js/fs_client.js"></script>
+  <script type="text/javascript" src="js/fs_web.js"></script>
   <script type="text/javascript" src="js/blockly_helper.js"></script>
   <!---profiles-->
   <script type="text/javascript" src="jquery-1.11.3.min.js"></script>
@@ -114,11 +116,8 @@
   <link rel="stylesheet" type="text/css" href="css/ACEfont.css" />
   <link rel="stylesheet" type="text/css" href="css/fontello.css" />
   <!-- upload -->
-  <script src="renderer.js"></script>
   <script type="text/javascript" src="dap.umd.js"></script>
   <script type="text/javascript" src="nav.js"></script>
-  <script type="text/javascript" src="serial.js"></script>
-  <script type="text/javascript" src="serial_echarts.js"></script>
   <script src="init-py.js"></script>
 </head>
 <body onload="init()">
@@ -128,7 +127,7 @@
         </div>
     </div>
     <ul id="nav" class="layui-nav layui-bg-green" lay-filter="" style="min-width: 800px;z-index:999;">
-        <li class="layui-nav-item"><a href="../../index.html" style="color:white; text-align:center; vertical-align: middle;font-size: 18px;">Mixly</a></li>
+        <li class="layui-nav-item"><a href="../../index_web.html" style="color:white; text-align:center; vertical-align: middle;font-size: 18px;">Mixly</a></li>
         <li style="display:none" id="tab_blocks"></li>
         <li style="display:none" id="tab_arduino"></li>
         <li style="display:none" id="tab_xml"></li>
@@ -136,8 +135,8 @@
         <li class="layui-nav-item"><a href="#" onclick="RedoClick();" name="redo" id="redo_btn" title="redo(ctrl+y)" class="icon-cw"></a></li>
         <li class="layui-nav-item" style="display:none;"><a href="#" id="connect_btn" class="icon-link"></a></li>
         <li class="layui-nav-item" style="display:none;"><a href="#" id="upload_btn" class="icon-upload" ></a></li>
-        <li class="layui-nav-item"><a href="#" onclick="firmware_init();" id="serial_reset" class="icon-upload-1" >初始化固件</a></li>
-        <li class="layui-nav-item"><a href="#" id="download_btn" class="icon-upload" >上传到板卡</a></li>
+        <li class="layui-nav-item"><a href="#" onclick="a();" id="serial_reset" class="icon-upload-1" >初始化固件</a></li>
+        <li class="layui-nav-item"><a href="#" id="download_btn" >上传到板卡</a></li>
         <li class="layui-nav-item"><a href="#" id="serial_read_btn" class="icon-link" ></a></li>
         <li class="layui-nav-item"><a href="#" id="layer_btn" class="icon-window" onclick="status_bar_show(0);">状态栏</a></li>
         <a id="copyright" style="font-family:'YaHei Consolas Hybrid', 'Microsoft Yahei Light', 'Arial';font-size:12px;color:#fff;position: fixed;top: 22px;right: 375px;">copyright</a>
@@ -173,159 +172,48 @@
         <!-- a标签里不用写按钮名字,13行script段里通过id改名,为了多语言支持 -->
         <li class="layui-nav-item"><select id="languageMenu" style="display:none"></select></li>
     </ul>
-    <div id="web-serial-ui" style="display:none; margin:12px" align="center">
-      <fieldset>
-        <legend>串口选择</legend>
-        <p class="state">点击刷新按钮，选择板卡对应串口</p>
-        <p>
-          <span id="status"></span>
-        </p>
-        <p>
-          <select id="device-name-select" class="column2"><option>Not found</option></select>
-          <button id="refresh-device" class="column1 btn btn-mini btn-default">刷新<span class="icon icon-arrows-ccw"></span></button>
-        </p>   
-      </fieldset>
-      <fieldset>
-        <legend>固件烧写</legend>
-        <button id="esp32s2_download" onclick="esp32s2_download_data()">烧写固件</button>
-        <fieldset>
-          <legend>信息：</legend>
-          <div class="log" id="downloadLog" style="/*text-align:left;*/white-space: pre;font-size:15px;color:#787878;width: 710px;height: 240px;overflow: auto;"></div>
-        </fieldset>
-        <p class="state">固件烧写完成后，短按复位按键或者重新上电，显示U盘接入即成功</p>  
-      </fieldset>
-    </div>
     <script style="display:none;">
         show_tag();
         function a(){
-          refreshSerialList_select_com();
           layui.use('layer', function(){
             var layer = layui.layer;
             layer.open({
-              type: 1, 
+              type: 2, 
               title:'固件初始化向导',
-              content:  $('#web-serial-ui'),
+              content: '../webdfu/dfu-util/initialize.html', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
               btn: ['返回'],
               btnAlign: 'c',//按钮排列：居中对齐
-              area: ['800px', '600px'],
-              end: function() {
-                document.getElementById('web-serial-ui').style.display = 'none';
-              }
+              area: ['800px', '600px']
             });
           });
-        }
-
-        function isExistOption(id,value) {  
-          var isExist = false;  
-          var count = $('#'+id).find('option').length;  
-
-          for(var i=0;i<count;i++) {     
-            if($('#'+id).get(0).options[i].value == value) {     
-              isExist = true;     
-              break;     
-            }     
-          }     
-          return isExist;  
-        }  
-
-        function firmware_init() {
-          get_SerialList();
         }
     </script>
     <div id="webusb-flashing" style="display:none; margin:12px" align="center">
       <progress id="webusb-flashing-progress"></progress>
       <button id="webusb-cancel" onclick="webusb_cancel()">取消</button>
     </div>
-    <div class="layui-form" id="serial-device-form" style="display: none;">
-        <div class="layui-form-item">
-            <div id="serial_device_type">
-                <select id="select_serial_device">
-                </select>
+    <div class="site-text site-block" id="serial-form" style="display: none;">
+        <div style="margin-top: 20px;"></div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">串口</label>
+            <div class="layui-input-block">
+                <textarea readonly id="serial_content" name="desc" placeholder="串口输出" class="layui-textarea"
+                    style="width:80%; height:300px"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">输入</label>
+            <div class="layui-input-block">
+                <input id="serial_write" type="text" name="title" placeholder="请输入内容" autocomplete="off" class="layui-input"
+                    style="width:80%;">
             </div>
         </div>
         <div class="layui-form-item">
-            <div style="text-align:center;">
-                <button class="layui-btn layui-btn-normal" onclick="serial_port_operate_cancel()">取消</button>
-                <button class="layui-btn layui-btn-normal" onclick="serial_port_operate_start()">确定</button>
-            </div>
-        </div>
-    </div>
-    <div class="layui-form" id="serial-form" style="display: none;">
-      <div class="layui-tab" lay-filter="serial" style="width: 700px;">
-        <ul class="layui-tab-title">
-          <li class="layui-this" lay-id="1">串口监视器</li>
-          <li lay-id="2">串口可视化</li>
-        </ul>
-        <div class="layui-tab-content">
-          <div class="layui-tab-item layui-show">
-            <div style="margin-top: 20px;"></div>
-            <div class="layui-form-item layui-form-text">
-              <label class="layui-form-label">发送数据</label>
-              <div class="layui-inline" style="width:58%;">
-                  <input id="serial_write" type="text" name="title" placeholder="请输入内容" autocomplete="off" class="layui-input"
-                      style="width:100%;">
-              </div>
-              <button id="serial_write_btn" onclick="serialWrite()" class="layui-btn layui-btn-normal">发送</button>
-            </div>
-
-            <div class="layui-form-item layui-form-text">
-                <label class="layui-form-label">接收数据</label>
-                <div class="layui-input-block" style="width: 86%">
-                    <textarea readonly id="serial_content" name="desc" placeholder="串口输出" class="layui-textarea"
-                        style="width:80%; height:300px"></textarea>
-                </div>
-            </div>
-            
-            <div class="layui-form-item layui-form-text">
-              <label class="layui-form-label">串口</label>
-              <div id="div_select_com" class="layui-input-inline" style="width: 120px;">
-                <select id="select_com"  lay-verify="required"></select>
-              </div>
-              <div id="div_cb_cf_baud_rates" class="layui-input-inline" style="width: 120px;">
-                <select id="cb_cf_baud_rates">
-                  <option value="9600">9600</option>
-                  <option value="19200">19200</option>
-                  <option value="28800">28800</option>
-                  <option value="38400">38400</option>
-                  <option value="57600">57600</option>
-                  <option value="115200" selected>115200</option>
-                </select>
-              </div>
-              <div id="div_send_data_with" class="layui-input-inline" style="width: 120px;">
-                <select id="send_data_with">
-                  <option value="no">no</option>
-                  <option value="\n">\n</option>
-                  <option value="\r">\r</option>
-                  <option value="\r\n" selected>\r\n</option>
-                </select>
-              </div>
-              <div class="layui-input-inline">
-                <input id="screen_scroll" type="checkbox" name="screen_scroll" title="滚屏" checked>
-              </div>
-            </div>
-            <div class="layui-form-item layui-form-text">
-              <div style="text-align: left;">
-                <label class="layui-form-label">数据类型</label>
-                <div id="serial_data_type" class="layui-input-inline" style="width: 120px;">
-                  <select id="select_serial_data_type">
-                    <option value="string" selected>字符串</option>
-                    <option value="hex">二进制流</option>
-                  </select>
-                </div>
+            <div class="layui-input-block">
+                <button id="serial_write_btn" onclick="serialWrite()" class="layui-btn layui-btn-normal">发送</button>
                 <button id="serial_clear_btn" onclick="clearSerialContent()" class="layui-btn layui-btn-danger">清空</button>
-                <button id="serial_interrupt_btn" onclick="serialWrite_ctrl_c()" class="layui-btn layui-btn-danger">中断</button>
-                <button id="serial_reset_btn" onclick="serialWrite_ctrl_d()" class="layui-btn layui-btn-danger">复位</button>
-              </div>
             </div>
-
-          </div>
-          <div class="layui-tab-item">
-            <div id="com_data_draw" style="width: 100%;height:85%;">
-              
-            </div>
-          </div>
         </div>
-      </div>
     </div>
     <table width="100%">
         <tr width="0%">
@@ -370,15 +258,14 @@
     </table>
     <script>
         div_inout_middle_text = ace.edit("div_inout_middle");
-        //editor_side_code1.setTheme(window.conf.lastEditorTheme);
         div_inout_middle_text.getSession().setMode("ace/mode/python");
         div_inout_middle_text.setFontSize(12);
         div_inout_middle_text.setReadOnly(false);
         div_inout_middle_text.setScrollSpeed(0.3);
         div_inout_middle_text.setShowPrintMargin(false);
-        div_inout_middle_text.renderer.setShowGutter(false);
+        div_inout_middle_text.renderer.setShowGutter(false); 
     </script>
-    <script src="python-main.js" type="application/javascript"></script>
+    <script src="python-main-web.js" type="application/javascript"></script>
   <div id="content_blocks" class="content"></div>
   <div id="content_arduino" class="content" wrap="off"></div>
   <textarea id="content_xml" class="content" wrap="off" readonly></textarea>

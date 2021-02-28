@@ -53,7 +53,7 @@ function restore_blocks() {
     } else {
         xml = Blockly.Xml.textToDom(JSFuncs.loadFromLocalStorageCache());
     }
-    Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
+    //Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
 }
 
 /**
@@ -140,13 +140,13 @@ function auto_save_and_restore_blocks() {
     // Hook a save function onto unload.
     bindEvent(window, 'unload', backup_blocks);
     tabClick(selected);
-
+    Blockly.mainWorkspace.clear();
     // Init load event.
-    var loadInput = document.getElementById('load');
-    loadInput.addEventListener('change', load, false);
-    document.getElementById('fakeload').onclick = function () {
-        loadInput.click();
-    };
+    //var loadInput = document.getElementById('load');
+    //loadInput.addEventListener('change', load, false);
+    //document.getElementById('fakeload').onclick = function () {
+    //    loadInput.click();
+    //};
 }
 
 /**
@@ -438,6 +438,10 @@ mixlyjs.getFileSuffix = function (fname) {
     return fname.substring(fname.lastIndexOf(".") + 1);
 }
 
+function decode(s) {
+    return unescape(s.replace(/\\(u[0-9a-fA-F]{4})/gm, '%$1'));
+}
+
 mixlyjs.loadLocalFile = function () {
     // Create event listener function
     var parseInputXMLfile = function (e) {
@@ -450,7 +454,7 @@ mixlyjs.loadLocalFile = function () {
             if (filesuffix === "xml" || filesuffix === "mix") {
                 var newboard = mixlyjs.getBoardFromXml(text)
                 if (newboard !== undefined) {
-                    mixlyjs.renderXml(text);
+                    mixlyjs.renderXml(decode(text));
                 } else {
                     alert("Error:could not read board from xml!!");
                 }

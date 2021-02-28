@@ -1,3 +1,69 @@
+#serial_device_type > div.layui-form-select dl { 
+	max-height:50px; 
+}
+
+#refresh-device,#esp32s2_download{
+	pointer-events: auto;
+	margin: 0;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	font-family: inherit;
+	font-style: inherit;
+	font-weight: inherit;
+	outline: 0;
+	font-size: 90%;
+	display: inline-block;
+	padding: 5px 10px;
+	text-align: center;
+	text-decoration: none;
+	white-space: nowrap;
+	background-color: #2c8898;
+	color: #f9f9f9;
+	border-radius: 1px;
+	border: 0px solid #2c8898;
+	cursor: pointer;
+	box-sizing: border-box;
+}
+
+#refresh-device:hover,#esp32s2_download:hover{
+    opacity: 0.8;
+}
+
+#refresh-device:active,#esp32s2_download:active{
+    background-color: #205f6a;
+}
+
+#device-name-select{
+	pointer-events: auto;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	font-family: inherit;
+	font-size: inherit;
+	font-style: inherit;
+	font-weight: inherit;
+	color: #4a4a4a;
+	padding: 6px 10px;
+	margin-bottom: 10px;
+	background-color: #f1f1f1;
+	border-radius: 4px;
+	box-shadow: none;
+	box-sizing: border-box;
+	border: 1px solid #2c8898;
+	outline: 0;
+	width: 110px;
+}
+
+.state{
+	font: 14px Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif;
+	font-size: 1.15rem;
+	line-height: 1.618;
+	color: #4a4a4a;
+	pointer-events: auto;
+	font-weight: 600;
+	margin: 0;
+	padding: 0;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+
 .blocklyTreeRoot{
 	min-width:155px;
 }
@@ -147,7 +213,7 @@ td {
 .content {
   visibility: hidden;
   margin: 0;
-  padding: 1ex;
+  /*padding: 1ex;*/
   position: absolute;
   direction: ltr;
   background-color: #fff;
@@ -162,17 +228,17 @@ button {
   padding: 1px 1em;
   font-size: 90%;
   border-radius: 4px;
-  border: 1px solid #ddd;
+  border: 0px solid #ddd;
   background-color: #eee;
   color: black;
 }
 button.launch {
-  border: 1px solid #d43;
+  border: 0px solid #d43;
   background-color: #d43;
   color: white;
 }
 button:active {
-  border: 1px solid blue !important;
+  border: 0px solid blue !important;
 }
 button:hover {
   box-shadow: 2px 2px 5px #888;

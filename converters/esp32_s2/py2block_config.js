@@ -19,12 +19,12 @@ function Py2blockConfig (){
     this.formatModuleKeyL = [
         ['Pin', 'ADC', 'TouchPad', 'PWM', 'DAC', 'I2C'],
         ['button_a', 'button_b', 'touch1', 'touch2', 'touch3', 'touch4', 'Infrared_left', 'Infrared_right',
-            'mixgo_get_brightness', 'mixgo_get_soundlevel', 'Sonar', 'led', 'led1','led2','Infrared'],
-        ['NeoPixel'],
-        ['display', 'Image']
+            'mixgo_get_brightness', 'mixgo_get_soundlevel', 'Sonar', 'led', 'led1','led2','Infrared']
     ];
     this.formatModuleL = ['machine', 'mixgo', 'neopixel', 'matrix'];
 }
+
+
 
 var pbc = Py2blockConfig.prototype;
 pbc.ESP32 = "CircuitPython[ESP32_S2]";
@@ -52,6 +52,7 @@ pbc.initIgnoreS = function(){
     var pythonIgnoreL = [
     ];
     var boardIgnoreL = [
+    'RTC_set_datetime'
     ];
 
     var ignoreL = pythonIgnoreL.concat(boardIgnoreL);
@@ -62,7 +63,7 @@ pbc.initIgnoreS = function(){
 
 pbc.initModuleAttrD = function(){
     for (var i = 0; i < profile.default.builtinimg.length; i++) {
-        pbc.moduleAttrD.get('matrix.Image')[profile.default.builtinimg[i][0]] = function (node, module, attr) {
+        pbc.moduleAttrD.get('mixgoce')["IMAGE_" + profile.default.builtinimg[i][0]] = function (node, module, attr) {
             return block("pins_builtinimg", node.lineno, {
                 "PIN": module + "." + attr
             });

@@ -27,7 +27,7 @@ span#span_blocks, span#span_arduino, select#languageMenu {
 
 span.blocklyTreeLabel {
     /* font-family: 'SourceHanSansCN-Regular', 'Arial', 'SimHei'; */
-    color: #000;
+    color: #000 !important;
     font-size: 17px;
 }
 

@@ -35,7 +35,7 @@ var MSG = {
     catEthernet_clinet: "客户端",
     tab_blocks: "模块",
     tab_arduino: "代码",
-    copyright: "Copyright © 北京师范大学傅骞博士团队				http://mixly.org/",
+    copyright: "Copyright © Mixly Team@BNU, CHINA",
     catGame: "游戏",
     catSystem: "系统",
     catTurtle: "海龟画图",
@@ -105,7 +105,10 @@ var MSG = {
     choose_language: "请选择语言：",
     confirm_newfile: "是否希望清除画布所有内容？",
     newfile_yes: "残忍清除",
-    newfile_no: "我再想想"
+    newfile_no: "我再想想",
+    serial_reset: "初始化固件",
+    upload_to_board: "上传到板卡",
+    status_bar_show: "状态栏"
 };
 Blockly.Msg.ADD_COMMENT = "添加注释";
 Blockly.Msg.AUTH = "请授权这个应用程序以保存您的作品并共享。";
@@ -2923,3 +2926,48 @@ Blockly.MIXLY_GET_IRREMOTE_VALUE = "获取红外接收值"
 Blockly.MIXLY_YEARDAY = '天数';
 Blockly.MIXLY_ISDIST = '令时';
 Blockly.MIXLY_HCSR04_INIT = "初始化超声波";
+Blockly.MIXLY_EMQX_INIT_CLIENT = '初始化客户端';
+Blockly.MIXLY_EMQX_SERVER = '服务器地址';
+Blockly.MIXLY_EMQX_PORT = '端口号';
+Blockly.MIXLY_EMQX_USERNAME = '用户名';
+Blockly.MIXLY_EMQX_PASSWORD = '密码';
+Blockly.MIXLY_EMQX_CLIENT_ID = '客户端ID';
+Blockly.MIXLY_EMQX_IS_SSL = '是否SSL';
+Blockly.MIXLY_EMQX_SOCKET_POOL = '连接池';
+Blockly.MIXLY_EMQX_SSL_CONTEXT = 'SSL上下文';
+Blockly.MIXLY_EMQX_PUBLISH = '发送数据';
+Blockly.MIXLY_EMQX_PUBLISH_TOPIC = '主题';
+Blockly.MIXLY_EMQX_PUBLISH_MSG = '消息';
+Blockly.MIXLY_EMQX_DEINIT = '释放客户端';
+Blockly.MIXLY_EMQX_SPECIAL = '特殊';
+Blockly.MIXLY_EMQX_SET_METHOD = '设置回调函数';
+Blockly.MIXLY_EMQX_REMOVE_METHOD = '清除回调函数';
+Blockly.MIXLY_EMQX_FOR = '为';
+Blockly.MIXLY_EMQX_SET_USERNAME = '设置用户名';
+Blockly.MIXLY_EMQX_SET_PASSWORD = '密码';
+Blockly.MIXLY_EMQX_HOST = 'IP地址';
+Blockly.MIXLY_EMQX_CONNECT = '连接';
+Blockly.MIXLY_EMQX_RECONNECT = '重新连接';
+Blockly.MIXLY_EMQX_CONNECT_ON = '启动代理连接';
+Blockly.MIXLY_EMQX_CLEAN_SESSION = '持久对话';
+Blockly.MIXLY_EMQX_PORT = '代理网口';
+Blockly.MIXLY_EMQX_KEEP_ALIVE = '最长通信时间';
+Blockly.MIXLY_EMQX_DISCONNECT = '断开连接';
+Blockly.MIXLY_EMQX_RETAIN = '返回值';
+Blockly.MIXLY_RETAIN = '代理保存';
+Blockly.MIXLY_EMQX_QOS =  '服务质量';
+Blockly.MIXLY_WIFI_CONNECT = '连接Wi-Fi';
+Blockly.MIXLY_WIFI_USERNAME = '用户名';
+Blockly.MIXLY_WIFI_PASSWORD = '密码';
+Blockly.MIXLY_SSL_DEFAULT = 'SSL默认上下文';
+Blockly.MIXLY_CREATE_SOCKETPOOL = '为Wi-Fi创建连接池';
+Blockly.MIXLY_EMQX_SUBSCRIBE = '订阅';
+Blockly.MIXLY_EMQX_UNSUBSCRIBE = '取消订阅';
+Blockly.MIXLY_EMQX_LOOP = '循环接收订阅 超时';
+Blockly.MIXLY_EMQX_LOOPONE = '秒';
+Blockly.MIXLY_EMQX_IS_CONNECT = '是否连接成功';
+Blockly.MIXLY_EMQX_NABLE_LOGGER = '启用日志';
+Blockly.MIXLY_EMQX_NABLE_LOGGERONE = '级别';
+Blockly.MIXLY_EMQX_DISABLE_LOGGER = '禁用日志';
+Blockly.MIXLY_EMQX_PING = '服务端响应情况';
+Blockly.DJ004_MP3 = 'DJ004 MP3模块';

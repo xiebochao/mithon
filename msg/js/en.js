@@ -35,7 +35,7 @@ var MSG = {
     catEthernet_clinet: "Client",
     tab_blocks: "Blocks",
     tab_arduino: "Code",
-    copyright: "Copyright © Mixly Team				 http://mixly.org/",
+    copyright: "Copyright © Mixly Team@BNU, CHINA",
     catGame: "Game",
     catSystem: "System",
     catTurtle: "Turtle",
@@ -103,7 +103,10 @@ var MSG = {
     choose_language: "Please choose your language:",
     confirm_newfile: "Do you want to clear all the contents?",
     newfile_yes: "Yes",
-    newfile_no: "Cancel"
+    newfile_no: "Cancel",
+    serial_reset: "Initialize",
+    upload_to_board: "Upload",
+    status_bar_show: "Status Bar"
 };
 Blockly.Msg.ADD_COMMENT = "Add Comment";
 Blockly.Msg.AUTH = "Please authorize this app to enable your work to be saved and to allow it to be shared by you.";
@@ -2912,3 +2915,48 @@ Blockly.MIXLY_GET_IRREMOTE_VALUE = "Gets the value of the irromote";
 Blockly.MIXLY_YEARDAY = 'year day';
 Blockly.MIXLY_ISDIST = 'is dist';
 Blockly.MIXLY_HCSR04_INIT = "Initialize ultrasound";
+Blockly.MIXLY_EMQX_INIT_CLIENT ='initialize client';
+Blockly.MIXLY_EMQX_SERVER ='server address';
+Blockly.MIXLY_EMQX_PORT ='port number';
+Blockly.MIXLY_EMQX_USERNAME ='user name';
+Blockly.MIXLY_EMQX_PASSWORD ='password';
+Blockly.MIXLY_EMQX_CLIENT_ID ='client ID';
+Blockly.MIXLY_EMQX_IS_SSL ='ssl or not';
+Blockly.MIXLY_EMQX_SOCKET_POOL ='connection pool';
+Blockly.MIXLY_EMQX_SSL_CONTEXT ='ssl context';
+Blockly.MIXLY_EMQX_PUBLISH ='Send data';
+Blockly.MIXLY_EMQX_PUBLISH_TOPIC ='theme';
+Blockly.MIXLY_EMQX_PUBLISH_MSG ='message';
+Blockly.MIXLY_EMQX_DEINIT ='release client';
+Blockly.MIXLY_EMQX_SPECIAL ='special';
+Blockly.MIXLY_EMQX_SET_METHOD ='set callback function';
+Blockly.MIXLY_EMQX_REMOVE_METHOD ='clear callback function';
+Blockly.MIXLY_EMQX_FOR ='is';
+Blockly.MIXLY_EMQX_SET_USERNAME ='set user name';
+Blockly.MIXLY_EMQX_SET_PASSWORD ='set password';
+Blockly.MIXLY_EMQX_HOST ='IP address';
+Blockly.MIXLY_EMQX_CONNECT ='connect';
+Blockly.MIXLY_EMQX_RECONNECT ='re connect';
+Blockly.MIXLY_EMQX_CONNECT_ON ='Start proxy connection';
+Blockly.MIXLY_EMQX_CLEAN_SESSION ='lasting dialogue';
+Blockly.MIXLY_EMQX_PORT ='proxy network port';
+Blockly.MIXLY_EMQX_KEEP_ALIVE ='maximum communication time';
+Blockly.MIXLY_EMQX_DISCONNECT ='disconnect';
+Blockly.MIXLY_EMQX_RETAIN ='return value';
+Blockly.MIXLY_RETAIN ='proxy save';
+Blockly.MIXLY_EMQX_QOS ='service quality';
+Blockly.MIXLY_WIFI_CONNECT ='connect Wi Fi';
+Blockly.MIXLY_WIFI_USERNAME ='user name';
+Blockly.MIXLY_WIFI_PASSWORD ='password';
+Blockly.MIXLY_SSL_DEFAULT ='ssl default context';
+Blockly.MIXLY_CREATE_SOCKETPOOL ='create connection pool for Wi Fi';
+Blockly.MIXLY_EMQX_SUBSCRIBE ='subscribe';
+Blockly.MIXLY_EMQX_UNSUBSCRIBE ='unsubscribe';
+Blockly.MIXLY_EMQX_LOOP ='circular receive subscription timeout';
+Blockly.MIXLY_EMQX_LOOPONE ='second';
+Blockly.MIXLY_EMQX_IS_CONNECT ='whether the connection is successful';
+Blockly.MIXLY_EMQX_NABLE_LOGGER ='enable logging';
+Blockly.MIXLY_EMQX_NABLE_LOGGERONE ='level';
+Blockly.MIXLY_EMQX_DISABLE_LOGGER ='disable logging';
+Blockly.MIXLY_EMQX_PING ='server response';
+Blockly.DJ004_MP3 ='DJ004 MP3 Module';
