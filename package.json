@@ -1,7 +1,7 @@
 {
-  "name": "MithonWeb",
+  "name": "Mixly 2.0",
   "version": "1.0.0",
-  "description": "Mithon Web Editor",
+  "description": "Mixly",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -17,8 +17,18 @@
     "electron-rebuild": "^2.3.4"
   },
   "dependencies": {
+    "bootstrap": "^4.6.0",
+    "cuid": "^2.1.8",
+    "echarts": "^5.0.2",
+    "iconv-lite": "^0.6.2",
+    "jquery": "^3.5.1",
+    "lodash": "^4.17.20",
+    "python-shell": "^2.0.3",
+    "ramda": "^0.27.1",
     "serialport": "^9.0.6",
+    "unicode-string": "^2.1.0",
     "usb": "^1.6.4",
-    "webusb": "^2.2.0"
+    "webusb": "^2.2.0",
+    "windows-1252": "^1.0.0"
   }
 }

@@ -2,21 +2,18 @@ const {app, BrowserWindow} = require('electron')
 const electron = require('electron')
 const Menu = electron.Menu
 app.on('ready', function createWindow () {
-    //关闭菜单栏
     Menu.setApplicationMenu(null)
     // 可以创建多个渲染进程
     let win = new BrowserWindow({
         show: false,
         //resizable: false,
-        icon: __dirname + '/apps/mixly/favicon.ico',
+        icon: __dirname + '/media/mixly.ico',
         allowRunningInsecureContent: true, 
         webPreferences: {
           nodeIntegration: true,
           enableRemoteModule: true
         }
     })
-    app.allowRendererProcessReuse = false;
-    //打开开发者工具
     //win.webContents.openDevTools();
     win.maximize()
     win.show()
@@ -29,9 +26,9 @@ app.on('ready', function createWindow () {
     win.on('closed', function () {
         win = null
     })
-
-
 })
+//app.disableHardwareAcceleration()
+app.allowRendererProcessReuse = false;
 
 // 页面全部关闭后关闭主进程,不同平台可能有不同的处理方式
 app.on('window-all-closed', () => {
