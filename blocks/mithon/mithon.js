@@ -39,10 +39,10 @@ Blockly.Blocks.actuator_rgb_color = {
         this.appendDummyInput("")
             .appendField(new Blockly.FieldDropdown([
                 [Blockly.MIXLY_ALL,"0"],
-                ["1", "1"],
-                ["2", "2"],
-                ["3", "3"],
-                ["4", "4"]
+                ["0", "1"],
+                ["1", "2"],
+                ["2", "3"],
+                ["3", "4"]
         ]),'LED')
             .appendField(Blockly.Msg.HTML_COLOUR);
         this.appendDummyInput("")
@@ -71,10 +71,10 @@ Blockly.Blocks.actuator_rgb_off = {
         this.appendDummyInput("")
             .appendField(new Blockly.FieldDropdown([
                 [Blockly.MIXLY_ALL,"0"],
-                ["1", "1"],
-                ["2", "2"],
-                ["3", "3"],
-                ["4", "4"]
+                ["0", "1"],
+                ["1", "2"],
+                ["2", "3"],
+                ["3", "4"]
         ]),'LED')
             .appendField(Blockly.MIXLY_MICROBIT_Turn_off_display);
         this.setInputsInline(true);

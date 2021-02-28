@@ -65,14 +65,15 @@ Blockly.Python.actuator_rgb_color = function () {
     var value_bvalue = values[2];
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
     Blockly.Python.definitions_['import_neopixel'] = 'import neopixel';
-    Blockly.Python.setups_['mixly_rgb_init'] = 'np = neopixel.NeoPixel(pin12, 4)\n';
+    Blockly.Python.definitions_['import_rgb_show'] = 'import rgb_show';
+    //Blockly.Python.setups_['mixly_rgb_init'] = 'np = neopixel.NeoPixel(pin12, 4)\n';
     if (value_led > 0) {
-        Blockly.Python.setups_['mixly_rgb_show'] = Blockly.Python.FUNCTION_MIXLY_RGB_SHOW;
-        var code = 'mixly_rgb_show(' + (value_led - 1) + ', ' + value_rvalue + ', ' + value_gvalue + ', ' + value_bvalue + ')\n';
+        //Blockly.Python.setups_['mixly_rgb_show'] = Blockly.Python.FUNCTION_MIXLY_RGB_SHOW;
+        var code = 'rgb_show.mixly_rgb_show(' + (value_led - 1) + ', ' + value_rvalue + ', ' + value_gvalue + ', ' + value_bvalue + ')\n';
     }
     else {
-        Blockly.Python.setups_['mixly_rgb_show_all'] = Blockly.Python.FUNCTION_MIXLY_RGB_SHOW_ALL;
-        var code = 'mixly_rgb_show_all(' + value_rvalue + ', ' + value_gvalue + ', ' + value_bvalue + ')\n';
+        //Blockly.Python.setups_['mixly_rgb_show_all'] = Blockly.Python.FUNCTION_MIXLY_RGB_SHOW_ALL;
+        var code = 'rgb_show.mixly_rgb_show_all(' + value_rvalue + ', ' + value_gvalue + ', ' + value_bvalue + ')\n';
     }
     return code;
 };
@@ -84,13 +85,14 @@ Blockly.Python.actuator_rgb_off = function () {
     var value_bvalue = 0;
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
     Blockly.Python.definitions_['import_neopixel'] = 'import neopixel';
-    Blockly.Python.setups_['mixly_rgb_init'] = 'np = neopixel.NeoPixel(pin12, 4)\n';
+    Blockly.Python.definitions_['import_rgb_show'] = 'import rgb_show';
+    //Blockly.Python.setups_['mixly_rgb_init'] = 'np = neopixel.NeoPixel(pin12, 4)\n';
     if (value_led > 0) {
-        Blockly.Python.setups_['mixly_rgb_show'] = Blockly.Python.FUNCTION_MIXLY_RGB_SHOW;
-        var code = 'mixly_rgb_show(' + (value_led - 1) + ', ' + value_rvalue + ', ' + value_gvalue + ', ' + value_bvalue + ')\n';
+        //Blockly.Python.setups_['mixly_rgb_show'] = Blockly.Python.FUNCTION_MIXLY_RGB_SHOW;
+        var code = 'rgb_show.mixly_rgb_show(' + (value_led - 1) + ', ' + value_rvalue + ', ' + value_gvalue + ', ' + value_bvalue + ')\n';
     } else {
-        Blockly.Python.setups_['mixly_rgb_show_all'] = Blockly.Python.FUNCTION_MIXLY_RGB_SHOW_ALL;
-        var code = 'mixly_rgb_show_all(' + value_rvalue + ', ' + value_gvalue + ', ' + value_bvalue + ')\n';
+        //Blockly.Python.setups_['mixly_rgb_show_all'] = Blockly.Python.FUNCTION_MIXLY_RGB_SHOW_ALL;
+        var code = 'rgb_show.mixly_rgb_show_all(' + value_rvalue + ', ' + value_gvalue + ', ' + value_bvalue + ')\n';
     }
     return code;
 };
@@ -102,9 +104,10 @@ Blockly.Python.actuator_rgb = function () {
     var value_bvalue = Blockly.Python.valueToCode(this, 'BVALUE', Blockly.Python.ORDER_ATOMIC);
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
     Blockly.Python.definitions_['import_neopixel'] = 'import neopixel';
-    Blockly.Python.setups_['mixly_rgb_init'] = 'np = neopixel.NeoPixel(pin12, 4)\n';
-    Blockly.Python.setups_['mixly_rgb_show'] = Blockly.Python.FUNCTION_MIXLY_RGB_SHOW;
-    var code = 'mixly_rgb_show(' + value_led + '-1, ' + value_rvalue + ', ' + value_gvalue + ', ' + value_bvalue + ')\n';
+    Blockly.Python.definitions_['import_rgb_show'] = 'import rgb_show';
+    //Blockly.Python.setups_['mixly_rgb_init'] = 'np = neopixel.NeoPixel(pin12, 4)\n';
+    //Blockly.Python.setups_['mixly_rgb_show'] = Blockly.Python.FUNCTION_MIXLY_RGB_SHOW;
+    var code = 'rgb_show.mixly_rgb_show(' + value_led + ', ' + value_rvalue + ', ' + value_gvalue + ', ' + value_bvalue + ')\n';
     return code;
 };
 
@@ -113,23 +116,24 @@ Blockly.Python.actuator_motor_on = function () {
     var v = Blockly.Python.valueToCode(this, 'SPEED', Blockly.Python.ORDER_ATOMIC);
     var d = this.getFieldValue('DIRECTION');
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+    Blockly.Python.definitions_['import_motor_control'] = 'import motor_control';
     if (n == 0) {
-        Blockly.Python.setups_['mixly_motor1'] = Blockly.Python.FUNCTION_MIXLY_MOTOR1;
-        Blockly.Python.setups_['mixly_motor2'] = Blockly.Python.FUNCTION_MIXLY_MOTOR2;
-        Blockly.Python.setups_['mixly_motor3'] = Blockly.Python.FUNCTION_MIXLY_MOTOR3;
-        var code = 'motor1(' + v + ', ' + d + ')\nmotor2(' + v + ', ' + d + ')\nmotor3(' + v + ', ' + d + ')\n';
+        //Blockly.Python.setups_['mixly_motor1'] = Blockly.Python.FUNCTION_MIXLY_MOTOR1;
+        //Blockly.Python.setups_['mixly_motor2'] = Blockly.Python.FUNCTION_MIXLY_MOTOR2;
+        //Blockly.Python.setups_['mixly_motor3'] = Blockly.Python.FUNCTION_MIXLY_MOTOR3;
+        var code = 'motor_control.motor1(' + v + ', ' + d + ')\nmotor_control.motor2(' + v + ', ' + d + ')\nmotor_control.motor3(' + v + ', ' + d + ')\n';
     }
     else if (n == 1) {
-        Blockly.Python.setups_['mixly_motor1'] = Blockly.Python.FUNCTION_MIXLY_MOTOR1;
-        var code = 'motor1(' + v + ', ' + d + ')\n';
+        //Blockly.Python.setups_['mixly_motor1'] = Blockly.Python.FUNCTION_MIXLY_MOTOR1;
+        var code = 'motor_control.motor1(' + v + ', ' + d + ')\n';
     }
     else if (n == 2) {
-        Blockly.Python.setups_['mixly_motor2'] = Blockly.Python.FUNCTION_MIXLY_MOTOR2;
-        var code = 'motor2(' + v + ', ' + d + ')\n';
+        //Blockly.Python.setups_['mixly_motor2'] = Blockly.Python.FUNCTION_MIXLY_MOTOR2;
+        var code = 'motor_control.motor2(' + v + ', ' + d + ')\n';
     }
     else if (n == 3) {
-        Blockly.Python.setups_['mixly_motor3'] = Blockly.Python.FUNCTION_MIXLY_MOTOR3;
-        var code = 'motor3(' + v + ', ' + d + ')\n';
+        //Blockly.Python.setups_['mixly_motor3'] = Blockly.Python.FUNCTION_MIXLY_MOTOR3;
+        var code = 'motor_control.motor3(' + v + ', ' + d + ')\n';
     }
     return code;
 };
@@ -137,23 +141,24 @@ Blockly.Python.actuator_motor_on = function () {
 Blockly.Python.actuator_motor_off = function () {
     var n = this.getFieldValue('NUMBER');
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+    Blockly.Python.definitions_['import_motor_control'] = 'import motor_control';
     if (n == 0) {
-        Blockly.Python.setups_['mixly_motor1'] = Blockly.Python.FUNCTION_MIXLY_MOTOR1;
-        Blockly.Python.setups_['mixly_motor2'] = Blockly.Python.FUNCTION_MIXLY_MOTOR2;
-        Blockly.Python.setups_['mixly_motor3'] = Blockly.Python.FUNCTION_MIXLY_MOTOR3;
-        var code = 'motor1(0)\nmotor2(0)\nmotor3(0)\n';
+        //Blockly.Python.setups_['mixly_motor1'] = Blockly.Python.FUNCTION_MIXLY_MOTOR1;
+        //Blockly.Python.setups_['mixly_motor2'] = Blockly.Python.FUNCTION_MIXLY_MOTOR2;
+        //Blockly.Python.setups_['mixly_motor3'] = Blockly.Python.FUNCTION_MIXLY_MOTOR3;
+        var code = 'motor_control.motor1(0)\nmotor_control.motor2(0)\nmotor_control.motor3(0)\n';
     }
     else if (n == 1) {
-        Blockly.Python.setups_['mixly_motor1'] = Blockly.Python.FUNCTION_MIXLY_MOTOR1;
-        var code = 'motor1(0)\n';
+        //Blockly.Python.setups_['mixly_motor1'] = Blockly.Python.FUNCTION_MIXLY_MOTOR1;
+        var code = 'motor_control.motor1(0)\n';
     }
     else if (n == 2) {
-        Blockly.Python.setups_['mixly_motor2'] = Blockly.Python.FUNCTION_MIXLY_MOTOR2;
-        var code = 'motor2(0)\n';
+        //Blockly.Python.setups_['mixly_motor2'] = Blockly.Python.FUNCTION_MIXLY_MOTOR2;
+        var code = 'motor_control.motor2(0)\n';
     }
     else if (n == 3) {
-        Blockly.Python.setups_['mixly_motor3'] = Blockly.Python.FUNCTION_MIXLY_MOTOR3;
-        var code = 'motor3(0)\n';
+        //Blockly.Python.setups_['mixly_motor3'] = Blockly.Python.FUNCTION_MIXLY_MOTOR3;
+        var code = 'motor_control.motor3(0)\n';
     }
     return code;
 };
