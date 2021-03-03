@@ -550,6 +550,7 @@ function show_tag(){
     tag_select('operate_upload_btn', 'upload');
     tag_select('operate_serial_read_btn', 'catSerialPort');
     tag_select('operate_serial_reset', 'serial_reset');
+    tag_select('operate_connect_btn', 'connect');
     tag_select('operate_download_btn', 'upload');
     tag_select('operate_layer_btn', 'status_bar_show');
     tag_select('operate_btn', 'operate');
