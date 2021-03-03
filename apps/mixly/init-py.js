@@ -294,7 +294,7 @@ function init() {
     editor.getSession().setMode("ace/mode/python");
     editor.setFontSize(17);
     editor.setShowPrintMargin(false);
-    editor.getSession().setTabSize(2);
+    editor.getSession().setTabSize(4);
     editor.setOptions({
         enableBasicAutocompletion: true,
         enableSnippets: true,
@@ -308,7 +308,7 @@ function init() {
     editor_side_code.setShowPrintMargin(false);
     editor_side_code.setReadOnly(true);
     editor_side_code.setScrollSpeed(0.2);
-    editor_side_code.getSession().setTabSize(2);
+    editor_side_code.getSession().setTabSize(4);
     $('#aceTheme').val(window.conf.lastEditorTheme);
     /*
           添加ACE放大缩小快捷键
@@ -352,6 +352,9 @@ function init() {
     py2block_editor = new Py2blockEditor(py2block_converter, editor);
     Sk.python3 = true;
     var container = document.getElementById('content_area');
+    //获取状态框右端离index最左端的距离
+    var status_bar_location = getid("layer_btn").offsetParent.offsetLeft + getid("layer_btn").offsetParent.offsetWidth;
+    var nav_item_id = ["li_undo", "li_redo", "li_connect", "li_upload", "li_serial_reset", "li_download", "li_serial_read", "li_layer"];
     var onresize = function (e) {
         var content_blocks = getid("content_blocks"); 
         var content_arduino = getid("content_arduino"); 
@@ -359,6 +362,46 @@ function init() {
         var content_area = getid("content_area");
         var side_code_parent = getid("side_code_parent");
         var td_middle = getid("td_middle");
+
+        var copyright = getid("copyright");
+        var filename_input = getid("filename_input");
+        var layer_btn = getid("layer_btn");
+        var li_operate = getid("li_operate");
+
+        if (filename_input.offsetParent.offsetLeft < status_bar_location + 105) {
+            if (filename_input.offsetParent.offsetLeft < li_operate.offsetLeft + li_operate.offsetWidth + 105)
+                copyright.style.display = "none";
+            else
+                copyright.style.display = "";
+            for (var i = 0; i < nav_item_id.length; i++) {
+                var nav_item = getid(nav_item_id[i]);
+                if (nav_item) {
+                    nav_item.style.display = "none";
+                }
+            }
+            li_operate.style.display = "";
+
+            var copyright_width = filename_input.offsetParent.offsetLeft - (li_operate.offsetLeft + li_operate.offsetWidth);
+            copyright.style.width = copyright_width;
+            copyright.style.left = li_operate.offsetLeft + li_operate.offsetWidth;
+            copyright.style.textAlign="center";
+            copyright.style.top = (60 - copyright.offsetHeight)/2;
+        } else {
+            //copyright.style.display = "";
+            li_operate.style.display = "none";
+            for (var i = 0; i < nav_item_id.length; i++) {
+                var nav_item = getid(nav_item_id[i]);
+                if (nav_item) {
+                    nav_item.style.display = "";
+                }
+            }
+            var copyright_width = filename_input.offsetParent.offsetLeft - status_bar_location;
+            copyright.style.width = copyright_width;
+            copyright.style.left = status_bar_location;
+            copyright.style.textAlign="center";
+            copyright.style.top = (60 - copyright.offsetHeight)/2;
+        }
+
         if (status_bar_select) {
             if(now_visual_height > document.body.clientHeight) {
                 var iT = 0.8;
@@ -501,6 +544,15 @@ function show_tag(){
     tag_select('changemod_btn', 'tab_arduino');
     tag_select('connect_btn', 'connect');
     document.getElementById('filename_input').placeholder = MSG['fn'];
+
+    tag_select('operate_undo_btn', 'undo');
+    tag_select('operate_redo_btn', 'redo');
+    tag_select('operate_upload_btn', 'upload');
+    tag_select('operate_serial_read_btn', 'catSerialPort');
+    tag_select('operate_serial_reset', 'serial_reset');
+    tag_select('operate_download_btn', 'upload');
+    tag_select('operate_layer_btn', 'status_bar_show');
+    tag_select('operate_btn', 'operate');
 }
 
 function tag_select(id, msg) {

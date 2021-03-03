@@ -106,7 +106,8 @@ var MSG = {
     newfile_no: "Cancel",
     serial_reset: "Initialize",
     upload_to_board: "Upload",
-    status_bar_show: "Status Bar"
+    status_bar_show: "Status Bar",
+    operate: "Operate"
 };
 Blockly.Msg.ADD_COMMENT = "Add Comment";
 Blockly.Msg.AUTH = "Please authorize this app to enable your work to be saved and to allow it to be shared by you.";

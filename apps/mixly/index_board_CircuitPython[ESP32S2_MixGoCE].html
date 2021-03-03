@@ -127,19 +127,29 @@
             <input type="text" placeholder="" value="" class="layui-input" id="filename_input" style="z-index:9999;height:33px;">
         </div>
     </div>
-    <ul id="nav" class="layui-nav layui-bg-green" lay-filter="" style="min-width: 800px;z-index:999;">
+    <ul id="nav" class="layui-nav layui-bg-green" lay-filter="" style="/*min-width: 800px;*/z-index:999;">
         <li class="layui-nav-item"><a href="../../index.html" style="color:white; text-align:center; vertical-align: middle;font-size: 18px;">Mixly</a></li>
         <li style="display:none" id="tab_blocks"></li>
         <li style="display:none" id="tab_arduino"></li>
         <li style="display:none" id="tab_xml"></li>
-        <li class="layui-nav-item"><a href="#" onclick="UndoClick();" name="undo" id="undo_btn" title="undo(ctrl+z)" class="icon-ccw"></a></li>
-        <li class="layui-nav-item"><a href="#" onclick="RedoClick();" name="redo" id="redo_btn" title="redo(ctrl+y)" class="icon-cw"></a></li>
-        <li class="layui-nav-item" style="display:none;"><a href="#" id="connect_btn" class="icon-link"></a></li>
-        <li class="layui-nav-item" style="display:none;"><a href="#" id="upload_btn" class="icon-upload" ></a></li>
-        <li class="layui-nav-item"><a href="#" onclick="firmware_init();" id="serial_reset" class="icon-upload-1" >初始化固件</a></li>
-        <li class="layui-nav-item"><a href="#" id="download_btn" class="icon-upload" >上传到板卡</a></li>
-        <li class="layui-nav-item"><a href="#" id="serial_read_btn" class="icon-link" ></a></li>
-        <li class="layui-nav-item"><a href="#" id="layer_btn" class="icon-window" onclick="status_bar_show(0);">状态栏</a></li>
+        <li class="layui-nav-item" id="li_operate" style="display:none;">
+            <a href="javascript:;" id="operate_btn">操作</a>
+            <dl class="layui-nav-child">
+                <!-- 二级菜单 -->
+                <dd><a href="#" onclick="UndoClick();" name="undo" id="operate_undo_btn" title="undo(ctrl+z)" class="icon-ccw">撤销</a>
+                <dd><a href="#" onclick="RedoClick();" name="redo" id="operate_redo_btn" title="redo(ctrl+y)" class="icon-cw">重复</a></dd>
+                <dd><a href="#" onclick="firmware_init();" id="operate_serial_reset" class="icon-upload-1">初始化固件</a></dd>
+                <dd><a href="#" onclick="esp_mainpy_update();" id="operate_download_btn" class="icon-upload">上传到板卡</a></dd>
+                <dd><a href="#" onclick="serialRead();" id="operate_serial_read_btn" class="icon-link">串口</a></dd>
+                <dd><a href="#" onclick="status_bar_show(0);" id="operate_layer_btn" class="icon-window">状态栏</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item" id="li_undo"><a href="#" onclick="UndoClick();" name="undo" id="undo_btn" title="undo(ctrl+z)" class="icon-ccw"></a></li>
+        <li class="layui-nav-item" id="li_redo"><a href="#" onclick="RedoClick();" name="redo" id="redo_btn" title="redo(ctrl+y)" class="icon-cw"></a></li>
+        <li class="layui-nav-item" id="li_serial_reset"><a href="#" onclick="firmware_init();" id="serial_reset" class="icon-upload-1" ></a></li>
+        <li class="layui-nav-item" id="li_download"><a href="#" id="download_btn" class="icon-upload" ></a></li>
+        <li class="layui-nav-item" id="li_serial_read"><a href="#" id="serial_read_btn" class="icon-link" ></a></li>
+        <li class="layui-nav-item" id="li_layer"><a href="#" id="layer_btn" class="icon-window" onclick="status_bar_show(0);"></a></li>
         <a id="copyright" style="font-family:'YaHei Consolas Hybrid', 'Microsoft Yahei Light', 'Arial';font-size:12px;color:#fff;position: fixed;top: 22px;right: 375px;">copyright</a>
         <li class="layui-nav-item" style="float:right">
             <a href="javascript:;" id="setting_btn"></a>

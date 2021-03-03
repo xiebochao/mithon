@@ -8,7 +8,7 @@ Blockly.Python.procedures_defreturn = function() {
   // Define a procedure with a return value.
   var funcName = Blockly.Python.variableDB_.getName(this.getFieldValue('NAME'),
       Blockly.Procedures.NAME_TYPE);
-  var branch = Blockly.Python.statementToCode(this, 'STACK')|| '  pass\n';
+  var branch = Blockly.Python.statementToCode(this, 'STACK')|| '    pass\n';
   if (Blockly.Python.INFINITE_LOOP_TRAP) {
     branch = Blockly.Python.INFINITE_LOOP_TRAP.replace(/%1/g,
         '\'' + this.id + '\'') + branch;
@@ -17,7 +17,7 @@ Blockly.Python.procedures_defreturn = function() {
       Blockly.Python.ORDER_NONE) || '';
   //var type=this.getFieldValue('TYPE');
   if (returnValue) {
-    returnValue = '  return ' + returnValue + '\n';
+    returnValue = '    return ' + returnValue + '\n';
   }
   //var returnType = returnValue ? type : 'void';
   var args = [];
@@ -68,9 +68,9 @@ Blockly.Python.procedures_ifreturn = function() {
   if (this.hasReturnValue_) {
     var value = Blockly.Python.valueToCode(this, 'VALUE',
         Blockly.Python.ORDER_NONE) || 'None';
-    code += '  return ' + value;
+    code += '    return ' + value;
   } else {
-    code += '  return None';
+    code += '    return None';
   }
   code += '\n';
   return code;

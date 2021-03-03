@@ -681,7 +681,7 @@ const update = async() => {
 if (upload_btn)
 	upload_btn.addEventListener("click", () => {update(deviceObj)});
 
-const download = async() => {
+const esp_mainpy_update = async() => {
 	upload_cancel = false;
     child_process.exec('wmic logicaldisk where VolumeName="CIRCUITPY" get DeviceID', function (err, stdout, stderr) {
     	if (err || stderr) {
@@ -805,7 +805,7 @@ const download = async() => {
 }
 if (document.getElementById("download_btn")) {
 	let download_btn = document.getElementById("download_btn");
-	download_btn.addEventListener("click", () => {download()});
+	download_btn.addEventListener("click", () => {esp_mainpy_update()});
 }
 
 function webusb_cancel() {

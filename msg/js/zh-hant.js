@@ -103,7 +103,8 @@ var MSG = {
     newfile_no: "我再想想",
     serial_reset: "初始化固件",
     upload_to_board: "上傳到闆卡",
-    status_bar_show: "狀態欄"
+    status_bar_show: "狀態欄",
+    operate: "操作"
 };
 Blockly.Msg.ADD_COMMENT = "添加注釋";
 Blockly.Msg.AUTH = "請授權這個應用程式以保存您的作品並共用。";
