@@ -19,7 +19,7 @@ app.on('ready', function createWindow () {
     win.show()
 
     // 渲染进程中的web页面可以加载本地文件
-    win.loadFile('index.html')
+    win.loadFile('index_client.html')
 
 
     // 记得在页面被关闭后清除该变量，防止内存泄漏

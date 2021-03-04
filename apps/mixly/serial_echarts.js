@@ -1,6 +1,5 @@
 //ECharts
-var echarts = require('echarts');
-
+if (!Mixly_20_environment) throw false;
 var echarts_data = [];
 var echarts_now_time;
 var echarts_y_value;
@@ -8,6 +7,8 @@ var echarts_start_time;
 var echarts_old_time;
 var echarts_update = null;
 var myChart = null;
+var echarts = require('echarts');
+
 function echarts_init() {
     var chartDom = document.getElementById('com_data_draw');
     myChart = echarts.init(chartDom);

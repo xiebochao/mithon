@@ -20,10 +20,13 @@
     <!--from BlocklyDuino-->
     <script type="text/javascript" src="js/Blob.js"></script>
     <script type="text/javascript" src="spin.js"></script>
+    <script type="text/javascript" src="environment.js"></script>
     <script type="text/javascript" src="js/FileSaver.min.js"></script>
     <script type="text/javascript" src="js/py_module_microbit.js"></script>
+    <script type="text/javascript" src="js/micropython_v1.js"></script>
+    <script type="text/javascript" src="js/micropython_v2.js"></script>
     <script type="text/javascript" src="js/microbit-fs.umd.min.js"></script>
-    <script type="text/javascript" src="js/fs_client.js"></script>
+    <script type="text/javascript" src="js/fs.js"></script>
     <script type="text/javascript" src="js/blockly_helper.js"></script>
     <!---profiles-->
     <script type="text/javascript" src="jquery-1.11.3.min.js"></script>
@@ -111,8 +114,6 @@
     <script src="renderer.js"></script>
     <script type="text/javascript" src="dap.umd.js"></script>
     <script type="text/javascript" src="nav.js"></script>
-    <script type="text/javascript" src="serial.js"></script>
-    <script type="text/javascript" src="serial_echarts.js"></script>
 </head>
 
 <body onload="init()">
@@ -122,7 +123,7 @@
         </div>
     </div>
     <ul id="nav" class="layui-nav layui-bg-green" lay-filter="" style="/*min-width: 800px;*/z-index:999;">
-        <li class="layui-nav-item"><a href="../../index.html" style="color:white; text-align:center; vertical-align: middle;font-size: 18px;">Mixly</a></li>
+        <li class="layui-nav-item"><a id="mixly2.0-path" href="../../index.html" style="color:white; text-align:center; vertical-align: middle;font-size: 18px;">Mixly</a></li>
         <li style="display:none" id="tab_blocks"></li>
         <li style="display:none" id="tab_arduino"></li>
         <li style="display:none" id="tab_xml"></li>
@@ -132,20 +133,19 @@
                 <!-- 二级菜单 -->
                 <dd><a href="#" onclick="UndoClick();" name="undo" id="operate_undo_btn" title="undo(ctrl+z)" class="icon-ccw">撤销</a>
                 <dd><a href="#" onclick="RedoClick();" name="redo" id="operate_redo_btn" title="redo(ctrl+y)" class="icon-cw">重复</a></dd>
-                <dd><a href="#" onclick="update();" id="operate_upload_btn" class="icon-upload">上传</a></dd>
-                <dd><a href="#" onclick="serialRead();" id="operate_serial_read_btn" class="icon-link">串口</a></dd>
+                <dd><a href="#" onclick="selectDevice();" id="operate_connect_btn" class="icon-link">连接</a></dd>
+                <dd><a href="#" onclick="change_update();" id="operate_upload_btn" class="icon-upload">上传</a></dd>
+                <dd><a href="#" onclick="change_serial();" id="operate_serial_read_btn" class="icon-link">串口</a></dd>
                 <dd><a href="#" onclick="status_bar_show(0);" id="operate_layer_btn" class="icon-window">状态栏</a></dd>
             </dl>
         </li>
         <li class="layui-nav-item" id="li_undo"><a href="#" onclick="UndoClick();" name="undo" id="undo_btn" title="undo(ctrl+z)" class="icon-ccw"></a></li>
         <li class="layui-nav-item" id="li_redo"><a href="#" onclick="RedoClick();" name="redo" id="redo_btn" title="redo(ctrl+y)" class="icon-cw"></a></li>
-        <!--
-        <li class="layui-nav-item"><a href="#" id="connect_btn" class="icon-link"></a></li>
-        -->
+        <li class="layui-nav-item" id="li_connect" style="display:none;"><a href="#" id="connect_btn" class="icon-link"></a></li>
         <li class="layui-nav-item" id="li_upload"><a href="#" id="upload_btn" class="icon-upload"></a></li>
         <li class="layui-nav-item" id="li_serial_read"><a href="#" id="serial_read_btn" class="icon-link"></a></li>
         <li class="layui-nav-item" id="li_layer"><a href="#" id="layer_btn" class="icon-window" onclick="status_bar_show(0);"></a></li>
-        <a id="copyright" style="font-family:'YaHei Consolas Hybrid', 'Microsoft Yahei Light', 'Arial';font-size:12px;color:#fff;position:fixed;top:22px;right:450px;">copyright</a>
+        <a id="copyright" style="font-family:'YaHei Consolas Hybrid', 'Microsoft Yahei Light', 'Arial';font-size:12px;color:#fff;position:fixed;top:22px;right:450px;"></a>
         <li class="layui-nav-item" style="float:right">
             <a href="javascript:;" id="setting_btn"></a>
             <dl class="layui-nav-child">
@@ -199,6 +199,7 @@
             </div>
         </div>
     </div>
+    <!--Mixly2.0 所用串口助手-->
     <div class="layui-form" id="serial-form" style="display: none;">
       <div class="layui-tab" lay-filter="serial" style="width: 700px;">
         <ul class="layui-tab-title">
@@ -276,6 +277,30 @@
         </div>
       </div>
     </div>
+    <!--web 所用串口助手-->
+    <div class="site-text site-block" id="web-serial-form" style="display: none;">
+      <div style="margin-top: 20px;"></div>
+      <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">串口</label>
+          <div class="layui-input-block">
+              <textarea readonly id="web_serial_content" name="desc" placeholder="串口输出" class="layui-textarea"
+                  style="width:80%; height:300px"></textarea>
+          </div>
+      </div>
+      <div class="layui-form-item layui-form-text">
+          <label class="layui-form-label">输入</label>
+          <div class="layui-input-block">
+              <input id="web_serial_write" type="text" name="title" placeholder="请输入内容" autocomplete="off" class="layui-input"
+                  style="width:80%;">
+          </div>
+      </div>
+      <div class="layui-form-item">
+          <div class="layui-input-block">
+              <button id="web_serial_write_btn" onclick="web_serialWrite()" class="layui-btn layui-btn-normal">发送</button>
+              <button id="web_serial_clear_btn" onclick="web_clearSerialContent()" class="layui-btn layui-btn-danger">清空</button>
+          </div>
+      </div>
+    </div>
     <table width="100%">
         <tr width="0%">
             <td colspan=3>
@@ -325,7 +350,8 @@
         div_inout_middle_text.setShowPrintMargin(false);
         div_inout_middle_text.renderer.setShowGutter(false);
     </script>
-    
+    <script type="text/javascript" src="serial.js"></script>
+    <script type="text/javascript" src="serial_echarts.js"></script>
     <script src="python-main.js" type="application/javascript"></script>
     <div id="content_blocks" class="content"></div>
     <div id="content_arduino" class="content" wrap="off"></div>

@@ -377,6 +377,10 @@ function init() {
             copyright.style.top = (60 - copyright.offsetHeight)/2;
         }
 
+        if (getid("layer_btn").offsetParent) {
+            status_bar_location = getid("layer_btn").offsetParent.offsetLeft + getid("layer_btn").offsetParent.offsetWidth;
+        }
+
         if (status_bar_select) {
             if(now_visual_height > document.body.clientHeight) {
                 var iT = 0.8;

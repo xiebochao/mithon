@@ -20,12 +20,13 @@
     <!--------from BlocklyDuino------------>
     <script type="text/javascript" src="js/Blob.js"></script>
     <script type="text/javascript" src="spin.js"></script>
+    <script type="text/javascript" src="environment.js"></script>
     <script type="text/javascript" src="js/FileSaver.min.js"></script>
     <script type="text/javascript" src="js/py_module_mixpy.js"></script>
     <script type="text/javascript" src="js/micropython_v1.js"></script>
     <script type="text/javascript" src="js/micropython_v2.js"></script>
     <script type="text/javascript" src="js/microbit-fs.umd.min.js"></script>
-    <script type="text/javascript" src="js/fs_web.js"></script>
+    <script type="text/javascript" src="js/fs.js"></script>
     <script type="text/javascript" src="js/blockly_helper.js"></script>
     <!------------------------------------->
     <script type="text/javascript" src="jquery-1.11.3.min.js"></script>
@@ -104,7 +105,7 @@
         </div>
     </div>
     <ul id="nav" class="layui-nav layui-bg-green" lay-filter="" style="min-width: 800px;z-index:999;">
-        <li class="layui-nav-item"><a href="../../index_web.html" style="color:white; text-align:center; vertical-align: middle;font-size: 18px;">Mixly</a></li>
+        <li class="layui-nav-item"><a id="mixly2.0-path" href="../../index.html" style="color:white; text-align:center; vertical-align: middle;font-size: 18px;">Mixly</a></li>
         <li style="display:none" id="tab_blocks"></li>
         <li style="display:none" id="tab_arduino"></li>
         <li style="display:none" id="tab_xml"></li>
@@ -112,7 +113,7 @@
         <li class="layui-nav-item"><a href="#" onclick="RedoClick();" name="redo" id="redo_btn" title="redo(ctrl+y)" class="icon-cw"></a></li>
         <li class="layui-nav-item"><a href="#" onclick="pyengine.run();" name="run" id="play_btn"  class="icon-play-circled"></a></li>
         <li class="layui-nav-item"><a href="#" onclick="pyengine.kill();" name="stop" id="stop_btn" class="icon-cancel"></a></li>
-        <a id="copyright" style="font-family:'YaHei Consolas Hybrid', 'Microsoft Yahei Light', 'Arial';font-size:12px;color:#fff;position:fixed;top:22px;right:450px;">copyright</a>
+        <a id="copyright" style="font-family:'YaHei Consolas Hybrid', 'Microsoft Yahei Light', 'Arial';font-size:12px;color:#fff;position:fixed;top:22px;right:450px;"></a>
         <li class="layui-nav-item" style="float:right">
             <a href="javascript:;" id="setting_btn"></a>
             <dl class="layui-nav-child">

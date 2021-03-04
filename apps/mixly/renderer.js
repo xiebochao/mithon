@@ -1,10 +1,11 @@
+if (!Mixly_20_environment) throw false;
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 
 const path = require('path');
 const fs = require('fs');
-const $ = require('jquery');
+//const $ = require('jquery');
 const SerialPort = require('serialport');
 const _ = require('lodash/fp');
 const R = require('ramda');
@@ -1165,4 +1166,3 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     */
 });
-

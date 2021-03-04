@@ -1,4 +1,3 @@
-
 var sidecodeDisplay = false;
 var serial_open = false;
 var now_visual_height = document.documentElement.clientHeight;
@@ -352,6 +351,17 @@ function init() {
     py2block_editor = new Py2blockEditor(py2block_converter, editor);
     Sk.python3 = true;
     var container = document.getElementById('content_area');
+    if (Mixly_20_environment) {
+        if (getid("li_connect")) 
+            getid("li_connect").style.display = "none";
+        else if (getid("mixly2.0-path"))
+            getid("mixly2.0-path").href = "../../index_client.html";
+    } else {
+        if (getid("li_connect")) 
+            getid("li_connect").style.display = "";
+        else if (getid("mixly2.0-path"))
+            getid("mixly2.0-path").href = "../../index.html";
+    }
     //获取状态框右端离index最左端的距离
     var status_bar_location = getid("layer_btn").offsetParent.offsetLeft + getid("layer_btn").offsetParent.offsetWidth;
     var nav_item_id = ["li_undo", "li_redo", "li_connect", "li_upload", "li_serial_reset", "li_download", "li_serial_read", "li_layer"];
@@ -381,17 +391,24 @@ function init() {
             }
             li_operate.style.display = "";
 
+            if (Mixly_20_environment && getid("operate_connect_btn"))
+                getid("operate_connect_btn").style.display = "none";
+
             var copyright_width = filename_input.offsetParent.offsetLeft - (li_operate.offsetLeft + li_operate.offsetWidth);
             copyright.style.width = copyright_width;
             copyright.style.left = li_operate.offsetLeft + li_operate.offsetWidth;
             copyright.style.textAlign="center";
             copyright.style.top = (60 - copyright.offsetHeight)/2;
         } else {
-            //copyright.style.display = "";
+            copyright.style.display = "";
             li_operate.style.display = "none";
             for (var i = 0; i < nav_item_id.length; i++) {
                 var nav_item = getid(nav_item_id[i]);
                 if (nav_item) {
+                    if (Mixly_20_environment && nav_item.id == "li_connect") {
+                        nav_item.style.display = "none";
+                        continue;
+                    }
                     nav_item.style.display = "";
                 }
             }
@@ -400,6 +417,10 @@ function init() {
             copyright.style.left = status_bar_location;
             copyright.style.textAlign="center";
             copyright.style.top = (60 - copyright.offsetHeight)/2;
+        }
+
+        if (getid("layer_btn").offsetParent) {
+            status_bar_location = getid("layer_btn").offsetParent.offsetLeft + getid("layer_btn").offsetParent.offsetWidth;
         }
 
         if (status_bar_select) {

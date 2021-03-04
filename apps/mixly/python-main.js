@@ -1,3 +1,6 @@
+var wmicResult = null;
+var upload_cancel = false;
+
 var FS = microbitFsWrapper();
 
 // Reset the filesystem and load the files from this hex file to the fs and editor
@@ -318,7 +321,8 @@ const buildTarget = async () => {
 	}
 }
 
-//connect_btn.addEventListener("click", () => {selectDevice()});
+if (connect_btn)
+	connect_btn.addEventListener("click", () => {selectDevice()});
 
 //-----------------------------------------------------------
 const setStatus = state => {
@@ -341,16 +345,6 @@ const setImage = (file) => {
     }
     reader.readAsArrayBuffer(file);
 }
-
-const {resolve} = require('path')
-var child_process=require("child_process")
-var file_save = require('fs')
-var esp32_s2_path = resolve('./').replace("apps/mixly","") + '\\cpBuild\\ESP32S2_MixGoCE';
-var python3_path = resolve('./').replace("apps/mixly","") + '\\mixpyBuild\\win_python3\\python3.exe';
-var py_file_path = resolve('./').replace("apps/mixly","") + '\\mixpyBuild\\mixly.py';
-var mixly_cp = resolve('./').replace("apps/mixly","") + '\\cpBuild\\code.py';
-var wmicResult = null;
-var upload_cancel = false;
 
 function serial_port_operate_start() {
 	layer.closeAll('page');
@@ -581,7 +575,44 @@ function serial_upload_cancel() {
 }
 
 // Update a device with the firmware image transferred from block/code
-const update = async() => {
+const web_update = async() => {
+	let buffer = null;
+	var firmware = document.getElementById('firmware').innerText;
+	hexfile = getHexFile(firmware);
+	var hex2Blob = new Blob([hexfile],{type:'text/plain'});
+	buffer =  await hex2Blob.arrayBuffer()
+    if (!buffer) return;
+
+    target.on(DAPjs.DAPLink.EVENT_PROGRESS, progress => {
+        setTransfer(progress);
+    });
+
+    try {
+        // Push binary to board
+        // setStatus(`Flashing binary file ${buffer.byteLength} words long...`);
+        await target.connect();
+        await target.setSerialBaudrate(115200);
+        layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.open({
+                type: 1,
+                title: '上传',
+                content: $('#webusb-flashing'),
+                closeBtn: 0
+              });
+          }); 
+        await target.flash(buffer);
+        layer.closeAll('page');
+        await target.disconnect();
+        // setStatus("Flash complete!");
+    } catch (error) {
+        setStatus(error);
+        layer.closeAll('page');
+    }
+}
+
+// Update a device with the firmware image transferred from block/code
+const Mixly_20_update = async() => {
 	upload_cancel = false;
 	child_process.exec('wmic logicaldisk where VolumeName="MICROBIT" get DeviceID', function (err, stdout, stderr) {
 	    if (err || stderr) {
@@ -678,10 +709,17 @@ const update = async() => {
 
 	});
 }
-if (upload_btn)
-	upload_btn.addEventListener("click", () => {update(deviceObj)});
 
-const esp_mainpy_update = async() => {
+function change_update() {
+	if (Mixly_20_environment)
+		Mixly_20_update();
+	else
+		update(deviceObj);
+}
+if (upload_btn)
+	upload_btn.addEventListener("click", () => {change_update()});
+
+const Mixly_20_download = async() => {
 	upload_cancel = false;
     child_process.exec('wmic logicaldisk where VolumeName="CIRCUITPY" get DeviceID', function (err, stdout, stderr) {
     	if (err || stderr) {
@@ -803,9 +841,16 @@ const esp_mainpy_update = async() => {
 
 	});
 }
+
+function change_download() {
+	if (Mixly_20_environment) 
+		Mixly_20_download();
+	else
+		mixlyjs.saveInoFileAs();
+}
 if (document.getElementById("download_btn")) {
 	let download_btn = document.getElementById("download_btn");
-	download_btn.addEventListener("click", () => {esp_mainpy_update()});
+	download_btn.addEventListener("click", () => {change_download()});
 }
 
 function webusb_cancel() {
@@ -857,7 +902,68 @@ const esp32s2_download_data = async() => {
 	
 }
 
-const serialRead = async () => {
+const web_serialRead = async () => {
+    layui.use('layer', function(){
+        var layer = layui.layer;
+        layer.open({
+            type: 1,
+            area: ['700px','500px'],
+            content: $('#web-serial-form') 
+        });
+    });
+	if(!target.connected){
+		try{
+            await target.connect();
+		}
+		catch (e){
+			console.error(e);
+        }
+	}
+	//防止重复绑定事件监听
+	target.removeAllListeners(DAPjs.DAPLink.EVENT_SERIAL_DATA);
+	target.on(DAPjs.DAPLink.EVENT_SERIAL_DATA, data => {
+		console.log(data);
+        document.getElementById('web_serial_content').value = document.getElementById('web_serial_content').value + data;
+        
+	});
+	await target.startSerialRead();	
+}
+
+//这两个事件对应的按钮渲染太慢，只能放到html onclick里
+const web_clearSerialContent = async () => {
+    document.getElementById('web_serial_content').value = '';
+}
+
+const web_serialWrite = async () => {
+	if(!target.connected){
+		try{
+			await target.connect();
+		}
+		catch (e){
+			console.error(e);
+		}
+	}
+	if(await target.getSerialBaudrate() != 115200) {
+		try{
+			await target.setSerialBaudrate(115200);
+		}
+		catch (e){
+			console.error(e);
+		}
+	}
+	let serialWriteInput = document.getElementById('web_serial_write');
+	let serialWriteContent = serialWriteInput.value;
+	serialWriteInput.value = '';
+	if(serialWriteContent != ''){
+		await target.serialWrite(serialWriteContent);
+        document.getElementById('web_serial_content').value = document.getElementById('web_serial_content').value + serialWriteContent + '\n';
+		//可能是因为mutex lock的原因，每次发送后需要重新启动监听，并且清理缓冲区
+		await target.stopSerialRead();
+		await target.startSerialRead();
+	}
+}
+
+const Mixly20_serialRead = async () => {
     layui.use(['layer','element','form'], function(){
         var layer = layui.layer;
         var element = layui.element;
@@ -916,12 +1022,50 @@ const serialRead = async () => {
     });
 }
 
+function change_serial() {
+	if (Mixly_20_environment) 
+		Mixly20_serialRead();
+	else
+		web_serialRead();
+}
+
 if (serial_read_btn)
-	serial_read_btn.addEventListener("click", () => {serialRead()});
+	serial_read_btn.addEventListener("click", () => {change_serial()});
 
 //这两个事件对应的按钮渲染太慢，只能放到html onclick里
 const clearSerialContent = async () => {
     document.getElementById('serial_content').value = '';
+}
+
+function isExistOption(id,value) {  
+  var isExist = false;  
+  var count = $('#'+id).find('option').length;  
+
+  for(var i=0;i<count;i++) {     
+    if($('#'+id).get(0).options[i].value == value) {     
+      isExist = true;     
+      break;     
+    }     
+  }     
+  return isExist;  
+}  
+
+function firmware_init() {
+	if (Mixly_20_environment) {
+  		get_SerialList();
+  	} else {
+  		layui.use('layer', function(){
+            var layer = layui.layer;
+            layer.open({
+              	type: 2, 
+              	title:'固件初始化向导',
+              	content: '../webdfu/dfu-util/initialize.html', //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+              	btn: ['返回'],
+              	btnAlign: 'c',//按钮排列：居中对齐
+              	area: ['800px', '600px']
+            });
+        });
+  	}
 }
 
 var status_bar_select = false;
@@ -965,8 +1109,12 @@ function status_bar_show(is_open) {
 	Blockly.fireUiEvent(window, 'resize');
 }
 
-FS.setupFilesystem().then(function() {
-    console.log('FS fully initialised');
-}).fail(function() {
-    console.error('There was an issue initialising the file system.');
-});
+if (Mixly_20_environment) {
+	FS.setupFilesystem().then(function() {
+	    console.log('FS fully initialised');
+	}).fail(function() {
+	    console.error('There was an issue initialising the file system.');
+	});
+} else {
+	FS.setupFilesystem();
+}

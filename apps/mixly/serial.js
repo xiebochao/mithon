@@ -1,9 +1,12 @@
-var Serial_Port = require("serialport").SerialPort;
 var serial_port = null;
 var parser = null;
 var Readline =null;
 
 var com_connected = false;
+
+if (!Mixly_20_environment) throw false;
+var Serial_Port = require("serialport").SerialPort;
+
 function connect_com() {
     var com_data = $('#select_com option:selected').val();
     if (com_data) {
