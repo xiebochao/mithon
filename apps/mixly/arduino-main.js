@@ -71,6 +71,7 @@ function arduino_upload(boardType) {
 
 		var device_num = document.getElementById("select_serial_device").length;
 		if (device_num == 0) {
+			var layer = layui.layer;
 			layer.msg('无可用设备!', {
 			  time: 1000
 			});

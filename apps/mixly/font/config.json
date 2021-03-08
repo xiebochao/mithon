@@ -257,6 +257,18 @@
       "src": "iconic"
     },
     {
+      "uid": "7b16b22168e762c88333f465da862098",
+      "css": "ok",
+      "code": 59407,
+      "src": "websymbols"
+    },
+    {
+      "uid": "14017aae737730faeda4a6fd8fb3a5f0",
+      "css": "check",
+      "code": 59408,
+      "src": "entypo"
+    },
+    {
       "uid": "b1f16f4550b9a7c39fc0dfd0456ca6aa",
       "css": "cw",
       "code": 59392,
