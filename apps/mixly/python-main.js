@@ -346,7 +346,7 @@ const setImage = (file) => {
     reader.readAsArrayBuffer(file);
 }
 
-function serial_port_operate_start() {
+function serial_port_operate_start(boardType) {
 	layer.closeAll('page');
 	document.getElementById('serial-device-form').style.display = 'none';
 	if (upload_cancel) {
@@ -362,10 +362,14 @@ function serial_port_operate_start() {
 	          	}
 	        });
 	        var com_data = $('#select_serial_device option:selected').val();
-	        esp32s2_download(com_data);
+	        esptool_download(com_data, boardType);
       	}); 
 	} else {
-		cp_serial_upload_start();
+		if (boardType == 'esp32_s2') {
+			cp_serial_upload_start();
+		} else if (boardType == 'mixgo') {
+			Mixly_20_esp32_download();
+		}
 	}
 }
 
@@ -415,7 +419,7 @@ function cp_serial_upload_start() {
 	code = code.replace('from mixpy import math_standard_deviation','')
 	code = code.replace('from mixpy import lists_sort','')
 	
-    file_save.writeFile(mixly_cp, code,'utf8',function(err){
+    file_save.writeFile(mixly_20_path + '\\cpBuild\\code.py', code,'utf8',function(err){
 	    //如果err=null，表示文件使用成功，否则，表示希尔文件失败
 	    if(err) {
 	    	layer.closeAll('page');
@@ -440,7 +444,7 @@ function cp_serial_upload_start() {
 				var upload_finish_num = 0;
 				for (var i = 0; i < device_num; i++) {
 					if (device_values[i] == "all") continue;
-					file_save.copyFile(mixly_cp, device_values[i]+"\\code.py", (err) => { 
+					file_save.copyFile(mixly_20_path + '\\cpBuild\\code.py', device_values[i]+"\\code.py", (err) => { 
 						layer.closeAll('page');
 					    document.getElementById('webusb-flashing').style.display = 'none';
 					    if (err) { 
@@ -464,7 +468,7 @@ function cp_serial_upload_start() {
 					}); 
 				}
 			} else {
-				file_save.copyFile(mixly_cp, device_select_name+"\\code.py", (err) => { 
+				file_save.copyFile(mixly_20_path + '\\cpBuild\\code.py', device_select_name+"\\code.py", (err) => { 
 					layer.closeAll('page');
 				    document.getElementById('webusb-flashing').style.display = 'none';
 				    if (err) { 
@@ -487,7 +491,7 @@ function cp_serial_upload_start() {
 	})
 }
 
-function mp_serial_upload_start() {
+function microbit_serial_upload_start() {
 	layer.closeAll('page');
 	document.getElementById('serial-device-form').style.display = 'none';
 	upload_cancel = false;
@@ -568,7 +572,6 @@ function serial_upload_cancel() {
 	layer.closeAll('page');
 	document.getElementById('serial-device-form').style.display = 'none';
 	upload_cancel = true;
-	layer.closeAll('page');
 	layer.msg('已取消上传', {
         time: 1000
     });
@@ -719,7 +722,7 @@ function change_update() {
 if (upload_btn)
 	upload_btn.addEventListener("click", () => {change_update()});
 
-const Mixly_20_download = async() => {
+const Mixly_20_esp32_s2_download = async() => {
 	upload_cancel = false;
     child_process.exec('wmic logicaldisk where VolumeName="CIRCUITPY" get DeviceID', function (err, stdout, stderr) {
     	if (err || stderr) {
@@ -796,7 +799,7 @@ const Mixly_20_download = async() => {
 		code = code.replace('from mixpy import math_standard_deviation','')
 		code = code.replace('from mixpy import lists_sort','')
 		
-	    file_save.writeFile(mixly_cp, code,'utf8',function(err){
+	    file_save.writeFile(mixly_20_path + '\\cpBuild\\code.py', code,'utf8',function(err){
 		    //如果err=null，表示文件使用成功，否则，表示希尔文件失败
 		    if(err) {
 		    	layer.closeAll('page');
@@ -813,7 +816,7 @@ const Mixly_20_download = async() => {
 		    	upload_cancel = false;
 		        return;
 		    } else {
-		    	file_save.copyFile(mixly_cp, wmicResult+"\\code.py", (err) => { 
+		    	file_save.copyFile(mixly_20_path + '\\cpBuild\\code.py', wmicResult+"\\code.py", (err) => { 
 					layer.closeAll('page');
 				    document.getElementById('webusb-flashing').style.display = 'none';
 				    if (err) { 
@@ -842,15 +845,110 @@ const Mixly_20_download = async() => {
 	});
 }
 
-function change_download() {
+function change_esp32_s2_download() {
 	if (Mixly_20_environment) 
-		Mixly_20_download();
+		Mixly_20_esp32_s2_download();
 	else
 		mixlyjs.saveInoFileAs();
 }
-if (document.getElementById("download_btn")) {
-	let download_btn = document.getElementById("download_btn");
-	download_btn.addEventListener("click", () => {change_download()});
+
+function Mixly_20_esp32_download() {
+	var code = "";
+	if (document.getElementById('tab_arduino').className == 'tabon') {
+		//code = document.getElementById('content_arduino').value;
+        code = editor.getValue();
+	} else {
+		code = Blockly.Python.workspaceToCode(Blockly.mainWorkspace) || '';
+	}
+	//code = code_head+code
+	code = code.replace('from mixpy import math_map','')
+	code = code.replace('from mixpy import math_mean','')
+	code = code.replace('from mixpy import math_median','')
+	code = code.replace('from mixpy import math_modes','')
+	code = code.replace('from mixpy import math_standard_deviation','')
+	code = code.replace('from mixpy import lists_sort','')
+	var ampy_code = 'from ampy.pyboard import Pyboard\n'
+				  + 'import ampy.files as files\n';
+	var device_values = $.map($('#select_serial_device option'), function(ele) {
+	   return ele.value; 
+	});
+	var device_num = device_values.length;
+	var device_select_name = $('#select_serial_device option:selected').val();
+	if (device_select_name == 'all') {
+		for (var i = 0; i < device_num; i++) {
+			if (device_values[i] == "all") continue;
+			ampy_code = ampy_code + 'pyb = Pyboard(device="'+device_values[i]+'",baudrate=115200)\n' 
+								  + 'file = files.Files(pyb)\n'
+								  + 'file.put("main.py","""' + code +'""")\n'
+								  + 'print("串口：", "'+device_values[i]+'", "  信息：", file.ls())\n';
+		}
+	} else {
+		ampy_code += 'pyb = Pyboard(device="'+device_select_name+'",baudrate=115200)\n' 
+				   + 'file = files.Files(pyb)\n'
+				   + 'file.put("main.py","""' + code +'""")\n'
+				   + 'print("串口:", "'+device_select_name+'", " 信息:", file.ls())\n';
+	}
+	if (serial_port && serial_port.isOpen) {
+    	serial_port.close();
+  	}
+  	status_bar_show(1);
+  	upload_cancel = false;
+  	layui.use('layer', function(){
+	  	var layer = layui.layer;
+		layer.open({
+			type: 1,
+			title: '上传中...',
+			content: $('#webusb-flashing'),
+			closeBtn: 0,
+			end: function() {
+			  	document.getElementById('webusb-flashing').style.display = 'none';
+			}
+		});
+	}); 
+	esptool_run(mixly_20_path + '\\mpBuild\\ESP32_MixGo\\program.py', ampy_code, false, 'mixgo');
+}
+
+function change_esp32_download() {
+	if (Mixly_20_environment) {
+		upload_cancel = false;
+		initmp_firmware_SerialList(ports=>{
+	      	var form = layui.form;
+			const $devNames = $('#select_serial_device');
+			$devNames.empty();
+			_.map(v=>{
+			if (`${v}` != "undefined")
+			  	$devNames.append($(`<option value="${v}">${v}</option>`));
+			}, ports);
+			$devNames.append('<option value="all">全部</option>');
+			form.render();
+
+			var device_num = document.getElementById("select_serial_device").length;
+			if (device_num == 1) {
+				layer.msg('无可用设备!', {
+				  time: 1000
+				});
+			} else if (device_num == 2) {
+				Mixly_20_esp32_download();
+			} else {
+				layui.use(['layer','form'], function(){
+				  	var layer = layui.layer;
+				  	layer.open({
+						type: 1,
+						title: '检测到多个串口，请选择：',
+						area: ['350px','170px'],
+						content: $('#serial-device-form'),
+						closeBtn: 0,
+						end: function() {
+							document.getElementById('serial-device-form').style.display = 'none';
+						}
+				  	});
+				  	upload_cancel = false;
+				}); 
+			}
+	    });
+	} else {
+		mixlyjs.saveInoFileAs();
+	}
 }
 
 function webusb_cancel() {
@@ -863,14 +961,18 @@ function webusb_cancel() {
 			download_shell.kill("SIGTERM");
 			download_shell = null;
 		}
-		layer.closeAll('page');
 		layer.msg('已取消烧录', {
 	        time: 1000
 	    });
 	    upload_cancel = false;
 	} else {
+		if (download_shell) {
+			download_shell.stdout.end();
+			//download_shell.stdin.end();
+			download_shell.kill("SIGTERM");
+			download_shell = null;
+		}
 		upload_cancel = true;
-		layer.closeAll('page');
 		layer.msg('已取消上传', {
 	        time: 1000
 	    });
@@ -882,7 +984,7 @@ const esp32s2_download_data = async() => {
 	var downloadLog_data = document.getElementById("downloadLog");
 	var device_com = device_name.value;
 	downloadLog_data.textContent = "正在烧录...\n";
-    var shell = child_process.execFile(esp32_s2_path+"\\esptool.bat",[device_com,"115200"],function(error,stdout,stderr){
+    var upload_shell = child_process.execFile(mixly_20_path+"\\cpBuild\\ESP32S2_MixGoCE\\esptool.bat",[device_com,"115200"],function(error,stdout,stderr){
 	    if(error !==null){
 	        console.log("exec error"+error);
 	        downloadLog_data.textContent = downloadLog_data.innerText + error + "\n";
@@ -894,7 +996,7 @@ const esp32s2_download_data = async() => {
 	   	downloadLog_data.scrollTop = downloadLog_data.scrollHeight;
 	})
 
-	shell.stdout.on('data', function (data) {
+	upload_shell.stdout.on('data', function (data) {
         //console.log(data);
         downloadLog_data.textContent = downloadLog_data.innerText + data;
         downloadLog_data.scrollTop = downloadLog_data.scrollHeight;
@@ -998,10 +1100,18 @@ const Mixly20_serialRead = async () => {
 						status_bar_show(1);
 						serial_open = true;
 					}, 150);
-				} else {
+				} else if (py2block_config.board == "microbit[py]") {
 					py_refreshSerialList_select_com("mp");
 					setTimeout(function () {
 						connect_com_with_option("mp");
+						$("#serial_content").val(div_inout_middle_text.getValue());
+						status_bar_show(1);
+						serial_open = true;
+					}, 150);
+				} else {
+					py_refreshSerialList_select_com("esp32");
+					setTimeout(function () {
+						connect_com_with_option("esp32");
 						$("#serial_content").val(div_inout_middle_text.getValue());
 						status_bar_show(1);
 						serial_open = true;
@@ -1050,9 +1160,9 @@ function isExistOption(id,value) {
   return isExist;  
 }  
 
-function firmware_init() {
+function firmware_init(boardType) {
 	if (Mixly_20_environment) {
-  		get_SerialList();
+  		get_SerialList(boardType);
   	} else {
   		layui.use('layer', function(){
             var layer = layui.layer;

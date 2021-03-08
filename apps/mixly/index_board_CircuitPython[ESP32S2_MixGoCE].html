@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>Mixly 2.0 For MixgoCE</title>
   <link rel="shortcut icon" type="image/ico" href="../../files/mixly.ico">
+  <script type="text/javascript" src="environment.js"></script>
   <script type="text/javascript" src="../../blockly_compressed_mithon.js"></script>
   <script type="text/javascript" src="../../core/base.js"></script>
   <script type="text/javascript" src="../../python_compressed.js"></script>
@@ -19,7 +20,6 @@
   <script type="text/javascript" src="js/code.js"></script>
   <script type="text/javascript" src="js/Blob.js"></script>
   <script type="text/javascript" src="spin.js"></script>
-  <script type="text/javascript" src="environment.js"></script>
   <script type="text/javascript" src="js/FileSaver.min.js"></script>
   <script type="text/javascript" src="js/py_module_mixgoce.js"></script>
   <script type="text/javascript" src="js/micropython_v1.js"></script>
@@ -139,16 +139,16 @@
               <!-- 二级菜单 -->
               <dd><a href="#" onclick="UndoClick();" name="undo" id="operate_undo_btn" title="undo(ctrl+z)" class="icon-ccw">撤销</a>
               <dd><a href="#" onclick="RedoClick();" name="redo" id="operate_redo_btn" title="redo(ctrl+y)" class="icon-cw">重复</a></dd>
-              <dd><a href="#" onclick="firmware_init();" id="operate_serial_reset" class="icon-upload-1">初始化固件</a></dd>
-              <dd><a href="#" onclick="change_download();" id="operate_download_btn" class="icon-upload">上传</a></dd>
+              <dd><a href="#" onclick="firmware_init('esp32_s2');" id="operate_serial_reset" class="icon-upload-1">初始化固件</a></dd>
+              <dd><a href="#" onclick="change_esp32_s2_download();" id="operate_download_btn" class="icon-upload">上传</a></dd>
               <dd><a href="#" onclick="change_serial();" id="operate_serial_read_btn" class="icon-link">串口</a></dd>
               <dd><a href="#" onclick="status_bar_show(0);" id="operate_layer_btn" class="icon-window">状态栏</a></dd>
           </dl>
       </li>
       <li class="layui-nav-item" id="li_undo"><a href="#" onclick="UndoClick();" name="undo" id="undo_btn" title="undo(ctrl+z)" class="icon-ccw"></a></li>
       <li class="layui-nav-item" id="li_redo"><a href="#" onclick="RedoClick();" name="redo" id="redo_btn" title="redo(ctrl+y)" class="icon-cw"></a></li>
-      <li class="layui-nav-item" id="li_serial_reset"><a href="#" onclick="firmware_init();" id="serial_reset" class="icon-upload-1" ></a></li>
-      <li class="layui-nav-item" id="li_download"><a href="#" id="download_btn" class="icon-upload" ></a></li>
+      <li class="layui-nav-item" id="li_serial_reset"><a href="#" onclick="firmware_init('esp32_s2');" id="serial_reset" class="icon-upload-1" ></a></li>
+      <li class="layui-nav-item" id="li_download"><a href="#" onclick="change_esp32_s2_download();" id="download_btn" class="icon-upload" ></a></li>
       <li class="layui-nav-item" id="li_serial_read"><a href="#" id="serial_read_btn" class="icon-link" ></a></li>
       <li class="layui-nav-item" id="li_layer"><a href="#" id="layer_btn" class="icon-window" onclick="status_bar_show(0);"></a></li>
       <a id="copyright" style="font-family:'YaHei Consolas Hybrid', 'Microsoft Yahei Light', 'Arial';font-size:12px;color:#fff;position: fixed;top: 22px;right: 375px;"></a>
@@ -223,7 +223,7 @@
       <div class="layui-form-item">
           <div style="text-align:center;">
               <button class="layui-btn layui-btn-normal" onclick="serial_port_operate_cancel()">取消</button>
-              <button class="layui-btn layui-btn-normal" onclick="serial_port_operate_start()">确定</button>
+              <button class="layui-btn layui-btn-normal" onclick="serial_port_operate_start('esp32_s2')">确定</button>
           </div>
       </div>
   </div>

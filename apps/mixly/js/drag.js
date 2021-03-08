@@ -1,6 +1,6 @@
 //window.onload = function() {
 function getid(id) {
- return document.getElementById(id) ;
+  return document.getElementById(id);
 }
 window.addEventListener('load', function load(event) {
 	
@@ -114,37 +114,14 @@ window.addEventListener('load', function load(event) {
   td_top.top= td_top.offsetTop;
 
   document.onmousemove = function(e) {
-    //console.log(oBox.clientWidth + " " + oLine.style.left + " " + disX + " " + (e || event).clientX); 
     var iT = td_top.top + ((e || event).clientY - disY);
     var e=e||window.event,tarnameb=e.target||e.srcElement;
 
-    /*
-    if (com_connected) {
-      var maxT = oBox.clientHeight * 0.87;
-      var minT = oBox.clientHeight * 0.13;
-    } else {
-      var maxT = oBox.clientHeight * 0.94;
-      var minT = oBox.clientHeight * 0.06;
-    }
-    */
-    //var maxT = oBox.clientHeight * 0.88;
-    //var minT = oBox.clientHeight * 0.12;
     var maxT = oBox.clientHeight * 0.85;
     var minT = oBox.clientHeight * 0.15;
     td_top.style.margin = 0;
     iT < minT && (iT = minT);
     iT > maxT && (iT = maxT);
-    //oTop.style.height= iT;  // no need this line
-    //oTop1.style.height= iT;
-    //oTop2.style.height= iT;
-    //oBottom.style.height= iT;
-    //oLine.style.height= iT;
-    //div_top.style.top = iT;
-    //td_middle.style.height = (oBox.clientHeight - iT - div_top.clientHeight - div_down.clientHeight) + 'px'; 
-    //td_middle.style.width = oBox.clientWidth/100;   
-    //div_inout_middle.style.height = (oBox.clientHeight - iT - div_top.clientHeight - div_down.clientHeight) + 'px';
-    //oBox.offsetHeight = document.body.clientWidth - document.getElementById("nav").clientHeight;
-    //div_top.style.top = iT;
     var percent=iT;
     var oBox_height = oBox.clientHeight;
     content_xml.style.height = percent + "px";
@@ -153,14 +130,8 @@ window.addEventListener('load', function load(event) {
     content_area.style.height = percent + "px";
     side_code_parent.style.height = percent + "px";
     mid_td.style.height= percent + "px";
-    //td_top.style.top= percent*oBox.clientHeight/100;
-    //td_middle.style.height= (oBox_height - (percent + td_top.clientHeight + td_down.clientHeight)) + "px";
     td_middle.style.height = "auto";
-    //td_middle.style.width = document.body.clientWidth + "px";
-    //div_inout_middle.style.width = document.body.clientWidth + "px";
-    //oBox.style.height = oBox_height;
     Blockly.fireUiEvent(window, 'resize');
-    //div_inout_middle.style.width = td_middle.clientWidth;
     return false;
   }; 
   document.onmouseup = function() {

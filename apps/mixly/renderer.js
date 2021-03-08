@@ -72,96 +72,184 @@ function refreshSerialList() {
 }
 
 var download_shell = null;
-function esp32s2_download(com) {
-  if (serial_port) {
-    com_connected = false;
+let {PythonShell} = require('python-shell')
+var iconv = require('iconv-lite');
+var options = {
+  pythonPath: python3_path,
+  pythonOptions: ['-u'],
+  encoding: "binary",
+  mode: 'utf-8'
+};
+function esptool_download(com, boardType) {
+  if (serial_port && serial_port.isOpen) {
     serial_port.close();
   }
   status_bar_show(1);
   upload_cancel = true;
-  div_inout_middle_text.setValue('正在烧录...\n');
-  div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
-  download_shell = child_process.execFile(esp32_s2_path+"\\esptool.bat",[com,"115200"],function(error,stdout,stderr){
-    if(error !==null){
-      console.log("exec error"+error);
-      div_inout_middle_text.setValue(div_inout_middle_text.getValue()  + error);
-      div_inout_middle_text.setValue(div_inout_middle_text.getValue()  + "==烧录失败==\n");
-      layer.closeAll('page');
-      document.getElementById('webusb-flashing').style.display = 'none';
-      layer.msg('烧录失败', {
-          time: 1000
-      });
-    } else {
-      console.log("成功");
-      div_inout_middle_text.setValue(div_inout_middle_text.getValue()  + "==烧录成功==\n");
-      layer.closeAll('page');
-      document.getElementById('webusb-flashing').style.display = 'none';
-      layer.msg('烧录成功！', {
-          time: 1000
-      });
-    }
-    upload_cancel = true;
-    div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
-  })
 
-  download_shell.stdout.on('data', function (data) {
-      div_inout_middle_text.setValue(div_inout_middle_text.getValue()  + data);
-      div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
-  });
-  
+  //div_inout_middle_text.setValue("程序正在运行...\n");
+  //div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
+  if(boardType == 'esp32_s2') {
+    var code = "import esptool\n"
+             + "command = ['--port', '"+com+"', '--baud', '460800', '--after', 'no_reset', 'write_flash', '0x0000', '"+mixly_20_path+"\\cpBuild\\ESP32S2_MixGoCE\\mixgoce.bin']\n"
+             + "print('Using command %s' % ' '.join(command))\n"
+             + "esptool.main(command)\n";
+    esptool_run(mixly_20_path + "\\cpBuild\\ESP32S2_MixGoCE\\program.py", code, true, boardType);
+  } else if (boardType == 'mixgo') {
+    var code = "import esptool\n"
+             + "command1 = ['--port', '"+com+"', '--baud', '460800', 'erase_flash']\n"
+             + "print('Using command1 %s' % ' '.join(command1))\n"
+             + "esptool.main(command1)\n"
+             + "command2 = ['--port', '"+com+"', '--baud', '460800', 'write_flash', '0x1000', '"+mixly_20_path+"\\mpBuild\\ESP32_MixGo\\esp32.bin', '0x200000', r'"+mixly_20_path+"\\mpBuild\\ESP32_MixGo\\Noto_Sans_CJK_SC_Light16.bin']\n"
+             + "print('Using command2 %s' % ' '.join(command2))\n"
+             + "esptool.main(command2)\n";
+    esptool_run(mixly_20_path + "\\mpBuild\\ESP32_MixGo\\program.py", code, true, boardType);
+  } else {
+    div_inout_middle_text.setValue(div_inout_middle_text.getValue()  + "不支持的板卡类型！\n==烧录失败==\n\n");
+    div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
+    layer.closeAll('page');
+    document.getElementById('webusb-flashing').style.display = 'none';
+  }
+}
+
+function esptool_run(esp_path, esp_code, upload, boardType) {
+  file_save.writeFile(esp_path, esp_code,'utf8',function(err){
+      //如果err=null，表示文件使用成功，否则，表示希尔文件失败
+      if(err) {
+        layer.closeAll('page');
+        document.getElementById('webusb-flashing').style.display = 'none';
+        layer.msg('写文件出错了，错误是：'+err, {
+          time: 1000
+        });
+      } else {
+      download_shell = new PythonShell(esp_path, options);
+
+        //程序运行完成时执行
+      download_shell.childProcess.on('exit', (code) => {
+        console.log(code);
+        if(code == 0) {
+          layer.closeAll('page');
+          document.getElementById('webusb-flashing').style.display = 'none';
+          if (upload) {
+            div_inout_middle_text.setValue(div_inout_middle_text.getValue()  + "==烧录成功==\n\n");
+            layer.msg('烧录成功！', {
+                time: 1000
+            });
+          } else {
+            div_inout_middle_text.setValue(div_inout_middle_text.getValue()  + "==上传成功==\n\n");
+            layer.msg('上传成功！', {
+                time: 1000
+            });
+          }
+
+          if (boardType == 'mixgo' && !upload) {
+            py_refreshSerialList_select_com("mixgo");
+            setTimeout(function () {
+              connect_com_with_option("cp");
+              serialWrite_ctrl_d();
+            }, 1000);
+          }
+        }
+        div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
+        download_shell = null;
+        upload_cancel = true;
+      });
+      
+      //有数据输出时执行
+      download_shell.stdout.setEncoding('binary');  
+      download_shell.stdout.on('data', function (data) {
+        data = decode(iconv.decode(iconv.encode(data, "iso-8859-1"), 'gbk'));
+        div_inout_middle_text.setValue(div_inout_middle_text.getValue() + data);
+        div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
+      });
+
+        //程序运行出错时执行
+      download_shell.stderr.setEncoding('binary');  
+        download_shell.stderr.on('data', function (err) {
+          console.log('stderr: ' + err);
+          if (iconv.encode(err, "iso-8859-1"))
+            div_inout_middle_text.setValue(div_inout_middle_text.getValue() + iconv.decode(iconv.encode(err, "iso-8859-1"), 'gbk'));
+          else
+            div_inout_middle_text.setValue(div_inout_middle_text.getValue() + err);
+          layer.closeAll('page');
+          document.getElementById('webusb-flashing').style.display = 'none';
+          if (upload) {
+            layer.msg('烧录失败', {
+              time: 1000
+            });
+          } else {
+            layer.msg('上传失败', {
+              time: 1000
+            });
+          }
+          div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
+          download_shell = null;
+        });
+      }
+  })
+}
+
+function burning_interface_display(ports, boardType) {
+  var form = layui.form;
+  const $devNames = $('#select_serial_device');
+  $devNames.empty();
+  _.map(v=>{
+    if (`${v}` != "undefined")
+      $devNames.append($(`<option value="${v}">${v}</option>`));
+  }, ports);
+  //$devNames.append('<option value="all">全部</option>');
+  form.render();
+
+  var device_num = document.getElementById("select_serial_device").length;
+  if (device_num == 0) {
+    layer.msg('无可用设备!', {
+      time: 1000
+    });
+  } else if (device_num == 1) {
+    layui.use('layer', function(){
+      var layer = layui.layer;
+      layer.open({
+        type: 1,
+        title: '烧录中...',
+        content: $('#webusb-flashing'),
+        closeBtn: 0,
+        end: function() {
+          document.getElementById('webusb-flashing').style.display = 'none';
+        }
+      });
+      var com_data = $('#select_serial_device option:selected').val();
+      esptool_download(com_data, boardType);
+    }); 
+  } else {
+    layui.use(['layer','form'], function(){
+      var layer = layui.layer;
+      layer.open({
+          type: 1,
+          title: '检测到多个串口，请选择：',
+          area: ['350px','170px'],
+          content: $('#serial-device-form'),
+          closeBtn: 0,
+          end: function() {
+            document.getElementById('serial-device-form').style.display = 'none';
+          }
+      });
+      upload_cancel = true;
+    }); 
+  }
 }
 
 //刷新select_serial_device串口设备
-function get_SerialList() {
+function get_SerialList(boardType) {
   // 添加串口名称
-  var form = layui.form;
-  initcp_without_microbit_SerialList(ports=>{
-    const $devNames = $('#select_serial_device');
-    $devNames.empty();
-    _.map(v=>{
-      if (`${v}` != "undefined")
-        $devNames.append($(`<option value="${v}">${v}</option>`));
-    }, ports);
-    //$devNames.append('<option value="all">全部</option>');
-    form.render();
-
-    var device_num = document.getElementById("select_serial_device").length;
-    if (device_num == 0) {
-      layer.msg('无可用设备!', {
-        time: 1000
-      });
-    } else if (device_num == 1) {
-      layui.use('layer', function(){
-        var layer = layui.layer;
-        layer.open({
-          type: 1,
-          title: '烧录中...',
-          content: $('#webusb-flashing'),
-          closeBtn: 0,
-          end: function() {
-            document.getElementById('webusb-flashing').style.display = 'none';
-          }
-        });
-        var com_data = $('#select_serial_device option:selected').val();
-        esp32s2_download(com_data);
-      }); 
-    } else {
-      layui.use(['layer','form'], function(){
-        var layer = layui.layer;
-        layer.open({
-            type: 1,
-            title: '检测到多个串口，请选择：',
-            area: ['350px','170px'],
-            content: $('#serial-device-form'),
-            closeBtn: 0,
-            end: function() {
-              document.getElementById('serial-device-form').style.display = 'none';
-            }
-        });
-        upload_cancel = true;
-      }); 
-    }
-  });
+  if (boardType == "esp32_s2") {
+    initcp_firmware_SerialList(ports=>{
+      burning_interface_display(ports, boardType);
+    });
+  } else {
+    initmp_firmware_SerialList(ports=>{
+      burning_interface_display(ports, boardType);
+    });
+  }
 }
 
 // 刷新select_com串口设备
@@ -297,14 +385,7 @@ function py_refreshSerialList_del(select, com) {
 
 // 获取串口列表
 function initSerialList(cb) {
-  SerialPort.list().then(ports => 
-    {
-      /*
-      if (err) {
-        console.log(err);
-        return;
-      }
-      */
+  SerialPort.list().then(ports => {
       ports.forEach(function(port) {
         //console.log(port.comName);
         //console.log(port.pnpId);
@@ -328,14 +409,7 @@ function initSerialList(cb) {
 
 // 获取micropython串口列表
 function initmp_SerialList(cb) {
-  SerialPort.list().then(ports => 
-    {
-      /*
-      if (err) {
-        console.log(err);
-        return;
-      }
-      */
+  SerialPort.list().then(ports => {
       const names = ports.map(p=>{
         if (p.vendorId == "0D28" && p.productId == "0204")
           return p.comName;
@@ -349,14 +423,7 @@ function initmp_SerialList(cb) {
 
 // 获取circuitpython串口列表
 function initcp_SerialList(cb) {
-  SerialPort.list().then(ports => 
-    {
-      /*
-      if (err) {
-        console.log(err);
-        return;
-      }
-      */
+  SerialPort.list().then(ports => {
       const names = ports.map(p=>{
         if (p.vendorId == "239A" && p.productId == "80A8")
           return p.comName;
@@ -369,18 +436,26 @@ function initcp_SerialList(cb) {
   );
 }
 
-// 获取排除microbit的串口列表
-function initcp_without_microbit_SerialList(cb) {
+// 获取esp32_s2固件初始化时的的串口列表
+function initcp_firmware_SerialList(cb) {
   SerialPort.list().then(ports => {
-      /*
-      if (err) {
-        console.log(err);
-        return;
-      }
-      */
       const names = ports.map(p=>{
         if (p.vendorId == "303A" && p.productId == "0002")
           return p.comName;
+      });
+      if(typeof cb === 'function') {
+        cb(names);
+      }
+    }
+  );
+}
+
+// 获取esp32固件初始化时的的串口列表
+function initmp_firmware_SerialList(cb) {
+  SerialPort.list().then(ports => {
+      const names = ports.map(p=>{
+        //if (p.vendorId == "303A" && p.productId == "0002")
+        return p.comName;
       });
       if(typeof cb === 'function') {
         cb(names);

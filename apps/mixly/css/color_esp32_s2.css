@@ -288,6 +288,43 @@ top: 35%;
 background-image:url("../../../media/sidebar/sidebar2_red.png");
 }
 
+div.blocklyTreeRow.blocklyTreeSelected > div.blocklyTreeRowContentContainer > span.blocklyTreeIcon.blocklyTreeIconOpen{ 
+	background-image: url('../../../media/sprites.png') !important;
+	height: 16px !important;
+	vertical-align: middle !important;
+	width: 16px !important;
+	margin: 10px !important;
+	background-position: -16px -17px !important;
+	background-size: auto !important; 
+}
+div.blocklyTreeRow.blocklyTreeSelected > div.blocklyTreeRowContentContainer > span.blocklyTreeIcon.blocklyTreeIconClosed{ 
+	background-image: url('../../../media/sprites.png') !important;
+	height: 16px !important;
+	vertical-align: middle !important;
+	width: 16px !important;
+	margin: 10px !important;
+	background-position: -32px -17px !important;
+	background-size: auto !important; 
+}
+div.blocklyTreeRow > div.blocklyTreeRowContentContainer > span.blocklyTreeIcon.blocklyTreeIconOpen{ 
+	background-image: url('../../../media/sprites.png') !important;
+	height: 16px !important;
+	vertical-align: middle !important;
+	width: 16px !important;
+	margin: 10px !important;
+	background-position: -16px -1px !important;
+	background-size: auto !important; 
+}
+div.blocklyTreeRow > div.blocklyTreeRowContentContainer > span.blocklyTreeIcon.blocklyTreeIconClosed{ 
+	background-image: url('../../../media/sprites.png') !important;
+	height: 16px !important;
+	vertical-align: middle !important;
+	width: 16px !important;
+	margin: 10px !important;
+	background-position: -32px -1px !important;
+	background-size: auto !important; 
+}
+
 div.blocklyTreeRow > div.blocklyTreeRowContentContainer > span.blocklyTreeIcon{ 
 	width:20px;height:20px;
 	float:left;
