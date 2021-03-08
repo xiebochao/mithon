@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Mixly 2.0 For Mithon</title>
     <link rel="shortcut icon" type="image/ico" href="../../files/mixly.ico">
+    <script type="text/javascript" src="environment.js"></script>
     <script type="text/javascript" src="../../blockly_compressed_mithon.js"></script>
     <script type="text/javascript" src="../../core/base.js"></script>
     <script type="text/javascript" src="../../python_compressed.js"></script>
@@ -20,7 +21,6 @@
     <!--from BlocklyDuino-->
     <script type="text/javascript" src="js/Blob.js"></script>
     <script type="text/javascript" src="spin.js"></script>
-    <script type="text/javascript" src="environment.js"></script>
     <script type="text/javascript" src="js/FileSaver.min.js"></script>
     <script type="text/javascript" src="js/py_module_mithon.js"></script>
     <script type="text/javascript" src="js/micropython_v1.js"></script>
@@ -198,7 +198,7 @@
         <div class="layui-form-item">
             <div style="text-align:center;">
                 <button id="serial-upload-cancel" class="layui-btn layui-btn-normal" onclick="serial_upload_cancel()">取消</button>
-                <button id="serial-upload-ok" class="layui-btn layui-btn-normal" onclick="mp_serial_upload_start()">确定</button>
+                <button id="serial-upload-ok" class="layui-btn layui-btn-normal" onclick="microbit_serial_upload_start()">确定</button>
             </div>
         </div>
     </div>

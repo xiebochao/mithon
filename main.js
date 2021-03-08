@@ -2,7 +2,7 @@ const {app, BrowserWindow} = require('electron')
 const electron = require('electron')
 const Menu = electron.Menu
 app.on('ready', function createWindow () {
-    Menu.setApplicationMenu(null)
+    //Menu.setApplicationMenu(null)
     // 可以创建多个渲染进程
     let win = new BrowserWindow({
         show: false,
@@ -19,7 +19,7 @@ app.on('ready', function createWindow () {
     win.show()
 
     // 渲染进程中的web页面可以加载本地文件
-    win.loadFile('index_client.html')
+    win.loadFile('index.html')
 
 
     // 记得在页面被关闭后清除该变量，防止内存泄漏

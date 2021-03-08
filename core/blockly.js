@@ -635,3 +635,61 @@ Blockly.hueToRgb = function(hue) {
   return goog.color.hsvToHex(hue, Blockly.HSV_SATURATION,
       Blockly.HSV_VALUE * 255);
 };
+
+Blockly.Category_Icon_Update = function(category_style) {
+  var span = document.getElementsByTagName("span");
+  var div_id = null;
+  for (var category_num = 0; category_num < category_style.length; category_num++) {
+    for (var i = 0; i < span.length; i++) {
+      if (span[i].innerText == Blockly.Category_Icon_data[category_num].CategoryName) {
+        div_id = span[i].id.replace(".label", "");
+        var sheet = (function() {
+            var style = document.createElement("style");
+            style.appendChild(document.createTextNode(""));
+            document.head.appendChild(style);
+            return style.sheet;
+        })();
+        for (var j = 0; j < Blockly.Category_Icon_data[category_num].style.length; j++) {
+          sheet.insertRule(`
+            #\\${div_id} > div:nth-child(2) > ${Blockly.Category_Icon_data[category_num].style[j]}
+          `);
+        }
+        break;
+      }
+    }
+  }
+}
+
+//通过所给主分类名称与子分类相对主分类位置来添加图标
+Blockly.Category_Icon_Add_With_Coordinates = function(category_name, coordinates, blocklyTreeIcon_path, blocklyTreeSelectedIcon_path) {
+  var style = "";
+  for (var i = 0; i < coordinates.length; i++) {
+    if (i == coordinates.length - 1)
+      style += "div:nth-child("+coordinates[i]+") > ";
+    else
+      style += "div:nth-child("+coordinates[i]+") > div:nth-child(2) > ";
+  }
+  var category_style = [];
+  category_style[0] = style + 
+  `div.blocklyTreeRow > span.blocklyTreeIcon.blocklyTreeIconNone {
+    background:url('${blocklyTreeIcon_path}') no-repeat;
+    background-size: 100% auto; 
+  }`;
+  category_style[1] = style + 
+  `div.blocklyTreeRow.blocklyTreeSelected > span.blocklyTreeIcon.blocklyTreeIconNone {
+    background:url('${blocklyTreeSelectedIcon_path}') no-repeat;
+    background-size: 100% auto; 
+  }`;
+  var style = {
+    CategoryName: category_name,
+    style: category_style
+  }
+  Blockly.Category_Icon_Add(style);
+}
+
+//通过所给样式值为某个分类添加图标
+Blockly.Category_Icon_Add = function(style) {
+  Blockly.Category_Icon_data.push(style);
+}
+
+Blockly.Category_Icon_data = [];
