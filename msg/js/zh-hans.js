@@ -109,7 +109,8 @@ var MSG = {
     serial_reset: "初始化固件",
     upload_to_board: "上传到板卡",
     status_bar_show: "状态栏",
-    operate: "操作"
+    operate: "操作",
+    compile: "编译"
 };
 Blockly.Msg.ADD_COMMENT = "添加注释";
 Blockly.Msg.AUTH = "请授权这个应用程序以保存您的作品并共享。";
