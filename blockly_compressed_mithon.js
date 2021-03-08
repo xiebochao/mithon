@@ -844,7 +844,41 @@ Blockly.ShortcutRegistry.prototype.register=function(a,b){if(this.registry_[a.na
 Blockly.ShortcutRegistry.prototype.addKeyMapping=function(a,b,c){var d=this.keyMap_[a];if(d&&!c)throw Error('Shortcut with name "'+b+'" collides with shortcuts '+d.toString());d&&c?d.unshift(b):this.keyMap_[a]=[b]};
 Blockly.ShortcutRegistry.prototype.removeKeyMapping=function(a,b,c){var d=this.keyMap_[a];if(!d&&!c)return console.warn('No keyboard shortcut with name "'+b+'" registered with key code "'+a+'"'),!1;var e=d.indexOf(b);if(-1<e)return d.splice(e,1),0==d.length&&delete this.keyMap_[a],!0;c||console.warn('No keyboard shortcut with name "'+b+'" registered with key code "'+a+'"');return!1};
 Blockly.ShortcutRegistry.prototype.removeAllKeyMappings=function(a){for(var b in this.keyMap_)this.removeKeyMapping(b,a,!0)};Blockly.ShortcutRegistry.prototype.setKeyMap=function(a){this.keyMap_=a};Blockly.ShortcutRegistry.prototype.getKeyMap=function(){return Blockly.utils.object.deepMerge(Object.create(null),this.keyMap_)};Blockly.ShortcutRegistry.prototype.getRegistry=function(){return Blockly.utils.object.deepMerge(Object.create(null),this.registry_)};
-Blockly.ShortcutRegistry.prototype.onKeyDown=function(a,b){var c=this.serializeKeyEvent_(b);c=this.getShortcutNamesByKeyCode(c);if(!c)return!1;for(var d=0,e;e=c[d];d++)if(e=this.registry_[e],(!e.preconditionFn||e.preconditionFn(a))&&e.callback&&e.callback(a,b,e))return!0;return!1};Blockly.ShortcutRegistry.prototype.getShortcutNamesByKeyCode=function(a){return this.keyMap_[a]||[]};
+
+Blockly.ShortcutRegistry.prototype.onKeyDown = function(a, b) {
+	if(b.shiftKey && b.ctrlKey){
+     	if (Blockly.selected &&
+        	Blockly.selected.isDeletable() && Blockly.selected.isMovable()) {
+      		if (b.keyCode == 67) {
+        		// 'c' for copy.
+        		try{
+          			var selectedXmlDom = Blockly.Xml.blockToDom(Blockly.selected);
+          			blockly_clipboard.writeText(Blockly.Xml.domToText(selectedXmlDom));  
+        		}catch(err){
+        		}
+      		} 
+    	} if (b.keyCode == 86) {
+      		// 'v' for paste.
+      		try{
+        		var cacheXml = blockly_clipboard.readText();
+        		var cacheDom = Blockly.Xml.textToDom(cacheXml);
+        		var cacheBlock = Blockly.Xml.domToBlock(cacheDom, Blockly.mainWorkspace);
+      		} catch(err){
+      		}
+    	} 
+  	}
+    var c = this.serializeKeyEvent_(b);
+    c = this.getShortcutNamesByKeyCode(c);
+    if (!c)
+        return !1;
+    for (var d = 0, e; e = c[d]; d++)
+        if (e = this.registry_[e],
+        (!e.preconditionFn || e.preconditionFn(a)) && e.callback && e.callback(a, b, e))
+            return !0;
+    return !1
+};
+
+Blockly.ShortcutRegistry.prototype.getShortcutNamesByKeyCode=function(a){return this.keyMap_[a]||[]};
 Blockly.ShortcutRegistry.prototype.getKeyCodesByShortcutName=function(a){var b=[],c;for(c in this.keyMap_)-1<this.keyMap_[c].indexOf(a)&&b.push(c);return b};Blockly.ShortcutRegistry.prototype.serializeKeyEvent_=function(a){var b="",c;for(c in Blockly.ShortcutRegistry.modifierKeys)a.getModifierState(c)&&(""!=b&&(b+="+"),b+=c);""!=b&&a.keyCode?b=b+"+"+a.keyCode:a.keyCode&&(b=a.keyCode.toString());return b};
 Blockly.ShortcutRegistry.prototype.checkModifiers_=function(a){for(var b=Blockly.utils.object.values(Blockly.ShortcutRegistry.modifierKeys),c=0,d;d=a[c];c++)if(0>b.indexOf(d))throw Error(d+" is not a valid modifier key.");};
 Blockly.ShortcutRegistry.prototype.createSerializedKey=function(a,b){var c="";if(b){this.checkModifiers_(b);for(var d in Blockly.ShortcutRegistry.modifierKeys)-1<b.indexOf(Blockly.ShortcutRegistry.modifierKeys[d])&&(""!=c&&(c+="+"),c+=d)}""!=c&&a?c=c+"+"+a:a&&(c=a.toString());return c};new Blockly.ShortcutRegistry;Blockly.VariableModel=function(a,b,c,d){this.workspace=a;this.name=b;this.type=c||"";this.id_=d||Blockly.utils.genUid();Blockly.Events.fire(new Blockly.Events.VarCreate(this))};Blockly.VariableModel.prototype.getId=function(){return this.id_};Blockly.VariableModel.compareByName=function(a,b){a=a.name.toLowerCase();b=b.name.toLowerCase();return a<b?-1:a==b?0:1};Blockly.Variables={};Blockly.Variables.NAME_TYPE=Blockly.VARIABLE_CATEGORY_NAME;Blockly.Variables.allUsedVarModels=function(a){var b=a.getAllBlocks(!1);a=Object.create(null);for(var c=0;c<b.length;c++){var d=b[c].getVarModels();if(d)for(var e=0;e<d.length;e++){var f=d[e],g=f.getId();g&&(a[g]=f)}}b=[];for(g in a)b.push(a[g]);return b};Blockly.Variables.ALL_DEVELOPER_VARS_WARNINGS_BY_BLOCK_TYPE_={};
