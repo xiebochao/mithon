@@ -1,5 +1,4 @@
 var sidecodeDisplay = false;
-var com_connected = false;
 var now_visual_height = document.documentElement.clientHeight;
 
 /**

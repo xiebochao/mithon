@@ -74,7 +74,7 @@ function echarts_init() {
         }]
     };
     echarts_update = setInterval(function () {
-        if (com_connected) {
+        if (serial_port && serial_port.isOpen) {
             var _time_rate = 0; 
             var _data_length = echarts_data.length;
             if (_data_length > 20) {

@@ -354,13 +354,13 @@ function init() {
     if (Mixly_20_environment) {
         if (getid("li_connect")) 
             getid("li_connect").style.display = "none";
-        else if (getid("mixly2.0-path"))
-            getid("mixly2.0-path").href = "../../index_client.html";
+        //if (getid("mixly2.0-path"))
+        //    getid("mixly2.0-path").href = "../../index_client.html";
     } else {
         if (getid("li_connect")) 
             getid("li_connect").style.display = "";
-        else if (getid("mixly2.0-path"))
-            getid("mixly2.0-path").href = "../../index.html";
+        //if (getid("mixly2.0-path"))
+        //    getid("mixly2.0-path").href = "../../index.html";
     }
     //获取状态框右端离index最左端的距离
     var status_bar_location = getid("layer_btn").offsetParent.offsetLeft + getid("layer_btn").offsetParent.offsetWidth;

@@ -2,112 +2,9 @@ var serial_port = null;
 var parser = null;
 var Readline =null;
 
-var com_connected = false;
 
 if (!Mixly_20_environment) throw false;
 var Serial_Port = require("serialport").SerialPort;
-
-function connect_com() {
-    var com_data = $('#select_com option:selected').val();
-    if (com_data) {
-        if (com_connected) {
-            //$("#button_connect").text("打开");
-            //$("#button_connect").css("background-color","#eee");
-            com_connected = false;
-            serial_port.close();
-        } else {
-            serial_port = new SerialPort(com_data, {
-	          baudRate: 115200,  //波特率
-	          dataBits: 8,    //数据位
-	          parity: 'none',  //奇偶校验
-	          stopBits: 1,  //停止位
-	          flowControl: false,
-	          autoOpen:false //不自动打开1
-	        }, false);
-            Readline = SerialPort.parsers.Readline;
-            parser = new Readline();
-            serial_port.pipe(parser)
-			serial_port.open(function (error) {
-			  if (error) {
-			    console.log('failed to open: ' + error + '\n');
-			    $("#button_connect").text("打开");
-			    $("#button_connect").css("background-color","#eee");
-			    com_connected = false;
-			    //refreshSerialList_select_com();
-			    serial_port = null;
-			    div_inout_middle_text.setValue(div_inout_middle_text.getValue() + error + "\n");
-			    div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
-			  } else {
-			  	$("#button_connect").text("关闭");
-			  	$("#button_connect").css("background-color","#5bd46d");
-	            com_connected = true;
-	            layer.msg('已打开串口' + com_data, {
-	                time: 1000
-	            });
-	            div_inout_middle_text.setValue('已打开串口' + com_data + '\n');
-	            div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
-
-	            //添加串口发送控件
-	            //$('#div_inout_middle').append('<input type="text" name="fname" id="text_send_data" style="position:absolute;left:0px;bottom:1px;height:15px;width:30%;background-color:#5bd46d;border-style:solid;border-width:1px;border-color:#000;opacity:1;" />');
-    			//$('#div_inout_middle').append('<button id="button_send" onclick="button_send_data()" style="position:absolute;bottom:1px;height:15px;left:30.6%;">发送</button>');
-
-			    //console.log('open');
-			    parser.on('data', function(data) {
-			        //console.log('data received: ' + data);
-			        //div_inout_middle_text.setValue(div_inout_middle_text.getValue() + data);
-			    	//div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
-			    	serial_show_data(serial_open, data);
-			    });
-			    serial_port.on('error', function(err) {
-			        //console.log('data received: ' + data);
-			        //div_inout_middle_text.setValue(div_inout_middle_text.getValue() + data);
-			    	//div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
-			    	serial_show_data(serial_open, data);
-			    });
-			    //串口结束使用时执行此函数
-			    serial_port.on('close', ()=>{
-			        serial_port = null;
-			        $("#button_connect").text("打开");
-			        $("#button_connect").css("background-color","#eee");
-			        div_inout_middle_text.setValue(div_inout_middle_text.getValue() + '已关闭串口' + com_data + '\n');
-        		    div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
-        			
-        		    if (com_connected) {
-        		    	if (py2block_config.board == "CircuitPython[ESP32_S2]")
-        					py_refreshSerialList_del("cp", com_data);
-        				else
-        					py_refreshSerialList_del("mp", com_data);
-        				com_connected = false;
-        		    } else {
-        		    	if (py2block_config.board == "CircuitPython[ESP32_S2]")
-        					py_refreshSerialList_select_com("cp");
-        				else
-        					py_refreshSerialList_select_com("mp");
-        		    }
-	        		
-	        		layer.msg('已关闭串口' + com_data, {
-		                time: 1000
-		            });
-	        		//$("#text_send_data").remove();
-	        		//$("#button_send").remove();
-			    });
-			  }
-			});
-        }
-    } else {
-        com_connected = false;
-        if (py2block_config.board == "CircuitPython[ESP32_S2]")
-			py_refreshSerialList_select_com("cp");
-		else
-			py_refreshSerialList_select_com("mp");
-        $("#button_connect").text("打开");
-        $("#button_connect").css("background-color","#eee");
-        layer.msg('无可用设备!', {
-            time: 1000
-        });
-    }
-}
-
  
 function stringToByte(str) {
     var len, c;
@@ -216,18 +113,16 @@ function connect_com_with_option(select) {
 	var com_data = $('#select_com option:selected').val();
 	if (!com_data)
 		return;
-	if (com_connected) {
+	if (serial_port && (serial_port.isOpen || serial_port.opening)) {
 		if (serial_port.path == com_data) {
 			return;
 		} else {
 			serial_port.close();
-			com_connected = false;
 			return;
 		}
 	}
-	
     serial_port = new SerialPort(com_data, {
-      baudRate: 115200,  //波特率
+      baudRate: $('#div_cb_cf_baud_rates option:selected').val() - 0,  //波特率
       dataBits: 8,    //数据位
       parity: 'none',  //奇偶校验
       stopBits: 1,  //停止位
@@ -240,20 +135,18 @@ function connect_com_with_option(select) {
 	serial_port.open(function (error) {
 	  if (error) {
 	    console.log('failed to open: '+error);
-	    $("#button_connect").text("打开");
-	    $("#button_connect").css("background-color","#eee");
-	    com_connected = false;
 	    serial_port = null;
-	    div_inout_middle_text.setValue(div_inout_middle_text.getValue() + error + "\n");
-	    div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
+	    //$("#button_connect").text("打开");
+	    //$("#button_connect").css("background-color","#eee");
+	    //div_inout_middle_text.setValue(div_inout_middle_text.getValue() + error + "\n");
+	    //div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
+	    return;
 	  } else {
-	  	layer.msg('已打开串口' + com_data, {
-            time: 1000
-        });
-	  	com_connected = true;
-	  	$("#button_connect").text("关闭");
-	  	$("#button_connect").css("background-color","#5bd46d");
-        com_connected = true;
+	  	//layer.msg('已打开串口' + com_data, {
+        //    time: 1000
+        //});
+	  	//$("#button_connect").text("关闭");
+	  	//$("#button_connect").css("background-color","#5bd46d");
         div_inout_middle_text.setValue('已打开串口' + com_data + '\n');
         div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
 
@@ -284,23 +177,27 @@ function connect_com_with_option(select) {
 	    });
 	    //串口结束使用时执行此函数
 	    serial_port.on('close', ()=>{
-	        serial_port = null;
-	        $("#button_connect").text("打开");
-	        $("#button_connect").css("background-color","#eee");
-			if (select) {
-				$("#serial_content").val($("#serial_content").val() + '已关闭串口' + com_data + '\n');
-				$("#serial_content").scrollTop($("#serial_content")[0].scrollHeight);
-			}
-			if (com_connected) {
+	        //$("#button_connect").text("打开");
+	        //$("#button_connect").css("background-color","#eee");
+
+			$("#serial_content").val($("#serial_content").val() + '已关闭串口' + com_data + '\n');
+			$("#serial_content").scrollTop($("#serial_content")[0].scrollHeight);
+			div_inout_middle_text.setValue(div_inout_middle_text.getValue() + '已关闭串口' + com_data + '\n');
+			div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
+			
+			/*
+			if (serial_port && serial_port.isOpen) {
 				div_inout_middle_text.setValue(div_inout_middle_text.getValue() + '已关闭串口' + com_data + '\n');
 				div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
-				com_connected = false;
 			    py_refreshSerialList_select_com(select);
 	    		
 	    		layer.msg('已关闭串口' + com_data, {
 	                time: 1000
 	            });
 	    	}
+	    	*/
+
+	    	serial_port = null;
 	    });
 	  }
 	});
@@ -313,23 +210,40 @@ function update_select_com() {
 		&& !document.querySelector("#div_send_data_with > div.layui-unselect.layui-form-select.layui-form-selected")
 		&& !document.querySelector("#serial_data_type > div.layui-unselect.layui-form-select.layui-form-selected")
 		 ) {
-		if (py2block_config.board == "CircuitPython[ESP32_S2]") {
-			py_refreshSerialList_select_com("cp");
+		try{
+			if (py2block_config.board == "CircuitPython[ESP32_S2]") {
+				py_refreshSerialList_select_com("cp");
+				setTimeout(function () {
+					connect_com_with_option("cp");
+					status_bar_show(1);
+				}, 150);
+			} else if (py2block_config.board == "microbit[py]") {
+				py_refreshSerialList_select_com("mp");
+				setTimeout(function () {
+					connect_com_with_option("mp");
+					status_bar_show(1);
+				}, 150);
+			} else {
+				py_refreshSerialList_select_com("esp32");
+				setTimeout(function () {
+					connect_com_with_option("esp32");
+					status_bar_show(1);
+				}, 150);
+			}
+		} catch(e) {
+			py_refreshSerialList_select_com("arduino");
 			setTimeout(function () {
-				connect_com_with_option("cp");
+				connect_com_with_option("arduino");
 				status_bar_show(1);
-			}, 150);
-		} else {
-			py_refreshSerialList_select_com("mp");
-			setTimeout(function () {
-				connect_com_with_option("mp");
-				status_bar_show(1);
-			}, 150);
+			}, 500);
 		}
 
 		//检测发送框提示信息是否与当前选择相符，不相符则更改
-		if ( serial_port && serial_port.BaudRate != $('#div_cb_cf_baud_rates option:selected').val() )
-			serial_port.BaudRate = $('#div_cb_cf_baud_rates option:selected').val();
+		if ( serial_port && serial_port.isOpen && serial_port.baudRate != $('#div_cb_cf_baud_rates option:selected').val() - 0 ) {
+			//var com_data = serial_port.path;
+			serial_port.close();
+			//serial_port.settings.baudRate = $('#div_cb_cf_baud_rates option:selected').val() - 0;
+		}
 		if ($('#select_serial_data_type option:selected').val() == "hex" && $("#serial_write").attr("placeholder") != "请输入二进制流  例如:0x03 0x04") {
 			$("#serial_write").attr("placeholder","请输入内容  例如:0x03 0x04");
 		} else if ($('#select_serial_data_type option:selected').val() == "string" && $("#serial_write").attr("placeholder") != "请输入内容") {
