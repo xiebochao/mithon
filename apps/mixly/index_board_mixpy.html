@@ -122,6 +122,9 @@
 </head>
 
 <body onload="init()">
+    <div>
+        <input id="upload_file" type="file" name="myfile" accept=".mix,.py,.xml,.hex" onchange="getFile(this);" style="display: none;" />
+    </div>
     <div class="layui-form-select" style="width:100px; position: absolute; right: 230px; top:14px; z-index:9999;">
         <div class="layui-select-title" style="z-index:9999;">
             <input type="text" placeholder="" value="" class="layui-input" id="filename_input" style="z-index:9999;height:33px;">
@@ -163,7 +166,7 @@
             <dl class="layui-nav-child">
                 <!-- 二级菜单 -->
                 <dd><a href="#" onclick="new_file()" id="new_btn" class="icon-doc-new"></a></dd>
-                <dd><a href="#" onclick="mixlyjs.loadLocalFile()" id="open_btn" class="icon-folder-open-empty"></a></dd>
+                <dd><a href="#" onclick="loadFile()" id="open_btn" class="icon-folder-open-empty"></a></dd>
             </dl>
         </li>
         <li class="layui-nav-item" style="float:right">

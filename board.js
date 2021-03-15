@@ -43,8 +43,15 @@ var mixly_board = [
 		environment: 2
 	},{
 		BoardImg: "./files/uno.jpg",
-		BoardName: "Arduino UNO",
+		BoardName: "Arduino AVR",
 		BoardDescription:"Play UNO with C/C++",
+		BoardIndex: "./apps/mixly/index.html",
+		environment: 0
+	}
+	,{
+		BoardImg: "./files/add2.png",
+		BoardName: "",
+		BoardDescription:"",
 		BoardIndex: "./apps/mixly/index.html",
 		environment: 0
 	}

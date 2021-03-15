@@ -79,6 +79,9 @@
   <script src = "init-arduino.js"></script>
 </head>
 <body onload="init()">
+  <div>
+    <input id="upload_file" type="file" name="myfile" accept=".mix,.ino,.xml" onchange="getFile(this);" style="display: none;" />
+  </div>
   <div class="layui-form-select" style="width:100px; position: absolute; right: 230px; top:14px; z-index:9999;">
       <div class="layui-select-title" style="z-index:9999;">
           <input type="text" placeholder="" value="" class="layui-input" id="filename_input" style="z-index:9999;height:33px;">
@@ -95,7 +98,7 @@
               <!-- 二级菜单 -->
               <dd><a href="#" onclick="UndoClick();" name="undo" id="operate_undo_btn" title="undo(ctrl+z)" class="icon-ccw">撤销</a>
               <dd><a href="#" onclick="RedoClick();" name="redo" id="operate_redo_btn" title="redo(ctrl+y)" class="icon-cw">重复</a></dd>
-              <dd><a href="#" onclick="arduino_compile('arduino:avr:uno');" id="operate_arduino_compile" class="icon-upload-1">编译</a></dd>
+              <dd><a href="#" onclick="arduino_compile('arduino:avr:uno');" id="operate_arduino_compile" class="icon-check">编译</a></dd>
               <dd><a href="#" onclick="arduino_upload('arduino:avr:uno');" id="operate_download_btn" class="icon-upload">上传</a></dd>
               <dd><a href="#" onclick="arduino_serial();" id="operate_serial_read_btn" class="icon-link">串口</a></dd>
               <dd><a href="#" onclick="status_bar_show(0);" id="operate_layer_btn" class="icon-window">状态栏</a></dd>
@@ -103,7 +106,7 @@
       </li>
       <li class="layui-nav-item" id="li_undo"><a href="#" onclick="UndoClick();" name="undo" id="undo_btn" title="undo(ctrl+z)" class="icon-ccw"></a></li>
       <li class="layui-nav-item" id="li_redo"><a href="#" onclick="RedoClick();" name="redo" id="redo_btn" title="redo(ctrl+y)" class="icon-cw"></a></li>
-      <li class="layui-nav-item" id="li_serial_reset"><a href="#" onclick="arduino_compile('arduino:avr:uno');" id="arduino_compile_btn" class="icon-upload-1" ></a></li>
+      <li class="layui-nav-item" id="li_serial_reset"><a href="#" onclick="arduino_compile('arduino:avr:uno');" id="arduino_compile_btn" class="icon-check" ></a></li>
       <li class="layui-nav-item" id="li_download"><a href="#" onclick="arduino_upload('arduino:avr:uno');" id="arduino_download_btn" class="icon-upload" ></a></li>
       <li class="layui-nav-item" id="li_serial_read"><a href="#" onclick="arduino_serial();" id="arduino_serial_btn" class="icon-link" ></a></li>
       <li class="layui-nav-item" id="li_layer"><a href="#" id="layer_btn" class="icon-window" onclick="status_bar_show(0);"></a></li>
@@ -115,6 +118,7 @@
               <dd><a href="#" id="language_btn" class="icon-language" onclick="open_language(); "></a></dd>
               <dd><a href="#" id="theme_btn" class="icon-art-gallery" onclick="open_theme();"></a></dd>
               <dd><a href="#" id="changemod_btn" class="icon-code" value=1 onclick="changeMod();"></a></dd>
+              <dd><a href="#" id="import_libraries_btn" class="icon-download"></a></dd>
           </dl>
       </li>
       <li class="layui-nav-item" style="float:right">
@@ -122,7 +126,7 @@
           <dl class="layui-nav-child">
               <!-- 二级菜单 -->
               <dd><a href="#" onclick="new_file()" id="new_btn" class="icon-doc-new"></a></dd>
-              <dd><a href="#" onclick="mixlyjs.loadLocalFile()" id="open_btn" class="icon-folder-open-empty"></a></dd>
+              <dd><a href="#" onclick="loadFile()" id="open_btn" class="icon-folder-open-empty"></a></dd>
           </dl>
       </li>
       <li class="layui-nav-item" style="float:right">
@@ -307,7 +311,7 @@
   <script>
       div_inout_middle_text = ace.edit("div_inout_middle");
       //editor_side_code1.setTheme(window.conf.lastEditorTheme);
-      div_inout_middle_text.getSession().setMode("ace/mode/python");
+      div_inout_middle_text.getSession().setMode("ace/mode/c_cpp");
       div_inout_middle_text.setFontSize(12);
       div_inout_middle_text.setReadOnly(false);
       div_inout_middle_text.setScrollSpeed(0.3);

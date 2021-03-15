@@ -110,7 +110,8 @@ var MSG = {
     upload_to_board: "上传到板卡",
     status_bar_show: "状态栏",
     operate: "操作",
-    compile: "编译"
+    compile: "编译",
+    import_libraries: "导入库"
 };
 Blockly.Msg.ADD_COMMENT = "添加注释";
 Blockly.Msg.AUTH = "请授权这个应用程序以保存您的作品并共享。";

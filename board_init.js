@@ -23,16 +23,16 @@ if (getid("mixly-board")) {
 	                    <img src="${mixly_board[i]['BoardImg']}" alt="service image" class="tiltimage">
 	                    <h2>${mixly_board[i]['BoardName']}</h2>
 	                </a>
-	                <p>${mixly_board[i]['BoardDescription']}</p>
+	                <!--<p>${mixly_board[i]['BoardDescription']}</p>-->
 	            </div>
 	        </div>
 			`;
 			board_num++;
 			if (board_num % 4 == 0) {
 				if (board_num == 4)
-					a_row = '<div class="row maxs">' + a_row + '</div>';
+					a_row = '<div style="background-color:rgba(0,0,0,0);padding-left: 70px;padding-right: 70px;"><div class="row maxs">' + a_row + '</div></div>';
 				else
-					a_row = '<br /><div class="row maxs">' + a_row + '</div>';
+					a_row = '<div style="background-color:rgba(0,0,0,0);padding-left: 70px;padding-right: 70px;"><div class="row maxs">' + a_row + '</div></div>';
 				board_container.innerHTML = board_container.innerHTML + a_row;
 				a_row = '';
 			}
@@ -44,15 +44,28 @@ if (getid("mixly-board")) {
 			<div class="col-sm-4 col-md-3">
 	            <div class="service-single">
 	                <a href="javascript:;">
-	                    <img src="./files/blank1.jpg" alt="service image" class="tiltimage">
+	                    <img src="./files/blank2.jpg" alt="service image" class="tiltimage">
 	                </a>
 	            </div>
 	        </div>
 			`;
 			board_num++;
 		}
-		a_row = '<br /><div class="row maxs">' + a_row + '</div>';
+		a_row = '<div style="background-color:rgba(0,0,0,0);padding-left: 70px;padding-right: 70px;"><div class="row maxs">' + a_row + '</div></div>';
 		board_container.innerHTML = board_container.innerHTML + a_row;
 		a_row = '';
 	}
 }
+
+setTimeout(function () {
+	if (getid("footer")) {
+		var footer = getid("footer");
+		footer.innerHTML = 
+		`
+		<div class="container" style="text-align:center;">
+		    <hr>
+		    <p>Copyright © Mixly Team@BNU, CHINA</p>
+		</div>
+		`;
+	}
+}, 400);
