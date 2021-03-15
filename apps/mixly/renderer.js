@@ -105,7 +105,7 @@ function esptool_download(com, boardType) {
              + "esptool.main(command2)\n";
     esptool_run(mixly_20_path + "\\mpBuild\\ESP32_MixGo\\program.py", code, true, boardType);
   } else {
-    div_inout_middle_text.setValue(div_inout_middle_text.getValue()  + "不支持的板卡类型！\n==烧录失败==\n\n");
+    div_inout_middle_text.setValue(div_inout_middle_text.getValue()  + "不支持的板卡类型！\n==烧录失败==\n");
     div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
     layer.closeAll('page');
     document.getElementById('webusb-flashing').style.display = 'none';
@@ -131,12 +131,12 @@ function esptool_run(esp_path, esp_code, upload, boardType) {
           layer.closeAll('page');
           document.getElementById('webusb-flashing').style.display = 'none';
           if (upload) {
-            div_inout_middle_text.setValue(div_inout_middle_text.getValue()  + "==烧录成功==\n\n");
+            div_inout_middle_text.setValue(div_inout_middle_text.getValue()  + "==烧录成功==\n");
             layer.msg('烧录成功！', {
                 time: 1000
             });
           } else {
-            div_inout_middle_text.setValue(div_inout_middle_text.getValue()  + "==上传成功==\n\n");
+            div_inout_middle_text.setValue(div_inout_middle_text.getValue()  + "==上传成功==\n");
             layer.msg('上传成功！', {
                 time: 1000
             });

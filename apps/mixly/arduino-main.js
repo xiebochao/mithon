@@ -87,7 +87,7 @@ function arduino_upload(boardType) {
 	          	}
 	        });
 			status_bar_show(1);
-			div_inout_middle_text.setValue("上传中...");
+			div_inout_middle_text.setValue("上传中...\n");
 			div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
 			var device_select_name = $('#select_serial_device option:selected').val();
 			arduino_run(mixly_20_path + "\\arduino\\arduino_debug --pref build.path="+mixly_20_path+"\\mixlyBuild --verbose --board "+boardType+" --port " + device_select_name + " --upload " + mixly_20_path + "\\testArduino\\testArduino.ino");

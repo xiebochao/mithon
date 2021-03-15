@@ -299,7 +299,11 @@ function resetClick() {
 /** Create a namespace for the application. */
 
 goog.require('Blockly.Generator');
-goog.require('Blockly.Python');
+try{
+    goog.require('Blockly.Python');
+} catch (e) {
+    goog.require('Blockly.Arduino');
+}
 
 var mixlyjs = mixlyjs || {};
 mixlyjs.hex = "";
@@ -442,17 +446,56 @@ function decode(s) {
     return unescape(s.replace(/\\(u[0-9a-fA-F]{4})/gm, '%$1'));
 }
 
+function loadFile() {
+    return document.getElementById("upload_file").click();
+}
+
+function getFile(input) {
+    var files = input.files;
+    if (files[0].size > 10 * 1024 * 1024) { //限制上传文件的 大小,此处为10M
+        alert('你选择的文件太大了！');
+        return false;
+    }
+    var resultFile = input.files[0];
+    // 如果文件存在
+    if (resultFile) {
+        var reader = new FileReader();
+        reader.readAsText(resultFile);
+        reader.onload = function (e) {
+            var fileContent = e.target.result;
+            var text = mixlyjs.translateQuote(fileContent, true);
+            var filesuffix = files[0].name.split(".")[files[0].name.split(".").length - 1];
+
+            if (filesuffix === "xml" || filesuffix === "mix") {
+                var newboard = mixlyjs.getBoardFromXml(text);
+                if (newboard !== undefined) {
+                    mixlyjs.renderXml(decode(text));
+                } else {
+                    alert("Error:could not read board from xml!!");
+                }
+            } else if (filesuffix === "py" || filesuffix === "ino") {
+                mixlyjs.renderIno(text);
+            } else if (filesuffix === "hex") {
+                loadHex("main.py", text);
+            } else {
+                alert("Invalid file type! (.ino|.xml|.mix|.js|.py|.hex file supported)");
+                return;
+            }
+        };
+    };
+}
+
 mixlyjs.loadLocalFile = function () {
     // Create event listener function
     var parseInputXMLfile = function (e) {
-        var files = e.target.files;
+        var files = e.target.result;
         var reader = new FileReader();
         reader.onload = function () {
             var text = mixlyjs.translateQuote(reader.result, true);
             var filesuffix = files[0].name.split(".")[files[0].name.split(".").length - 1];
 
             if (filesuffix === "xml" || filesuffix === "mix") {
-                var newboard = mixlyjs.getBoardFromXml(text)
+                var newboard = mixlyjs.getBoardFromXml(text);
                 if (newboard !== undefined) {
                     mixlyjs.renderXml(decode(text));
                 } else {

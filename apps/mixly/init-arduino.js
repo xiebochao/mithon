@@ -545,6 +545,7 @@ function show_tag(){
     tag_select('operate_download_btn', 'upload');
     tag_select('operate_layer_btn', 'status_bar_show');
     tag_select('operate_btn', 'operate');
+    tag_select('import_libraries_btn', 'import_libraries');
 }
 
 function tag_select(id, msg) {
