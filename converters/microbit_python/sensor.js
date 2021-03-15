@@ -216,11 +216,16 @@ pbc.moduleFunctionD.get('display')['read_light_level'] = function (py2block, fun
     });
 }
 
-pbc.moduleFunctionD.get('sonar')['distance_cm'] = function (py2block, func, args, keywords, starargs, kwargs, node) {
+pbc.moduleFunctionD.get('ultrasonic')['distance_cm'] = function (py2block, func, args, keywords, starargs, kwargs, node) {
     if (args.length !== 0) {
         throw new Error("Incorrect number of arguments");
     }
-    return block("sensor_distance_hrsc04", func.lineno, {}, {}, {
+    var trig = keywords[0].value.id.v.replace("pin", "");
+    var echo = keywords[1].value.id.v.replace("pin", "");
+    return block("sensor_distance_hrsc04", func.lineno, {
+        "Trig": trig,
+        "Echo": echo
+    }, {}, {
         "inline": "true"
     });
 }

@@ -162,13 +162,13 @@ Blockly.Python.speech_pronounce_easy=function(){
 
 Blockly.Python.servo_move = function() {
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
-    Blockly.Python.definitions_['import_Servolib'] = 'import Servolib';
+    Blockly.Python.definitions_['import_Servolib'] = 'import Servo';
     var dropdown_pin = Blockly.Python.valueToCode(this, 'PIN',Blockly.Python.ORDER_ATOMIC);
     var value_degree = Blockly.Python.valueToCode(this, 'DEGREE', Blockly.Python.ORDER_ATOMIC);
     if (!isNaN(parseInt(dropdown_pin)))
-        var code = 'Servolib.set_servo_angle(pin'+dropdown_pin+', '+value_degree+')\n';
+        var code = 'Servo.angle(pin'+dropdown_pin+', '+value_degree+')\n';
     else
-        var code = 'Servolib.set_servo_angle('+dropdown_pin+', '+value_degree+')\n';
+        var code = 'Servo.angle('+dropdown_pin+', '+value_degree+')\n';
     return code;
 };
 
@@ -203,14 +203,11 @@ Blockly.Python.display_rgb=function(){
   var value_bvalue = Blockly.Python.valueToCode(this, 'BVALUE', Blockly.Python.ORDER_ATOMIC);
   Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
   Blockly.Python.definitions_['import_neopixel'] = 'import neopixel';
-  Blockly.Python.definitions_['import_rgb'] = 'import rgb';
-  //Blockly.Python.setups_['mixly_rgb_show'] = Blockly.Python.FUNCTION_MIXLY_RGB_SHOW;
-  var code ='rgb.mixly_rgb_show(np, ' + value_led + ', ' + value_rvalue + ', ' + value_gvalue + ', ' + value_bvalue + ')\n';
+  var code ='np[' + value_led + '] = (' + value_rvalue + ', ' + value_gvalue + ', ' + value_bvalue + ')\n';
   return code;
 };
 
 Blockly.Python.display_rgb2=function(){
-
   var value_led = Blockly.Python.valueToCode(this, '_LED_', Blockly.Python.ORDER_ATOMIC);
   var colour_rgb_led_color = this.getFieldValue('RGB_LED_COLOR');
   var color = goog.color.hexToRgb(colour_rgb_led_color);
@@ -218,6 +215,13 @@ Blockly.Python.display_rgb2=function(){
   Blockly.Python.definitions_['import_neopixel'] = 'import neopixel';
   var code = 'np['+value_led+'] = ('+color+')\n';
   code+='np.show()\n';
+  return code;
+};
+
+Blockly.Python.display_rgb_show = function(){
+  Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
+  Blockly.Python.definitions_['import_neopixel'] = 'import neopixel';
+  var code= 'np.show()\n';   
   return code;
 };
 

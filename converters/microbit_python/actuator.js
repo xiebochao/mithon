@@ -19,7 +19,7 @@ pbc.globalFunctionD['mixly_servo_write_angle'] = function (py2block, func, args,
     }
 }
 
-pbc.moduleFunctionD.get('Servolib')['set_servo_angle'] = function (py2block, func, args, keywords, starargs, kwargs, node) {
+pbc.moduleFunctionD.get('Servo')['angle'] = function (py2block, func, args, keywords, starargs, kwargs, node) {
     if (args.length !== 2) {
         throw new Error("Incorrect number of arguments");
     }
@@ -315,7 +315,7 @@ pbc.moduleFunctionD.get('speech')['say'] = speechSayOrSingOrPronounce('say');
 pbc.moduleFunctionD.get('speech')['sing'] = speechSayOrSingOrPronounce('sing');
 pbc.moduleFunctionD.get('speech')['pronounce'] = speechSayOrSingOrPronounce('pronounce');
 
-pbc.moduleFunctionD.get('rgb')['mixly_rgb_show'] = function (py2block, func, args, keywords, starargs, kwargs, node) {
+pbc.moduleFunctionD.get('rgb')['show'] = function (py2block, func, args, keywords, starargs, kwargs, node) {
     if (args.length !== 5) {
         throw new Error("Incorrect number of arguments");
     }
@@ -329,6 +329,15 @@ pbc.moduleFunctionD.get('rgb')['mixly_rgb_show'] = function (py2block, func, arg
         'GVALUE': argblock3,
         'BVALUE': argblock4
     }, {
+        "inline": "true"
+    })];
+}
+
+pbc.moduleFunctionD.get('np')['show'] = function (py2block, func, args, keywords, starargs, kwargs, node) {
+    if (args.length !== 0) {
+        throw new Error("Incorrect number of arguments");
+    }
+    return [block("display_rgb_show", func.lineno, {}, {}, {
         "inline": "true"
     })];
 }

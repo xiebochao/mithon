@@ -483,6 +483,21 @@ Blockly.Blocks.display_rgb2 = {
     }
 };
 
+Blockly.Blocks.display_rgb_show = {
+    init: function () {
+        this.setColour(Blockly.Blocks.actuator.HUE);
+        this.appendDummyInput("")
+            .appendField(Blockly.MIXLY_RGB)
+        this.appendDummyInput()
+            .appendField(Blockly.MIXLY_ESP32_RGB_WRITE)
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setTooltip('');
+        this.setTooltip(Blockly.MIXLY_ESP32_MUSIC_WRI);
+    }
+};
+
 Blockly.Blocks.MP3_INIT = {
   init: function () {
     this.setColour(Blockly.Blocks.actuator.HUE);

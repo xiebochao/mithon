@@ -142,9 +142,11 @@ Blockly.Python.sensor_magnetic= function(){
     return [code, Blockly.Python.ORDER_ATOMIC];
 };
 Blockly.Python.sensor_distance_hrsc04= function(){
+    var Trig= this.getFieldValue('Trig');
+    var Echo= this.getFieldValue('Echo');
     Blockly.Python.definitions_['import_microbit_*'] = 'from microbit import *';
-    Blockly.Python.definitions_['import_ultrasonic'] = 'from ultrasonic import *';
-    return ['sonar.distance_cm()', Blockly.Python.ORDER_ATOMIC];
+    Blockly.Python.definitions_['import_ultrasonic'] = 'import ultrasonic';
+    return ['ultrasonic.distance_cm(t_pin=pin'+Trig+', e_pin=pin'+Echo+')', Blockly.Python.ORDER_ATOMIC];
 };
 
 Blockly.Python.sensor_distance_hrsc04_= function(){
