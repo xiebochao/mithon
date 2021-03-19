@@ -192,7 +192,7 @@ Blockly.Arduino.RGB_color_HSV = function () {
 };
 
 Blockly.Arduino.display_rgb_show = function () {
-  var board_type = JSFuncs.getPlatform();
+  var board_type = /*JSFuncs.getPlatform()*/"Arduino";
   var dropdown_rgbpin = this.getFieldValue('PIN');
   var code = 'rgb_display_' + dropdown_rgbpin + '.show();\n';
   if (board_type.match(RegExp(/ESP32/))) {

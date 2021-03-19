@@ -71,7 +71,7 @@ Blockly.Arduino.DHT = function () {
 
 //LM35 Temperature
 Blockly.Arduino.LM35 = function() {
-  var board_type = JSFuncs.getPlatform();
+  var board_type = /*JSFuncs.getPlatform()*/"Arduino";
   var dropdown_pin = Blockly.Arduino.valueToCode(this, 'PIN', Blockly.Arduino.ORDER_ATOMIC);
   var code = 'analogRead(' + dropdown_pin + ')*0.488';
   if (board_type.match(RegExp(/ESP8266/))) {

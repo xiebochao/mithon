@@ -5,7 +5,7 @@ goog.provide('Blockly.Arduino.storage');
 goog.require('Blockly.Arduino');
 var pin_cs ;
 Blockly.Arduino.store_sd_init = function() {
-	var board_type = JSFuncs.getPlatform();
+	var board_type = /*JSFuncs.getPlatform()*/"Arduino";
 	pin_cs = Blockly.Arduino.valueToCode(this, 'PIN_CS', Blockly.Arduino.ORDER_ATOMIC);
 	if (board_type.match(RegExp(/ESP32/))) {
 		Blockly.Arduino.definitions_['include_mySD'] = '#include <mySD.h>';	

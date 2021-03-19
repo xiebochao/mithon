@@ -9,7 +9,7 @@ Blockly.Arduino.group_lcd_init2 = function() {
   var TYPE = this.getFieldValue('TYPE');
   var SCL = this.getFieldValue('SCL');
   var SDA = this.getFieldValue('SDA');
-  var board_type = JSFuncs.getPlatform();
+  var board_type = /*JSFuncs.getPlatform()*/"Arduino";
   var device = Blockly.Arduino.valueToCode(this, 'device', Blockly.Arduino.ORDER_ATOMIC) || '0x27';  
   if(SDA=="SDA"&&SCL=="SCL")
   {
@@ -390,7 +390,7 @@ Blockly.Arduino.oled_init = function() {
   var SDA = this.getFieldValue('SDA');
   var SCL = this.getFieldValue('SCL');
   var ADDRESS = Blockly.Arduino.valueToCode(this, 'ADDRESS') || '0x3C';
-  var board_type=JSFuncs.getPlatform();
+  var board_type=/*JSFuncs.getPlatform()*/"Arduino";
   //var board_type ="ESP8266";
   Blockly.Arduino.definitions_['include_U8g2lib'] = '#include <U8g2lib.h>';
   if(board_type.match(RegExp(/AVR/)))

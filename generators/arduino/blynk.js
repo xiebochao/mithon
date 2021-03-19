@@ -16,7 +16,7 @@ Blockly.Arduino.blynk_smartconfig = function () {
 		server_add = server_add.replace(/\"/g, "").replace(/\./g, ",");
 		server_add='IPAddress(' + server_add + ')';
 	}
-	var board_type = JSFuncs.getPlatform();
+	var board_type = /*JSFuncs.getPlatform()*/"Arduino";
 	Blockly.Arduino.definitions_['define_BLYNK_PRINT'] = '#define BLYNK_PRINT Serial';
 	Blockly.Arduino.definitions_['var_declare_auth_key'] = 'char auth[] = ' + auth_key + ';';
 	Blockly.Arduino.setups_['setup_serial_Serial'] = 'Serial.begin(9600);';
@@ -59,7 +59,7 @@ Blockly.Arduino.blynk_server = function () {
 	var wifi_pass = Blockly.Arduino.valueToCode(this, 'wifi_pass', Blockly.Arduino.ORDER_ATOMIC);
 	var auth_key = Blockly.Arduino.valueToCode(this, 'auth_key', Blockly.Arduino.ORDER_ATOMIC);
 	var server_add = Blockly.Arduino.valueToCode(this, 'server_add', Blockly.Arduino.ORDER_ATOMIC);
-	var board_type = JSFuncs.getPlatform();
+	var board_type = /*JSFuncs.getPlatform()*/"Arduino";
 	//var board_type ="ESP8266";
 	Blockly.Arduino.definitions_['define_BLYNK_PRINT'] = '#define BLYNK_PRINT Serial';
 	Blockly.Arduino.definitions_['var_declare_auth_key'] = 'char auth[] = ' + auth_key + ';';
@@ -559,7 +559,7 @@ Blockly.Arduino.factory_declare2 = function () {
 Blockly.Arduino.blynk_AP_config = function () {
 	var server_add = Blockly.Arduino.valueToCode(this, 'server_add', Blockly.Arduino.ORDER_ATOMIC);
 	var auth_key = Blockly.Arduino.valueToCode(this, 'auth_key', Blockly.Arduino.ORDER_ATOMIC);
-	var board_type = JSFuncs.getPlatform();
+	var board_type = /*JSFuncs.getPlatform()*/"Arduino";
 	Blockly.Arduino.definitions_['define_BLYNK_PRINT'] = '#define BLYNK_PRINT Serial';
 	if (board_type.match(RegExp(/ESP8266/))) {
 		Blockly.Arduino.definitions_['include_ESP8266WiFi'] = '#include <ESP8266WiFi.h>';

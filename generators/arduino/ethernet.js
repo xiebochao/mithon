@@ -91,7 +91,7 @@ Blockly.Arduino.network_wifi_connect= function() {
 }
 
 Blockly.Arduino.network_get_connect= function() {
-  var board_type = JSFuncs.getPlatform();
+  var board_type = /*JSFuncs.getPlatform()*/"Arduino";
   var mode = this.getFieldValue('mode');
   if (board_type.match(RegExp(/ESP8266/))) {
    Blockly.Arduino.definitions_['include_ESP8266WiFi'] ='#include <ESP8266WiFi.h>';
@@ -140,7 +140,7 @@ Blockly.Arduino.MQTT_server = function() {
   Blockly.Arduino.definitions_['include_Adafruit_MQTT_Client'] ='#include "Adafruit_MQTT_Client.h"';
   Blockly.Arduino.definitions_['include__WiFiClient'] = 'WiFiClient client;';
   Blockly.Arduino.definitions_['var_declare_Adafruit_MQTT_Client'] ='Adafruit_MQTT_Client mqtt(&client, '+server_add+', '+server_port+', '+IOT_ID+', '+IOT_PWD+');';  
-  var board_type=JSFuncs.getPlatform();
+  var board_type=/*JSFuncs.getPlatform()*/"Arduino";
   if(board_type.match(RegExp(/ESP8266/)))
   {
     Blockly.Arduino.definitions_['var_declare_ MQTT_connect();'] ='void MQTT_connect();';
@@ -248,7 +248,7 @@ Blockly.Arduino.http_get = function () {
 
 Blockly.Arduino.WIFI_smartConfig= function() {
   var MODE = this.getFieldValue('MODE');
- // var board_type = JSFuncs.getPlatform();
+ // var board_type = /*JSFuncs.getPlatform()*/"Arduino";
  var board_type = "ESP8266";
  if(MODE=='SmartConfig')
  {
@@ -311,7 +311,7 @@ Blockly.Arduino.WIFI_ap_or_sta = function() {
   value_IP1 = value_IP1.replace(new RegExp(/\./g), ",");
   value_IP2 = value_IP2.replace(new RegExp(/\./g), ",");
   value_IP = value_IP.replace(new RegExp(/\./g), ",");
-  var board_type = JSFuncs.getPlatform();
+  var board_type = /*JSFuncs.getPlatform()*/"Arduino";
   if(board_type.match(RegExp(/ESP8266/)) != null)
     Blockly.Arduino.definitions_['include_ESP8266WiFi'] = '#include <ESP8266WiFi.h>';
   else
@@ -379,7 +379,7 @@ Blockly.Arduino.WIFI_ap_and_sta = function() {
   value_IP = value_IP.replace(new RegExp(/\./g), ",");
   Blockly.Arduino.definitions_['define_STASSID'] = '#define STASSID '+value_SSID1;
   Blockly.Arduino.definitions_['define_STAPSK'] = '#define STAPSK '+value_PSK1;
-  var board_type = JSFuncs.getPlatform();
+  var board_type = /*JSFuncs.getPlatform()*/"Arduino";
   if(board_type.match(RegExp(/ESP8266/)) != null)
     Blockly.Arduino.definitions_['include_ESP8266WiFi'] = '#include <ESP8266WiFi.h>';
   else
