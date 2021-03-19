@@ -123,7 +123,8 @@
 </head>
 <body onload="init()">
   <div>
-    <input id="upload_file" type="file" name="myfile" accept=".mix,.py,.xml,.hex" onchange="getFile(this);" style="display: none;" />
+    <input id="upload_file" type="file" name="upload_file" accept=".mix,.py,.xml,.hex" onchange="getFile(this);" style="display: none;" />
+    <input id="library_file" type="file" name="library_file" accept=".xml" onchange="get_library_File(this);" style="display: none;" />
   </div>
   <div class="layui-form-select" style="width:100px; position: absolute; right: 230px; top:14px; z-index:9999;">
       <div class="layui-select-title" style="z-index:9999;">
@@ -161,7 +162,7 @@
               <dd><a href="#" id="language_btn" class="icon-language" onclick="open_language(); "></a></dd>
               <dd><a href="#" id="theme_btn" class="icon-art-gallery" onclick="open_theme();"></a></dd>
               <dd><a href="#" id="changemod_btn" class="icon-code" value=1 onclick="changeMod();"></a></dd>
-              <dd><a href="#" id="import_libraries_btn" class="icon-download"></a></dd>
+              <dd><a href="#" id="import_libraries_btn" class="icon-download" onclick="load_library_File();"></a></dd>
           </dl>
       </li>
       <li class="layui-nav-item" style="float:right">
@@ -178,8 +179,7 @@
               <!-- 二级菜单 -->
               <dd><a href="#" id="save_img_btn" class="icon-floppy" onclick="mixlyjs.saveBlockImg()"></a></dd>
               <dd><a href="#" id="save_xml_btn" class="icon-floppy" onclick="save()"></a></dd>
-              <dd><a href="#" id="save_py_btn" class="icon-file-code" onclick="mixlyjs.saveInoFileAs()"></a></dd>
-              <dd><a href="#" id="save_hex_btn" class="icon-download" onclick="mixlyjs.compileMicrobitPy()"></a></dd>
+              <dd><a href="#" id="save_py_btn" class="icon-file-code" onclick="mixlyjs.savePyFileAs()"></a></dd>
           </dl>
       </li>
       <!-- a标签里不用写按钮名字,136行script段里通过id改名,为了多语言支持 -->
@@ -231,7 +231,7 @@
       </div>
   </div>
   <!--Mixly2.0 所用串口助手-->
-  <div class="layui-form" id="serial-form" style="display: none;">
+  <div class="layui-form layui-form-pane" id="serial-form" style="display: none;">
     <div class="layui-tab" lay-filter="serial" style="width: 700px;">
       <ul class="layui-tab-title">
         <li class="layui-this" lay-id="1">串口监视器</li>
@@ -239,30 +239,38 @@
       </ul>
       <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
-          <div style="margin-top: 20px;"></div>
           <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">发送数据</label>
-            <div class="layui-inline" style="width:58%;">
-                <input id="serial_write" type="text" name="title" placeholder="请输入内容" autocomplete="off" class="layui-input"
-                    style="width:100%;">
+            <div class="layui-input-inline" style="width:80%;clear:none;">
+              <input id="serial_write" type="text" name="title" placeholder="请输入内容" autocomplete="off" class="layui-input">
             </div>
-            <button id="serial_write_btn" onclick="serialWrite()" class="layui-btn layui-btn-normal">发送</button>
+            <div id="div_send_data_with" class="layui-input-inline" style="width:10%;clear:none;">
+              <select id="send_data_with">
+                <option value="no">no</option>
+                <option value="\n">\n</option>
+                <option value="\r">\r</option>
+                <option value="\r\n" selected>\r\n</option>
+              </select>
+            </div>
+            <button id="serial_write_btn" onclick="serialWrite()" class="layui-btn layui-btn-normal" style="width:10%;">发送</button>
           </div>
-
           <div class="layui-form-item layui-form-text">
-              <label class="layui-form-label">接收数据</label>
-              <div class="layui-input-block" style="width: 86%">
-                  <textarea readonly id="serial_content" name="desc" placeholder="串口输出" class="layui-textarea"
-                      style="width:80%; height:300px"></textarea>
-              </div>
+            <label class="layui-form-label" style="height: 44px;padding-top: 1px;padding-bottom: 1px;">
+              <p style="display:inline;">接收数据</p>
+              <input style="display:none;">
+              <input id="screen_scroll" type="checkbox" name="screen_scroll" title="滚屏" checked>
+              <input id="serial_data_type" type="checkbox" name="serial_data_type" title="字符串" checked>
+            </label>
+            <div class="layui-input-block">
+                <textarea readonly id="serial_content" name="desc" placeholder="串口输出" class="layui-textarea" style="height:220px"></textarea>
+            </div>
           </div>
-          
           <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">串口</label>
-            <div id="div_select_com" class="layui-input-inline" style="width: 120px;">
-              <select id="select_com"  lay-verify="required"></select>
+            <div id="div_select_com" class="layui-input-inline" style="width:50%;clear:none;">
+              <select id="select_com" lay-verify="required"></select>
             </div>
-            <div id="div_cb_cf_baud_rates" class="layui-input-inline" style="width: 120px;">
+            <div id="div_cb_cf_baud_rates" class="layui-input-inline" style="width:50%;clear:none;">
               <select id="cb_cf_baud_rates">
                 <option value="9600">9600</option>
                 <option value="19200">19200</option>
@@ -272,27 +280,9 @@
                 <option value="115200" selected>115200</option>
               </select>
             </div>
-            <div id="div_send_data_with" class="layui-input-inline" style="width: 120px;">
-              <select id="send_data_with">
-                <option value="no">no</option>
-                <option value="\n">\n</option>
-                <option value="\r">\r</option>
-                <option value="\r\n" selected>\r\n</option>
-              </select>
-            </div>
-            <div class="layui-input-inline">
-              <input id="screen_scroll" type="checkbox" name="screen_scroll" title="滚屏" checked>
-            </div>
           </div>
           <div class="layui-form-item layui-form-text">
-            <div style="text-align: left;">
-              <label class="layui-form-label">数据类型</label>
-              <div id="serial_data_type" class="layui-input-inline" style="width: 120px;">
-                <select id="select_serial_data_type">
-                  <option value="string" selected>字符串</option>
-                  <option value="hex">二进制流</option>
-                </select>
-              </div>
+            <div style="text-align: center;"> 
               <button id="serial_clear_btn" onclick="clearSerialContent()" class="layui-btn layui-btn-danger">清空</button>
               <button id="serial_interrupt_btn" onclick="serialWrite_ctrl_c()" class="layui-btn layui-btn-danger">中断</button>
               <button id="serial_reset_btn" onclick="serialWrite_ctrl_d()" class="layui-btn layui-btn-danger">复位</button>

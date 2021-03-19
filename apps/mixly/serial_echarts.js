@@ -68,7 +68,7 @@ function echarts_init() {
         series: [{
             name: '串口数据',
             type: 'line',
-            showSymbol: true,
+            showSymbol: false,
             hoverAnimation: false,
             data: echarts_data
         }]
