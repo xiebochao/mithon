@@ -524,9 +524,8 @@ function show_tag(){
     tag_select('open_btn', 'open');
     tag_select('save_btn', 'save');
     tag_select('save_xml_btn', 'save_blocks');
-    tag_select('save_py_btn', 'save_py');
+    tag_select('save_ino_btn', 'save_ino');
     tag_select('save_img_btn', 'save_img');
-    tag_select('save_hex_btn', 'save_hex');
     tag_select('setting_btn', 'setting');
     tag_select('language_btn', 'language');
     tag_select('theme_btn', 'theme');

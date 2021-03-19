@@ -103,53 +103,52 @@ Blockly.Variables.renameVariable = function(oldName, newName, workspace) {
 Blockly.Variables.flyoutCategory = function(workspace) {
   var variableList = Blockly.Variables.allVariables(workspace);
   //variableList.sort(goog.string.caseInsensitiveCompare);
+
   // In addition to the user's variables, we also want to display the default
   // variable name at the top.  We also don't want this duplicated if the
   // user has created a variable of the same name.
-  // alert(variableList)
-  // goog.array.remove(variableList, Blockly.Msg.VARIABLES_DEFAULT_NAME);
-  // variableList.unshift(Blockly.Msg.VARIABLES_DEFAULT_NAME);
+  
+  //在变量分类里添加默认变量取值与赋值模块时使用
+  //goog.array.remove(variableList, Blockly.Msg.VARIABLES_DEFAULT_NAME);
+  //variableList.unshift(Blockly.Msg.VARIABLES_DEFAULT_NAME);
 
   var xmlList = [];
   
-  var block = Blockly.utils.xml.createElement('block');
-  block.setAttribute('type', 'variables_global');
-  xmlList.push(block);
-  
+
+  if (Blockly.Blocks['variables_declare']) {
+	  //增加variables_declare模块
+	  var block = Blockly.utils.xml.createElement('block');
+    block.setAttribute('type', 'variables_declare');
+	  xmlList.push(block);
+  }
+
+  //在变量分类里添加默认变量取值与赋值模块时使用
+  /*
   if (Blockly.Blocks['variables_set']) {
-  //增加variables_declare模块
-  	var block = Blockly.utils.xml.createElement('block');
-  	block.setAttribute('type', 'variables_set');
- 	xmlList.push(block);
-  }//change tyep
-    /*
-      if (Blockly.Blocks['variables_change']) {
-          //增加variables_declare模块
-          var block = Blockly.utils.xml.createElement('block');
-          block.setAttribute('type', 'variables_change');
-          xmlList.push(block);
-      }*/
+    //增加variables_declare模块
+    var block = Blockly.utils.xml.createElement('block');
+    block.setAttribute('type', 'variables_set');
+    xmlList.push(block);
+  }
+  if (Blockly.Blocks['variables_get']) {
+    //增加variables_declare模块
+    var block = Blockly.utils.xml.createElement('block');
+    block.setAttribute('type', 'variables_get');
+    xmlList.push(block);
+  }
+  */
+
+  //change tyep
   if (Blockly.Blocks['variables_change']) {
-      //增加variables_declare模块
-      var block = Blockly.utils.xml.createElement('block');
-      block.setAttribute('type', 'variables_change');
-      xmlList.push(block);
-  }
-  if (Blockly.Blocks['controls_type']) {
-      var block = Blockly.utils.xml.createElement('block');
-      block.setAttribute('type', 'controls_type');
-      xmlList.push(block);
-  }
-  if (Blockly.Blocks['controls_typeLists']) {
-      var block = Blockly.utils.xml.createElement('block');
-      block.setAttribute('type', 'controls_typeLists');
-      xmlList.push(block);
+    //增加variables_declare模块
+    var block = Blockly.utils.xml.createElement('block');
+    block.setAttribute('type', 'variables_change');
+    xmlList.push(block);
   }
   for (var i = 0; i < variableList.length; i++) {
-    // alert(variableList)
-    // if(i==0&& !(Blockly.Python.setups_['variables_set'+''])){
-   	// 	continue;
-   	// }
+    //if(i==0&&!(Blockly.Arduino.definitions_['var_declare'+'item'])){
+		//  continue;
+	  //}
     if (Blockly.Blocks['variables_set']) {
       var block = Blockly.utils.xml.createElement('block');
       block.setAttribute('type', 'variables_set');
@@ -158,8 +157,6 @@ Blockly.Variables.flyoutCategory = function(workspace) {
       }
       var field = Blockly.utils.xml.createElement('field', null, variableList[i]);
       field.setAttribute('name', 'VAR');
-      var name = Blockly.utils.xml.createTextNode(variableList[i]);
-      field.appendChild(name);
       block.appendChild(field);
       xmlList.push(block);
     }
@@ -171,8 +168,6 @@ Blockly.Variables.flyoutCategory = function(workspace) {
       }
       var field = Blockly.utils.xml.createElement('field', null, variableList[i]);
       field.setAttribute('name', 'VAR');
-      var name = Blockly.utils.xml.createTextNode(variableList[i]);
-      field.appendChild(name);
       block.appendChild(field);
       xmlList.push(block);
     }

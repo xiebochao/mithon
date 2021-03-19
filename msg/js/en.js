@@ -89,6 +89,7 @@ var MSG = {
     save: "Save",
     save_blocks: "Save XML",
     save_py: "Save PY",
+    save_ino: "Save INO",
     save_img: "Save PNG",
     save_hex: "Save HEX",
     setting: "Setting",

@@ -86,6 +86,7 @@ var MSG = {
     save: "保存",
     save_blocks: "保存XML",
     save_py: "保存PY",
+    save_ino: "保存INO",
     save_img: "保存圖像",
     save_hex: "保存HEX",
     setting: "設置",
