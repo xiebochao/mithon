@@ -446,6 +446,27 @@ function decode(s) {
     return unescape(s.replace(/\\(u[0-9a-fA-F]{4})/gm, '%$1'));
 }
 
+function load_library_File() {
+    return document.getElementById("library_file").click();
+}
+
+function get_library_File(input) {
+    var files = input.files;
+    if (files[0].size > 10 * 1024 * 1024) { //限制上传文件的 大小,此处为10M
+        alert('你选择的文件太大了！');
+        return false;
+    }
+    var resultFile = input.files[0];
+    // 如果文件存在
+    if (resultFile) {
+        var reader = new FileReader();
+        reader.readAsText(resultFile);
+        reader.onload = function (e) {
+            var fileContent = e.target.result;
+        };
+    };
+}
+
 function loadFile() {
     return document.getElementById("upload_file").click();
 }
@@ -545,7 +566,11 @@ mixlyjs.getCodeContent = function () {
         //	else if(mixlyjs.isMicrobitjs(board))
         //	return Blockly.JavaScript.workspaceToCode(Blockly.mainWorkspace);
         //		else if(mixlyjs.isMicrobitpy(board))
-        return Blockly.Python.workspaceToCode(Blockly.mainWorkspace);
+        try{
+            return Blockly.Python.workspaceToCode(Blockly.mainWorkspace);
+        } catch(e) {
+            return Blockly.Arduino.workspaceToCode(Blockly.mainWorkspace);
+        }
         //else if(mixlyjs.isMixpy(board))
         //return Blockly.Mixpy.workspaceToCode(Blockly.mainWorkspace);
     } else {
@@ -576,6 +601,18 @@ mixlyjs.saveXmlFileAs = function () {
 };
 
 mixlyjs.saveInoFileAs = function (f) {
+    var xmlCodes = mixlyjs.getCodeContent();
+    if (document.getElementById("filename_input").value == ""){
+        var fn = 'code.ino'
+    }else
+        var fn = document.getElementById("filename_input").value + '.ino'
+    var blob = new Blob(
+        [xmlCodes],
+        { type: 'text/plain;charset=utf-8' });
+    saveAs(blob, fn);
+};
+
+mixlyjs.savePyFileAs = function (f) {
     var xmlCodes = mixlyjs.getCodeContent();
     if (document.getElementById("filename_input").value == ""){
         var fn = 'code.py'

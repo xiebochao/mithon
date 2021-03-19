@@ -11,13 +11,13 @@ var mixly_board = [
 		BoardDescription:"Experiment with Mithon CC",
 		BoardIndex: "./apps/mixly/index_board_MicroPython[NRF51822_mithon].html",
 		environment: 2
-	},{
+	}/*,{
 		BoardImg: "./files/microbit.png",
 		BoardName: "BBC micro:bit",
 		BoardDescription:"Build cool projects with micro:bit",
 		BoardIndex: "./apps/mixly/index_board_MicroPython[NRF51822_microbit].html",
 		environment: 2
-	},{
+	}*/,{
 		BoardImg: "./files/cp1.jpg",
 		BoardName: "ESP32 S2",
 		BoardDescription:"Play MixGoCE with CircuitPython",
@@ -35,7 +35,7 @@ var mixly_board = [
 		BoardDescription:"Code with Python 3",
 		BoardIndex: "./apps/mixly/index_skulpt_board_mixpy.html",
 		environment: 1
-	},{
+	}/*,{
 		BoardImg: "./files/mixgo1.jpg",
 		BoardName: "MixGo",
 		BoardDescription:"Play MixGo with MicroPython",
@@ -47,12 +47,5 @@ var mixly_board = [
 		BoardDescription:"Play UNO with C/C++",
 		BoardIndex: "./apps/mixly/index.html",
 		environment: 0
-	}
-	,{
-		BoardImg: "./files/add2.png",
-		BoardName: "",
-		BoardDescription:"",
-		BoardIndex: "./apps/mixly/index.html",
-		environment: 0
-	}
+	}*/
 ];

@@ -85,9 +85,12 @@
             box-shadow: 0 0 15px rgba(0, 0, 0, .3);
         }
     </style>
+    <div>
+        <input id="html_file" type="file" name="myfile" accept=".html" onchange="get_index_File(this);" style="display: none;" />
+    </div>
     <div class="service-area" style="padding-left: 0px;padding-right: 0px;">
         <div class="container" style="width:100%;padding-left: 0px;padding-right: 0px;">
-            <div class="layui-carousel" id="test" lay-filter="test4" style="background-color:rgba(0,0,0,0);padding-left: 0px;padding-right: 0px;">
+            <div class="layui-carousel" id="board_switch" lay-filter="board_switch1" style="background-color:rgba(0,0,0,0);padding-left: 0px;padding-right: 0px;">
                 <div id="mixly-board" carousel-item="" style="background-color:rgba(0,0,0,0);">
                 </div>
             </div> 
@@ -100,10 +103,10 @@
       
       //设定各种参数
       var ins3 = carousel.render({
-        elem: '#test',
+        elem: '#board_switch',
         autoplay: false,
         width: '100%',
-        height: '320px',
+        height: '280px',
         anim: 'default',
         indicator: 'none'
       });
@@ -127,7 +130,7 @@
       */
     });
     </script>
-    <footer id="footer" role="contentinfo">
+    <footer id="footer" role="contentinfo" style="position: fixed; bottom: 0px;left: 0px;width: 100%;">
     </footer>
     <script src="board_init.js" type="text/javascript"></script>
 </body>

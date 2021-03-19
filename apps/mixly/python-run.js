@@ -20,6 +20,18 @@ let play_btn = document.getElementById("play_btn");
 let side_code_run = document.getElementById("div_inout_middle");
 //let side_code_bottom = document.getElementById("side_code_bottom");
 let shell = null;
+
+function message_decode(s) {
+	if (s) {
+		try{
+			return unescape(s.replace(/_([0-9a-fA-F]{3})/gm, '%$1'));
+		} catch(e) {
+			return s;
+		}
+	}
+	return s;
+}
+
 const py_play = async () => {
 	//status_bar_select = false;
 	status_bar_show(1);
@@ -31,6 +43,8 @@ const py_play = async () => {
         code = editor.getValue();
 	}else{
 		code = Blockly.Python.workspaceToCode(Blockly.mainWorkspace) || '';
+		var chinese_code = code.replace(/(_[0-9A-F]{2}_[0-9A-F]{2}_[0-9A-F]{2})+/g, function (s) { return decodeURIComponent(s.replace(/_/g, '%')); });
+		code = chinese_code;
 	}
 	if (code.indexOf("import turtle") != -1) code+="\nturtle.done()\n"; 
 	code = code.replaceAll("input(", "pyinput.input(");
@@ -39,6 +53,7 @@ const py_play = async () => {
 		shell.terminate('SIGKILL');
 	file_save.writeFile(py_file_path, code,'utf8',function(err){
 	    //如果err=null，表示文件使用成功，否则，表示希尔文件失败
+	    err = message_decode(err);
 	    if(err) {
 	    	layer.msg('写文件出错了，错误是：'+err, {
 	            time: 1000
@@ -72,6 +87,7 @@ const py_play = async () => {
 			//有数据输出时执行
 		    shell.stdout.setEncoding('binary');  
 			shell.stdout.on('data', function (data) {
+				data = message_decode(data);
 				data = decode(iconv.decode(iconv.encode(data, "iso-8859-1"), 'gbk'));
 				
 		        div_inout_middle_text.setValue(div_inout_middle_text.getValue() + data);
@@ -89,6 +105,7 @@ const py_play = async () => {
 		    //程序运行出错时执行
 			shell.stderr.setEncoding('binary');  
 		    shell.stderr.on('data', function (err) {
+		    	err = message_decode(err);
 				console.log('stderr: ' + err);
 			  	if (iconv.encode(err, "iso-8859-1"))
 			  		div_inout_middle_text.setValue(div_inout_middle_text.getValue() + iconv.decode(iconv.encode(err, "iso-8859-1"), 'gbk'));
