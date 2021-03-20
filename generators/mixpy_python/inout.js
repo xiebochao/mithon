@@ -35,7 +35,6 @@ Blockly.Python.inout_type_input = function() {
   var str = Blockly.Python.valueToCode(this, 'VAR', Blockly.Python.ORDER_ATOMIC) || '\"\"';
   var type = this.getFieldValue('DIR');
   var num = Blockly.Python.valueToCode(this, 'VAR', Blockly.Python.ORDER_ATOMIC);
-  Blockly.Python.definitions_['import_pyinput'] = 'import pyinput';
   if (type=='str') {var code = 'input(' + str +')'}
     else if (type=='int') {var code = 'int(input(' + str +'))'}
       else if (type=='float') {var code = 'float(input(' + str +'))'}

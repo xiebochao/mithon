@@ -290,23 +290,38 @@ function init() {
     sidecodeClick();
 }
 function show_tag(){
-    document.getElementById('tab_blocks').textContent = MSG['tab_blocks'];
-    document.getElementById('tab_arduino').textContent = MSG['tab_arduino'];
-    document.getElementById('undo_btn').textContent = MSG['undo'];
-    document.getElementById('redo_btn').textContent = MSG['redo'];
-    document.getElementById('file_btn').textContent = MSG['file'];
-    document.getElementById('new_btn').textContent = MSG['new'];
-    document.getElementById('open_btn').textContent = MSG['open'];
-    document.getElementById('save_btn').textContent = MSG['save'];
-    document.getElementById('save_img_btn').textContent = MSG['save_img'];
-    document.getElementById('save_xml_btn').textContent = MSG['save_blocks'];
-    document.getElementById('save_py_btn').textContent = MSG['save_py'];
-    document.getElementById('save_hex_btn').textContent = MSG['save_hex'];
-    document.getElementById('setting_btn').textContent = MSG['setting'];
-    document.getElementById('language_btn').textContent = MSG['language'];
-    document.getElementById('theme_btn').textContent = MSG['theme'];
-    document.getElementById('changemod_btn').textContent = MSG['tab_blocks'];
-    document.getElementById('play_btn').textContent = MSG['run'];
-    document.getElementById('stop_btn').textContent = MSG['stop'];
+    tag_select('tab_blocks', 'tab_blocks');
+    tag_select('tab_arduino', 'tab_arduino');
+    tag_select('undo_btn', 'undo');
+    tag_select('redo_btn', 'redo');
+    tag_select('file_btn', 'file');
+    tag_select('new_btn', 'new');
+    tag_select('open_btn', 'open');
+    tag_select('save_btn', 'save');
+    tag_select('save_img_btn', 'save_img');
+    tag_select('save_xml_btn', 'save_blocks');
+    tag_select('save_py_btn', 'save_py');
+    tag_select('save_hex_btn', 'save_hex');
+    tag_select('setting_btn', 'setting');
+    tag_select('language_btn', 'language');
+    tag_select('theme_btn', 'theme');
+    tag_select('changemod_btn', 'tab_blocks');
+    tag_select('play_btn', 'run');
+    tag_select('stop_btn', 'stop');
+    tag_select('layer_btn', 'status_bar_show');
+    tag_select('changemod_btn', 'tab_arduino');
     document.getElementById('filename_input').placeholder = MSG['fn'];
+
+    tag_select('operate_undo_btn', 'undo');
+    tag_select('operate_redo_btn', 'redo');
+    tag_select('operate_play_btn', 'run');
+    tag_select('operate_stop_btn', 'stop');
+    tag_select('operate_layer_btn', 'status_bar_show');
+    tag_select('operate_btn', 'operate');
+}
+
+function tag_select(id, msg) {
+    if (document.getElementById(id)) {
+        document.getElementById(id).textContent = MSG[msg];
+    }
 }
