@@ -233,16 +233,6 @@ Blockly.Procedures.mutateCallers(this);
     }
   },
   /**
-   * Dispose of any callers.
-   * @this Blockly.Block
-   */
-   dispose: function() {
-    var name = this.getFieldValue('NAME');
-    Blockly.Procedures.disposeCallers(name, this.workspace);
-    // Call parent's destructor.
-    this.constructor.prototype.dispose.apply(this, arguments);
-  },
-  /**
    * Return the signature of this procedure definition.
    * @return {!Array} Tuple containing three elements:
    *     - the name of the defined procedure,
@@ -363,7 +353,6 @@ Blockly.Blocks['procedures_defreturn'] = {
   domToMutation: Blockly.Blocks['procedures_defnoreturn'].domToMutation,
   decompose: Blockly.Blocks['procedures_defnoreturn'].decompose,
   compose: Blockly.Blocks['procedures_defnoreturn'].compose,
-  dispose: Blockly.Blocks['procedures_defnoreturn'].dispose,
   /**
    * Return the signature of this procedure definition.
    * @return {!Array} Tuple containing three elements:
