@@ -1,8 +1,6 @@
 var wmicResult = null;
 var upload_cancel = false;
 
-var FS = microbitFsWrapper();
-
 // Reset the filesystem and load the files from this hex file to the fs and editor
 function loadHex(filename, hexStr) {
     var importedFiles = [];
@@ -468,6 +466,7 @@ function cp_serial_upload_start() {
 					}); 
 				}
 			} else {
+				
 				file_save.copyFile(mixly_20_path + '\\cpBuild\\code.py', device_select_name+"\\code.py", (err) => { 
 					layer.closeAll('page');
 				    document.getElementById('webusb-flashing').style.display = 'none';
@@ -849,7 +848,7 @@ function change_esp32_s2_download() {
 	if (Mixly_20_environment) 
 		Mixly_20_esp32_s2_download();
 	else
-		mixlyjs.saveInoFileAs();
+		mixlyjs.savePyFileAs();
 }
 
 function Mixly_20_esp32_download() {
@@ -1217,14 +1216,4 @@ function status_bar_show(is_open) {
 	}
 	editor.resize();
 	Blockly.fireUiEvent(window, 'resize');
-}
-
-if (Mixly_20_environment) {
-	FS.setupFilesystem().then(function() {
-	    console.log('FS fully initialised');
-	}).fail(function() {
-	    console.error('There was an issue initialising the file system.');
-	});
-} else {
-	FS.setupFilesystem();
 }

@@ -1,3 +1,7 @@
+#filename_input > div.layui-form-select dl {
+	left:-100px !important;
+}
+
 #serial_device_type > div.layui-form-select dl { 
 	max-height:50px; 
 }

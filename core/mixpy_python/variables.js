@@ -120,7 +120,7 @@ Blockly.Variables.flyoutCategory = function(workspace) {
   //增加variables_declare模块
   	var block = Blockly.utils.xml.createElement('block');
   	block.setAttribute('type', 'variables_set');
- 	xmlList.push(block);
+ 	  xmlList.push(block);
   }//change tyep
     /*
       if (Blockly.Blocks['variables_change']) {
