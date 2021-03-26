@@ -305,6 +305,12 @@
       "src": "typicons"
     },
     {
+      "uid": "c819c6225685bae2eed1b8da13e629fa",
+      "css": "list-alt",
+      "code": 59415,
+      "src": "fontawesome"
+    },
+    {
       "uid": "b1f16f4550b9a7c39fc0dfd0456ca6aa",
       "css": "cw",
       "code": 59392,
@@ -656,7 +662,7 @@
     },
     {
       "uid": "40170fcb8f1005501a5a683df0b58f01",
-      "css": "menu",
+      "css": "menu-1",
       "code": 61641,
       "src": "custom_icons",
       "selected": false,
