@@ -158,22 +158,7 @@ function connect_com_with_option(select) {
 
 	    parser.on('data', function(data) {
 	    	serial_receive += data;
-	    	if (myChart && isNumber(parseInt(data))) {
-	    		echarts_now_time = Number(new Date()) - echarts_start_time;
-	    		if ((echarts_now_time - echarts_old_time) > 1) {
-		    		var now_show_data = {
-				        name: data,
-				        value: [
-				            echarts_now_time,
-				            data-0
-				        ]
-				    };		    
-				    echarts_old_time = echarts_now_time;
-				    //if (echarts_data.length > 1000)
-				    //	echarts_data.shift();
-				    echarts_data.push(now_show_data);
-				}
-	    	}
+	    	echart_draw(data);
 	    });
 	    serial_port.on('error', function(err) {
 	    	serial_data_update && clearInterval(serial_data_update);
