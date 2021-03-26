@@ -274,34 +274,34 @@ var resetACEFontSize = function(){
   editor.setFontSize(17);
   editor_side_code.setFontSize(17); 
 }
- function init() {
+function init() {
   //window.onbeforeunload = function() {
   //  return 'Leaving this page will result in the loss of your work.';
   //};
   editor = ace.edit("content_arduino");
-  if(window.conf == null || window.conf.lastEditorTheme == null){
-      window.conf = window.conf || {};
-      window.conf['lastEditorTheme'] = "ace/theme/xcode";
-  }
-  editor.setTheme(window.conf.lastEditorTheme);
+  //if(window.conf == null || window.conf.lastEditorTheme == null){
+  //    window.conf = window.conf || {};
+  //    window.conf['lastEditorTheme'] = "ace/theme/xcode";
+  //}
+  editor.setTheme("ace/theme/chrome");
   editor.getSession().setMode("ace/mode/c_cpp");
   editor.setFontSize(17);
   editor.setShowPrintMargin(false);
-    editor.getSession().setTabSize(4);
+  editor.getSession().setTabSize(4);
   editor.setOptions({
     enableBasicAutocompletion: true,
     enableSnippets: true,
     enableLiveAutocompletion: true
   });
-    editor.setScrollSpeed(0.2);
+  editor.setScrollSpeed(0.2);
   editor_side_code = ace.edit("side_code");
-  editor_side_code.setTheme(window.conf.lastEditorTheme);
+  editor_side_code.setTheme("ace/theme/chrome");
   editor_side_code.getSession().setMode("ace/mode/c_cpp");
   editor_side_code.setFontSize(17);
   editor_side_code.setShowPrintMargin(false);
   editor_side_code.setReadOnly(true);
-    editor_side_code.setScrollSpeed(0.2);
-    editor_side_code.getSession().setTabSize(4);
+  editor_side_code.setScrollSpeed(0.2);
+  editor_side_code.getSession().setTabSize(4);
   $('#aceTheme').val(window.conf.lastEditorTheme);
   /*
   	添加ACE放大缩小快捷键
@@ -508,10 +508,10 @@ var resetACEFontSize = function(){
 
   //load from url parameter (single param)
   //http://stackoverflow.com/questions/2090551/parse-query-string-in-javascript
-  var dest = unescape(location.search.replace(/^.*\=/, '')).replace(/\+/g, " ");
-  if(dest){
-    load_by_url(dest);
-  }
+  //var dest = unescape(location.search.replace(/^.*\=/, '')).replace(/\+/g, " ");
+  //if(dest){
+  //  load_by_url(dest);
+  //}
 
 }
 function show_tag(){
@@ -545,6 +545,8 @@ function show_tag(){
     tag_select('operate_layer_btn', 'status_bar_show');
     tag_select('operate_btn', 'operate');
     tag_select('import_libraries_btn', 'import_libraries');
+    tag_select('manage_libraries_btn', 'manage_libraries');
+    tag_select('change_board_btn', 'change_board');
 }
 
 function tag_select(id, msg) {
@@ -552,3 +554,15 @@ function tag_select(id, msg) {
         document.getElementById(id).textContent = MSG[msg];
     }
 }
+
+layui.use('form', function(){
+  var form = layui.form;
+  var boardNames = $('#boards-type');
+  boardNames.empty();
+  Object.keys(board_config).map(function (key) {
+    if (key.indexOf("board.") != -1) {
+      boardNames.append($(`<option value="${board_config[key]}">${key.replace("board.", "")}</option>`));
+    }
+  });
+  form.render();
+});
