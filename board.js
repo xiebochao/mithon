@@ -11,7 +11,13 @@ var mixly_board = [
 		BoardDescription:"Experiment with Mithon CC",
 		BoardIndex: "./apps/mixly/index_board_MicroPython[NRF51822_mithon].html",
 		environment: 2,
-		ThirdPartyBoard: false
+		ThirdPartyBoard: false,
+		myBlock: "MicroPython[NRF51822_mithon]",
+        css: "color_mithon.css",
+        blocks: "mithon",
+        generators: "mithon",
+        converters: "mithon",
+        files: "mithon.png"
 	},{
 		BoardImg: "./files/microbit.png",
 		BoardName: "BBC micro:bit",
@@ -25,7 +31,13 @@ var mixly_board = [
 		BoardDescription:"Play MixGoCE with CircuitPython",
 		BoardIndex: "./apps/mixly/index_board_CircuitPython[ESP32S2_MixGoCE].html",
 		environment: 2,
-		ThirdPartyBoard: false
+		ThirdPartyBoard: false,
+        myBlock: "CircuitPython[MixGoCE]",
+        css: "color_esp32_s2.css",
+        blocks: "esp32_s2",
+        generators: "esp32_s2",
+        converters: "esp32_s2",
+        files: "cp1.jpg"
 	},{
 		BoardImg: "./files/webpy.png",
 		BoardName: "Python 3",

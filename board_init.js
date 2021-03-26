@@ -218,69 +218,74 @@ function load_board() {
 			if (fs.existsSync(now_index_path + "\\config.json")) {
 				
 				var rawdata = fs.readFileSync(now_index_path + "\\config.json");
-				var config_data = JSON.parse(rawdata);
-				config_data.BoardAppearence.ThirdPartyBoard = true;
-				config_data.BoardAppearence.FolderPath = now_index_path;
-				config_data.BoardAppearence.others = config_data.others;
-				mixly_board.push(config_data.BoardAppearence);
+				var config_data = null;
+				try{
+					config_data = JSON.parse(rawdata);
+				} catch(e) {
+					console.log(e);
+					continue;
+				}
+				config_data.ThirdPartyBoard = true;
+				config_data.FolderPath = now_index_path;
+				mixly_board.push(config_data);
 				//console.log(config_data);
 				//console.log(mixly_board);
 				try{
-					deleteFolder(mixly_20_path + "\\resources\\app\\blocks\\" + config_data.others['blocks']);
+					deleteFolder(mixly_20_path + "\\resources\\app\\blocks\\" + config_data['blocks']);
 				} catch (e) {
 					console.log(e);
 				}
 
 				try{
-					deleteFolder(mixly_20_path + "\\resources\\app\\generators\\" + config_data.others['generators']);
+					deleteFolder(mixly_20_path + "\\resources\\app\\generators\\" + config_data['generators']);
 				} catch (e) {
 					console.log(e);
 				}
 
 				try{
-					deleteFolder(mixly_20_path + "\\resources\\app\\converters\\" + config_data.others['converters']);
+					deleteFolder(mixly_20_path + "\\resources\\app\\converters\\" + config_data['converters']);
 				} catch (e) {
 					console.log(e);
 				}
 
 				try{
-					deleteFolder(mixly_20_path + "\\resources\\app\\apps\\mixly\\" + config_data.others['myBlock']);
+					deleteFolder(mixly_20_path + "\\resources\\app\\apps\\mixly\\" + config_data['myBlock']);
 				} catch (e) {
 					console.log(e);
 				}
 
 				try{
-					fs.unlinkSync(mixly_20_path + "\\resources\\app\\apps\\mixly\\css\\" + config_data.others['css']);
+					fs.unlinkSync(mixly_20_path + "\\resources\\app\\apps\\mixly\\css\\" + config_data['css']);
 				} catch (e) {
 					console.log(e);
 				}
 
 				try{
-					fs.unlinkSync(mixly_20_path + "\\resources\\app\\files\\" + config_data.others['files']);
+					fs.unlinkSync(mixly_20_path + "\\resources\\app\\files\\" + config_data['files']);
 				} catch (e) {
 					console.log(e);
 				}
 
 				try{
-					fs.unlinkSync(mixly_20_path + "\\resources\\app\\apps\\mixly\\" + config_data.others['index']);
+					fs.unlinkSync(mixly_20_path + "\\resources\\app\\apps\\mixly\\" + config_data['BoardIndex'].replace("./apps/mixly/", ""));
 				} catch (e) {
 					console.log(e);
 				}
 
 				try{
-					fs.copyFileSync(now_index_path + "\\" + config_data.others['index'], mixly_20_path + "\\resources\\app\\apps\\mixly\\" + config_data.others['index']); 
+					fs.copyFileSync(now_index_path + "\\" + config_data['BoardIndex'].replace("./apps/mixly/", ""), mixly_20_path + "\\resources\\app\\apps\\mixly\\" + config_data['BoardIndex'].replace("./apps/mixly/", "")); 
 				} catch (e) {
 					console.log(e);
 				}
 
 				try{
-					fs.copyFileSync(now_index_path + "\\files\\" + config_data.others['files'], mixly_20_path + "\\resources\\app\\files\\" + config_data.others['files']);  
+					fs.copyFileSync(now_index_path + "\\files\\" + config_data['files'], mixly_20_path + "\\resources\\app\\files\\" + config_data['files']);  
 				} catch (e) {
 					console.log(e);
 				}
 
 				try{
-					fs.copyFileSync(now_index_path + "\\css\\" + config_data.others['css'], mixly_20_path + "\\resources\\app\\apps\\mixly\\css\\" + config_data.others['css']);
+					fs.copyFileSync(now_index_path + "\\css\\" + config_data['css'], mixly_20_path + "\\resources\\app\\apps\\mixly\\css\\" + config_data['css']);
 				} catch (e) {
 					console.log(e);
 				}
@@ -304,18 +309,18 @@ function load_board() {
 				}
 
 				try{
-					if (config_data.others['myBlock'])
-						createDocs(now_index_path + "\\" + config_data.others['myBlock'], mixly_20_path + "\\resources\\app\\apps\\mixly\\" + config_data.others['myBlock'],function(){});
+					if (config_data['myBlock'])
+						createDocs(now_index_path + "\\" + config_data['myBlock'], mixly_20_path + "\\resources\\app\\apps\\mixly\\" + config_data['myBlock'],function(){});
 				} catch (e) {
 					console.log(e);
 				}
 				
 				/*
-				fs.mkdir(mixly_20_path + "\\resources\\app\\apps\\mixly\\" + config_data.others['myBlock'], function (err) {
+				fs.mkdir(mixly_20_path + "\\resources\\app\\apps\\mixly\\" + config_data['myBlock'], function (err) {
 				    if (err) {
 				    	console.log(err);
 				    } else {
-				    	createDocs(now_index_path + "\\" + config_data.others['myBlock'], mixly_20_path + "\\resources\\app\\apps\\mixly\\" + config_data.others['myBlock'],function(){});
+				    	createDocs(now_index_path + "\\" + config_data['myBlock'], mixly_20_path + "\\resources\\app\\apps\\mixly\\" + config_data['myBlock'],function(){});
 				    }
 				})
 				*/
@@ -337,43 +342,43 @@ function del_board(board_number) {
 	}
 
 	try{
-		deleteFolder(mixly_20_path + "\\resources\\app\\blocks\\" + mixly_board[board_number].others['blocks']);
+		deleteFolder(mixly_20_path + "\\resources\\app\\blocks\\" + mixly_board[board_number]['blocks']);
 	} catch (e) {
 		console.log(e);
 	}
 
 	try{
-		deleteFolder(mixly_20_path + "\\resources\\app\\generators\\" + mixly_board[board_number].others['generators']);
+		deleteFolder(mixly_20_path + "\\resources\\app\\generators\\" + mixly_board[board_number]['generators']);
 	} catch (e) {
 		console.log(e);
 	}
 
 	try{
-		deleteFolder(mixly_20_path + "\\resources\\app\\converters\\" + mixly_board[board_number].others['converters']);
+		deleteFolder(mixly_20_path + "\\resources\\app\\converters\\" + mixly_board[board_number]['converters']);
 	} catch (e) {
 		console.log(e);
 	}
 
 	try{
-		deleteFolder(mixly_20_path + "\\resources\\app\\apps\\mixly\\" + mixly_board[board_number].others['myBlock']);
+		deleteFolder(mixly_20_path + "\\resources\\app\\apps\\mixly\\" + mixly_board[board_number]['myBlock']);
 	} catch (e) {
 		console.log(e);
 	}
 
 	try{
-		fs.unlinkSync(mixly_20_path + "\\resources\\app\\apps\\mixly\\css\\" + mixly_board[board_number].others['css']);
+		fs.unlinkSync(mixly_20_path + "\\resources\\app\\apps\\mixly\\css\\" + mixly_board[board_number]['css']);
 	} catch (e) {
 		console.log(e);
 	}
 
 	try{
-		fs.unlinkSync(mixly_20_path + "\\resources\\app\\files\\" + mixly_board[board_number].others['files']);
+		fs.unlinkSync(mixly_20_path + "\\resources\\app\\files\\" + mixly_board[board_number]['files']);
 	} catch (e) {
 		console.log(e);
 	}
 
 	try{
-		fs.unlinkSync(mixly_20_path + "\\resources\\app\\apps\\mixly\\" + mixly_board[board_number].others['index']);
+		fs.unlinkSync(mixly_20_path + "\\resources\\app\\apps\\mixly\\" + mixly_board[board_number]['BoardIndex'].replace("./apps/mixly/", ""));
 	} catch (e) {
 		console.log(e);
 	}
@@ -382,9 +387,28 @@ function del_board(board_number) {
 	//load_board();
 }
 
+//json转url参数
+var parseParam = function(param, key) {
+    var paramStr = "";
+    if (param instanceof String || param instanceof Number || param instanceof Boolean) {
+    	try {
+        	paramStr += "&" + key.toString().replaceAll("=", "@") + "=" + encodeURIComponent(param.toString().replaceAll("=", "@"));
+    	} catch(e) {
+    		console.log(e);
+    		paramStr += "&" + key + "=" + encodeURIComponent(param);
+    	}
+    } else {
+        $.each(param, function(i) {
+            var k = key == null ? i : key + (param instanceof Array ? "[" + i + "]" : "." + i);
+            paramStr += '&' + parseParam(this, k);
+        });
+    }
+    return paramStr.substr(1);
+};
+
 function board_show() {
 	var add_board = {
-		BoardImg: "./files/add2.png",
+		BoardImg: "./files/add.png",
 		BoardName: "",
 		BoardDescription:"",
 		BoardIndex: "javascript:;",
@@ -401,6 +425,20 @@ function board_show() {
 		for (var i = 0; i < mixly_board.length; i++) {
 			if (mixly_board[i]['environment'] == 2 || Mixly_20_environment == mixly_board[i]['environment']) {
 				if (mixly_board[i]['BoardIndex'] != 'javascript:;') {
+					var board_json = JSON.parse(JSON.stringify(mixly_board[i]));
+
+					/*
+					var params = Object.keys(board_json).map(function (key) {
+				        return encodeURIComponent(key) + "=" + encodeURIComponent(board_json[key]);
+				    }).join("&");
+				    */
+				    var params = "id=error";
+				    try{
+					    params = parseParam(board_json);
+					} catch(e) {
+						console.log(e);
+					}
+
 					if (mixly_board[i]['ThirdPartyBoard']) {
 						a_row += `
 						<style>
@@ -427,10 +465,10 @@ function board_show() {
 						</style>
 						<div class="col-sm-4 col-md-3" id="board_${i}">
 							<button id="board_${i}_button" onclick="del_board(${i})" type="button" class="layui-btn layui-btn-sm layui-btn-primary">
-							  <i class="icon-cancel-outline"></i>
+							  	<i class="icon-cancel-outline"></i>
 							</button>
 				            <div class="service-single">
-				                <a href="${mixly_board[i]['BoardIndex']}">
+				                <a href="${mixly_board[i]['BoardIndex']}?${params}">
 				                    <img src="${mixly_board[i]['BoardImg']}" alt="service image" class="tiltimage">
 				                    <h2>${mixly_board[i]['BoardName']}</h2>
 				                </a>
@@ -442,7 +480,7 @@ function board_show() {
 						a_row += `
 						<div class="col-sm-4 col-md-3" id="board_${i}">
 				            <div class="service-single">
-				                <a href="${mixly_board[i]['BoardIndex']}">
+				                <a href="${mixly_board[i]['BoardIndex']}?${params}">
 				                    <img src="${mixly_board[i]['BoardImg']}" alt="service image" class="tiltimage">
 				                    <h2>${mixly_board[i]['BoardName']}</h2>
 				                </a>
@@ -456,7 +494,7 @@ function board_show() {
 					<div class="col-sm-4 col-md-3">
 			            <div class="service-single">
 			                <a href="${mixly_board[i]['BoardIndex']}" onclick="load_index_File();">
-			                    <img src="${mixly_board[i]['BoardImg']}" alt="service image" class="tiltimage">
+			                    <img id="add-board" src="${mixly_board[i]['BoardImg']}" alt="service image" class="tiltimage">
 			                    <h2>${mixly_board[i]['BoardName']}</h2>
 			                </a>
 			                <!--<p>${mixly_board[i]['BoardDescription']}</p>-->

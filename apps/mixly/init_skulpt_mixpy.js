@@ -282,10 +282,10 @@ function init() {
     auto_save_and_restore_blocks();
     //load from url parameter (single param)
     //http://stackoverflow.com/questions/2090551/parse-query-string-in-javascript
-    var dest = unescape(location.search.replace(/^.*\=/, '')).replace(/\+/g, " ");
-    if (dest) {
-        load_by_url(dest);
-    }
+    //var dest = unescape(location.search.replace(/^.*\=/, '')).replace(/\+/g, " ");
+    //if (dest) {
+    //    load_by_url(dest);
+    //}
 
     sidecodeClick();
 }

@@ -533,10 +533,10 @@ function init() {
 
     //load from url parameter (single param)
     //http://stackoverflow.com/questions/2090551/parse-query-string-in-javascript
-    var dest = unescape(location.search.replace(/^.*\=/, '')).replace(/\+/g, " ");
-    if (dest) {
-        load_by_url(dest);
-    }
+    //var dest = unescape(location.search.replace(/^.*\=/, '')).replace(/\+/g, " ");
+    //if(dest){
+    //  load_by_url(dest);
+    //}
 
 }
 function show_tag(){
@@ -576,6 +576,8 @@ function show_tag(){
     tag_select('operate_layer_btn', 'status_bar_show');
     tag_select('operate_btn', 'operate');
     tag_select('import_libraries_btn', 'import_libraries');
+    tag_select('manage_libraries_btn', 'manage_libraries');
+    tag_select('change_board_btn', 'change_board');
 }
 
 function tag_select(id, msg) {
