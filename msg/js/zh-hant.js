@@ -107,7 +107,9 @@ var MSG = {
     status_bar_show: "狀態欄",
     operate: "操作",
     compile: "編譯",
-    import_libraries: "導入庫"
+    import_libraries: "導入庫",
+    manage_libraries: "管理庫",
+    change_board: "切換闆卡"
 };
 Blockly.Msg.ADD_COMMENT = "添加注釋";
 Blockly.Msg.AUTH = "請授權這個應用程式以保存您的作品並共用。";

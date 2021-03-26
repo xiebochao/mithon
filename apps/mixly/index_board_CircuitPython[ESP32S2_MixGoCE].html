@@ -5,6 +5,8 @@
   <title>Mixly 2.0 For MixgoCE</title>
   <link rel="shortcut icon" type="image/ico" href="../../files/mixly.ico">
   <script type="text/javascript" src="environment.js"></script>
+  <script type="text/javascript" src="board-config.js"></script>
+  <script type="text/javascript" src="client-libs.js"></script>
   <script type="text/javascript" src="../../blockly_compressed_mithon.js"></script>
   <script type="text/javascript" src="../../core/base.js"></script>
   <script type="text/javascript" src="../../python_compressed.js"></script>
@@ -116,6 +118,7 @@
   <link rel="stylesheet" type="text/css" href="css/color_esp32_s2.css" />
   <link rel="stylesheet" type="text/css" href="css/ACEfont.css" />
   <link rel="stylesheet" type="text/css" href="css/fontello.css" />
+  <link rel="stylesheet" type="text/css" href="css/library.css" />
   <!-- upload -->
   <script src="renderer.js"></script>
   <script type="text/javascript" src="dap.umd.js"></script>
@@ -163,7 +166,8 @@
               <dd><a href="#" id="language_btn" class="icon-language" onclick="open_language(); "></a></dd>
               <dd><a href="#" id="theme_btn" class="icon-art-gallery" onclick="open_theme();"></a></dd>
               <dd><a href="#" id="changemod_btn" class="icon-code" value=1 onclick="changeMod();"></a></dd>
-              <dd><a href="#" id="import_libraries_btn" class="icon-download" onclick="load_library_File();"></a></dd>
+              <dd><a href="#" id="import_libraries_btn" class="icon-download" onclick="open_lib();"></a></dd>
+              <dd><a href="#" id="manage_libraries_btn" class="icon-menu"></a></dd>
           </dl>
       </li>
       <li class="layui-nav-item" style="float:right">
@@ -263,7 +267,7 @@
               <input id="serial_data_type" type="checkbox" name="serial_data_type" title="字符串" checked>
             </label>
             <div class="layui-input-block">
-                <textarea readonly id="serial_content" name="desc" placeholder="串口输出" class="layui-textarea" style="height:220px"></textarea>
+                <textarea readonly id="serial_content" name="desc" wrap="off" spellcheck="false" placeholder="串口输出" class="layui-textarea" style="height:220px"></textarea>
             </div>
           </div>
           <div class="layui-form-item layui-form-text">
@@ -323,6 +327,41 @@
           </div>
       </div>
   </div>
+
+  <div id="import-library" style="display: none;overflow: hidden;">
+    <div class="layui-hide" id="import-library-page" lay-filter="import-library-page"></div>
+  </div>
+
+  <script type="text/html" id="import-library-toolbar">
+    <div class="layui-btn-container" style="text-align: center;">
+      <button class="layui-btn layui-btn-sm" lay-event="cloud-import">云端导入</button>
+      <button class="layui-btn layui-btn-sm" lay-event="local-import">本地导入</button>
+    </div>
+  </script>
+   
+  <script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  </script>
+
+  <div id="client-libs-url-form" class="layui-form layui-form-pane" style="display: none;">
+    <textarea id="client-libs-url-data" wrap="off" spellcheck="false" placeholder="添加url" class="layui-textarea" style="width:100%;height:100%;resize:none;"></textarea>
+  </div>
+
+  <div id="client-libs-download-form" class="layui-form layui-form-pane" style="display:none;position:relative;height:100%;">
+    <div class="layui-form-item layui-form-text" style="position:absolute;margin-bottom:20px;margin-top: 20px;left:10px;right:10px;">
+      <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="download-percent">
+        <div class="layui-progress-bar" lay-percent="0%"></div>
+      </div>
+    </div>
+    <div class="layui-form-item layui-form-text" style="position:absolute;top:58px;left:0px;bottom:0px;width:100%;margin-bottom:0px;">
+      <label class="layui-form-label">信息</label>
+      <div class="layui-input-block" style="position:absolute;top:38px;left:0px;bottom:0px;width:100%;">
+        <textarea id="client-libs-download-message" wrap="off" spellcheck="false" class="layui-textarea" style="width:100%;height:100%;resize:none;"></textarea>
+      </div>
+    </div>
+  </div>
+
   <table width="100%">
       <tr width="0%">
           <td colspan=3>

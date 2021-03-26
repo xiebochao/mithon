@@ -110,7 +110,9 @@ var MSG = {
     status_bar_show: "Status Bar",
     operate: "Operate",
     compile: "Compile",
-    import_libraries: "Import library"
+    import_libraries: "Import",
+    manage_libraries: "Manager",
+    change_board: "Switch"
 };
 Blockly.Msg.ADD_COMMENT = "Add Comment";
 Blockly.Msg.AUTH = "Please authorize this app to enable your work to be saved and to allow it to be shared by you.";

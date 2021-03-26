@@ -17,14 +17,17 @@
     "electron-rebuild": "^2.3.4"
   },
   "dependencies": {
+    "adm-zip-iconv": "^0.4.9",
     "bootstrap": "^4.6.0",
     "cuid": "^2.1.8",
     "echarts": "^5.0.2",
     "iconv-lite": "^0.6.2",
     "jquery": "^3.5.1",
     "lodash": "^4.17.20",
+    "node-stream-zip": "^1.13.2",
     "python-shell": "^2.0.3",
     "ramda": "^0.27.1",
+    "request": "^2.88.2",
     "serialport": "^9.0.6",
     "unicode-string": "^2.1.0",
     "usb": "^1.6.4",

@@ -112,7 +112,9 @@ var MSG = {
     status_bar_show: "状态栏",
     operate: "操作",
     compile: "编译",
-    import_libraries: "导入库"
+    import_libraries: "导入库",
+    manage_libraries: "管理库",
+    change_board: "切换板卡"
 };
 Blockly.Msg.ADD_COMMENT = "添加注释";
 Blockly.Msg.AUTH = "请授权这个应用程序以保存您的作品并共享。";
