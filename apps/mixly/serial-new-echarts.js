@@ -1,34 +1,41 @@
 //ECharts
 if (!Mixly_20_environment) throw false;
-var echarts_data = [];
-var echarts_series = [];
-var echarts_legend = [];
-var echarts_grid_left = 20;
-var echarts_now_time;
-var echarts_y_value;
-var echarts_start_time;
-var echarts_draw_line = true;
-var echarts_x_name = "时间/ms";
-var echarts_update = null;
-var myChart = null;
+
+var MixlySerialEcharts = {};
+MixlySerialEcharts.data = [];
+MixlySerialEcharts.series = [];
+MixlySerialEcharts.legend = [];
+MixlySerialEcharts.gridLeft = 20;
+MixlySerialEcharts.nowTime;
+MixlySerialEcharts.yValue;
+MixlySerialEcharts.startTime;
+MixlySerialEcharts.drawLine = true;
+MixlySerialEcharts.xName = "时间/ms";
+MixlySerialEcharts.update = null;
+MixlySerialEcharts.myChart = null;
 var echarts = require('echarts');
 
-function echarts_init() {
-    if (!(serial_port && serial_port.isOpen)) return;
-    //myChart && echarts.dispose(myChart);
-    myChart && myChart.dispose();
+/**
+* @ function 初始化串口绘图工具
+* @ description 初始化串口绘图工具（Echarts）
+* @ return void
+*/
+MixlySerialEcharts.init = function () {
+    if (!(MixlySerial.serialPort && MixlySerial.serialPort.isOpen)) return;
+    //MixlySerialEcharts.myChart && echarts.dispose(MixlySerialEcharts.myChart);
+    MixlySerialEcharts.myChart && MixlySerialEcharts.myChart.dispose();
     var chartDom = document.getElementById('com_data_draw');
-    myChart = echarts.init(chartDom);
+    MixlySerialEcharts.myChart = echarts.init(chartDom);
     var option;
-    echarts_data = [];
-    echarts_series = [];
-    echarts_legend = [];
-    echarts_grid_left = 20;
-    echarts_y_value = 0;
-    echarts_start_time = Number(new Date());
-    echarts_now_time = 0;
-    echarts_draw_line = true;
-    echarts_x_name = "时间/ms";
+    MixlySerialEcharts.data = [];
+    MixlySerialEcharts.series = [];
+    MixlySerialEcharts.legend = [];
+    MixlySerialEcharts.gridLeft = 20;
+    MixlySerialEcharts.yValue = 0;
+    MixlySerialEcharts.startTime = Number(new Date());
+    MixlySerialEcharts.nowTime = 0;
+    MixlySerialEcharts.drawLine = true;
+    MixlySerialEcharts.xName = "时间/ms";
     option = {
         title: {
             left: 'center',
@@ -36,13 +43,13 @@ function echarts_init() {
         },
         grid: {
             top: 70,
-            left: echarts_grid_left,
+            left: MixlySerialEcharts.gridLeft,
             right: 20,
             bottom: 82
             //containLabel: true
         },
         legend: {
-            data: echarts_legend,
+            data: MixlySerialEcharts.legend,
             top: 30,
             type: "scroll"
         },
@@ -63,7 +70,7 @@ function echarts_init() {
         },
         xAxis: {
             type: 'value',
-            name: echarts_x_name,
+            name: MixlySerialEcharts.xName,
             nameLocation: 'center',
             nameTextStyle: {
                 padding: [8, 0, 0, 0]
@@ -87,18 +94,18 @@ function echarts_init() {
             start: 0,
             end: 100
         }],
-        series: echarts_series
+        series: MixlySerialEcharts.series
     };
-    echarts_update = setInterval(function () {
-        if (serial_port && serial_port.isOpen && echarts_data) {
+    MixlySerialEcharts.update = setInterval(function () {
+        if (MixlySerial.serialPort && MixlySerial.serialPort.isOpen && MixlySerialEcharts.data) {
             var _time_rate = 0; 
             var _data_length = 0;
-            if (echarts_draw_line) {
+            if (MixlySerialEcharts.drawLine) {
                 try{
-                    _data_length = echarts_data[0].length;
+                    _data_length = MixlySerialEcharts.data[0].length;
                     if (_data_length > 20) {
-                        var _old_time = echarts_data[0][_data_length - 21].value[0];
-                        var _now_time = echarts_data[0][_data_length - 1].value[0];
+                        var _old_time = MixlySerialEcharts.data[0][_data_length - 21].value[0];
+                        var _now_time = MixlySerialEcharts.data[0][_data_length - 1].value[0];
                         _time_rate = 100*_old_time/_now_time;
                     }
                 } catch(e) {
@@ -107,19 +114,19 @@ function echarts_init() {
             } else {
                 _time_rate = 0;
             }
-            myChart.setOption({
+            MixlySerialEcharts.myChart.setOption({
                 title: {
                     left: 'center',
                     text: '串口数据'
                 },
                 grid: {
                     top: 70,
-                    left: echarts_grid_left,
+                    left: MixlySerialEcharts.gridLeft,
                     right: 20,
                     bottom: 82
                 },
                 legend: {
-                    data: echarts_legend
+                    data: MixlySerialEcharts.legend
                 },
                 dataZoom: [{
                     type: 'inside',
@@ -128,7 +135,7 @@ function echarts_init() {
                 }],
                 xAxis: {
                     type: 'value',
-                    name: echarts_x_name,
+                    name: MixlySerialEcharts.xName,
                     nameLocation: 'center',
                     nameTextStyle: {
                         padding: [8, 0, 0, 0]
@@ -137,11 +144,11 @@ function echarts_init() {
                         show: false
                     }
                 },
-                series: echarts_series
+                series: MixlySerialEcharts.series
             });
         }
     }, 500);
-    option && myChart.setOption(option);
+    option && MixlySerialEcharts.myChart.setOption(option);
 }
 
 function isNumber(val) {
@@ -182,7 +189,7 @@ function isJSON(str) {
                                 }
                                 try {
                                     if (obj.hasOwnProperty("xName"))
-                                        echarts_x_name = obj.xName;
+                                        MixlySerialEcharts.xName = obj.xName;
                                 } catch(e) {
 
                                 }
@@ -207,26 +214,31 @@ function isJSON(str) {
     return false;
 }
 
-function echart_draw(serialData) {
+/**
+* @ function 串口绘图工具绘制图像
+* @ description 串口绘图工具根据所接收的·串口数据重新绘制图像
+* @ return void
+*/
+MixlySerialEcharts.draw = function (serialData) {
     var serialNumber = getNumber(serialData);
     var serialJson = isJSON(serialData);
     if (serialJson) {
-        if (myChart) {
-            echarts_now_time = Number(new Date()) - echarts_start_time;
-            while (echarts_series.length < serialJson.legend.length) {
-                echarts_data[echarts_series.length] = new Array();
+        if (MixlySerialEcharts.myChart) {
+            MixlySerialEcharts.nowTime = Number(new Date()) - MixlySerialEcharts.startTime;
+            while (MixlySerialEcharts.series.length < serialJson.legend.length) {
+                MixlySerialEcharts.data[MixlySerialEcharts.series.length] = new Array();
                 var now_show_data = null;
                 
                 now_show_data = {
-                    name: serialJson.legend[echarts_series.length],
+                    name: serialJson.legend[MixlySerialEcharts.series.length],
                     type: (serialJson.hasOwnProperty("type")?serialJson.type:'line'),
                     showSymbol: false,
                     hoverAnimation: false,
-                    data: echarts_data[echarts_series.length]
+                    data: MixlySerialEcharts.data[MixlySerialEcharts.series.length]
                 };
                 
-                echarts_legend.push(serialJson.legend[echarts_series.length]);
-                echarts_series.push(now_show_data);
+                MixlySerialEcharts.legend.push(serialJson.legend[MixlySerialEcharts.series.length]);
+                MixlySerialEcharts.series.push(now_show_data);
             }
             var now_grid_left = 20;
             for (var i = 0; i < serialJson.legend.length; i++) {
@@ -239,63 +251,63 @@ function echart_draw(serialData) {
                             serialJson.data[i][1]-0
                         ]
                     };  
-                    echarts_draw_line = false;
+                    MixlySerialEcharts.drawLine = false;
                 } else {
                     now_show_data = {
                         name: serialJson.legend[i],
                         value: [
-                            echarts_now_time,
+                            MixlySerialEcharts.nowTime,
                             serialJson.data[i]-0
                         ]
                     };  
-                    echarts_draw_line = true;
+                    MixlySerialEcharts.drawLine = true;
                 }
                 if (now_grid_left < 20 + (parseInt(serialJson.data[i])).toString().length*7) {
                     now_grid_left = 20 + (parseInt(serialJson.data[i])).toString().length*8;
                 }
-                //if (echarts_data[i].length > 1000)
-                //  echarts_data[i].shift();
-                echarts_data[i].push(now_show_data);
+                //if (MixlySerialEcharts.data[i].length > 1000)
+                //  MixlySerialEcharts.data[i].shift();
+                MixlySerialEcharts.data[i].push(now_show_data);
             }
-            if (echarts_grid_left < now_grid_left) {
-                echarts_grid_left = now_grid_left;
+            if (MixlySerialEcharts.gridLeft < now_grid_left) {
+                MixlySerialEcharts.gridLeft = now_grid_left;
             }
         }
     } else {
-        if (myChart && serialNumber.length >= 1) {
-            echarts_now_time = Number(new Date()) - echarts_start_time;
+        if (MixlySerialEcharts.myChart && serialNumber.length >= 1) {
+            MixlySerialEcharts.nowTime = Number(new Date()) - MixlySerialEcharts.startTime;
 
-            while (echarts_series.length < serialNumber.length) {
-                echarts_data[echarts_series.length] = new Array();
+            while (MixlySerialEcharts.series.length < serialNumber.length) {
+                MixlySerialEcharts.data[MixlySerialEcharts.series.length] = new Array();
                 var now_show_data = {
-                    name: '数据' + echarts_series.length,
+                    name: '数据' + MixlySerialEcharts.series.length,
                     type: 'line',
                     showSymbol: false,
                     hoverAnimation: false,
-                    data: echarts_data[echarts_series.length]
+                    data: MixlySerialEcharts.data[MixlySerialEcharts.series.length]
                 };
-                echarts_legend.push('数据' + echarts_series.length);
-                echarts_series.push(now_show_data);
+                MixlySerialEcharts.legend.push('数据' + MixlySerialEcharts.series.length);
+                MixlySerialEcharts.series.push(now_show_data);
             }
-            echarts_draw_line = true;
+            MixlySerialEcharts.drawLine = true;
             var now_grid_left = 20;
             for (var i = 0; i < serialNumber.length; i++) {
                 var now_show_data = {
                     name: serialData,
                     value: [
-                        echarts_now_time,
+                        MixlySerialEcharts.nowTime,
                         serialNumber[i]
                     ]
                 };  
                 if (now_grid_left < 20 + (parseInt(serialNumber[i])).toString().length*7) {
                     now_grid_left = 20 + (parseInt(serialNumber[i])).toString().length*8;
                 }
-                //if (echarts_data[i].length > 1000)
-                //  echarts_data[i].shift();
-                echarts_data[i].push(now_show_data);
+                //if (MixlySerialEcharts.data[i].length > 1000)
+                //  MixlySerialEcharts.data[i].shift();
+                MixlySerialEcharts.data[i].push(now_show_data);
             }
-            if (echarts_grid_left < now_grid_left) {
-                echarts_grid_left = now_grid_left;
+            if (MixlySerialEcharts.gridLeft < now_grid_left) {
+                MixlySerialEcharts.gridLeft = now_grid_left;
             }
         }
     }
