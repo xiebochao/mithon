@@ -1,0 +1,54 @@
+.layui-layout-left{position: absolute !important; left: 0px; top: 0;}
+/*layui child nav*/
+/*
+.layui-nav-child{display: none; position: absolute; left: 0; top: 65px; min-width: 100%; line-height: 36px; padding: 5px 0;  box-shadow: 0 2px 4px rgba(0,0,0,.12); border: 1px solid #d2d2d2; background-color: #fff; z-index: 100; border-radius: 2px; white-space: nowrap;}
+.layui-nav .layui-nav-child a{color: white;}
+.layui-nav .layui-nav-child a:hover{background-color:deepskyblue; color: white;}
+.layui-nav-child dd{position: relative;}
+.layui-nav-child dd.layui-this{background-color: transparent; color: white;}
+.layui-nav .layui-nav-child dd.layui-this a{background-color: transparent; color: white;}
+.layui-nav-child dd.layui-this:after{display: none;}
+*/
+/*layui child nav*/
+.layui-nav-child{
+  right: 0px;
+  left: auto;
+}
+/*layui third level nav*/
+.layui-nav-third-child{
+  display: none; 
+  position: absolute; 
+  left: auto;
+  top:0px;
+  min-width: 100%; 
+  line-height: 36px; 
+  padding: 5px 0;  
+  box-shadow: 0 2px 4px rgba(0,0,0,.12); 
+  border: 1px solid #d2d2d2; 
+  background-color: #fff; 
+  z-index: 100; 
+  border-radius: 2px; 
+  white-space: nowrap;
+}
+.layui-nav .layui-nav-third-child a{
+  color: #000;
+}
+.layui-nav .layui-nav-third-child a:hover{
+  color: #000;
+}
+.layui-nav-third-child li{
+  position: relative;
+  background-color: white; 
+  color: black;
+}
+.layui-nav .layui-nav-third-child li.layui-this a{
+  background-color: white !important; 
+  color: black;
+}
+.layui-nav > li > dl > dd.layui-this > ol > li > a {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+.layui-nav-third-child li:after{
+  display: none;
+}
