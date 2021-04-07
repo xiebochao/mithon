@@ -90,7 +90,7 @@ function readUrlArr(path) {
 	return urlArr;
 }
 
-var clientLibsUrl = readUrlArr(mixly_20_path+'\\setting\\'+board_config.myBlock+'.json');
+var clientLibsUrl = readUrlArr(mixly_20_path+'\\setting\\'+MixlyUrl.BOARD_CONFIG.myBlock+'.json');
 
 function getLibsJson(table, libUrl) {
 	request({
@@ -233,7 +233,14 @@ function open_lib() {
 								now_page.style.left = (now_width - now_page.clientWidth)/2 + "px";
 								now_page.style.top = (now_height - now_page.clientHeight)/2 + "px";
 								document.getElementById('client-libs-download-message').value = "";
-								cloudDownload(mixly_20_path+'\\mylib\\', element);
+								try {
+									if (!file_save.existsSync(mixly_20_path+'\\mylib\\' + MixlyUrl.BOARD_CONFIG.myBlock + '\\'))
+										file_save.mkdirSync(mixly_20_path+'\\mylib\\' + MixlyUrl.BOARD_CONFIG.myBlock + '\\');
+									cloudDownload(mixly_20_path+'\\mylib\\' + MixlyUrl.BOARD_CONFIG.myBlock + '\\', element);
+								} catch(e) {
+									console.log(e);
+									cloudDownload(mixly_20_path+'\\mylib\\', element);
+								}
 					    	} catch(e) {
 					    		console.log(e);
 					    	}
@@ -246,7 +253,7 @@ function open_lib() {
 			          	}
 			      	});
 	          	} else {
-	          		layer.msg('请先选择至少一个云端库！', {
+	          		layer.msg('请选择至少一个云端库！', {
 				        time: 2000
 				    });
 	          	}
@@ -300,7 +307,7 @@ function open_lib() {
 					  	var urlArr = getUrl(urlText);
 					  	if (urlArr)
 					  		clientLibsUrl = clientLibsUrl.concat(getUrl(urlText));
-					  	writeUrlArr(clientLibsUrl, mixly_20_path+'\\setting\\'+board_config.myBlock+'.json');
+					  	writeUrlArr(clientLibsUrl, mixly_20_path+'\\setting\\'+MixlyUrl.BOARD_CONFIG.myBlock+'.json');
 					  	refreshTable(table);
 					},
 		          	end: function() {
@@ -375,6 +382,11 @@ function getHttpReqCallback(Src, dirName, index, element) {
 				}
 				return;
 			}
+			try {
+				file_save.unlinkSync(dirName + "/" + fileName);
+			} catch(e) {
+				console.log(e);
+			}
 			file_save.appendFile(dirName + "/" + fileName, totalBuff, function(err){
 				if (err) {
 					console.log(err);
@@ -382,6 +394,7 @@ function getHttpReqCallback(Src, dirName, index, element) {
 					try {
 						const unzip = new AdmZip(dirName + "/" + fileName, 'GBK');
 						unzip.extractAllTo(dirName + "/", true);
+						file_save.unlinkSync(dirName + "/" + fileName);
 					} catch(e) {
 						console.log(e);
 					}
