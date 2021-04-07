@@ -16,10 +16,9 @@ var options = {
  　　 args: ['value1', 'value2', 'value3']*/
 };
 
-let play_btn = document.getElementById("play_btn");
-let side_code_run = document.getElementById("div_inout_middle");
-//let side_code_bottom = document.getElementById("side_code_bottom");
 let shell = null;
+
+var MixlyPython = {};
 
 function message_decode(s) {
 	if (s) {
@@ -32,23 +31,41 @@ function message_decode(s) {
 	return s;
 }
 
-const py_play = async () => {
-	//status_bar_select = false;
-	status_bar_show(1);
-	//side_code_run.textContent = "程序正在运行...\n";
-	div_inout_middle_text.setValue("程序正在运行...\n");
-	div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
+/**
+* @ function 运行python
+* @ description 运行当前画布上的python程序
+* @ return void
+*/
+MixlyPython.play = function () {
+	MixlyStatusBar.show(1);
+	MixlyStatusBar.setValue("程序正在运行...\n", true);
 	var code = "";
 	if(document.getElementById('tab_arduino').className == 'tabon'){
         code = editor.getValue();
+        try {
+        	var inputArr = code.match(/(?<![\w+])input\(/g);
+			if (inputArr) {
+				code = code.replace("\n", "import pyinput\n");
+				code = code.replace(/(?<![\w+])input\(/g, "pyinput.input(");
+			}
+		} catch(e) {
+			console.log(e);
+		}
 	}else{
 		code = Blockly.Python.workspaceToCode(Blockly.mainWorkspace) || '';
 		var chinese_code = code.replace(/(_[0-9A-F]{2}_[0-9A-F]{2}_[0-9A-F]{2})+/g, function (s) { return decodeURIComponent(s.replace(/_/g, '%')); });
 		code = chinese_code;
+		try {
+        	var inputArr = code.match(/(?<![\w+])input\(/g);
+			if (inputArr) {
+				code = "import pyinput\n" + code;
+				code = code.replace(/(?<![\w+])input\(/g, "pyinput.input(");
+			}
+		} catch(e) {
+			console.log(e);
+		}
 	}
 	if (code.indexOf("import turtle") != -1) code+="\nturtle.done()\n"; 
-	code = code.replaceAll("input(", "pyinput.input(");
-	//code = "import pyinput\n" + code;
 	if(shell) 
 		shell.terminate('SIGKILL');
 	file_save.writeFile(py_file_path, code,'utf8',function(err){
@@ -65,11 +82,11 @@ const py_play = async () => {
 			shell.childProcess.on('exit', (code) => {
 			    console.log(code);
 			    if(code == 0) {
-			    	if (div_inout_middle_text.getValue().lastIndexOf("\n") == div_inout_middle_text.getValue().length-1)
-			    		div_inout_middle_text.setValue(div_inout_middle_text.getValue() + "==程序运行完成==\n");
+			    	if (MixlyStatusBar.getValue().lastIndexOf("\n") == MixlyStatusBar.getValue().length-1)
+			    		MixlyStatusBar.addValue("==程序运行完成==\n", false);
 			    	else
-			    		div_inout_middle_text.setValue(div_inout_middle_text.getValue() + "\n==程序运行完成==\n");
-			  		div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
+			    		MixlyStatusBar.addValue("\n==程序运行完成==\n", false);
+			  		MixlyStatusBar.scrollToTheBottom();
 			  		shell = null;
 			    }
 			});
@@ -87,18 +104,21 @@ const py_play = async () => {
 			//有数据输出时执行
 		    shell.stdout.setEncoding('binary');  
 			shell.stdout.on('data', function (data) {
-				data = message_decode(data);
-				data = decode(iconv.decode(iconv.encode(data, "iso-8859-1"), 'gbk'));
-				
-		        div_inout_middle_text.setValue(div_inout_middle_text.getValue() + data);
-		    	div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
+				try {
+					data = message_decode(data);
+					data = decode(iconv.decode(iconv.encode(data, "iso-8859-1"), 'gbk'));
+					data = data.replace(/(?<![\w+])pyinput.input\(/g, "input(");
+				} catch(e) {
+					console.log(e);
+				}
+		    	MixlyStatusBar.addValue(data, true);
 		    	
 		    	if (data.lastIndexOf(">>>") != -1 && shell) {
 					input_prompt_message = data.substring(data.lastIndexOf(">>>"));
-					input_prompt_message_line = div_inout_middle_text.session.getLength();
-					div_inout_middle_text.selection.moveCursorLineEnd();
-					input_prompt_position_row = div_inout_middle_text.selection.getCursor().row;
-					input_prompt_position_column = div_inout_middle_text.selection.getCursor().column;
+					input_prompt_message_line = MixlyStatusBar.object.session.getLength();
+					MixlyStatusBar.object.selection.moveCursorLineEnd();
+					input_prompt_position_row = MixlyStatusBar.object.selection.getCursor().row;
+					input_prompt_position_column = MixlyStatusBar.object.selection.getCursor().column;
 				}
 		    });
 
@@ -107,52 +127,65 @@ const py_play = async () => {
 		    shell.stderr.on('data', function (err) {
 		    	err = message_decode(err);
 				console.log('stderr: ' + err);
-			  	if (iconv.encode(err, "iso-8859-1"))
-			  		div_inout_middle_text.setValue(div_inout_middle_text.getValue() + iconv.decode(iconv.encode(err, "iso-8859-1"), 'gbk'));
-			  	else
-			  		div_inout_middle_text.setValue(div_inout_middle_text.getValue() + err);
-		  	    div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
+				try {
+					err = err.replace(/(?<![\w+])pyinput.input\(/g, "input(");
+				} catch(e) {
+					console.log(e);
+				}
+			  	try {
+			  		MixlyStatusBar.addValue(iconv.decode(iconv.encode(err, "iso-8859-1"), 'gbk'), false);
+			  	} catch(e) {
+			  		MixlyStatusBar.addValue(err, false);
+			  	}
+		  	    MixlyStatusBar.scrollToTheBottom();
 			    shell = null;
 			});
 	    }
 
 	})
 }
-play_btn.addEventListener("click", () => {py_play()});
 
-const py_stop = async () => {
-	//status_bar_select = false;
-	status_bar_show(1);
+/**
+* @ function 停止py
+* @ description 停止当前正在运行的python程序
+* @ return void
+*/
+MixlyPython.stop = function () {
+	MixlyStatusBar.show(1);
 	if (shell) {
 		shell.terminate('SIGKILL');
 		//shell.stdout.end();
 		//shell.stdin.end();
-		div_inout_middle_text.setValue(div_inout_middle_text.getValue() + "\n==程序运行完成==\n");
+		MixlyStatusBar.addValue("\n==程序运行完成==\n", false);
 		shell = null;
 	} else {
-		div_inout_middle_text.setValue(div_inout_middle_text.getValue() + "\n==无程序在运行==\n");
+		MixlyStatusBar.addValue("\n==无程序在运行==\n", false);
 	}
-	div_inout_middle_text.gotoLine(div_inout_middle_text.session.getLength());
-}
-stop_btn.addEventListener("click", () => {py_stop()});
-
-function py_clear_output() {
-	div_inout_middle_text.setValue("");
+	MixlyStatusBar.scrollToTheBottom();
 }
 
-div_inout_middle_text.getSession().selection.on('changeCursor', function(e) {
+/**
+* @ function 清空状态栏
+* @ description 清空当前状态栏内的所有数据
+* @ return void
+*/
+MixlyPython.clearOutput = function () {
+	MixlyStatusBar.setValue("");
+}
+
+MixlyStatusBar.object.getSession().selection.on('changeCursor', function(e) {
 	if (shell && input_prompt_message_line != -1) {
-		if (div_inout_middle_text.selection.getCursor().row < input_prompt_position_row) {
-			div_inout_middle_text.selection.moveCursorTo(input_prompt_position_row, input_prompt_position_column, true);
+		if (MixlyStatusBar.object.selection.getCursor().row < input_prompt_position_row) {
+			MixlyStatusBar.object.selection.moveCursorTo(input_prompt_position_row, input_prompt_position_column, true);
 		}
-		else if(div_inout_middle_text.selection.getCursor().row <= input_prompt_position_row 
-			&& div_inout_middle_text.selection.getCursor().column <= input_prompt_position_column) {
-			div_inout_middle_text.selection.moveCursorTo(input_prompt_position_row, input_prompt_position_column, true);
+		else if(MixlyStatusBar.object.selection.getCursor().row <= input_prompt_position_row 
+			&& MixlyStatusBar.object.selection.getCursor().column <= input_prompt_position_column) {
+			MixlyStatusBar.object.selection.moveCursorTo(input_prompt_position_row, input_prompt_position_column, true);
 		}
-		last_row_data = div_inout_middle_text.session.getLine(input_prompt_message_line-1);
+		last_row_data = MixlyStatusBar.object.session.getLine(input_prompt_message_line-1);
 		if(last_row_data.indexOf(">>>") != -1 
-			&& div_inout_middle_text.selection.getCursor().row == input_prompt_message_line
-			&& div_inout_middle_text.selection.getCursor().column == 0){
+			&& MixlyStatusBar.object.selection.getCursor().row == input_prompt_message_line
+			&& MixlyStatusBar.object.selection.getCursor().column == 0){
 			//shell.stdin.setEncoding('utf-8'); 
 			if (last_row_data.indexOf(input_prompt_message) == -1) {
 				last_row_data = last_row_data.replace(">>> ", "");

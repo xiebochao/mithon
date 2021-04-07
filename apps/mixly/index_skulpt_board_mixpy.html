@@ -94,6 +94,7 @@
     <link rel="stylesheet" type="text/css" href="css/color_mixpy_python_skulpt.css" />
     <link rel="stylesheet" type="text/css" href="css/ACEfont.css" />
     <link rel="stylesheet" type="text/css" href="css/fontello.css" />
+    <link rel="stylesheet" type="text/css" href="css/nav.css" />
     <script type="text/javascript" src="nav.js"></script>
     <script src="init_skulpt_mixpy.js"></script>
 </head>
@@ -105,45 +106,45 @@
         </div>
     </div>
     <ul id="nav" class="layui-nav layui-bg-green" lay-filter="" style="min-width: 800px;z-index:999;">
-        <li class="layui-nav-item"><a id="mixly2.0-path" href="../../index.html" style="color:white; text-align:center; vertical-align: middle;font-size: 18px;">Mixly</a></li>
-        <li style="display:none" id="tab_blocks"></li>
-        <li style="display:none" id="tab_arduino"></li>
-        <li style="display:none" id="tab_xml"></li>
-        <li class="layui-nav-item"><a href="#" onclick="UndoClick();" name="undo" id="undo_btn" title="undo(ctrl+z)" class="icon-ccw"></a></li>
-        <li class="layui-nav-item"><a href="#" onclick="RedoClick();" name="redo" id="redo_btn" title="redo(ctrl+y)" class="icon-cw"></a></li>
-        <li class="layui-nav-item"><a href="#" onclick="pyengine.run();" name="run" id="play_btn"  class="icon-play-circled"></a></li>
-        <li class="layui-nav-item"><a href="#" onclick="pyengine.kill();" name="stop" id="stop_btn" class="icon-cancel"></a></li>
+        <li class="layui-nav-item"><a id="mixly2.0-path" href="../../index.html" style="color:white; text-align:center; vertical-align: middle;font-size: 18px;" lay-unselect>Mixly</a></li>
+        <li style="display:none" id="tab_blocks" lay-unselect></li>
+        <li style="display:none" id="tab_arduino" lay-unselect></li>
+        <li style="display:none" id="tab_xml" lay-unselect></li>
+        <li class="layui-nav-item" lay-unselect><a href="#" onclick="UndoClick();" name="undo" id="undo_btn" title="undo(ctrl+z)" class="icon-ccw"></a></li>
+        <li class="layui-nav-item" lay-unselect><a href="#" onclick="RedoClick();" name="redo" id="redo_btn" title="redo(ctrl+y)" class="icon-cw"></a></li>
+        <li class="layui-nav-item" lay-unselect><a href="#" onclick="pyengine.run();" name="run" id="play_btn"  class="icon-play-circled"></a></li>
+        <li class="layui-nav-item" lay-unselect><a href="#" onclick="pyengine.kill();" name="stop" id="stop_btn" class="icon-cancel"></a></li>
         <a id="copyright" style="font-family:'YaHei Consolas Hybrid', 'Microsoft Yahei Light', 'Arial';font-size:12px;color:#fff;position:fixed;top:22px;right:450px;"></a>
-        <li class="layui-nav-item" style="float:right">
+        <li class="layui-nav-item" style="float:right" lay-unselect>
             <a href="javascript:;" id="setting_btn"></a>
             <dl class="layui-nav-child">
                 <!-- 二级菜单 -->
-                <dd><a href="#" id="language_btn" class="icon-language" onclick="open_language(); "></a></dd>
-                <dd><a href="#" id="theme_btn" class="icon-art-gallery" onclick="open_theme();"></a></dd>
-                <dd><a href="#" id="changemod_btn" class="icon-code" value=1 onclick="changeMod();"></a></dd>
+                <dd lay-unselect><a href="#" id="language_btn" class="icon-language" onclick="open_language(); "></a></dd>
+                <dd lay-unselect><a href="#" id="theme_btn" class="icon-art-gallery" onclick="open_theme();"></a></dd>
+                <dd lay-unselect><a href="#" id="changemod_btn" class="icon-code" value=1 onclick="changeMod();"></a></dd>
             </dl>
         </li>
-        <li class="layui-nav-item" style="float:right">
+        <li class="layui-nav-item" style="float:right" lay-unselect>
             <a href="javascript:;" id="file_btn"></a>
             <dl class="layui-nav-child">
                 <!-- 二级菜单 -->
-                <dd><a href="#" onclick="new_file()" id="new_btn" class="icon-doc-new"></a></dd>
-                <dd><a href="#" onclick="mixlyjs.loadLocalFile()" id="open_btn" class="icon-folder-open-empty"></a></dd>
+                <dd lay-unselect><a href="#" onclick="new_file()" id="new_btn" class="icon-doc-new"></a></dd>
+                <dd lay-unselect><a href="#" onclick="mixlyjs.loadLocalFile()" id="open_btn" class="icon-folder-open-empty"></a></dd>
             </dl>
         </li>
-        <li class="layui-nav-item" style="float:right">
+        <li class="layui-nav-item" style="float:right" lay-unselect>
             <a href="javascript:;" id="save_btn"></a>
             <dl class="layui-nav-child">
                 <!-- 二级菜单 -->
-                <dd><a href="#" id="save_img_btn" class="icon-floppy" onclick="mixlyjs.saveBlockImg()"></a></dd>
-                <dd><a href="#" id="save_xml_btn" class="icon-floppy" onclick="save()"></a></dd>
-                <dd><a href="#" id="save_py_btn" class="icon-file-code" onclick="mixlyjs.savePyFileAs()"></a></dd>        
+                <dd lay-unselect><a href="#" id="save_img_btn" class="icon-floppy" onclick="mixlyjs.saveBlockImg()"></a></dd>
+                <dd lay-unselect><a href="#" id="save_xml_btn" class="icon-floppy" onclick="save()"></a></dd>
+                <dd lay-unselect><a href="#" id="save_py_btn" class="icon-file-code" onclick="mixlyjs.savePyFileAs()"></a></dd>        
             </dl>
         </li>
         <!-- a标签里不用写按钮名字,136行script段里通过id改名,为了多语言支持 -->
         <!-- 就是这块，不知道怎么把代码那三个部分加进来 -->
         <!-- a标签里不用写按钮名字,13行script段里通过id改名,为了多语言支持 -->
-        <li class="layui-nav-item"><select id="languageMenu" style="display:none"></select></li>
+        <li class="layui-nav-item" lay-unselect><select id="languageMenu" style="display:none"></select></li>
     </ul>
     <script style="display:none;">
         show_tag();
