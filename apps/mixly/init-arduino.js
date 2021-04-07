@@ -4,7 +4,7 @@ var now_visual_height = document.documentElement.clientHeight;
 var now_visual_width = document.documentElement.clientWidth;
 
 //动态调整串口弹出框的大小
-function serial_form_update(type) {
+function serialFormUpdate(type) {
     var now_height = document.documentElement.clientHeight;
     var now_width = document.documentElement.clientWidth;
     var serial_form_height = 600;
@@ -397,7 +397,7 @@ function init() {
             status_bar_location = getid("layer_btn").offsetParent.offsetLeft + getid("layer_btn").offsetParent.offsetWidth;
         }
 
-        if (status_bar_select) {
+        if (MixlyStatusBar.SELECTED) {
             if(now_visual_height > document.body.clientHeight) {
                 var iT = 0.8;
                 var percent=(document.body.clientHeight - 60) * iT;
@@ -450,8 +450,8 @@ function init() {
         editor.resize();
         var serial_page = getid("serial_page");
         if (serial_page) {
-            var serial_width_height = serial_form_update(1);
-            var serial_left_top = serial_form_update(0);
+            var serial_width_height = serialFormUpdate(1);
+            var serial_left_top = serialFormUpdate(0);
             serial_page.parentNode.style.width = serial_width_height[0];
             serial_page.parentNode.style.height = serial_width_height[1];
             serial_page.style.width = serial_width_height[0];
@@ -559,9 +559,9 @@ layui.use('form', function(){
   var form = layui.form;
   var boardNames = $('#boards-type');
   boardNames.empty();
-  Object.keys(board_config).map(function (key) {
+  Object.keys(MixlyUrl.BOARD_CONFIG).map(function (key) {
     if (key.indexOf("board.") != -1) {
-      boardNames.append($(`<option value="${board_config[key]}">${key.replace("board.", "")}</option>`));
+      boardNames.append($(`<option value="${MixlyUrl.BOARD_CONFIG[key]}">${key.replace("board.", "")}</option>`));
     }
   });
   form.render();

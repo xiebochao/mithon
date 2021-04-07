@@ -1,9 +1,10 @@
 #filename_input > div.layui-form-select dl {
-	left:-100px !important;
+	right: 0px !important;
+	left: auto !important;
 }
 
 #serial_device_type > div.layui-form-select dl { 
-	max-height:50px; 
+	max-height:200px; 
 }
 
 #refresh-device,#esp32s2_download{
