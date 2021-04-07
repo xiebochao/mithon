@@ -1,7 +1,10 @@
-if (!Mixly_20_environment) throw false;
+var SerialPort = null;
+var _ = null;
 
-const SerialPort = require('serialport');
-const _ = require('lodash/fp');
+if (Mixly_20_environment) {
+	SerialPort = require('serialport');
+	_ = require('lodash/fp');
+}
 var MixlySerial = {};
 
 MixlySerial.serialPort = null;
