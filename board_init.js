@@ -392,7 +392,11 @@ var parseParam = function(param, key) {
     var paramStr = "";
     if (param instanceof String || param instanceof Number || param instanceof Boolean) {
     	try {
-        	paramStr += "&" + key.toString().replaceAll("=", "@") + "=" + encodeURIComponent(param.toString().replaceAll("=", "@"));
+    		var newKey = key.toString().replaceAll("=", "@");
+    		newKey = newKey.replaceAll("&", "$");
+    		var newParam = param.toString().replaceAll("=", "@")
+    		newParam = newParam.replaceAll("&", "$");
+        	paramStr += "&" + newKey + "=" + encodeURIComponent(newParam);
     	} catch(e) {
     		console.log(e);
     		paramStr += "&" + key + "=" + encodeURIComponent(param);
