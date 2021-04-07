@@ -53,7 +53,12 @@ function restore_blocks() {
     } else {
         xml = Blockly.Xml.textToDom(JSFuncs.loadFromLocalStorageCache());
     }
-    //Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
+    try {
+        Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
+    } catch(e) {
+        Blockly.mainWorkspace.clear();
+        console.log(e);
+    }
 }
 
 /**
@@ -140,7 +145,7 @@ function auto_save_and_restore_blocks() {
     // Hook a save function onto unload.
     bindEvent(window, 'unload', backup_blocks);
     tabClick(selected);
-    Blockly.mainWorkspace.clear();
+    //Blockly.mainWorkspace.clear();
     // Init load event.
     //var loadInput = document.getElementById('load');
     //loadInput.addEventListener('change', load, false);

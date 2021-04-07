@@ -7,6 +7,9 @@
   <script type="text/javascript" src="environment.js"></script>
   <script type="text/javascript" src="board-config.js"></script>
   <script type="text/javascript" src="client-libs.js"></script>
+  <script type="text/javascript" src="burn-upload.js"></script>
+  <script type="text/javascript" src="serial-new.js"></script>
+  <script type="text/javascript" src="serial-new-echarts.js"></script>
   <script type="text/javascript" src="../../blockly_compressed_mithon.js"></script>
   <script type="text/javascript" src="../../core/base.js"></script>
   <script type="text/javascript" src="../../python_compressed.js"></script>
@@ -24,14 +27,10 @@
   <script type="text/javascript" src="spin.js"></script>
   <script type="text/javascript" src="js/FileSaver.min.js"></script>
   <script type="text/javascript" src="js/py_module_mixgoce.js"></script>
-  <script type="text/javascript" src="js/micropython_v1.js"></script>
-  <script type="text/javascript" src="js/micropython_v2.js"></script>
-  <script type="text/javascript" src="js/microbit-fs.umd.min.js"></script>
-  <script type="text/javascript" src="js/fs.js"></script>
   <script type="text/javascript" src="js/blockly_helper.js"></script>
   <!---profiles-->
   <script type="text/javascript" src="jquery-1.11.3.min.js"></script>
-  <script type="text/javascript" src="CircuitPython[MixGoCE]/myblock.js"></script>
+  <script id="myblock-update" type="text/javascript" src="CircuitPython[MixGoCE]/myblock.js"></script>
   <script type="text/javascript" src="../../blocks/python/variables.js"></script>
   <script type="text/javascript" src="../../generators/python/variables.js"></script>
   <script type="text/javascript" src="../../blocks/python/class.js"></script>
@@ -119,8 +118,11 @@
   <link rel="stylesheet" type="text/css" href="css/ACEfont.css" />
   <link rel="stylesheet" type="text/css" href="css/fontello.css" />
   <link rel="stylesheet" type="text/css" href="css/library.css" />
+  <link rel="stylesheet" type="text/css" href="css/nav.css" />
   <!-- upload -->
+  <!--
   <script src="renderer.js"></script>
+  -->
   <script type="text/javascript" src="dap.umd.js"></script>
   <script type="text/javascript" src="nav.js"></script>
   <script src="init-py.js"></script>
@@ -135,62 +137,117 @@
           <input type="text" placeholder="" value="" class="layui-input" id="filename_input" style="z-index:9999;height:33px;">
       </div>
   </div>
-  <ul id="nav" class="layui-nav layui-bg-green" lay-filter="" style="/*min-width: 800px;*/z-index:999;">
-      <li class="layui-nav-item"><a id="mixly2.0-path" href="../../index.html" style="color:white; text-align:center; vertical-align: middle;font-size: 18px;">Mixly</a></li>
-      <li style="display:none" id="tab_blocks"></li>
-      <li style="display:none" id="tab_arduino"></li>
+  <ul id="nav" class="layui-nav layui-bg-green" lay-filter="navBar" style="/*min-width: 800px;*/z-index:999;">
+      <li class="layui-nav-item" lay-unselect><a id="mixly2.0-path" href="../../index.html" onclick="reloadBlock();" style="color:white; text-align:center; vertical-align: middle;font-size: 18px;">Mixly</a></li>
+      <li style="display:none" id="tab_blocks" lay-unselect></li>
+      <li style="display:none" id="tab_arduino" lay-unselect></li>
       <li style="display:none" id="tab_xml"></li>
-      <li class="layui-nav-item" id="li_operate" style="display:none;">
+      <li class="layui-nav-item" id="li_operate" style="display:none;" lay-unselect>
           <a href="javascript:;" id="operate_btn">操作</a>
           <dl class="layui-nav-child">
               <!-- 二级菜单 -->
-              <dd><a href="#" onclick="UndoClick();" name="undo" id="operate_undo_btn" title="undo(ctrl+z)" class="icon-ccw">撤销</a>
-              <dd><a href="#" onclick="RedoClick();" name="redo" id="operate_redo_btn" title="redo(ctrl+y)" class="icon-cw">重复</a></dd>
-              <dd><a href="#" onclick="firmware_init('esp32_s2');" id="operate_serial_reset" class="icon-upload-1">初始化固件</a></dd>
-              <dd><a href="#" onclick="change_esp32_s2_download();" id="operate_download_btn" class="icon-upload">上传</a></dd>
-              <dd><a href="#" onclick="change_serial();" id="operate_serial_read_btn" class="icon-link">串口</a></dd>
-              <dd><a href="#" onclick="status_bar_show(0);" id="operate_layer_btn" class="icon-window">状态栏</a></dd>
+              <dd lay-unselect><a href="#" onclick="UndoClick();" name="undo" id="operate_undo_btn" title="undo(ctrl+z)" class="icon-ccw">撤销</a>
+              <dd lay-unselect><a href="#" onclick="RedoClick();" name="redo" id="operate_redo_btn" title="redo(ctrl+y)" class="icon-cw">重复</a></dd>
+              <dd lay-unselect><a href="#" onclick="MixlyBurnUpload.initBurn();" id="operate_serial_reset" class="icon-upload-1">初始化固件</a></dd>
+              <dd lay-unselect><a href="#" onclick="MixlyBurnUpload.initUpload();" id="operate_download_btn" class="icon-upload">上传</a></dd>
+              <dd lay-unselect><a href="#" onclick="MixlySerial.init();" id="operate_serial_read_btn" class="icon-link">串口</a></dd>
+              <dd lay-unselect><a href="#" onclick="MixlyStatusBar.show(0);" id="operate_layer_btn" class="icon-window">状态栏</a></dd>
           </dl>
       </li>
-      <li class="layui-nav-item" id="li_undo"><a href="#" onclick="UndoClick();" name="undo" id="undo_btn" title="undo(ctrl+z)" class="icon-ccw"></a></li>
-      <li class="layui-nav-item" id="li_redo"><a href="#" onclick="RedoClick();" name="redo" id="redo_btn" title="redo(ctrl+y)" class="icon-cw"></a></li>
-      <li class="layui-nav-item" id="li_serial_reset"><a href="#" onclick="firmware_init('esp32_s2');" id="serial_reset" class="icon-upload-1" ></a></li>
-      <li class="layui-nav-item" id="li_download"><a href="#" onclick="change_esp32_s2_download();" id="download_btn" class="icon-upload" ></a></li>
-      <li class="layui-nav-item" id="li_serial_read"><a href="#" id="serial_read_btn" class="icon-link" ></a></li>
-      <li class="layui-nav-item" id="li_layer"><a href="#" id="layer_btn" class="icon-window" onclick="status_bar_show(0);"></a></li>
+      <!--
+      <li class="layui-nav-item" lay-unselect>
+          <a href="javascript:;">其它系统</a>
+          <dl class="layui-nav-child">
+              <dd lay-unselect><a href="">邮件管理</a></dd>
+              <dd lay-unselect><a href="">消息管理</a></dd>
+              <dd lay-unselect><a href="">授权管理</a></dd>
+              <dd lay-unselect>
+                  <a href="javascript:;" class="third-class">其它系统2</a>
+                  <ol class="layui-nav-third-child">
+                      <li lay-unselect><a href="javascript:;">邮件管理2</a></li>
+                      <li lay-unselect><a href="javascript:;">消息管理2</a></li>
+                      <li lay-unselect><a href="javascript:;">授权管理2</a></li>
+                  </ol>
+              </dd>
+              <dd lay-unselect>
+                  <a href="javascript:;" class="third-class">其它系统3</a>
+                  <ol class="layui-nav-third-child">
+                      <li lay-unselect><a href="javascript:;">邮件管理3</a></li>
+                      <li lay-unselect><a href="javascript:;">消息管理3</a></li>
+                      <li lay-unselect><a href="javascript:;">授权管理3</a></li>
+                  </ol>
+              </dd>
+
+          </dl>
+      </li>
+      -->
+      <li class="layui-nav-item" id="li_undo" lay-unselect><a href="#" onclick="UndoClick();" name="undo" id="undo_btn" title="undo(ctrl+z)" class="icon-ccw"></a></li>
+      <li class="layui-nav-item" id="li_redo" lay-unselect><a href="#" onclick="RedoClick();" name="redo" id="redo_btn" title="redo(ctrl+y)" class="icon-cw"></a></li>
+      <li class="layui-nav-item" id="li_serial_reset" lay-unselect><a href="#" onclick="MixlyBurnUpload.initBurn();" id="serial_reset" class="icon-upload-1" ></a></li>
+      <li class="layui-nav-item" id="li_download" lay-unselect><a href="#" id="download_btn" onclick="MixlyBurnUpload.initUpload();" class="icon-upload" ></a></li>
+      <li class="layui-nav-item" id="li_serial_read" lay-unselect><a href="#" id="serial_read_btn" onclick="MixlySerial.init();" class="icon-link" ></a></li>
+      <li class="layui-nav-item" id="li_layer" lay-unselect><a href="#" id="layer_btn" class="icon-window" onclick="MixlyStatusBar.show(0);"></a></li>
       <a id="copyright" style="font-family:'YaHei Consolas Hybrid', 'Microsoft Yahei Light', 'Arial';font-size:12px;color:#fff;position: fixed;top: 22px;right: 375px;"></a>
-      <li class="layui-nav-item" style="float:right">
+      <li class="layui-nav-item" style="float:right" lay-unselect>
           <a href="javascript:;" id="setting_btn"></a>
           <dl class="layui-nav-child">
               <!-- 二级菜单 -->
-              <dd><a href="#" id="language_btn" class="icon-language" onclick="open_language(); "></a></dd>
-              <dd><a href="#" id="theme_btn" class="icon-art-gallery" onclick="open_theme();"></a></dd>
-              <dd><a href="#" id="changemod_btn" class="icon-code" value=1 onclick="changeMod();"></a></dd>
-              <dd><a href="#" id="import_libraries_btn" class="icon-download" onclick="open_lib();"></a></dd>
-              <dd><a href="#" id="manage_libraries_btn" class="icon-menu"></a></dd>
+              <dd lay-unselect><a href="#" id="language_btn" class="icon-language" onclick="open_language(); "></a></dd>
+              <dd lay-unselect><a href="#" id="theme_btn" class="icon-art-gallery" onclick="open_theme();"></a></dd>
+              <dd lay-unselect><a href="#" id="changemod_btn" class="icon-code" value=1 onclick="changeMod();"></a></dd>
+              <dd lay-unselect><a href="#" id="import_libraries_btn" class="icon-download" onclick="open_lib();"></a></dd>
+              <dd lay-unselect><a href="#" id="manage_libraries_btn" class="icon-menu"></a></dd>
           </dl>
       </li>
-      <li class="layui-nav-item" style="float:right">
+      <li class="layui-nav-item" style="float:right" lay-unselect>
           <a href="javascript:;" id="file_btn"></a>
           <dl class="layui-nav-child">
               <!-- 二级菜单 -->
-              <dd><a href="#" onclick="new_file()" id="new_btn" class="icon-doc-new"></a></dd>
-              <dd><a href="#" onclick="loadFile()" id="open_btn" class="icon-folder-open-empty"></a></dd>
+              <dd lay-unselect><a href="#" onclick="new_file()" id="new_btn" class="icon-doc-new"></a></dd>
+              <dd lay-unselect><a href="#" onclick="loadFile()" id="open_btn" class="icon-folder-open-empty"></a></dd>
           </dl>
       </li>
-      <li class="layui-nav-item" style="float:right">
+      <li class="layui-nav-item" style="float:right" lay-unselect>
           <a href="javascript:;" id="save_btn"></a>
           <dl class="layui-nav-child">
               <!-- 二级菜单 -->
-              <dd><a href="#" id="save_img_btn" class="icon-floppy" onclick="mixlyjs.saveBlockImg()"></a></dd>
-              <dd><a href="#" id="save_xml_btn" class="icon-floppy" onclick="save()"></a></dd>
-              <dd><a href="#" id="save_py_btn" class="icon-file-code" onclick="mixlyjs.savePyFileAs()"></a></dd>
+              <dd lay-unselect>
+                <a href="javascript:;" id="save_img_btn" class="third-class icon-floppy"></a>
+                <ol class="layui-nav-third-child">
+                    <li lay-unselect>
+                      <a href="#" onclick="mixlyjs.saveBlockImg()" class="icon-floppy">保存</a>
+                    </li>
+                    <li lay-unselect>
+                      <a href="#" onclick="mixlyjs.saveBlockImg()" class="icon-floppy">另存为</a>
+                    </li>
+                </ol>
+              </dd>
+              <dd lay-unselect>
+                <a href="javascript:;" id="save_xml_btn" class="third-class icon-floppy"></a>
+                <ol class="layui-nav-third-child">
+                    <li lay-unselect><a href="#" onclick="save()" class="icon-floppy">保存</a>
+                    </li>
+                    <li lay-unselect><a href="#" onclick="save()" class="icon-floppy">另存为</a>
+                    </li>
+                </ol>
+              </dd>
+              <dd lay-unselect>
+                <a href="javascript:;" id="save_py_btn" class="third-class icon-file-code"></a>
+                <ol class="layui-nav-third-child">
+                    <li lay-unselect>
+                      <a href="#" onclick="mixlyjs.savePyFileAs()" class="icon-file-code">保存</a>
+                    </li>
+                    <li lay-unselect>
+                      <a href="#" onclick="mixlyjs.savePyFileAs()" class="icon-file-code">另存为</a>
+                    </li>
+                </ol>
+              </dd>
           </dl>
       </li>
       <!-- a标签里不用写按钮名字,136行script段里通过id改名,为了多语言支持 -->
       <!-- 就是这块，不知道怎么把代码那三个部分加进来 -->
       <!-- a标签里不用写按钮名字,13行script段里通过id改名,为了多语言支持 -->
-      <li class="layui-nav-item"><select id="languageMenu" style="display:none"></select></li>
+      <li class="layui-nav-item" lay-unselect><select id="languageMenu" style="display:none"></select></li>
   </ul>
   <div id="web-serial-ui" style="display:none; margin:12px" align="center">
     <fieldset>
@@ -219,7 +276,7 @@
   </script>
   <div id="webusb-flashing" style="display:none; margin:12px" align="center">
     <progress id="webusb-flashing-progress"></progress>
-    <button id="webusb-cancel" onclick="webusb_cancel()">取消</button>
+    <button id="webusb-cancel" onclick="MixlyBurnUpload.CancelHalfway();">取消</button>
   </div>
   <div class="layui-form" id="serial-device-form" style="display: none;">
       <div class="layui-form-item">
@@ -230,26 +287,43 @@
       </div>
       <div class="layui-form-item">
           <div style="text-align:center;">
-              <button class="layui-btn layui-btn-normal" onclick="serial_port_operate_cancel()">取消</button>
-              <button class="layui-btn layui-btn-normal" onclick="serial_port_operate_start('esp32_s2')">确定</button>
+              <button class="layui-btn layui-btn-normal" onclick="MixlyBurnUpload.Cancel();">取消</button>
+              <button class="layui-btn layui-btn-normal" onclick="MixlyBurnUpload.initUploadWithDropdownBox();">确定</button>
           </div>
       </div>
   </div>
   <!--Mixly2.0 所用串口助手-->
   <div class="layui-form layui-form-pane" id="serial-form" style="display: none;">
-    <div class="layui-tab" lay-filter="serial" style="width: 700px;">
-      <ul class="layui-tab-title">
+    <div class="layui-tab" lay-filter="serial" style="width: 100%;height: 100%;margin-top: 0px;margin-bottom: 0px;position: relative;">
+      <ul class="layui-tab-title" style="position: absolute;left: 0px;top: 0px;height: 40px;right: 0px;">
         <li class="layui-this" lay-id="1">串口监视器</li>
         <li lay-id="2">串口可视化</li>
       </ul>
-      <div class="layui-tab-content">
+      <div class="layui-tab-content" style="position: absolute;left: 0px;top: 40px;bottom: 0px;right: 0px;overflow: auto;">
         <div class="layui-tab-item layui-show">
           <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">串口</label>
+            <div id="div_select_com" class="layui-input-inline" style="width:50%;clear:none;">
+              <select id="select_com" lay-verify="required"></select>
+            </div>
+            <div id="div_cb_cf_baud_rates" class="layui-input-inline" style="width:38%;clear:none;">
+              <select id="cb_cf_baud_rates">
+                <option value="9600">9600</option>
+                <option value="19200">19200</option>
+                <option value="28800">28800</option>
+                <option value="38400">38400</option>
+                <option value="57600">57600</option>
+                <option value="115200" selected>115200</option>
+              </select>
+            </div>
+            <button id="button_connect" onclick="MixlySerial.comOpenOrClose();" class="layui-btn layui-btn-normal" style="width:12%;">连接</button>
+          </div>
+          <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">发送数据</label>
-            <div class="layui-input-inline" style="width:80%;clear:none;">
+            <div class="layui-input-inline" style="width:70%;clear:none;">
               <input id="serial_write" type="text" name="title" placeholder="请输入内容" autocomplete="off" class="layui-input">
             </div>
-            <div id="div_send_data_with" class="layui-input-inline" style="width:10%;clear:none;">
+            <div id="div_send_data_with" class="layui-input-inline" style="width:18%;clear:none;">
               <select id="send_data_with">
                 <option value="no">no</option>
                 <option value="\n">\n</option>
@@ -257,7 +331,7 @@
                 <option value="\r\n" selected>\r\n</option>
               </select>
             </div>
-            <button id="serial_write_btn" onclick="serialWrite()" class="layui-btn layui-btn-normal" style="width:10%;">发送</button>
+            <button id="serial_write_btn" onclick="MixlySerial.write()" class="layui-btn layui-btn-normal" style="width:12%;">发送</button>
           </div>
           <div class="layui-form-item layui-form-text">
             <label class="layui-form-label" style="height: 44px;padding-top: 1px;padding-bottom: 1px;">
@@ -271,32 +345,16 @@
             </div>
           </div>
           <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">串口</label>
-            <div id="div_select_com" class="layui-input-inline" style="width:50%;clear:none;">
-              <select id="select_com" lay-verify="required"></select>
-            </div>
-            <div id="div_cb_cf_baud_rates" class="layui-input-inline" style="width:50%;clear:none;">
-              <select id="cb_cf_baud_rates">
-                <option value="9600">9600</option>
-                <option value="19200">19200</option>
-                <option value="28800">28800</option>
-                <option value="38400">38400</option>
-                <option value="57600">57600</option>
-                <option value="115200" selected>115200</option>
-              </select>
-            </div>
-          </div>
-          <div class="layui-form-item layui-form-text">
             <div style="text-align: center;"> 
-              <button id="serial_clear_btn" onclick="clearSerialContent()" class="layui-btn layui-btn-danger">清空</button>
-              <button id="serial_interrupt_btn" onclick="serialWrite_ctrl_c()" class="layui-btn layui-btn-danger">中断</button>
-              <button id="serial_reset_btn" onclick="serialWrite_ctrl_d()" class="layui-btn layui-btn-danger">复位</button>
+              <button id="serial_clear_btn" onclick="MixlySerial.clearContent()" class="layui-btn layui-btn-danger">清空</button>
+              <button id="serial_interrupt_btn" onclick="MixlySerial.writeCtrlC()" class="layui-btn layui-btn-danger">中断</button>
+              <button id="serial_reset_btn" onclick="MixlySerial.writeCtrlD()" class="layui-btn layui-btn-danger">复位</button>
             </div>
           </div>
 
         </div>
         <div class="layui-tab-item">
-          <div id="com_data_draw" style="width: 100%;height:85%;">
+          <div id="com_data_draw" style="width: 100%;height:100%;">
             
           </div>
         </div>
@@ -403,18 +461,7 @@
       </tr>
    
   </table>
-  <script>
-      div_inout_middle_text = ace.edit("div_inout_middle");
-      //editor_side_code1.setTheme(window.conf.lastEditorTheme);
-      div_inout_middle_text.getSession().setMode("ace/mode/python");
-      div_inout_middle_text.setFontSize(12);
-      div_inout_middle_text.setReadOnly(false);
-      div_inout_middle_text.setScrollSpeed(0.3);
-      div_inout_middle_text.setShowPrintMargin(false);
-      div_inout_middle_text.renderer.setShowGutter(false);
-  </script>
-  <script type="text/javascript" src="serial.js"></script>
-  <script type="text/javascript" src="serial_echarts.js"></script>
+  <script type="text/javascript" src="status-bar.js"></script>
   <script src="python-main.js" type="application/javascript"></script>
   <div id="content_blocks" class="content"></div>
   <div id="content_arduino" class="content" wrap="off"></div>
