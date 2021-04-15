@@ -548,6 +548,7 @@ function show_tag(){
     tag_select('operate_stop_btn', 'stop');
     tag_select('operate_layer_btn', 'status_bar_show');
     tag_select('operate_btn', 'operate');
+    tag_select('save_as_btn', 'save_as');
 }
 
 function tag_select(id, msg) {

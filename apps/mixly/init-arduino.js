@@ -530,7 +530,7 @@ function show_tag(){
     tag_select('language_btn', 'language');
     tag_select('theme_btn', 'theme');
     tag_select('changemod_btn', 'tab_blocks');
-    tag_select('arduino_serial_btn', 'catSerialPort');
+    tag_select('serial_read_btn', 'catSerialPort');
     tag_select('arduino_compile_btn', 'compile');
     tag_select('arduino_download_btn', 'upload');
     tag_select('layer_btn', 'status_bar_show');
@@ -547,6 +547,7 @@ function show_tag(){
     tag_select('import_libraries_btn', 'import_libraries');
     tag_select('manage_libraries_btn', 'manage_libraries');
     tag_select('change_board_btn', 'change_board');
+    tag_select('save_as_btn', 'save_as');
 }
 
 function tag_select(id, msg) {

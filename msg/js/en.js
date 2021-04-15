@@ -87,7 +87,7 @@ var MSG = {
     new: "New",
     open: "Open",
     save: "Save",
-    save_blocks: "Save XML",
+    save_blocks: "Save MIX",
     save_py: "Save PY",
     save_ino: "Save INO",
     save_img: "Save PNG",
@@ -112,7 +112,8 @@ var MSG = {
     compile: "Compile",
     import_libraries: "Import",
     manage_libraries: "Manager",
-    change_board: "Switch"
+    change_board: "Switch",
+    save_as: "Save as"
 };
 Blockly.Msg.ADD_COMMENT = "Add Comment";
 Blockly.Msg.AUTH = "Please authorize this app to enable your work to be saved and to allow it to be shared by you.";

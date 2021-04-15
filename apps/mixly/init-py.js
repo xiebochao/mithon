@@ -578,6 +578,7 @@ function show_tag(){
     tag_select('import_libraries_btn', 'import_libraries');
     tag_select('manage_libraries_btn', 'manage_libraries');
     tag_select('change_board_btn', 'change_board');
+    tag_select('save_as_btn', 'save_as');
 }
 
 function tag_select(id, msg) {

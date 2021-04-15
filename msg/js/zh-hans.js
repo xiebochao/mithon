@@ -87,7 +87,7 @@ var MSG = {
     new: "新建",
     open: "打开",
     save: "保存",
-    save_blocks: "保存XML",
+    save_blocks: "保存MIX",
     save_py: "保存PY",
     save_ino: "保存INO",
     save_img: "保存图片",
@@ -114,7 +114,8 @@ var MSG = {
     compile: "编译",
     import_libraries: "导入库",
     manage_libraries: "管理库",
-    change_board: "切换板卡"
+    change_board: "切换板卡",
+    save_as: "另存为"
 };
 Blockly.Msg.ADD_COMMENT = "添加注释";
 Blockly.Msg.AUTH = "请授权这个应用程序以保存您的作品并共享。";
