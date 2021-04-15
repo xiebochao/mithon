@@ -24,6 +24,22 @@ var mixly_board = [
 	        ],
 	        "filePath": "\\hexbuild\\firmware.hex",
 	        "pyCode": false
+	    },
+	    "nav": {
+	    	"upload": true,
+	    	"save": {
+	    		"img": true,
+	    		"py": true,
+	    		"hex": true
+	    	}
+	    },
+	    "serial": {
+	    	"ctrlCBtn": true,
+	    	"ctrlDBtn": true,
+	    	"baudRates": 115200,
+	    	"yMax": 100,
+	    	"yMin": 0,
+	    	"pointNum": 100
 	    }
 		//myBlock: "MicroPython[NRF51822_mithon]",
         //css: "color_mithon.css",
@@ -101,6 +117,22 @@ var mixly_board = [
 	        ],
 	        "filePath": "{path}\\cpBuild\\code.py",
 	        "pyCode": true
+	    },
+	    "nav": {
+	    	"burn": true,
+	    	"upload": true,
+	    	"save": {
+	    		"img": true,
+	    		"py": true
+	    	}
+	    },
+	    "serial": {
+	    	"ctrlCBtn": true,
+	    	"ctrlDBtn": true,
+	    	"baudRates": 115200,
+	    	"yMax": 100,
+	    	"yMin": 0,
+	    	"pointNum": 100
 	    }
 	},{
 		"BoardImg": "./files/webpy.png",
@@ -108,7 +140,13 @@ var mixly_board = [
 		"BoardDescription":"Code with Python 3",
 		"BoardIndex": "./apps/mixly/index_board_mixpy.html",
 		"environment": 0,
-		"ThirdPartyBoard": false
+		"ThirdPartyBoard": false,
+	    "nav": {
+	    	"save": {
+	    		"img": true,
+	    		"py": true
+	    	}
+	    }
 	},{
 		"BoardImg": "./files/webpy.png",
 		"BoardName": "Python 3",

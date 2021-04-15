@@ -105,8 +105,8 @@ MixlyPython.play = function () {
 		    shell.stdout.setEncoding('binary');  
 			shell.stdout.on('data', function (data) {
 				try {
-					data = message_decode(data);
 					data = decode(iconv.decode(iconv.encode(data, "iso-8859-1"), 'gbk'));
+					data = message_decode(data);
 					data = data.replace(/(?<![\w+])pyinput.input\(/g, "input(");
 				} catch(e) {
 					console.log(e);
@@ -125,7 +125,6 @@ MixlyPython.play = function () {
 		    //程序运行出错时执行
 			shell.stderr.setEncoding('binary');  
 		    shell.stderr.on('data', function (err) {
-		    	err = message_decode(err);
 				console.log('stderr: ' + err);
 				try {
 					err = err.replace(/(?<![\w+])pyinput.input\(/g, "input(");
@@ -134,7 +133,9 @@ MixlyPython.play = function () {
 				}
 			  	try {
 			  		MixlyStatusBar.addValue(iconv.decode(iconv.encode(err, "iso-8859-1"), 'gbk'), false);
+			  		err = message_decode(err);
 			  	} catch(e) {
+			  		err = message_decode(err);
 			  		MixlyStatusBar.addValue(err, false);
 			  	}
 		  	    MixlyStatusBar.scrollToTheBottom();

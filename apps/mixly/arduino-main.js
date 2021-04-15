@@ -50,7 +50,7 @@ MixlyArduino.cancel = function () {
 MixlyArduino.compile = function () {
 	var boardType = $('#boards-type option:selected').val();
 	MixlyArduino.COMPILING = true;
-	status_bar_show(1);
+	MixlyStatusBar.show(1);
 	layui.use('layer', function(){
 	  	var layer = layui.layer;
 		layer.open({

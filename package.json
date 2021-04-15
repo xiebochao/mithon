@@ -1,14 +1,14 @@
 {
   "name": "Mixly 2.0",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Mixly",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build32": "electron-packager ./ Mixly --platform=win32 --arch=ia32  --out=./app --app-version=1.0.0 --overwrite --icon=./media/mixly.ico --msvs_version=2013",
-    "build64": "electron-packager ./ Mixly --platform=win32 --arch=x64  --out=./app --app-version=1.0.0 --overwrite --icon=./media/mixly.ico --msvs_version=2013",
-    "buildmac": "electron-packager ./ Mixly --platform=darwin  --out=./app --app-version=1.0.0 --overwrite --icon=./media/mixly.icns",
-    "buildlinux": "electron-packager ./ Mixly --platform=linux  --out=./app --app-version=1.0.0 --overwrite --icon=./media/mixly.png"
+    "build32": "electron-packager ./ Mixly --platform=win32 --arch=ia32  --out=./app --app-version=2.0.0 --overwrite --icon=./media/mixly.ico --msvs_version=2013",
+    "build64": "electron-packager ./ Mixly --platform=win32 --arch=x64  --out=./app --app-version=2.0.0 --overwrite --icon=./media/mixly.ico --msvs_version=2013",
+    "buildmac": "electron-packager ./ Mixly --platform=darwin  --out=./app --app-version=2.0.0 --overwrite --icon=./media/mixly.icns",
+    "buildlinux": "electron-packager ./ Mixly --platform=linux  --out=./app --app-version=2.0.0 --overwrite --icon=./media/mixly.png"
   },
   "author": "Mixly",
   "license": "MIT",
@@ -21,6 +21,7 @@
     "bootstrap": "^4.6.0",
     "cuid": "^2.1.8",
     "echarts": "^5.0.2",
+    "highcharts": "^9.0.1",
     "iconv-lite": "^0.6.2",
     "jquery": "^3.5.1",
     "lodash": "^4.17.20",
