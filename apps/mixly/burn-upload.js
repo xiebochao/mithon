@@ -93,12 +93,13 @@ MixlyBurnUpload.setUploadConfig = function () {
 	}
 	if (MixlyUrl.BOARD_CONFIG.hasOwnProperty("Burn.command")) {
 		MixlyBurnUpload.burnCommand = MixlyUrl.BOARD_CONFIG["Burn.command"];
-		MixlyBurnUpload.burnCommand = replaceWithReg(MixlyBurnUpload.burnCommand, "python {path}\\mixpyBuild\\win_python3\\Lib\\site-packages\\esptool.py ", "esptool");
+		MixlyBurnUpload.burnCommand = replaceWithReg(MixlyBurnUpload.burnCommand, "{path}\\mixpyBuild\\win_python3\\python3.exe {path}\\mixpyBuild\\win_python3\\Lib\\site-packages\\esptool.py ", "esptool");
 		MixlyBurnUpload.burnCommand = replaceWithReg(MixlyBurnUpload.burnCommand, mixly_20_path, "path");
 	}
 	if (MixlyUrl.BOARD_CONFIG.hasOwnProperty("Upload.command")) {
 		MixlyBurnUpload.uploadCommand = MixlyUrl.BOARD_CONFIG["Upload.command"];
-		MixlyBurnUpload.uploadCommand = replaceWithReg(MixlyBurnUpload.uploadCommand, "python {path}\\mixpyBuild\\win_python3\\Lib\\site-packages\\ampy\\cli.py ", "ampy");
+		MixlyBurnUpload.uploadCommand = replaceWithReg(MixlyBurnUpload.uploadCommand, "{path}\\mixpyBuild\\win_python3\\python3.exe {path}\\mixpyBuild\\win_python3\\Lib\\site-packages\\ampy\\cli.py ", "ampy");
+		console.log(MixlyBurnUpload.uploadCommand);
 		MixlyBurnUpload.uploadCommand = replaceWithReg(MixlyBurnUpload.uploadCommand, mixly_20_path, "path");
 		
 	}
@@ -488,6 +489,46 @@ MixlyBurnUpload.uploadWithDropdownBox = function (path, pyCode, comSelect) {
         });
     }); 
 
+	if (MixlySerial.serialPort && MixlySerial.serialPort.isOpen) {
+  		MixlySerial.serialPort.set({
+  			brk: false,
+  			cts: false,
+  			dsr: false,
+  			dtr: false,
+  			rts: true
+  		}, error => {
+  			if (MixlySerial.serialPort && MixlySerial.serialPort.isOpen) {
+				MixlySerial.serialPort.close();
+			}
+  		});
+  	}
+
+  	/*
+  	if (MixlySerial.serialPort && MixlySerial.serialPort.isOpen) {
+  		MixlySerial.serialPort.set({
+  			brk : false,
+  			cts: false,
+  			dsr: false,
+  			dtr: false,
+  			rts: true
+  		}, error => {
+  			MixlySerial.serialPort.set({
+	  			brk : false,
+	  			cts: false,
+	  			dsr: false,
+	  			dtr: false,
+	  			rts: false
+	  		}, error => {
+	  			console.log(error);
+		  		MixlySerial.serialPort.get((error, data) => {
+		  			console.log(error);
+		  			console.log(data);
+		  		})
+	  		});
+  		});
+  	}
+  	*/
+
     var code = "";
 	if (pyCode) {
 		code = MixlyBurnUpload.getPy();
@@ -547,26 +588,30 @@ MixlyBurnUpload.uploadWithDropdownBox = function (path, pyCode, comSelect) {
 					}); 
 				}
 			} else {
-				file_save.copyFile(path, device_select_name+"\\" + basename(path), (err) => { 
-					layer.closeAll('page');
-				    document.getElementById('webusb-flashing').style.display = 'none';
-				    if (err) { 
-				  	    layer.msg('写文件出错了，错误是：'+err, {
-			                time: 1000
-			            });
-				    } else if(MixlyBurnUpload.UPLOADING) {
-				    	layer.msg('上传成功!', {
-				            time: 1000
-				        });
-						MixlyStatusBar.show(1);
-						MixlySerial.refreshSerialList(comSelect);
-						setTimeout(function () {
-							MixlySerial.connectCom();
-							MixlySerial.writeCtrlD();
-						}, 1000);
-				    }
-				    MixlyBurnUpload.UPLOADING = false;
-				}); 
+				if (MixlyBurnUpload.uploadVolumeName == "") {
+					MixlyBurnUpload.runCommand(false, device_select_name, MixlySerial.UPLOAD_COM_SELECT);
+				} else {
+					file_save.copyFile(path, device_select_name+"\\" + basename(path), (err) => { 
+						layer.closeAll('page');
+					    document.getElementById('webusb-flashing').style.display = 'none';
+					    if (err) { 
+					  	    layer.msg('写文件出错了，错误是：'+err, {
+				                time: 1000
+				            });
+					    } else if(MixlyBurnUpload.UPLOADING) {
+					    	layer.msg('上传成功!', {
+					            time: 1000
+					        });
+							MixlyStatusBar.show(1);
+							MixlySerial.refreshSerialList(comSelect);
+							setTimeout(function () {
+								MixlySerial.connectCom();
+								MixlySerial.writeCtrlD();
+							}, 1000);
+					    }
+					    MixlyBurnUpload.UPLOADING = false;
+					}); 
+				}
 			}
 			
 		}
@@ -586,12 +631,12 @@ MixlyBurnUpload.getPy = function () {
 		code = Blockly.Python.workspaceToCode(Blockly.mainWorkspace) || '';
 	}
 	//code = code_head+code
-	code = code.replace('from mixpy import math_map','')
-	code = code.replace('from mixpy import math_mean','')
-	code = code.replace('from mixpy import math_median','')
-	code = code.replace('from mixpy import math_modes','')
-	code = code.replace('from mixpy import math_standard_deviation','')
-	code = code.replace('from mixpy import lists_sort','')
+	//code = code.replace('from mixpy import math_map','')
+	//code = code.replace('from mixpy import math_mean','')
+	//code = code.replace('from mixpy import math_median','')
+	//code = code.replace('from mixpy import math_modes','')
+	//code = code.replace('from mixpy import math_standard_deviation','')
+	//code = code.replace('from mixpy import lists_sort','')
 	return code;
 }
 
@@ -775,6 +820,9 @@ MixlyBurnUpload.initUploadWithDropdownBox = function () {
 MixlyBurnUpload.esptoolBurnWithCmd = function (com) {
 	MixlyStatusBar.show(1);
   	MixlyBurnUpload.BURNING = true;
+  	if (MixlySerial.serialPort && MixlySerial.serialPort.isOpen) {
+		MixlySerial.serialPort.close();
+	}
 	MixlyBurnUpload.runCommand(true, com, MixlySerial.BURN_COM_SELECT);
 }
 
@@ -788,6 +836,19 @@ MixlyBurnUpload.ampyUploadWithCmd = function (com) {
 	var code = MixlyBurnUpload.getPy();
 	MixlyStatusBar.show(1);
   	MixlyBurnUpload.UPLOADING = true;
+  	if (MixlySerial.serialPort && MixlySerial.serialPort.isOpen) {
+  		MixlySerial.serialPort.set({
+  			brk: false,
+  			cts: false,
+  			dsr: false,
+  			dtr: false,
+  			rts: true
+  		}, error => {
+  			if (MixlySerial.serialPort && MixlySerial.serialPort.isOpen) {
+				MixlySerial.serialPort.close();
+			}
+  		});
+  	}
   	file_save.writeFile(MixlyBurnUpload.uploadFilePath, code, 'utf8', function(err){
 	    //如果err=null，表示文件使用成功，否则，表示希尔文件失败
 	    if (err) {
@@ -800,6 +861,9 @@ MixlyBurnUpload.ampyUploadWithCmd = function (com) {
 	        MixlyBurnUpload.UPLOADING = false;
 	        return;
 	    } else {
+	    	if (MixlySerial.serialPort && MixlySerial.serialPort.isOpen) {
+				MixlySerial.serialPort.close();
+			}
 	    	MixlyBurnUpload.runCommand(false, com, MixlySerial.UPLOAD_COM_SELECT);
 		}
 	})
@@ -834,6 +898,7 @@ MixlyBurnUpload.runCommand = function (burn, com, comSelect) {
 	        });
 	        if (comSelect && !burn) {
 				MixlySerial.refreshSerialList(comSelect);
+				MixlyStatusBar.show(1);
 				setTimeout(function () {
 				  	MixlySerial.connectCom();
 				  	MixlySerial.writeCtrlD();
