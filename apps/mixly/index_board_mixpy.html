@@ -5,6 +5,9 @@
     <title>Mixly 2.0 For MixPY</title>
     <link rel="shortcut icon" type="image/ico" href="../../files/mixly.ico">
     <script type="text/javascript" src="environment.js"></script>
+    <script type="text/javascript" src="board-config.js"></script>
+    <script type="text/javascript" src="file.js"></script>
+    <script type="text/javascript" src="title.js"></script>
     <script type="text/javascript" src="../../blockly_compressed_mithon.js"></script>
     <script type="text/javascript" src="../../core/base.js"></script>
     <!--<script type="text/javascript" src="../../blocks_compressed.js"></script>-->
@@ -173,10 +176,10 @@
         <li class="layui-nav-item" style="float:right" lay-unselect>
             <a href="javascript:;" id="save_btn"></a>
             <dl class="layui-nav-child">
-                <!-- 二级菜单 -->
-                <dd lay-unselect><a href="#" id="save_img_btn" class="icon-floppy" onclick="mixlyjs.saveBlockImg()"></a></dd>
-                <dd lay-unselect><a href="#" id="save_xml_btn" class="icon-floppy" onclick="save()"></a></dd>
-                <dd lay-unselect><a href="#" id="save_py_btn" class="icon-file-code" onclick="mixlyjs.savePyFileAs()"></a></dd>
+              <dd lay-unselect><a href="#" id="save_xml_btn" class="icon-floppy" onclick="MixlyFile.saveMix()"></a></dd>
+              <dd lay-unselect><a href="#" id="save_py_btn" class="icon-file-code" onclick="MixlyFile.savePy()"></a></dd>
+              <dd lay-unselect><a href="#" id="save_img_btn" class="icon-floppy" onclick="MixlyFile.saveImg()"></a></dd>
+              <dd lay-unselect><a href="#" id="save_as_btn" class="icon-floppy" onclick="MixlyFile.saveAs(null, '另存为', '')"></a></dd>
             </dl>
         </li>
         <!-- a标签里不用写按钮名字,136行script段里通过id改名,为了多语言支持 -->

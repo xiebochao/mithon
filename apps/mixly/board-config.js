@@ -55,7 +55,14 @@ MixlyUrl.getQueryObject = function (url) {
 * @ return object
 */
 MixlyUrl.getBoardConfig = function () {
-    var href_data = decodeURIComponent(window.location.href);
+    var href = "";
+    try {
+        href = window.location.href.replaceAll("#", "");
+    } catch(e) {
+        console.log(e);
+        href = window.location.href;
+    }
+    var href_data = decodeURIComponent(href);
     href_data = href_data.substring(href_data.indexOf("?")+1, href_data.length);
     var board_config = MixlyUrl.getUrlVars(href_data);
     return board_config;

@@ -6,10 +6,11 @@
   <link rel="shortcut icon" type="image/ico" href="../../files/mixly.ico">
   <script type="text/javascript" src="environment.js"></script>
   <script type="text/javascript" src="board-config.js"></script>
-  <script type="text/javascript" src="client-libs.js"></script>
   <script type="text/javascript" src="burn-upload.js"></script>
+  <script type="text/javascript" src="file.js"></script>
+  <script type="text/javascript" src="title.js"></script>
+  <script type="text/javascript" src="serial-highcharts.js"></script>
   <script type="text/javascript" src="serial-new.js"></script>
-  <script type="text/javascript" src="serial-new-echarts.js"></script>
   <script type="text/javascript" src="../../blockly_compressed_mithon.js"></script>
   <script type="text/javascript" src="../../core/base.js"></script>
   <script type="text/javascript" src="../../python_compressed.js"></script>
@@ -123,6 +124,7 @@
   <!--
   <script src="renderer.js"></script>
   -->
+  
   <script type="text/javascript" src="dap.umd.js"></script>
   <script type="text/javascript" src="nav.js"></script>
   <script src="init-py.js"></script>
@@ -137,8 +139,8 @@
           <input type="text" placeholder="" value="" class="layui-input" id="filename_input" style="z-index:9999;height:33px;">
       </div>
   </div>
-  <ul id="nav" class="layui-nav layui-bg-green" lay-filter="navBar" style="/*min-width: 800px;*/z-index:999;">
-      <li class="layui-nav-item" lay-unselect><a id="mixly2.0-path" href="../../index.html" onclick="reloadBlock();" style="color:white; text-align:center; vertical-align: middle;font-size: 18px;">Mixly</a></li>
+  <ul id="nav" class="layui-nav layui-bg-green" lay-filter="navBar" style="/*min-width: 800px;*/max-height:60px;z-index:999;">
+      <li class="layui-nav-item" lay-unselect><a id="mixly2.0-path" href="../../index.html" style="color:white; text-align:center; vertical-align: middle;font-size: 18px;">Mixly</a></li>
       <li style="display:none" id="tab_blocks" lay-unselect></li>
       <li style="display:none" id="tab_arduino" lay-unselect></li>
       <li style="display:none" id="tab_xml"></li>
@@ -215,19 +217,19 @@
                 <a href="javascript:;" id="save_img_btn" class="third-class icon-floppy"></a>
                 <ol class="layui-nav-third-child">
                     <li lay-unselect>
-                      <a href="#" onclick="mixlyjs.saveBlockImg()" class="icon-floppy">保存</a>
+                      <a href="#" onclick="MixlyFile.saveImg()" class="icon-floppy">保存</a>
                     </li>
                     <li lay-unselect>
-                      <a href="#" onclick="mixlyjs.saveBlockImg()" class="icon-floppy">另存为</a>
+                      <a href="#" onclick="MixlyFile.saveAsImg()" class="icon-floppy">另存为</a>
                     </li>
                 </ol>
               </dd>
               <dd lay-unselect>
                 <a href="javascript:;" id="save_xml_btn" class="third-class icon-floppy"></a>
                 <ol class="layui-nav-third-child">
-                    <li lay-unselect><a href="#" onclick="save()" class="icon-floppy">保存</a>
+                    <li lay-unselect><a href="#" onclick="MixlyFile.saveMix()" class="icon-floppy">保存</a>
                     </li>
-                    <li lay-unselect><a href="#" onclick="save()" class="icon-floppy">另存为</a>
+                    <li lay-unselect><a href="#" onclick="MixlyFile.saveAsMix()" class="icon-floppy">另存为</a>
                     </li>
                 </ol>
               </dd>
@@ -235,10 +237,10 @@
                 <a href="javascript:;" id="save_py_btn" class="third-class icon-file-code"></a>
                 <ol class="layui-nav-third-child">
                     <li lay-unselect>
-                      <a href="#" onclick="mixlyjs.savePyFileAs()" class="icon-file-code">保存</a>
+                      <a href="#" onclick="MixlyFile.savePy()" class="icon-file-code">保存</a>
                     </li>
                     <li lay-unselect>
-                      <a href="#" onclick="mixlyjs.savePyFileAs()" class="icon-file-code">另存为</a>
+                      <a href="#" onclick="MixlyFile.saveAsPy()" class="icon-file-code">另存为</a>
                     </li>
                 </ol>
               </dd>
@@ -249,6 +251,7 @@
       <!-- a标签里不用写按钮名字,13行script段里通过id改名,为了多语言支持 -->
       <li class="layui-nav-item" lay-unselect><select id="languageMenu" style="display:none"></select></li>
   </ul>
+  <script type="text/javascript" src="init-nav.js"></script>
   <div id="web-serial-ui" style="display:none; margin:12px" align="center">
     <fieldset>
       <legend>串口选择</legend>
@@ -354,13 +357,51 @@
 
         </div>
         <div class="layui-tab-item">
-          <div id="com_data_draw" style="width: 100%;height:100%;">
-            
+          <div class="layui-form-item layui-form-text">
+            <div class="layui-input-inline" style="width:15%;clear:none;">
+              <label class="layui-form-label">最小</label>
+              <input id="serial-y-min" type="text" name="title" autocomplete="off" class="layui-input" value="0">
+            </div>
+            <div class="layui-input-inline" style="width:15%;clear:none;">
+              <label class="layui-form-label">最大</label>
+              <input id="serial-y-max" type="text" name="title" autocomplete="off" class="layui-input" value="100">
+            </div>
+            <div id="div_serial_point_num" class="layui-input-inline" style="width:15%;clear:none;">
+              <label class="layui-form-label">点数</label>
+              <select id="serial-point-num">
+                <option value="50">50</option>
+                <option value="100" selected>100</option>
+                <option value="150">150</option>
+                <option value="200">200</option>
+                <option value="250">250</option>
+                <option value="300">300</option>
+              </select>
+            </div>
+            <div class="layui-input-inline" style="width:55%;clear:none;">
+              <label class="layui-form-label">发送数据</label>
+              <div class="layui-input-inline" style="width:50%;clear:none;">
+                <input id="serial_write_string" type="text" name="title" placeholder="请输入内容" autocomplete="off" class="layui-input">
+              </div>
+              <div id="div_send_string_data_with" class="layui-input-inline" style="width:25%;clear:none;">
+                <select id="send_string_data_with">
+                  <option value="no">no</option>
+                  <option value="\n">\n</option>
+                  <option value="\r">\r</option>
+                  <option value="\r\n" selected>\r\n</option>
+                </select>
+              </div>
+              <button id="serial_write_string_btn" onclick="MixlySerial.writeString()" class="layui-btn layui-btn-normal" style="width:25%;">发送</button>
+            </div>
+          </div>
+          <div class="layui-form-item layui-form-text" style="padding-top: 25px;">
+            <div id="com_data_draw" style="width: 100%;">
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <script type="text/javascript" src="init-serial.js"></script>
   <!--web 所用串口助手-->
   <div class="site-text site-block" id="web-serial-form" style="display: none;">
       <div style="margin-top: 20px;"></div>
