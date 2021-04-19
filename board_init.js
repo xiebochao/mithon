@@ -114,7 +114,7 @@ function mkdirsSync(dirname) {
       return true;
     } else {  
         if (mkdirsSync(path.dirname(dirname))) {  
-            console.log("mkdirsSync = " + dirname);
+            //console.log("mkdirsSync = " + dirname);
             fs.mkdirSync(dirname);
             return true;
         }  
@@ -142,19 +142,19 @@ function _copy(src, dist) {
  */
 function copyDir(src,dist){
   var b = fs.existsSync(dist)
-  console.log("dist = " + dist)
+  //console.log("dist = " + dist)
   if(!b){
-    console.log("mk dist = ",dist)
+    //console.log("mk dist = ",dist)
     mkdirsSync(dist);//创建目录
   }
-  console.log("_copy start")
+  //console.log("_copy start")
   _copy(src,dist);
 }
 
 function createDocs(src,dist,callback){
-  console.log("createDocs...")
+  //console.log("createDocs...")
   copyDir(src,dist);
-  console.log("copyDir finish exec callback")
+  //console.log("copyDir finish exec callback")
   if(callback){
     callback();
   }
