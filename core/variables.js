@@ -149,6 +149,7 @@ Blockly.Variables.flyoutCategory = function(workspace) {
     //if(i==0&&!(Blockly.Arduino.definitions_['var_declare'+'item'])){
 		//  continue;
 	  //}
+    
     if (Blockly.Blocks['variables_set']) {
       var block = Blockly.utils.xml.createElement('block');
       block.setAttribute('type', 'variables_set');
@@ -157,6 +158,8 @@ Blockly.Variables.flyoutCategory = function(workspace) {
       }
       var field = Blockly.utils.xml.createElement('field', null, variableList[i]);
       field.setAttribute('name', 'VAR');
+      var name = Blockly.utils.xml.createTextNode(variableList[i]);
+      field.appendChild(name);
       block.appendChild(field);
       xmlList.push(block);
     }
@@ -168,6 +171,8 @@ Blockly.Variables.flyoutCategory = function(workspace) {
       }
       var field = Blockly.utils.xml.createElement('field', null, variableList[i]);
       field.setAttribute('name', 'VAR');
+      var name = Blockly.utils.xml.createTextNode(variableList[i]);
+      field.appendChild(name);
       block.appendChild(field);
       xmlList.push(block);
     }

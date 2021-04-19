@@ -1,5 +1,5 @@
 const { spawn } = require('child_process');
-
+var iconv = require('iconv-lite');
 var arduino_shell = null;
 
 var MixlyArduino = {};
@@ -32,12 +32,14 @@ MixlyArduino.cancel = function () {
 		layer.msg('已取消编译', {
 	        time: 1000
 	    });
-	    MixlyStatusBar.addValue("==已取消编译==\n", false);
+	    MixlyStatusBar.addValue("==已取消编译==\n", true);
+	    MixlyArduino.COMPILING = false;
 	} else {
 		layer.msg('已取消上传', {
 	        time: 1000
 	    });
-	    MixlyStatusBar.addValue("==已取消上传==\n", false);
+	    MixlyStatusBar.addValue("==已取消上传==\n", true);
+	    MixlyArduino.UPLOADING = false;
 	}
 	MixlyStatusBar.scrollToTheBottom();
 }
@@ -49,7 +51,11 @@ MixlyArduino.cancel = function () {
 */
 MixlyArduino.compile = function () {
 	var boardType = $('#boards-type option:selected').val();
+	if (MixlySerial.serialPort && MixlySerial.serialPort.isOpen) {
+    	MixlySerial.serialPort.close();
+  	}
 	MixlyArduino.COMPILING = true;
+	MixlyArduino.UPLOADING = false;
 	MixlyStatusBar.show(1);
 	layui.use('layer', function(){
 	  	var layer = layui.layer;
@@ -63,8 +69,11 @@ MixlyArduino.compile = function () {
 			}
 		});
 	}); 
-	MixlyStatusBar.setValue("编译中...", true);
-	MixlyArduino.runCmd(mixly_20_path + "\\arduino\\arduino_debug --pref build.path="+mixly_20_path+"\\mixlyBuild --verbose --board "+boardType+" --verify " + mixly_20_path + "\\testArduino\\testArduino.ino");
+	setTimeout(function() {
+		MixlyStatusBar.setValue("编译中...", true);
+		//MixlyArduino.runCmd(mixly_20_path + "\\arduino\\arduino_debug --pref build.path="+mixly_20_path+"\\mixlyBuild --verbose --board "+boardType+" --verify " + mixly_20_path + "\\testArduino\\testArduino.ino");
+		MixlyArduino.runCmd(mixly_20_path + "\\arduino-cli\\arduino-cli compile -b "+boardType+" --config-file " + mixly_20_path + "\\arduino-cli\\arduino-cli.yaml --libraries " + mixly_20_path + "\\arduino-cli\\libraries --build-path "+mixly_20_path+"\\mixlyBuild --verbose " + mixly_20_path + "\\testArduino\\testArduino.ino");
+	}, 100);
 }
 
 /**
@@ -78,6 +87,7 @@ MixlyArduino.upload = function () {
     	MixlySerial.serialPort.close();
   	}
 	MixlyArduino.COMPILING = false;
+	MixlyArduino.UPLOADING = true;
 	MixlySerial.initSerialList("all", ports=>{
       	var form = layui.form;
 		const $devNames = $('#select_serial_device');
@@ -113,9 +123,10 @@ MixlyArduino.upload = function () {
 	          	}
 	        });
 			MixlyStatusBar.show(1);
-			MixlyStatusBar.setValue("上传中...\n", true);
+			MixlyStatusBar.setValue("上传中...", true);
 			var device_select_name = $('#select_serial_device option:selected').val();
-			MixlyArduino.runCmd(mixly_20_path + "\\arduino\\arduino_debug --pref build.path="+mixly_20_path+"\\mixlyBuild --verbose --board "+boardType+" --port " + device_select_name + " --upload " + mixly_20_path + "\\testArduino\\testArduino.ino");
+			//MixlyArduino.runCmd(mixly_20_path + "\\arduino\\arduino_debug --pref build.path="+mixly_20_path+"\\mixlyBuild --verbose --board "+boardType+" --port " + device_select_name + " --upload " + mixly_20_path + "\\testArduino\\testArduino.ino");
+			MixlyArduino.runCmd(mixly_20_path + "\\arduino-cli\\arduino-cli compile -b "+boardType+" --upload -p "+device_select_name+" --config-file " + mixly_20_path + "\\arduino-cli\\arduino-cli.yaml --libraries " + mixly_20_path + "\\arduino-cli\\libraries --build-path "+mixly_20_path+"\\mixlyBuild --verbose " + mixly_20_path + "\\testArduino\\testArduino.ino");
 		} else {
 			layui.use(['layer','form'], function(){
 			  	var layer = layui.layer;
@@ -174,6 +185,7 @@ MixlyArduino.uploadStart = function () {
 MixlyArduino.uploadCancel = function () {
 	layer.closeAll('page');
 	document.getElementById('serial-device-form').style.display = 'none';
+	MixlyArduino.UPLOADING = false;
 	layer.msg('已取消上传', {
         time: 1000
     });
@@ -201,6 +213,7 @@ MixlyArduino.runCmd = function (cmd) {
     		layer.msg('写文件出错了，错误是：'+err, {
 	      		time: 1000
 	    	});
+	    	MixlyStatusBar.addValue(err, true);
       	} else {
       		/*
 	    	download_shell = child_process.exec(mixly_20_path + "\\arduino\\arduino_debug --pref build.path="+mixly_20_path+"\\mixlyBuild --verbose --board arduino:avr:uno --verify " + mixly_20_path + "\\testArduino\\testArduino.ino",function(error,stdout,stderr){
@@ -232,71 +245,72 @@ MixlyArduino.runCmd = function (cmd) {
 		    		layer.msg('写文件出错了，错误是：'+err, {
 			      		time: 1000
 			    	});
+			    	MixlyStatusBar.addValue(err, true);
 		      	} else {
+		      		var startTime = Number(new Date());
 			    	arduino_shell = spawn(mixly_20_path + "\\arduino\\operation.cmd");
-			    	MixlyArduino.nowStatusBarData = MixlyStatusBar.getValue();
-			    	if (arduino_shell)
-			    		MixlyArduino.statusBarUpdate = setInterval(MixlyArduino.statusBarRefresh, 100);
+			    	
 					arduino_shell.stdout.on('data', (data) => {
-			        	MixlyArduino.nowStatusBarData += data;
+			        	//MixlyArduino.nowStatusBarData += data;
+			        	if (MixlyArduino.COMPILING || MixlyArduino.UPLOADING) {
+				        	try {
+				        		data = decode(iconv.decode(iconv.encode(data, "iso-8859-1"), 'gbk'));
+				        	} catch(e) {
+				        		console.log(e);
+				        	}
+				        	MixlyStatusBar.addValue(data, true);
+				        }
 					});
 
 					arduino_shell.stderr.on('data', (data) => {
-				        MixlyArduino.nowStatusBarData += data;
+				        //MixlyArduino.nowStatusBarData += data;
+				        if (MixlyArduino.COMPILING || MixlyArduino.UPLOADING) {
+					        try {
+				        		data = decode(iconv.decode(iconv.encode(data, "iso-8859-1"), 'gbk'));
+				        	} catch(e) {
+				        		console.log(e);
+				        	}
+					        MixlyStatusBar.addValue(data, true);
+					    }
 					});
 
 					arduino_shell.on('close', (code) => {
+						var timeCost = parseInt((Number(new Date()) - startTime)/1000);
+						var timeCostSecond = timeCost%60;
+						var timeCostMinute = parseInt(timeCost/60);
+						var timeCostStr = (timeCostMinute?timeCostMinute+"m":"")+timeCostSecond+"s";
 						if (code == 0) {
 							if (MixlyArduino.COMPILING) {
-					            MixlyStatusBar.addValue("==编译成功==\n");
+					            MixlyStatusBar.addValue("==编译成功(用时"+timeCostStr+")==\n", true);
 					            layer.msg('编译成功！', {
 					                time: 1000
 					            });
 					        } else {
-					            MixlyStatusBar.addValue("==上传成功==\n");
+					            MixlyStatusBar.addValue("==上传成功(用时"+timeCostStr+")==\n", true);
 					            layer.msg('上传成功！', {
 					                time: 1000
 					            });
 					        }
-					        MixlyArduino.statusBarUpdate && clearInterval(MixlyArduino.statusBarUpdate);
-				            layer.closeAll('page');
-			        		document.getElementById('webusb-flashing').style.display = 'none';
-				        	MixlyStatusBar.scrollToTheBottom();
-				        	MixlyArduino.COMPILING = false;
 						} else if (code == 1) {
 							//用户终止运行
 						} else {
 							if (MixlyArduino.COMPILING) {
-								MixlyStatusBar.addValue("==编译失败==\n");
+								MixlyStatusBar.addValue("==编译失败==\n", true);
 					        } else {
-					        	MixlyStatusBar.addValue("==上传失败==\n");
+					        	MixlyStatusBar.addValue("==上传失败==\n", true);
 					        }
-					        MixlyArduino.statusBarUpdate && clearInterval(MixlyArduino.statusBarUpdate);
-							layer.closeAll('page');
-			        		document.getElementById('webusb-flashing').style.display = 'none';
-				        	MixlyStatusBar.scrollToTheBottom();
-				        	MixlyArduino.COMPILING = false;
 						}
+						MixlyArduino.COMPILING = false;
+						MixlyArduino.UPLOADING = false;
+						layer.closeAll('page');
+			        	document.getElementById('webusb-flashing').style.display = 'none';
+			        	MixlyStatusBar.scrollToTheBottom();
 					});
 				}
 			});
 		}
 	});
 	
-}
-
-/**
-* @ function 刷新状态栏
-* @ description 更新最新数据到状态栏
-* @ return void
-*/
-MixlyArduino.statusBarRefresh = function () {
-	var layer_dispose_data = "";
-	MixlyArduino.nowStatusBarData.trim().split('\n').forEach(function(v, i) {
-		if (v.indexOf("StatusLogger") == -1 && v.indexOf("cc.arduino.packages.discoverers.serial.SerialDiscovery") == -1)
-	  		layer_dispose_data = layer_dispose_data + v + "\n";
-	})
-	MixlyStatusBar.setValue(layer_dispose_data, true);
 }
 
 /**

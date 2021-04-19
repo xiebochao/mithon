@@ -330,6 +330,14 @@ profile['PocketCard']=profile["PocketCard"];
 profile["M5Stick-C"]=profile["m5stick_c"];
 //STM32
 profile['Generic STM32F103C series']=profile['Generic STM32F103C6/fake STM32F103C8']=profile['Generic STM32F103R series']=profile['Generic STM32F103T series']=profile['STM Nucleo F103RB (STLink)']=profile['Maple Mini']=profile['Maple Mini']=profile["arduino_stm32"];
+
+profile["Arduino Nano w/ ATmega328P"] = profile["Arduino Nano w/ ATmega328P (old bootloader)"] = profile["Arduino Nano w/ ATmega168"] = profile["Arduino Nano"];
+profile["Arduino Pro or Pro Mini (5V, 16 MHz) w/ ATmega328P"] = profile["Arduino Pro or Pro Mini (3.3V, 8 MHz) w/ ATmega328P"] = profile["Arduino Pro or Pro Mini (5V, 16 MHz) w/ ATmega168"] = profile["Arduino Pro or Pro Mini (3.3V, 8 MHz) w/ ATmega168"] = profile["Arduino Pro or Pro Mini"];
+profile["Arduino Mega w/ ATmega2560"] = profile["Arduino Mega w/ ATmega1280"] = profile["Arduino/Genuino Mega or Mega 2560"];
+profile["Arduino Leonardo ETH"] = profile["Arduino Leonardo"];
+profile["Arduino Mini w/ ATmega328P"] = profile["Arduino Mini w/ ATmega168"] = profile["Arduino Mini"];
+profile["Arduino Yún"] = profile["Arduino Yún Mini"] = profile["Arduino Yun"];
+profile["Arduino Uno WiFi"] = profile['Arduino/Genuino Uno'];
 //set default profile to arduino standard-compatible board
 //profile["default"] = profile["arduino_standard"];
 //alert(profile.default.digital[0]);
@@ -351,6 +359,7 @@ profile['Generic STM32F103C series']=profile['Generic STM32F103C6/fake STM32F103
 	} else {
 		Blockly.Arduino.variableDB_.reset();
 	}
+	
 
 	//var defvars = [];
 	//var variables = Blockly.Variables.allVariables(workspace);

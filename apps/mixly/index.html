@@ -2,8 +2,9 @@
 <head>
   <meta charset="utf-8">
   <link rel="shortcut icon" type="image/ico" href="../../files/mixly.ico">
-  <title>Mixly 2.0 For Arduino</title>
+  <title></title>
   <script type="text/javascript" src="environment.js"></script>
+  <script type="text/javascript" src="../../interface-config.js"></script>
   <script type="text/javascript" src="board-config.js"></script>
   <script type="text/javascript" src="burn-upload.js"></script>
   <script type="text/javascript" src="serial-new.js"></script>
@@ -88,7 +89,7 @@
   </div>
   <div class="layui-form" style="width:120px; position: absolute; right: 230px; top:12px; z-index:9999;">
       <div id="filename_input" class="layui-input-inline" style="width: 100%;">
-        <select id="boards-type"></select>
+        <select id="boards-type" lay-filter="boards-type"></select>
       </div>
   </div>
   <ul id="nav" class="layui-nav layui-bg-green" lay-filter="" style="/*min-width: 800px;*/z-index:999;">

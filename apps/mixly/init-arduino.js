@@ -287,7 +287,7 @@ function init() {
   editor.getSession().setMode("ace/mode/c_cpp");
   editor.setFontSize(17);
   editor.setShowPrintMargin(false);
-  editor.getSession().setTabSize(4);
+  editor.getSession().setTabSize(2);
   editor.setOptions({
     enableBasicAutocompletion: true,
     enableSnippets: true,
@@ -301,7 +301,7 @@ function init() {
   editor_side_code.setShowPrintMargin(false);
   editor_side_code.setReadOnly(true);
   editor_side_code.setScrollSpeed(0.2);
-  editor_side_code.getSession().setTabSize(4);
+  editor_side_code.getSession().setTabSize(2);
   $('#aceTheme').val(window.conf.lastEditorTheme);
   /*
   	添加ACE放大缩小快捷键

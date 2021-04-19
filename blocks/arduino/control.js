@@ -547,17 +547,17 @@ Blockly.Blocks['controls_switch_case'] = {
    * @this Blockly.Block
    */
    decompose: function(workspace) {
-    var containerBlock = Blockly.Block.obtain(workspace, 'controls_switch');
+    var containerBlock = workspace.newBlock('controls_switch');
     containerBlock.initSvg();
     var connection = containerBlock.getInput('STACK').connection;
     for (var i = 1; i <= this.elseifCount_; i++) {
-      var elseifBlock = Blockly.Block.obtain(workspace, 'controls_case');
+      var elseifBlock = workspace.newBlock('controls_case');
       elseifBlock.initSvg();
       connection.connect(elseifBlock.previousConnection);
       connection = elseifBlock.nextConnection;
     }
     if (this.elseCount_) {
-      var elseBlock = Blockly.Block.obtain(workspace, 'controls_default');
+      var elseBlock = workspace.newBlock('controls_default');
       elseBlock.initSvg();
       connection.connect(elseBlock.previousConnection);
     }

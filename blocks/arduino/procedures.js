@@ -495,7 +495,8 @@ Blockly.Blocks['procedures_callnoreturn'] = {
       this.quarkIds_ = paramIds;
       return;
     }
-    if (goog.array.equals(this.arguments_, paramNames)) {
+    
+    if (paramNames.join('\n') == this.arguments_.join('\n')) {
       // No change.
       this.quarkIds_ = paramIds;
       return;
