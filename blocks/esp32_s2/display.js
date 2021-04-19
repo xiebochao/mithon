@@ -1003,6 +1003,7 @@ Blockly.Blocks['esp32_display_show_string'] = {
   }
 };
 
+
 // Blockly.Blocks['esp32_display_scroll_string'] = {
 //   init : function () {
 //     this.jsonInit({

@@ -2,9 +2,10 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Mixly 2.0 For MixgoCE</title>
+  <title></title>
   <link rel="shortcut icon" type="image/ico" href="../../files/mixly.ico">
   <script type="text/javascript" src="environment.js"></script>
+  <script type="text/javascript" src="../../interface-config.js"></script>
   <script type="text/javascript" src="board-config.js"></script>
   <script type="text/javascript" src="burn-upload.js"></script>
   <script type="text/javascript" src="file.js"></script>
@@ -18,7 +19,7 @@
   <script type="text/javascript" src="../../core/procedures.js"></script>
   <script type="text/javascript" src="../../core/blockly.js"></script>
   <script type="text/javascript" src="../../core/events.js"></script>
-  <script type="text/javascript" src="../../core/mixpy_python/class.js"></script>
+  
   <script type="text/javascript" src="../../core/esp32/names.js"></script>
   <script src="../../generators/esp32_s2/python.js"></script>
   <script type="text/javascript" src="company_pin.js"></script>
@@ -34,8 +35,7 @@
   <script id="myblock-update" type="text/javascript" src="CircuitPython[MixGoCE]/myblock.js"></script>
   <script type="text/javascript" src="../../blocks/python/variables.js"></script>
   <script type="text/javascript" src="../../generators/python/variables.js"></script>
-  <script type="text/javascript" src="../../blocks/python/class.js"></script>
-  <script type="text/javascript" src="../../generators/python/class.js"></script>
+
   <script src="../../blocks/esp32_s2/esp32_profile.js"></script>
   <!-- blocks file -->
   <script src="../../blocks/esp32_s2/pins.js"></script>
@@ -156,33 +156,6 @@
               <dd lay-unselect><a href="#" onclick="MixlyStatusBar.show(0);" id="operate_layer_btn" class="icon-window">状态栏</a></dd>
           </dl>
       </li>
-      <!--
-      <li class="layui-nav-item" lay-unselect>
-          <a href="javascript:;">其它系统</a>
-          <dl class="layui-nav-child">
-              <dd lay-unselect><a href="">邮件管理</a></dd>
-              <dd lay-unselect><a href="">消息管理</a></dd>
-              <dd lay-unselect><a href="">授权管理</a></dd>
-              <dd lay-unselect>
-                  <a href="javascript:;" class="third-class">其它系统2</a>
-                  <ol class="layui-nav-third-child">
-                      <li lay-unselect><a href="javascript:;">邮件管理2</a></li>
-                      <li lay-unselect><a href="javascript:;">消息管理2</a></li>
-                      <li lay-unselect><a href="javascript:;">授权管理2</a></li>
-                  </ol>
-              </dd>
-              <dd lay-unselect>
-                  <a href="javascript:;" class="third-class">其它系统3</a>
-                  <ol class="layui-nav-third-child">
-                      <li lay-unselect><a href="javascript:;">邮件管理3</a></li>
-                      <li lay-unselect><a href="javascript:;">消息管理3</a></li>
-                      <li lay-unselect><a href="javascript:;">授权管理3</a></li>
-                  </ol>
-              </dd>
-
-          </dl>
-      </li>
-      -->
       <li class="layui-nav-item" id="li_undo" lay-unselect><a href="#" onclick="UndoClick();" name="undo" id="undo_btn" title="undo(ctrl+z)" class="icon-ccw"></a></li>
       <li class="layui-nav-item" id="li_redo" lay-unselect><a href="#" onclick="RedoClick();" name="redo" id="redo_btn" title="redo(ctrl+y)" class="icon-cw"></a></li>
       <li class="layui-nav-item" id="li_serial_reset" lay-unselect><a href="#" onclick="MixlyBurnUpload.initBurn();" id="serial_reset" class="icon-upload-1" ></a></li>
@@ -1684,7 +1657,7 @@
       <block type="serial_readstr"></block>
       <block type="serial_readline"></block>
     </category>
-    <category id="catSensor" colour="40">
+    <category id="catOnBoardSensor" colour="40">
       <block type="sensor_mixgoce_button_is_pressed">
         <value name="btn">
           <shadow type="pins_button">
@@ -1715,7 +1688,7 @@
         </value>
       </block>
       <block type="sensor_mixgoce_pin_near"></block>
-      <block type="sensor_mixgoce_pin_near_more">
+<!--       <block type="sensor_mixgoce_pin_near_more">
         <value name="freq">
           <shadow type="math_number">
             <field name="NUM">53000</field>
@@ -1726,7 +1699,7 @@
             <field name="NUM">100</field>
           </shadow>
         </value>
-      </block>
+      </block> -->
       <block type="sensor_mixgoce_light"></block>
       <block type="sensor_mixgoce_sound"></block>
       <block type="sensor_mixgoce_temperature_lm35"></block>
@@ -1791,7 +1764,7 @@
         </value>
       </block>
     </category>
-    <category id="catActuator" colour="100">
+    <category id="catOnBoardActuator" colour="100">
       <block type="actuator_led_bright">
         <value name="led">
           <shadow type="number">
@@ -1960,7 +1933,7 @@
       <block type="actuator_onboard_neopixel_write">
       </block>
     </category>
-    <category id="catMonitor" colour="180">
+    <category id="catOnBoardDisplay" colour="180">
       <block type="display_show_image_or_string">
         <value name="data">
           <shadow type="pins_builtinimg"></shadow>
@@ -2047,6 +2020,120 @@
       </block>
       <block type="display_get_screen_pixel"></block>
       <block type="display_clear"></block>
+    </category>
+    <category id="catExtend">
+      <category id="catSensor" colour="40">
+<!--         <block type="sensor_mixgoce_extern_button_is_pressed">
+          <value name="PIN">
+            <shadow type="pins_digital_pin">
+              <field name="PIN">0</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="sensor_mixgoce_extern_button_was_pressed">
+          <value name="PIN">
+            <shadow type="pins_digital_pin">
+              <field name="PIN">0</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="sensor_mixgoce_extern_button_get_presses">
+          <value name="PIN">
+            <shadow type="pins_digital_pin">
+              <field name="PIN">0</field>
+            </shadow>
+          </value>
+          <value name="VAR">
+            <shadow type="math_number">
+              <field name="NUM">1</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="sensor_mixgoce_extern_dimmer">
+          <value name="PIN">
+            <shadow type="pins_analog_pin"></shadow>
+          </value>
+        </block>
+        <block type="sensor_mixgoce_extern_pin_near">
+          <value name="PINA">
+            <shadow type="pins_analog_pin"></shadow>
+          </value>
+          <value name="PINB">
+            <shadow type="pins_analog_pin"></shadow>
+          </value>
+        </block> -->
+        <block type="sensor_use_i2c_init">
+          <value name="SUB">
+            <shadow type="variables_get">
+              <field name="VAR">sensor</field>
+            </shadow>
+          </value>
+          <value name="I2CSUB">
+            <shadow type="variables_get">
+              <field name="VAR">i2c_extend</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="sensor_LTR308">
+          <value name="SUB">
+            <shadow type="variables_get">
+              <field name="VAR">sensor</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="sensor_hp203">
+          <value name="SUB">
+            <shadow type="variables_get">
+              <field name="VAR">sensor</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="sensor_shtc3">
+          <value name="SUB">
+            <shadow type="variables_get">
+              <field name="VAR">sensor</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="sensor_VL530LX">
+          <value name="SUB">
+            <shadow type="variables_get">
+              <field name="VAR">sensor</field>
+            </shadow>
+          </value>
+        </block>
+      </category>
+      <category id="catActuator" colour="100">
+<!--         <block type="actuator_extern_led_bright">
+          <value name="PIN">
+            <shadow type="pins_pwm_pin">
+            </shadow>
+          </value>
+          <value name="bright">
+            <shadow type="ledswitch">
+            </shadow>
+          </value>
+        </block>
+        <block type="actuator_extern_get_led_bright">
+          <value name="PIN">
+            <shadow type="pins_pwm_pin">
+            </shadow>
+          </value>        
+        </block>
+        <block type="actuator_extern_led_brightness">
+          <value name="PIN">
+            <shadow type="pins_pwm_pin">
+            </shadow>
+          </value>
+          <value name="bright">
+            <shadow type="math_number">
+              <field name="NUM">65535</field>
+            </shadow>
+          </value>
+        </block> -->
+      </category>
+      <category id="catMonitor" colour="180">
+      </category>
     </category>
     <category id="catFile" colour="0">
       <block type="storage_fileopen">
@@ -2192,7 +2279,7 @@
       <block type="communicate_i2c_init">
         <value name="SUB">
           <shadow type="variables_get">
-            <field name="VAR">i2c</field>
+            <field name="VAR">i2c_extend</field>
           </shadow>
         </value>
         <value name="TX">
@@ -2214,21 +2301,21 @@
       <block type="communicate_i2c_try_lock">
         <value name="VAR">
           <shadow type="variables_get">
-            <field name="VAR">i2c</field>
+            <field name="VAR">i2c_extend</field>
           </shadow>
         </value>
       </block>
       <block type="communicate_i2c_scan">
         <value name="VAR">
           <shadow type="variables_get">
-            <field name="VAR">i2c</field>
+            <field name="VAR">i2c_extend</field>
           </shadow>
         </value>
       </block>
       <block type="communicate_i2c_write">
         <value name="VAR">
           <shadow type="variables_get">
-            <field name="VAR">i2c</field>
+            <field name="VAR">i2c_extend</field>
           </shadow>
         </value>
         <value name="address">
@@ -2245,7 +2332,7 @@
       <block type="communicate_i2c_read">
         <value name="VAR">
           <shadow type="variables_get">
-            <field name="VAR">i2c</field>
+            <field name="VAR">i2c_extend</field>
           </shadow>
         </value>
         <value name="address">
@@ -2267,7 +2354,7 @@
       <block type="communicate_i2c_writeto_then_readfrom">
         <value name="VAR">
           <shadow type="variables_get">
-            <field name="VAR">i2c</field>
+            <field name="VAR">i2c_extend</field>
           </shadow>
         </value>
         <value name="address">
@@ -2296,7 +2383,7 @@
       <block type="communicate_i2c_unlock">
         <value name="VAR">
           <shadow type="variables_get">
-            <field name="VAR">i2c</field>
+            <field name="VAR">i2c_extend</field>
           </shadow>
         </value>
       </block>
@@ -2444,7 +2531,6 @@
       </block>
     </category>
     <category id="catIot" colour="225"> 
-      <!--
       <block type="iot_wifi_connect">
         <value name="WIFINAME">
           <shadow type="text">
@@ -2457,7 +2543,6 @@
           </shadow>
         </value>
       </block>
-      -->
       <block type="WIFI_RADIO_CONNECT">
         <value name="USERNAME">
           <shadow type="text">
@@ -2470,6 +2555,7 @@
           </shadow>
         </value> 
       </block>
+      <block type="WIFI_RESET"></block>
       <block type="IOT_EMQX_INIT">
         <value name="VAR">
           <shadow type="variables_get">
@@ -2496,9 +2582,9 @@
             <field name="TEXT">password</field>
           </shadow>
         </value>
-        <value name="CLIENT_ID">
+        <value name="PROJECT">
           <shadow type="text">
-            <field name="TEXT">client_id</field>
+            <field name="TEXT">project</field>
           </shadow>
         </value>
         <value name="IS_SSL">
@@ -2544,6 +2630,11 @@
         <value name="MSG">
           <shadow type="text">
             <field name="TEXT">msg</field>
+          </shadow>
+        </value>
+        <value name="LOCATION">
+          <shadow type="logic_boolean">
+            <field name="BOOL">FALSE</field>
           </shadow>
         </value>
         <value name="RETAIN">

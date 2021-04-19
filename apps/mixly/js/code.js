@@ -134,11 +134,16 @@ Code.changeEditorTheme = function() {
 Code.changeEditorTheme_light = function() {
   $("#nav").removeClass("layui-nav layui-bg-cyan");
   $("#nav").addClass("layui-nav layui-bg-green");
-//   $(".blocklyTreeRoot").css("background-color","#ddd");
-  $(".blocklyToolboxDiv").css("background-color","#ddd");
-  $(".blocklyTreeLabel").css("color","#000");
-  $(".blocklyFlyoutBackground").css("fill","#ddd");
+  //$(".blocklyTreeRoot").css("background-color","#ddd");
+  //$(".blocklyToolboxDiv").css("background-color","#ddd");
+  //$(".blocklyTreeLabel").css("color","#000");
+  //$(".blocklyFlyoutBackground").css("fill","#ddd");
+  //$(".content").css("background-color","#fff");
+  Blockly.mainWorkspace.setTheme(Blockly.Themes.Classic);
   var theme = "ace/theme/crimson_editor";
+  if (Blockly.Arduino) {
+    theme = "ace/theme/xcode";
+  }
   if(editor != null){
     editor.setOption("theme", theme);
   }
@@ -146,7 +151,10 @@ Code.changeEditorTheme_light = function() {
     if(editor_side_code != null){
       editor_side_code.setOption("theme", theme);
     }
-    JSFuncs.saveEditorTheme(theme);
+    if (MixlyStatusBar.object != null) {
+      MixlyStatusBar.object.setOption("theme", "ace/theme/xcode");
+    }
+    //JSFuncs.saveEditorTheme(theme);
   }catch(e){
 
   }
@@ -155,10 +163,12 @@ Code.changeEditorTheme_light = function() {
 Code.changeEditorTheme_dark = function() {
   $("#nav").removeClass("layui-nav layui-bg-green");
   $("#nav").addClass("layui-nav layui-bg-cyan");
-//   $(".blocklyTreeRoot").css("background-color","#272727");
-  $(".blocklyToolboxDiv").css("background-color","#272727");
-  $(".blocklyTreeLabel").css("color","#fff");
-  $(".blocklyFlyoutBackground").css("fill","#666");
+  //$(".blocklyTreeRoot").css("background-color","#272727");
+  //$(".blocklyToolboxDiv").css("background-color","#272727");
+  //$(".blocklyTreeLabel").css("color","#fff");
+  //$(".blocklyFlyoutBackground").css("fill","#666");
+  //$(".content").css("background-color","#000");
+  Blockly.mainWorkspace.setTheme(Blockly.Themes.Dark);
   var theme = "ace/theme/dracula";
   if(editor != null){
     editor.setOption("theme", theme);
@@ -167,7 +177,10 @@ Code.changeEditorTheme_dark = function() {
     if(editor_side_code != null){
       editor_side_code.setOption("theme", theme);
     }
-    JSFuncs.saveEditorTheme(theme);
+    if (MixlyStatusBar.object != null) {
+      MixlyStatusBar.object.setOption("theme", "ace/theme/terminal");
+    }
+    //JSFuncs.saveEditorTheme(theme);
   }catch(e){
 
   }
@@ -597,6 +610,17 @@ Code.checkAllGeneratorFunctionsDefined = function(generator) {
   // Set the HTML's language and direction.
   var rtl = Code.isRtl();
   document.dir = rtl ? 'rtl' : 'ltr';
+
+  if ('localStorage' in window && window['localStorage'] != null && window.localStorage['Language']) {
+    if (window.localStorage['Language'] == 'zh-hans') {
+      Code.LANG = "zh-hans";
+    } else if (window.localStorage['Language'] == 'zh-hant') {
+      Code.LANG = "zh-hant";
+    } else if (window.localStorage['Language'] == 'en') {
+      Code.LANG = "en";
+    }
+  }
+
   document.head.parentElement.setAttribute('lang', Code.LANG);
 
   // Sort languages alphabetically.
@@ -624,7 +648,7 @@ Code.checkAllGeneratorFunctionsDefined = function(generator) {
     languageMenu.options.add(option);
   }
   languageMenu.addEventListener('change', Code.changeLanguage, true);
-  var categories = ['catInOut', 'catControl', 'catMath', 'catText', 'catLists', 'catMicropyLists', 'catDicts', 'catLogic', 'catSerialPort', 'catGroup', 'catIR', 'catI2C', 'catSPI', 'catRFID', 'catStorage', 'catStorageSD', 'catStorageSPIFFS', 'catStorageEEPROM', 'catSensor', 'catActuator', 'catMonitor', 'catActuator_motor', 'catActuator_voice', 'catActuator_light', 'catLCD', 'catOLED', 'cat4Digitdisplay', 'catMatrix', 'catVar', 'catFun', 'catNetwork', 'catEthernet', 'catEthernet_init', 'catEthernet_clinet', 'catSense', 'catSense2', 'catLuxe', 'catGame', 'catSystem', 'catSet', 'catTurtle', 'catTuple', 'catIot', 'catData', 'catHardware', 'catAI', 'catDS', 'catHTML', 'catOnBoard', 'catOnBoardDisplay', 'catOnBoardSensor', 'catOnBoardActuator', 'catFactory', 'catBlynk', 'catFile', 'catOnenet', 'catTools', 'catWIFI', 'catMQTT', 'catsklearn', 'catclass_make', 'catclass', 'catproperty', 'catmethod', 'catobject', 'catEvents', 'catHear', 'catImage', 'catImage_Base', 'catImage_Draw', 'catImage_Filte', 'catImage_Shpe', 'catImage_Color', 'catImage_Codes', 'catImage_Features', 'catTFT', 'catCamera', 'catAV', 'catShaw'];
+  var categories = ['catInOut', 'catControl', 'catMath', 'catText', 'catLists', 'catMicropyLists', 'catDicts', 'catLogic', 'catSerialPort', 'catGroup', 'catIR', 'catI2C', 'catSPI', 'catRFID', 'catStorage', 'catStorageSD', 'catStorageSPIFFS', 'catStorageEEPROM', 'catSensor', 'catActuator', 'catMonitor', 'catActuator_motor', 'catActuator_voice', 'catActuator_light', 'catLCD', 'catOLED', 'cat4Digitdisplay', 'catMatrix', 'catVar', 'catFun', 'catNetwork', 'catEthernet', 'catEthernet_init', 'catEthernet_clinet', 'catSense', 'catSense2', 'catLuxe', 'catGame', 'catSystem', 'catSet', 'catTurtle', 'catTuple', 'catIot', 'catData', 'catHardware', 'catAI', 'catDS', 'catHTML', 'catOnBoard', 'catOnBoardDisplay', 'catOnBoardSensor', 'catOnBoardActuator', 'catFactory', 'catBlynk', 'catFile', 'catOnenet', 'catTools', 'catWIFI', 'catMQTT', 'catsklearn', 'catclass_make', 'catclass', 'catproperty', 'catmethod', 'catobject', 'catEvents', 'catHear', 'catImage', 'catImage_Base', 'catImage_Draw', 'catImage_Filte', 'catImage_Shpe', 'catImage_Color', 'catImage_Codes', 'catImage_Features', 'catTFT', 'catCamera', 'catAV', 'catShaw', 'catExtend'];
   for (var i = 0, cat; cat = categories[i]; i++) {
    if(document.getElementById(cat)!=null){
     document.getElementById(cat).setAttribute('name', MSG[cat]);
@@ -699,3 +723,8 @@ document.write('<script src="../../msg/js/' + Code.LANG + '.js"></script>\n');
 document.write('<script src="js/conf/theme.js?t=' + new Date().getTime() + '"></script>\n');
 
 window.addEventListener('load', Code.init);
+
+//var test123 = new Blockly.Theme('workspace');
+//test123.setComponentStyle('flyoutBackgroundColour', '#000');
+//test123.setComponentStyle('flyoutForegroundColour', '#000');
+//test123.setComponentStyle('toolboxBackgroundColour', '#000');

@@ -26,11 +26,17 @@ Blockly.Python.inout_digitalinout_mode = function() {
     var value_PIN = Blockly.Python.valueToCode(this, 'PIN', Blockly.Python.ORDER_ATOMIC);
     var dropdown_TYPE = this.getFieldValue('TYPE');
     var output = dropdown_TYPE.indexOf("PUSH_PULL") != -1 || dropdown_TYPE.indexOf("OPEN_DRAIN") != -1;
-    if(dropdown_TYPE == 'None')
-    {
-        var code = value_PIN+'.switch_to_input()\n';
-    }
+    // if(dropdown_TYPE == 'None')
+    // {
+    //     var code = value_PIN+'.switch_to_input()\n';
+    // }
     var code = value_PIN+'.switch_to_'+(output?'output':'input')+'('+(output?'drive_mode':'pull')+'=digitalio.'+(output?'DriveMode.':'Pull.')+dropdown_TYPE+')\n';
+    if(dropdown_TYPE == 'None'){
+        code = value_PIN+'.direction = digitalio.Direction.INPUT\n';
+    }
+    if(dropdown_TYPE == 'PUSH_PULL'){
+        code = value_PIN+'.direction = digitalio.Direction.OUTPUT\n';
+    }
     return code;
 };
 

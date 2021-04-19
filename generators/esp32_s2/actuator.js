@@ -136,3 +136,27 @@ Blockly.Python.actuator_onboard_neopixel_rgb_show_all_rainbow = function(){
   var code= 'mixgoce.rgb.rainbow_cycle('+number_time+')\n';
   return code;
 };
+
+Blockly.Python.actuator_extern_led_bright = function() {
+    Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
+    var pin = Blockly.Python.valueToCode(this,'PIN', Blockly.Python.ORDER_ATOMIC).replace("IO", "");
+    var bright = Blockly.Python.valueToCode(this,'bright', Blockly.Python.ORDER_ATOMIC);
+    // var bright = this.getFieldValue('bright');
+    var code = "mixgoce.Led(board.IO" + pin + ").setonoff("+bright+")\n";
+    return code;
+};
+
+Blockly.Python.actuator_extern_get_led_bright = function() {
+    Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
+    var pin = Blockly.Python.valueToCode(this,'PIN', Blockly.Python.ORDER_ATOMIC).replace("IO", "");
+    var code = "mixgoce.Led(board.IO" + pin + ").getonoff("+")";
+    return [code, Blockly.Python.ORDER_ATOMIC];;
+};
+
+Blockly.Python.actuator_extern_led_brightness = function() {
+    Blockly.Python.definitions_['import_mixgoce'] = 'import mixgoce';
+    var pin = Blockly.Python.valueToCode(this,'PIN', Blockly.Python.ORDER_ATOMIC).replace("IO", "");
+    var flag = Blockly.Python.valueToCode(this,'bright', Blockly.Python.ORDER_ATOMIC);
+    var code = 'mixgoce.Led(board.IO'+pin+').setbrightness('+flag+')\n';
+    return code;
+};

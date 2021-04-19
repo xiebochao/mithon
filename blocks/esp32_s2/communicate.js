@@ -68,11 +68,11 @@ Blockly.Blocks['communicate_i2c_init'] = {
             .appendField("I2C " + Blockly.MIXLY_SETUP)
             .setCheck("var");
         this.appendValueInput("RX", Number)
-            .appendField("sda")
+            .appendField("SDA")
             .setCheck(Number)
             .setAlign(Blockly.ALIGN_RIGHT);
         this.appendValueInput("TX", Number)
-            .appendField("scl")
+            .appendField("SCL")
             .setCheck(Number)
             .setAlign(Blockly.ALIGN_RIGHT);
         this.appendValueInput('freq')

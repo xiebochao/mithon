@@ -10,12 +10,14 @@ Blockly.Python.IOT_EMQX_INIT = function(block) {
   var port = Blockly.Python.valueToCode(this, 'PORT', Blockly.Python.ORDER_ATOMIC);
   var username = Blockly.Python.valueToCode(this, 'USERNAME', Blockly.Python.ORDER_ATOMIC);
   var password = Blockly.Python.valueToCode(this, 'PASSWORD', Blockly.Python.ORDER_ATOMIC);
-  var client_id = Blockly.Python.valueToCode(this, 'CLIENT_ID', Blockly.Python.ORDER_ATOMIC);
-  var is_ssl = Blockly.Python.valueToCode(this, 'IS_SSL', Blockly.Python.ORDER_ATOMIC);
+  var project = Blockly.Python.valueToCode(this, 'PROJECT', Blockly.Python.ORDER_ATOMIC);
+  // var is_ssl = Blockly.Python.valueToCode(this, 'IS_SSL', Blockly.Python.ORDER_ATOMIC);
   var socket_pool = Blockly.Python.valueToCode(this, 'SOCKET_POOL', Blockly.Python.ORDER_ATOMIC);
   var ssl_context = Blockly.Python.valueToCode(this, 'SSL_CONTEXT', Blockly.Python.ORDER_ATOMIC);
   Blockly.Python.definitions_['import_adafruit_minimqtt'] = "import adafruit_minimqtt"; 
-  var code = 'mqtt_client = adafruit_minimqtt.MQTT(broker='+ server +', port='+ port +', username='+ username +', password='+ password +', client_id='+ client_id +', is_ssl='+ is_ssl +', socket_pool='+ socket_pool +', ssl_context='+ ssl_context+')\n';  
+  Blockly.Python.definitions_['import_wifi'] = "import wifi";
+  var a = "'" + username.replace("'","").replace("'","") + "/" + project.replace("'","").replace("'","") + "/'"
+  var code = 'mqtt_user_prj = '+ a +'\nmqtt_client = adafruit_minimqtt.MQTT(broker='+ server +', port='+ port +', username='+ username +', password='+ password +', client_id="mac_address", socket_pool='+ socket_pool +', ssl_context='+ ssl_context+')\n';  
   return code;
 };
 
@@ -24,17 +26,18 @@ Blockly.Python.IOT_EMQX_PUBLISH = function(block) {
   var topic = Blockly.Python.valueToCode(this, 'TOPIC', Blockly.Python.ORDER_ATOMIC);
   var msg = Blockly.Python.valueToCode(this, 'MSG', Blockly.Python.ORDER_ATOMIC);
   Blockly.Python.definitions_['import_adafruit_minimqtt'] = "import adafruit_minimqtt"; 
-  var code = 'mqtt_client.publish('+ topic +', '+ msg +')\n';  
+  var code = 'mqtt_client.publish(mqtt_user_prj + '+ topic +', '+ msg +')\n';  
   return code;
 };
+
 Blockly.Python.IOT_EMQX_PUBLISH_MORE = function(block) {
   // var v = Blockly.Python.valueToCode(this, 'VAR', Blockly.Python.ORDER_ATOMIC);
   var topic = Blockly.Python.valueToCode(this, 'TOPIC', Blockly.Python.ORDER_ATOMIC);
   var msg = Blockly.Python.valueToCode(this, 'MSG', Blockly.Python.ORDER_ATOMIC);
-  var retain = Blockly.Python.valueToCode(this, 'RETAIN');
-  var qos = Blockly.Python.valueToCode(this, 'QOS');
+  var retain = Blockly.Python.valueToCode(this, 'RETAIN', Blockly.Python.ORDER_ATOMIC);
+  var qos = Blockly.Python.valueToCode(this, 'QOS', Blockly.Python.ORDER_ATOMIC);
   Blockly.Python.definitions_['import_adafruit_minimqtt'] = "import adafruit_minimqtt"; 
-  var code = 'mqtt_client.publish('+ topic +', '+ msg +', '+ retain +', '+ qos +')\n';  
+  var code = 'mqtt_client.publish(mqtt_user_prj + '+ topic +', '+ msg +', '+ retain +', '+ qos +')\n';  
   return code;
 };
 
@@ -50,7 +53,7 @@ Blockly.Python.IOT_EMQX_ADD_TOPIC_CALLBACK = function(block) {
   var topic = Blockly.Python.valueToCode(this, 'TOPIC', Blockly.Python.ORDER_ATOMIC);
   var method = Blockly.Python.valueToCode(this, 'METHOD', Blockly.Python.ORDER_ATOMIC);
   Blockly.Python.definitions_['import_adafruit_minimqtt'] = "import adafruit_minimqtt"; 
-  var code = 'mqtt_client.add_topic_callback('+topic +', '+ method+')\n';  
+  var code = 'mqtt_client.add_topic_callback(mqtt_user_prj + '+topic +', '+ method+')\n';  
   return code;
 };
 
@@ -58,7 +61,7 @@ Blockly.Python.IOT_EMQX_REMOVE_TOPIC_CALLBACK = function(block) {
   // var v = Blockly.Python.valueToCode(this, 'VAR', Blockly.Python.ORDER_ATOMIC);
   var topic = Blockly.Python.valueToCode(this, 'TOPIC', Blockly.Python.ORDER_ATOMIC);
   Blockly.Python.definitions_['import_adafruit_minimqtt'] = "import adafruit_minimqtt"; 
-  var code = 'mqtt_client.remove_topic_callback('+topic +')\n';  
+  var code = 'mqtt_client.remove_topic_callback(mqtt_user_prj + '+topic +')\n';  
   return code;
 };
 
@@ -86,7 +89,7 @@ Blockly.Python.IOT_EMQX_CONNECT = function(block) {
   return code;
 };
 
-Blockly.Python.IOT_EMQX_MQTT_DISCONNECT = function(block) {
+Blockly.Python.IOT_EMQX_DISCONNECT = function(block) {
   // var v = Blockly.Python.valueToCode(this, 'VAR', Blockly.Python.ORDER_ATOMIC);
   Blockly.Python.definitions_['import_adafruit_minimqtt'] = "import adafruit_minimqtt"; 
   var code = 'mqtt_client.disconnect()\n';  
@@ -97,7 +100,7 @@ Blockly.Python.IOT_EMQX_IS_CONNECT = function (block) {
     // var v = Blockly.Python.valueToCode(this, 'VAR', Blockly.Python.ORDER_ATOMIC);
     var topic = Blockly.Python.valueToCode(this, 'IS_CON', Blockly.Python.ORDER_ATOMIC);
     Blockly.Python.definitions_['import_adafruit_minimqtt'] = "import adafruit_minimqtt";
-    var code = 'mqtt_client.is_connect(' + topic + ')';
+    var code = 'mqtt_client.is_connect(mqtt_user_prj + ' + topic + ')';
     return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
@@ -126,16 +129,16 @@ Blockly.Python.IOT_EMQX_SUBSCRIBE = function (block) {
     // var v = Blockly.Python.valueToCode(this, 'VAR', Blockly.Python.ORDER_ATOMIC);
     var topic = Blockly.Python.valueToCode(this, 'TOPIC', Blockly.Python.ORDER_ATOMIC);
     Blockly.Python.definitions_['import_adafruit_minimqtt'] = "import adafruit_minimqtt";
-    var code = 'mqtt_client.subscribe(' + topic + ')\n';
+    var code = 'mqtt_client.subscribe(mqtt_user_prj + ' + topic + ')\n';
     return code;
 };
 
 Blockly.Python.IOT_EMQX_SUBSCRIBE_MORE = function (block) {
     // var v = Blockly.Python.valueToCode(this, 'VAR', Blockly.Python.ORDER_ATOMIC);
     var topic = Blockly.Python.valueToCode(this, 'TOPIC', Blockly.Python.ORDER_ATOMIC); 
-    var qos = Blockly.Python.valueToCode(this, 'QOS'); 
+    var qos = Blockly.Python.valueToCode(this, 'QOS', Blockly.Python.ORDER_ATOMIC); 
     Blockly.Python.definitions_['import_adafruit_minimqtt'] = "import adafruit_minimqtt";
-    var code = 'mqtt_client.subscribe(' + topic + ','+ qos +')\n';
+    var code = 'mqtt_client.subscribe(mqtt_user_prj + ' + topic + ','+ qos +')\n';
     return code;
 };
 
@@ -143,7 +146,7 @@ Blockly.Python.IOT_EMQX_UNSUBSCRIBE = function (block) {
     // var v = Blockly.Python.valueToCode(this, 'VAR', Blockly.Python.ORDER_ATOMIC);
     var topic = Blockly.Python.valueToCode(this, 'TOPIC', Blockly.Python.ORDER_ATOMIC);
     Blockly.Python.definitions_['import_adafruit_minimqtt'] = "import adafruit_minimqtt";
-    var code = 'mqtt_client.unsubscribe(' + topic + ')\n';
+    var code = 'mqtt_client.unsubscribe(mqtt_user_prj + ' + topic + ')\n';
     return code;
 };
 
@@ -159,7 +162,7 @@ Blockly.Python.IOT_EMQX_ENABLE_LOGGER = function (block) {
     // var v = Blockly.Python.valueToCode(this, 'VAR', Blockly.Python.ORDER_ATOMIC);
     var topic = Blockly.Python.valueToCode(this, 'LEVEL', Blockly.Python.ORDER_ATOMIC);
     Blockly.Python.definitions_['import_adafruit_minimqtt'] = "import adafruit_minimqtt";
-    var code = 'mqtt_client.enable_logger(' + topic + ')\n';
+    var code = 'mqtt_client.enable_logger(mqtt_user_prj + ' + topic + ')\n';
     return code;
 };
 
@@ -172,3 +175,9 @@ Blockly.Python.WIFI_RADIO_CONNECT = function(block){
   return code;
 };
 
+Blockly.Python.WIFI_RESET = function(block) {
+  // var v = Blockly.Python.valueToCode(this, 'VAR', Blockly.Python.ORDER_ATOMIC);
+  Blockly.Python.definitions_['import_wifi'] = "import wifi"; 
+  var code = 'wifi.reset()\n';  
+  return code;
+};

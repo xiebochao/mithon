@@ -111,7 +111,9 @@ Blockly.Blocks['sensor_mixgoce_pin_near'] = {
     init: function(){
         this.setColour(Blockly.Blocks.sensor.HUE);
         this.appendDummyInput()
-            .appendField(Blockly.MIXLY_MICROBIT_PY_STORAGE_GET+Blockly.MIXLY_ESP32_NEAR);
+            .appendField(Blockly.MIXLY_MICROBIT_PY_STORAGE_GET)
+            .appendField(new Blockly.FieldDropdown([[Blockly.Msg.TEXT_TRIM_LEFT, "left"], [Blockly.Msg.TEXT_TRIM_RIGHT, "right"]]), "key")
+            .appendField(Blockly.MIXLY_ESP32_NEAR);
         this.setOutput(true,Number);
         this.setInputsInline(true);
         var thisBlock = this;
@@ -250,4 +252,185 @@ Blockly.Blocks.RTC_set_datetime = {
         this.setNextStatement(true);
         this.setTooltip(Blockly.MIXLY_ESP32_RTC_SET_DATATIME_TOOLTIP);    
     }   
+};
+
+Blockly.Blocks['sensor_mixgoce_extern_button_is_pressed'] = {
+    init: function(){
+        this.setColour(Blockly.Blocks.sensor.HUE);
+        this.appendValueInput("PIN", Number)
+            .appendField(Blockly.MIXLY_BUTTON)
+            .appendField(Blockly.MIXLY_PIN)
+            .setCheck(Number);
+        this.appendDummyInput()
+            .appendField(Blockly.MIXLY_IS_PRESSED);   
+        this.setOutput(true, Boolean);
+        this.setInputsInline(true);
+        this.setTooltip(Blockly.MIXLY_SENOR_IS_PRESSED);
+    }
+};
+
+Blockly.Blocks['sensor_mixgoce_extern_button_was_pressed'] = {
+    init: function(){
+        this.setColour(Blockly.Blocks.sensor.HUE);
+        this.appendValueInput("PIN", Number)
+            .appendField(Blockly.MIXLY_BUTTON)
+            .appendField(Blockly.MIXLY_PIN)
+            .setCheck(Number);
+        this.appendDummyInput()
+        .appendField(Blockly.MIXLY_WAS_PRESSED);
+        this.setOutput(true, Boolean);
+        this.setInputsInline(true);
+        this.setTooltip(Blockly.MIXLY_SENOR_WAS_PRESSED);
+    }
+};
+
+Blockly.Blocks['sensor_mixgoce_extern_button_get_presses'] = {
+    init: function(){
+        this.setColour(Blockly.Blocks.sensor.HUE);
+        this.appendValueInput("PIN", Number)
+            .appendField(Blockly.MIXLY_BUTTON)
+            .appendField(Blockly.MIXLY_PIN)
+            .setCheck(Number);
+        this.appendDummyInput()
+            .appendField(Blockly.MIXLY_GET_PRESSES);
+        this.appendValueInput('VAR')
+            .setCheck(Number)    
+            .appendField(Blockly.MIXLY_GET_PRESSES_TIME);
+        this.setOutput(true, Number);
+        this.setInputsInline(true);
+        this.setTooltip(Blockly.Msg.PROCEDURES_DEFRETURN_RETURN+Blockly.MIXLY_BUTTON+Blockly.MIXLY_GET_PRESSES);
+    }
+};
+
+Blockly.Blocks['sensor_mixgoce_extern_dimmer'] = {
+    init: function(){
+        this.setColour(Blockly.Blocks.sensor.HUE);
+        this.appendDummyInput()
+            .appendField(Blockly.MIXLY_DISPLAY_MATRIX_ROTATE+Blockly.MIXLY_POTENTIOMETER);
+        this.appendValueInput("PIN", Number)
+            .appendField(Blockly.MIXLY_PIN)
+            .setCheck(Number);   
+        this.appendDummyInput()
+            .appendField(Blockly.MIXLY_ESP32_EXTERN_VALUE);     
+        this.setOutput(true, Number);
+        this.setInputsInline(true);
+    }
+};
+
+Blockly.Blocks['sensor_mixgoce_extern_pin_near'] = {
+    init: function(){
+        this.setColour(Blockly.Blocks.sensor.HUE);
+        this.appendDummyInput()
+            .appendField(Blockly.MIXLY_IR_RANGE);
+        this.appendValueInput("PINA", Number)
+            .appendField(Blockly.MIXLY_PIN+"A")
+            .setCheck(Number);   
+        this.appendValueInput("PINB", Number)
+            .appendField(Blockly.MIXLY_PIN+"B")
+            .setCheck(Number);  
+        this.appendDummyInput()
+            .appendField(Blockly.MIXLY_ESP32_EXTERN_VALUE);     
+        this.setOutput(true, Number);
+        this.setInputsInline(true);
+        this.setTooltip(Blockly.MIXLY_ESP32_SENSOR_MIXGO_PIN_NEAR_TOOLTIP+Blockly.MIXLY_ESP32_NEAR);
+    }
+};
+
+Blockly.Blocks.sensor_use_i2c_init = {
+    init: function () {
+        this.setColour(Blockly.Blocks.sensor.HUE);
+        this.appendValueInput('I2CSUB')
+        .appendField(Blockly.Msg.CONTROLS_FOR_INPUT_WITH+"I2C")
+        .setCheck("var");
+        this.appendValueInput('SUB')
+        .appendField(Blockly.MIXLY_MICROPYTHON_SOCKET_MAKE)
+        .setCheck("var");
+        this.appendDummyInput("")
+        .appendField(Blockly.MIXLY_SETUP + Blockly.Msg.LISTS_SET_INDEX_INPUT_TO)
+        .appendField(new Blockly.FieldDropdown([
+            ["LTR308", "LTR308"],
+            ["HP203B", "HP203B"],
+            ["SHTC3", "SHTC3"],
+            ["VL53L0X","VL53L0X"]
+            ]), "key");
+        this.setInputsInline(true);
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setFieldValue("LTR308","key");
+    }
+};
+
+
+Blockly.Blocks['sensor_LTR308'] = {
+    init: function(){
+        this.setColour(Blockly.Blocks.sensor.HUE);
+        this.appendDummyInput()
+            .appendField(Blockly.MIXLY_ESP32_EXTERN_LIGHT+" LTR308");
+        this.appendValueInput('SUB')
+            //.appendField("BMP280")
+            .setCheck("var");  
+        this.appendDummyInput()
+            .appendField(Blockly.MIXLY_GET_LIGHT_INTENSITY);     
+        this.setOutput(true, Number);
+        this.setInputsInline(true);
+    }
+};
+
+Blockly.Blocks['sensor_VL530LX'] = {
+    init: function(){
+        this.setColour(Blockly.Blocks.sensor.HUE);
+        this.appendDummyInput()
+            .appendField(Blockly.MIXLY_LASER_RANGE+" VL530LX");
+        this.appendValueInput('SUB')
+            //.appendField("BMP280")
+            .setCheck("var");  
+        this.appendDummyInput()
+            .appendField(Blockly.MIXLY_GET_DISTANCE+'(mm)');     
+        this.setOutput(true, Number);
+        this.setInputsInline(true);
+    }
+};
+
+Blockly.Blocks['sensor_shtc3'] = {
+    init: function(){
+        this.setColour(Blockly.Blocks.sensor.HUE);
+        this.appendValueInput('SUB')
+            .appendField(Blockly.MIXLY_TEM_HUM+" SHTC3")
+            .setCheck("var");
+        this.appendDummyInput("")
+        .appendField(new Blockly.FieldDropdown([
+            [Blockly.MIXLY_GETTEMPERATUE, "0"],
+            [Blockly.MIXLY_GETHUMIDITY, "1"],
+            [Blockly.MIXLY_DHT11_T_H, "ALL"]
+            ]), "key");
+        this.setOutput(true, Number);
+        this.setInputsInline(true);
+        var thisBlock = this;
+        this.setTooltip(function() {
+            var mode = thisBlock.getFieldValue('key');
+            var TOOLTIPS = {
+                "0":Blockly.MIXLY_MICROBIT_SENSOR_SHT_temperature_TOOLTIP,
+                "1":Blockly.MIXLY_MICROBIT_SENSOR_SHT_HUM_TOOLTIP,
+                "ALL":Blockly.MIXLY_TOOLTIP_BLOCKGROUP_GET_TEM_HUM
+            };
+            return TOOLTIPS[mode]
+        });
+    }
+};
+
+Blockly.Blocks['sensor_hp203'] = {
+    init: function(){
+        this.setColour(Blockly.Blocks.sensor.HUE);
+        this.appendValueInput('SUB')
+            .appendField(Blockly.MIXLY_Altitude+MSG.catSensor+" HP203B")
+            .setCheck("var");
+        this.appendDummyInput("")
+        .appendField(new Blockly.FieldDropdown([
+            [Blockly.MIXLY_GETPRESSURE, "p_data()"],
+            [Blockly.MIXLY_GETTEMPERATUE, "t_data()"],
+            [Blockly.MIXLY_GET_ALTITUDE, "h_data()"],
+            ]), "key");
+        this.setOutput(true, Number);
+        this.setInputsInline(true);
+    }
 };

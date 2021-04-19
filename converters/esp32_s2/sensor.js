@@ -756,3 +756,147 @@ pbc.moduleFunctionD.get('lm35')['get_LM35_temperature'] = function(py2block, fun
         "inline": "true"
     });
 }
+
+pbc.assignD.get('LTR_308ALS')['check_assign'] = function (py2block, node, targets, value) {
+    if(value.func._astname != "Attribute" || value.func.value._astname != "Name"){
+        return false;
+    }
+    var moduleName = py2block.Name_str(value.func.value);
+    var funcName = py2block.identifier(value.func.attr);
+    if (value._astname === "Call" && moduleName === "ltr308al"
+        && funcName === "LTR_308ALS" && value.args.length === 1)
+        return true;
+    return false;
+}
+
+pbc.assignD.get('LTR_308ALS')['create_block'] = function (py2block, node, targets, value) {
+    var sub = py2block.convert(node.targets[0]);
+    var arg = py2block.convert(value.args[0]);
+    var moduleName = py2block.Name_str(value.func.value);
+     //注意：赋值语句里，即使图形块上下可接，也不需要加[]
+    return block('sensor_use_i2c_init', node.lineno, {
+        'key': 'LTR308'
+    }, {
+        'SUB': sub,
+        'I2CSUB': arg
+    });
+}
+
+pbc.assignD.get('HP203X')['check_assign'] = function (py2block, node, targets, value) {
+    if(value.func._astname != "Attribute" || value.func.value._astname != "Name"){
+        return false;
+    }
+    var moduleName = py2block.Name_str(value.func.value);
+    var funcName = py2block.identifier(value.func.attr);
+    if (value._astname === "Call" && moduleName === "hp203x"
+        && funcName === "HP203X" && value.args.length === 1)
+        return true;
+    return false;
+}
+
+pbc.assignD.get('HP203X')['create_block'] = function (py2block, node, targets, value) {
+    var sub = py2block.convert(node.targets[0]);
+    var arg = py2block.convert(value.args[0]);
+    var moduleName = py2block.Name_str(value.func.value);
+     //注意：赋值语句里，即使图形块上下可接，也不需要加[]
+    return block('sensor_use_i2c_init', node.lineno, {
+        'key': 'HP203B'
+    }, {
+        'SUB': sub,
+        'I2CSUB': arg
+    });
+}
+
+pbc.assignD.get('SHTC3')['check_assign'] = function (py2block, node, targets, value) {
+    if(value.func._astname != "Attribute" || value.func.value._astname != "Name"){
+        return false;
+    }
+    var moduleName = py2block.Name_str(value.func.value);
+    var funcName = py2block.identifier(value.func.attr);
+    if (value._astname === "Call" && moduleName === "adafruit_shtc3"
+        && funcName === "SHTC3" && value.args.length === 1)
+        return true;
+    return false;
+}
+
+pbc.assignD.get('SHTC3')['create_block'] = function (py2block, node, targets, value) {
+    var sub = py2block.convert(node.targets[0]);
+    var arg = py2block.convert(value.args[0]);
+    var moduleName = py2block.Name_str(value.func.value);
+     //注意：赋值语句里，即使图形块上下可接，也不需要加[]
+    return block('sensor_use_i2c_init', node.lineno, {
+        'key': 'SHTC3'
+    }, {
+        'SUB': sub,
+        'I2CSUB': arg
+    });
+}
+
+pbc.assignD.get('VL53L0X')['check_assign'] = function (py2block, node, targets, value) {
+    if(value.func._astname != "Attribute" || value.func.value._astname != "Name"){
+        return false;
+    }
+    var moduleName = py2block.Name_str(value.func.value);
+    var funcName = py2block.identifier(value.func.attr);
+    if (value._astname === "Call" && moduleName === "adafruit_vl53l0x"
+        && funcName === "VL53L0X" && value.args.length === 1)
+        return true;
+    return false;
+}
+
+pbc.assignD.get('VL53L0X')['create_block'] = function (py2block, node, targets, value) {
+    var sub = py2block.convert(node.targets[0]);
+    var arg = py2block.convert(value.args[0]);
+    var moduleName = py2block.Name_str(value.func.value);
+     //注意：赋值语句里，即使图形块上下可接，也不需要加[]
+    return block('sensor_use_i2c_init', node.lineno, {
+        'key': 'VL53L0X'
+    }, {
+        'SUB': sub,
+        'I2CSUB': arg
+    });
+}
+
+function getSensorData(mode){
+    function converter(py2block, func, args, keywords, starargs, kwargs, node) {
+        if (args.length !== 0) {
+            throw new Error("Incorrect number of arguments");
+        }
+        var objblock = py2block.convert(func.value);
+        if (mode == 'getdata') {
+            return block("sensor_LTR308", func.lineno, {}, {
+                "SUB": objblock
+            }, {
+                "inline": "true"
+            });
+        } else if (mode == 'p_data()' || mode == 't_data()' || mode == 'h_data()') {
+            return block("sensor_hp203", func.lineno, {
+                "key": mode
+            }, {
+                "SUB": objblock
+            }, {
+                "inline": "true"
+            });
+        }
+    }
+    return converter;
+}
+
+pbc.objectFunctionD.get('getdata')['Sensor'] = getSensorData('getdata');
+pbc.objectFunctionD.get('p_data')['Sensor'] = getSensorData('p_data()');
+pbc.objectFunctionD.get('t_data')['Sensor'] =  getSensorData('t_data()');
+pbc.objectFunctionD.get('h_data')['Sensor'] = getSensorData('h_data()');
+
+pbc.objectAttrD.get('range')['Sensor'] = function (py2block, node, value, attr) {
+    return block('sensor_VL530LX', node.lineno, {}, {
+        'SUB': py2block.convert(value)
+    });
+}
+
+pbc.objectAttrD.get('measurements')['Sensor'] = function (py2block, node, value, attr) {
+    return block('sensor_shtc3', node.lineno, {
+        'key': 'ALL'
+    }, {
+        'SUB': py2block.convert(value)
+    });
+}

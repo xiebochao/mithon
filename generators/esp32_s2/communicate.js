@@ -16,12 +16,13 @@ Blockly.Python.communicate_buffer = function() {
 }
 
 Blockly.Python.communicate_i2c_init = function () {
-	Blockly.Python.definitions_['import_busio'] = 'import busio';
-	var dropdown_pin1 = Blockly.Python.valueToCode(this, 'RX',Blockly.Python.ORDER_ATOMIC);
-    var dropdown_pin2 = Blockly.Python.valueToCode(this, 'TX',Blockly.Python.ORDER_ATOMIC);
+	Blockly.Python.definitions_['import_board'] = 'import board';
+    Blockly.Python.definitions_['import_busio'] = 'import busio';
+	var dropdown_pin1 = Blockly.Python.valueToCode(this, 'RX',Blockly.Python.ORDER_ATOMIC).replace("IO", "");
+    var dropdown_pin2 = Blockly.Python.valueToCode(this, 'TX',Blockly.Python.ORDER_ATOMIC).replace("IO", "");
     var freq = Blockly.Python.valueToCode(this, 'freq', Blockly.Python.ORDER_ATOMIC);
     var sub = Blockly.Python.valueToCode(this, 'SUB',Blockly.Python.ORDER_ATOMIC);
-    return ""+sub+" = busio.I2C(scl="+dropdown_pin2+", sda="+dropdown_pin1+", frequency="+freq+")\n";
+    return ""+sub+" = busio.I2C(scl=board.IO"+dropdown_pin2+", sda=board.IO"+dropdown_pin1+", frequency="+freq+")\n";
 };
 
 Blockly.Python.communicate_i2c_try_lock = function(){
