@@ -72,8 +72,8 @@ function navInit() {
 	        <a href="javascript:;" id="file_btn"></a>
 	        <dl class="layui-nav-child">
 	            <!-- 二级菜单 -->
-	            <dd lay-unselect><a href="#" onclick="new_file()" id="new_btn" class="icon-doc-new"></a></dd>
-	            <dd lay-unselect><a href="#" onclick="loadFile()" id="open_btn" class="icon-folder-open-empty"></a></dd>
+	            <dd lay-unselect><a href="#" onclick="MixlyFile.newFile()" id="new_btn" class="icon-doc-new"></a></dd>
+	            <dd lay-unselect><a href="#" onclick="MixlyFile.loadFile()" id="open_btn" class="icon-folder-open-empty"></a></dd>
 	        </dl>
 	    </li>
 	    <li class="layui-nav-item" style="float:right" lay-unselect>

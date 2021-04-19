@@ -36,7 +36,6 @@ layui.use('layer', function(){
     var layer = layui.layer;
 });
 
-
 function new_file(){
     layer.confirm(MSG['confirm_newfile'], {
         title:false,
@@ -55,11 +54,14 @@ function open_language(){
         btn: ['简体中文', '繁体中文', 'English'] 
         ,btn3: function(index, layero){
             Code.changeLanguage_en();
+            localStorage.Language = 'en';
         }
     }, function(index, layero){
         Code.changeLanguage_zh_hans();
+        localStorage.Language = 'zh_hans';
     }, function(index){
         Code.changeLanguage_zh_hant();
+        localStorage.Language = 'zh_hant';
     });
 }
 function open_theme(){
@@ -77,13 +79,40 @@ function open_theme(){
     });
 }
 
+layui.use(['element','form'], function(){
+    var element = layui.element;
+    var form = layui.form;
+    var  layer = layui.layer;
+ 
+    form.on('select(boards-type)', function (data) {
+            //console.log(data);
+            //console.log($("#boards-type").find("option:selected").text());
+            try {
+                profile['default'] = profile[$("#boards-type").find("option:selected").text()];
+            } catch(e) {
+                console.log(e);
+                profile['default'] = profile['Arduino/Genuino Uno'];
+            }
+            if (document.getElementById('changemod_btn').value != 0) {
+                try {
+                    var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+                    Blockly.mainWorkspace.clear();
+                    Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xmlDom);
+                    renderContent();
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+    });
+});
+
 //Demo
 layui.use('form', function(){
-var form = layui.form;
+    var form = layui.form;
 
-//监听提交
-form.on('submit(formDemo)', function(data){
-    layer.msg(JSON.stringify(data.field));
-    return false;
-});
+    //监听提交
+    form.on('submit(formDemo)', function(data){
+        layer.msg(JSON.stringify(data.field));
+        return false;
+    });
 });
