@@ -2,11 +2,13 @@ const {app, BrowserWindow} = require('electron')
 const electron = require('electron')
 const Menu = electron.Menu
 app.on('ready', function createWindow () {
-    //Menu.setApplicationMenu(null)
+    //Menu.setApplicationMenu(null);
     // 可以创建多个渲染进程
     let win = new BrowserWindow({
         show: false,
         //resizable: false,
+        minHeight: 400,
+        minWidth: 650,
         icon: __dirname + '/media/mixly.ico',
         allowRunningInsecureContent: true, 
         webPreferences: {
