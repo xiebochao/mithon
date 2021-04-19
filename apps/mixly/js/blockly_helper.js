@@ -20,22 +20,38 @@ function runJS() {
 function backup_blocks() {
     var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
     xml = Blockly.Xml.domToText(xml);
+    var mixlyVersion = "Mixly 2.0";
+    if (MixlyConfig.softwareConfig.hasOwnProperty("version")) {
+        mixlyVersion = MixlyConfig.softwareConfig["version"];
+    }
+    if (document.getElementById("boards-type")) {
+        xml = xml.replace("<xml xmlns=\"https://developers.google.com/blockly/xml\"", "<xml version=\""+mixlyVersion+"\" board=\""+$('#boards-type option:selected').val()+"\" xmlns=\"http://www.w3.org/1999/xhtml\"");
+    } else {
+        xml = xml.replace("<xml xmlns=\"https://developers.google.com/blockly/xml\"", "<xml version=\""+mixlyVersion+"\" board=\"all\" xmlns=\"http://www.w3.org/1999/xhtml\"");
+    }
+    
     if ('localStorage' in window && window['localStorage'] != null) {
-        window.localStorage.setItem('arduino', xml);
+        window.localStorage.setItem(MixlyUrl.BOARD_CONFIG.BoardName, xml);
+        window.localStorage.setItem(MixlyUrl.BOARD_CONFIG.BoardName+".filePath", MixlyTitle.getFilePath());
     } else {
         //当同时打开打开两个以上（含两个）的Mixly窗口时，只有第一个打开的窗口才有window.localStorage对象，怀疑是javafx的bug.
         //其他的窗口得通过java写cache文件来实现，否则这些窗口在普通、高级视图中进行切换时，无法加载切换之前的块
-        JSFuncs.saveToLocalStorageCache(xml);
+        //JSFuncs.saveToLocalStorageCache(xml);
+    }
+
+    if ('localStorage' in window && window['localStorage'] != null && document.getElementById('changemod_btn').value == 0) {
+        window.localStorage.setItem(MixlyUrl.BOARD_CONFIG.BoardName + ".code", editor.getValue());
+        window.localStorage.setItem(MixlyUrl.BOARD_CONFIG.BoardName + ".loadCode", "true");
+    } else {
+        window.localStorage.setItem(MixlyUrl.BOARD_CONFIG.BoardName + ".loadCode", "false");
     }
 }
 
 function clear_blocks_from_storage() {
     var itl = setInterval(function () {
         if (window) {
-            if ('localStorage' in window && window['localStorage'] != null && window.localStorage.arduino) {
-                window.localStorage.removeItem('arduino');
-            } else {
-                JSFuncs.saveToLocalStorageCache("<xml></xml>");
+            if ('localStorage' in window && window['localStorage'] != null && window.localStorage[MixlyUrl.BOARD_CONFIG.BoardName]) {
+                window.localStorage.removeItem(MixlyUrl.BOARD_CONFIG.BoardName);
             }
             Blockly.mainWorkspace.clear();
             clearInterval(itl);
@@ -44,20 +60,88 @@ function clear_blocks_from_storage() {
 }
 
 /**
+ * 检查下拉框列表是否包含某个值
+ */
+function isExistOption(id,value) {  
+    var isExist = false;  
+    var count = $('#'+id).find('option').length;  
+
+    for(var i=0;i<count;i++)     
+    {     
+        if($('#'+id).get(0).options[i].value == value)     
+        {     
+            isExist = true;     
+            break;     
+        }     
+    }     
+    return isExist;  
+}  
+
+
+/**
  * Restore code blocks from localStorage.
  */
 function restore_blocks() {
     var xml;
-    if ('localStorage' in window && window['localStorage'] != null && window.localStorage.arduino) {
-        xml = Blockly.Xml.textToDom(window.localStorage.arduino);
-    } else {
-        xml = Blockly.Xml.textToDom(JSFuncs.loadFromLocalStorageCache());
+    if ('localStorage' in window && window['localStorage'] != null && window.localStorage[MixlyUrl.BOARD_CONFIG.BoardName]) {
+        try {
+            xml = Blockly.Xml.textToDom(window.localStorage[MixlyUrl.BOARD_CONFIG.BoardName]);
+            if (document.getElementById("boards-type")) {
+                var boardType = window.localStorage[MixlyUrl.BOARD_CONFIG.BoardName].match(/(?<=board[\s]*=[\s]*\")[^\n\"]+(?=\")/g);
+                console.log(boardType);
+                var form = layui.form;
+                if (isExistOption("boards-type", boardType[0])) {
+                    $("#boards-type").val(boardType[0]);
+                }
+                form.render();
+                profile['default'] = profile[$("#boards-type").find("option:selected").text()];
+            }
+        } catch(e) {
+            console.log(e);
+            clear_blocks_from_storage();
+        }
     }
+
+    console.log(window.localStorage);
     try {
         Blockly.Xml.domToWorkspace(xml, Blockly.mainWorkspace);
     } catch(e) {
         Blockly.mainWorkspace.clear();
         console.log(e);
+        clear_blocks_from_storage();
+    }
+    if ('localStorage' in window && window['localStorage'] != null
+     && window.localStorage[MixlyUrl.BOARD_CONFIG.BoardName + ".loadCode"]
+     && window.localStorage[MixlyUrl.BOARD_CONFIG.BoardName + ".loadCode"] == "true") {
+        if ('localStorage' in window && window['localStorage'] != null
+         && window.localStorage[MixlyUrl.BOARD_CONFIG.BoardName + ".code"]) {
+            try {
+                document.getElementById('changemod_btn').value = 0;
+                document.getElementById('changemod_btn').textContent = MSG['tab_blocks'];
+                document.getElementById('changemod_btn').className = "icon-puzzle";
+                setTimeout(function() {
+                    tabClick('arduino');
+                    editor.setValue(window.localStorage[MixlyUrl.BOARD_CONFIG.BoardName + ".code"], -1);
+                }, 500);
+                //tabClick('arduino');
+            } catch(e) {
+                console.log(e);
+            }
+        }
+    }
+    if ('localStorage' in window && window['localStorage'] != null
+     && window.localStorage[MixlyUrl.BOARD_CONFIG.BoardName + ".filePath"]
+     && Mixly_20_environment) {
+        var loadPath = window.localStorage[MixlyUrl.BOARD_CONFIG.BoardName + ".filePath"];
+        if (file_save.existsSync(loadPath)) {
+            MixlyTitle.updeteFilePath(loadPath);
+            MixlyFile.setPath(loadPath);
+            try {
+                MixlyFile.NOWPATH = loadPath.substring(0, loadPath.lastIndexOf("\\")+1);
+            } catch(e) {
+                console.log(e);
+            }
+        }
     }
 }
 
@@ -145,6 +229,7 @@ function auto_save_and_restore_blocks() {
     // Hook a save function onto unload.
     bindEvent(window, 'unload', backup_blocks);
     tabClick(selected);
+
     //Blockly.mainWorkspace.clear();
     // Init load event.
     //var loadInput = document.getElementById('load');
@@ -407,15 +492,38 @@ mixlyjs.changeBoardName = function (xmlContent, cb) {
 
 mixlyjs.renderXml = function (xmlContent) {
     try {
+        if (document.getElementById("boards-type")) {
+            var boardType = xmlContent.match(/(?<=board[\s]*=[\s]*\")[^\n\"]+(?=\")/g);
+            //console.log(boardType);
+            var form = layui.form;
+            if (isExistOption("boards-type", boardType[0])) {
+                $("#boards-type").val(boardType[0]);
+            }
+            form.render();
+            profile['default'] = profile[$("#boards-type").find("option:selected").text()];
+        }
+    } catch(e) {
+        console.log(e);
+    }
+    var oldCode = ""
+    var oldBlock = "";
+    oldBlock = MixlyFile.getMix("project");
+    oldCode = editor.getValue();
+    try {
         var xml = Blockly.Xml.textToDom(xmlContent);
         Blockly.mainWorkspace.clear();
         Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
-        renderContent();
     } catch (e) {
-        alert("invalid xml file!");
+        alert("无效的xml文件!");
+        var xml = Blockly.Xml.textToDom(oldBlock);
+        Blockly.mainWorkspace.clear();
+        Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+        editor.setValue(oldCode, -1);
         console.log(e);
-        return;
+        return false;
     }
+    renderContent();
+    return true;
 };
 mixlyjs.renderIno = function (xmlContent) {
     document.getElementById('changemod_btn').value = 0;
@@ -585,11 +693,15 @@ mixlyjs.getCodeContent = function () {
 
 mixlyjs.getXmlContent = function (xmlType) {
     var xmlCodes = goog.string.quote(Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace)));
+    var mixlyVersion = "Mixly 2.0";
+    if (MixlyConfig.softwareConfig.hasOwnProperty("version")) {
+        mixlyVersion = MixlyConfig.softwareConfig["version"];
+    }
     if (xmlType === "project") {
         var boardName = $("#cb_cf_boards").val();
-        xmlCodes = xmlCodes.replace("<xml", "<xml version=\\\"mixgo_0.997\\\" board=\\\"" + boardName + "\\\"");
+        xmlCodes = xmlCodes.replace("<xml", "<xml version=\\\""+mixlyVersion+"\\\" board=\\\"" + boardName + "\\\"");
     } else if (xmlType === "lib")
-        xmlCodes = xmlCodes.replace("<xml", "<xml version=\\\"mixgo_0.997\\\" board=\\\"" + "mylib" + "\\\"");
+        xmlCodes = xmlCodes.replace("<xml", "<xml version=\\\""+mixlyVersion+"\\\" board=\\\"" + "mylib" + "\\\"");
     return xmlCodes.substring(1, xmlCodes.length - 1);
 };
 

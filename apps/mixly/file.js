@@ -1,5 +1,6 @@
 var MixlyFile = {};
 
+MixlyFile.NOWPATH = mixly_20_path + "\\sample\\";
 MixlyFile.IMGPATH = "";
 MixlyFile.MIXPATH = "";
 MixlyFile.CODEPATH = "";
@@ -8,26 +9,26 @@ MixlyFile.HEXPATH = "";
 MixlyFile.FILTERS = [];
 
 try {
-	var obj1 = { name: '', extensions: ['mix'] };
+	var obj1 = { name: 'Mixly File', extensions: ['mix'] };
 	MixlyFile.FILTERS.push(obj1);
 	if (MixlyUrl.BOARD_CONFIG.hasOwnProperty("nav.save.py")
 		&& MixlyUrl.BOARD_CONFIG["nav.save.py"].toLowerCase() == "true") {
-		var obj = { name: '', extensions: ['py'] };
+		var obj = { name: 'Python File', extensions: ['py'] };
 		MixlyFile.FILTERS.push(obj);
 	}
 	if (MixlyUrl.BOARD_CONFIG.hasOwnProperty("nav.save.ino")
 		&& MixlyUrl.BOARD_CONFIG["nav.save.ino"].toLowerCase() == "true") {
-		var obj = { name: '', extensions: ['ino'] };
+		var obj = { name: 'Arduino File', extensions: ['ino'] };
 		MixlyFile.FILTERS.push(obj);
 	}
 	if (MixlyUrl.BOARD_CONFIG.hasOwnProperty("nav.save.hex")
 		&& MixlyUrl.BOARD_CONFIG["nav.save.hex"].toLowerCase() == "true") {
-		var obj = { name: '', extensions: ['hex'] };
+		var obj = { name: 'Hexadecimal File', extensions: ['hex'] };
 		MixlyFile.FILTERS.push(obj);
 	}
 	if (MixlyUrl.BOARD_CONFIG.hasOwnProperty("nav.save.img")
 		&& MixlyUrl.BOARD_CONFIG["nav.save.img"].toLowerCase() == "true") {
-		var obj = { name: '', extensions: ['png'] };
+		var obj = { name: 'Image File', extensions: ['png'] };
 		MixlyFile.FILTERS.push(obj);
 	}
 } catch(e) {
@@ -40,34 +41,30 @@ if (mixly_20_path) {
 	dialog = require('electron').remote.dialog;
 }
 
-MixlyFile.open = function () {
-	const res = dialog.showOpenDialogSync({
-  		title: '对话框窗口的标题',
-  		// 默认打开的路径，比如这里默认打开下载文件夹
-  		defaultPath: app.getPath('downloads'), 
-  		buttonLabel: '确认按钮文案',
-  		// 限制能够选择的文件类型
-  		filters: [
-    		// { name: 'Images', extensions: ['jpg', 'png', 'gif'] },
-    		// { name: 'Movies', extensions: ['mkv', 'avi', 'mp4'] },
-    		// { name: 'Custom File Type', extensions: ['as'] },
-    		// { name: 'All Files', extensions: ['*'] }, 
-  		],
-  		properties: [ 'openFile', 'openDirectory', 'multiSelections', 'showHiddenFiles' ],
-  		message: 'mac文件选择器title'
-	})
-	console.log('res', res)
-}
-
 MixlyFile.saveAs = function (extension, boxTitle, data) {
 	var limit = [];
 	var fileType = "All Files";
 	var savePath = "";
-	if (file_save.existsSync(mixly_20_path + "\\sample\\")) {
-		savePath = mixly_20_path + "\\sample\\";
+	if (file_save.existsSync(MixlyFile.NOWPATH)) {
+		savePath = MixlyFile.NOWPATH;
 	}
 	if (extension) {
-		fileType = '';
+		switch (extension) {
+			case "py":
+				fileType = "Python File";
+				break;
+			case "ino":
+				fileType = "Arduino File";
+				break;
+			case "hex":
+				fileType = "Hexadecimal File";
+				break;
+			case "png":
+				fileType = "Image File";
+				break;
+			default:
+				fileType = "Mixly File";
+		}
 		extension = extension.toLowerCase();
 		limit.push(extension);
 	}
@@ -88,6 +85,11 @@ MixlyFile.saveAs = function (extension, boxTitle, data) {
 		})
 		console.log('res', res);
 		if (res) {
+			try {
+				MixlyFile.NOWPATH = res.substring(0, res.lastIndexOf("\\")+1);
+			} catch(e) {
+				console.log(e);
+			}
 			file_save.writeFile(res, data,'utf8',function(err){
 				//如果err=null，表示文件使用成功，否则，表示希尔文件失败
 				if (err) {
@@ -116,6 +118,11 @@ MixlyFile.saveAs = function (extension, boxTitle, data) {
 		console.log('res', res);
 		
 		if (res) {
+			try {
+				MixlyFile.NOWPATH = res.substring(0, res.lastIndexOf("\\")+1);
+			} catch(e) {
+				console.log(e);
+			}
 			if (res.indexOf(".py") != -1) {
 				data = MixlyFile.getPy();
 				extension = "py";
@@ -129,7 +136,7 @@ MixlyFile.saveAs = function (extension, boxTitle, data) {
 				data = MixlyFile.getBlockPng();
 				extension = "png";
 			} else {
-				data = MixlyFile.getMix();
+				data = MixlyFile.getMix("project");
 				extension = "mix";
 			}
 			file_save.writeFile(res, data,'utf8',function(err){
@@ -167,6 +174,19 @@ MixlyFile.save = function (extension) {
 	}
 }
 
+MixlyFile.setPath = function (path) {
+	pathStr = path.toLowerCase();
+	if (pathStr.indexOf(".png") != -1) {
+		MixlyFile.IMGPATH = path;
+	} else if (pathStr.indexOf(".hex") != -1) {
+		MixlyFile.HEXPATH = path;
+	} else if (pathStr.indexOf(".ino") != -1 || pathStr.indexOf(".py") != -1) {
+		MixlyFile.CODEPATH = path;
+	} else if (pathStr.indexOf(".mix") != -1 || pathStr.indexOf(".xml") != -1) {
+		MixlyFile.MIXPATH = path;
+	}
+}
+
 MixlyFile.updatePath = function (extension, newPath) {
 	extension = extension.toLowerCase();
 	switch (extension) {
@@ -182,8 +202,12 @@ MixlyFile.updatePath = function (extension, newPath) {
 		case "py":
 			MixlyFile.CODEPATH = newPath;
 			break;
-		default:
+		case "mix":
 			MixlyFile.MIXPATH = newPath;
+			break;
+		case "xml":
+			MixlyFile.MIXPATH = newPath;
+			break;
 	}
 }
 
@@ -358,15 +382,19 @@ MixlyFile.getIno = function () {
 
 MixlyFile.getMix = function (xmlType) {
     var xmlCodes = Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(Blockly.mainWorkspace));
+    var mixlyVersion = "Mixly 2.0";
+    if (MixlyConfig.softwareConfig.hasOwnProperty("version")) {
+    	mixlyVersion = MixlyConfig.softwareConfig["version"];
+    }
     if (xmlType === "project") {
         //var boardName = $("#cb_cf_boards").val();
         if (document.getElementById("boards-type")) {
-        	xmlCodes = xmlCodes.replace("<xml", "<xml version=\\\"Mixly 2.0\\\" board=\\\""+$('#boards-type option:selected').val()+"\\\"");
+        	xmlCodes = xmlCodes.replace("<xml xmlns=\"https://developers.google.com/blockly/xml\"", "<xml version=\""+mixlyVersion+"\" board=\""+$('#boards-type option:selected').val()+"\" xmlns=\"http://www.w3.org/1999/xhtml\"");
         } else {
-        	xmlCodes = xmlCodes.replace("<xml", "<xml version=\\\"Mixly 2.0\\\" board=\\\"all\\\"");
+        	xmlCodes = xmlCodes.replace("<xml xmlns=\"https://developers.google.com/blockly/xml\"", "<xml version=\""+mixlyVersion+"\" board=\"all\" xmlns=\"http://www.w3.org/1999/xhtml\"");
     	}
     } else if (xmlType === "lib")
-        xmlCodes = xmlCodes.replace("<xml", "<xml version=\\\"Mixly 2.0\\\" board=\\\"" + "mylib" + "\\\"");
+        xmlCodes = xmlCodes.replace("<xml xmlns=\"https://developers.google.com/blockly/xml\"", "<xml version=\""+mixlyVersion+"\" board=\"" + "mylib" + "\" xmlns=\"http://www.w3.org/1999/xhtml\"");
     return xmlCodes;
 }
 
@@ -406,6 +434,113 @@ MixlyFile.saveMix = function () {
 	MixlyFile.save("mix");
 }
 
-MixlyFile.saveAsMix= function () {
+MixlyFile.saveAsMix = function () {
 	MixlyFile.saveAs("mix", "另存为", MixlyFile.getData("mix"));
+}
+
+MixlyFile.newFile = function () {
+    layer.confirm(MSG['confirm_newfile'], {
+        title:false,
+        btn: [MSG['newfile_yes'], MSG['newfile_no']] 
+        ,btn2: function(index, layero){
+            layer.close(index);
+        }
+    }, function(index, layero){
+        mixlyjs.createFn();
+        layer.close(index);
+
+        MixlyFile.IMGPATH = "";
+		MixlyFile.MIXPATH = "";
+		MixlyFile.CODEPATH = "";
+		MixlyFile.HEXPATH = "";
+		MixlyTitle.updateTitle(MixlyTitle.TITLE);
+    });
+}
+
+MixlyFile.loadFile = function () {
+	var fileType = [];
+	for (var i = 0; i < MixlyFile.FILTERS.length; i++) {
+		fileType.push(MixlyFile.FILTERS[i]["extensions"][0]);
+	}
+	fileType.push("xml");
+	//console.log(fileType);
+	for (var i = fileType.length - 1; i > -1; i--) {
+      	if (fileType[i] == "png") {
+        	fileType.splice(i, 1);
+      	}
+    }
+    //console.log(fileType);
+	var savePath = "";
+	if (file_save.existsSync(MixlyFile.NOWPATH)) {
+		savePath = MixlyFile.NOWPATH;
+	}
+	const res = dialog.showOpenDialogSync({
+  		title: '打开',
+  		// 默认打开的路径，比如这里默认打开下载文件夹
+  		defaultPath: savePath, 
+  		buttonLabel: '确认',
+  		// 限制能够选择的文件类型
+  		filters: [
+    		 { name: 'Mixly File', extensions: fileType }
+  		],
+  		properties: [ 'openFile', 'showHiddenFiles' ],
+  		message: '打开'
+	})
+	console.log('res', res);
+	if (res) {
+		try {
+			MixlyFile.NOWPATH = res[0].substring(0, res.lastIndexOf("\\")+1);
+		} catch(e) {
+			console.log(e);
+		}
+		try {
+			var pathShow = true;
+			var text = file_save.readFileSync(res[0],'utf-8');
+			text = mixlyjs.translateQuote(text, true);
+			var extension = "";
+			if (res[0].indexOf(".py") != -1) {
+				extension = "py";
+				mixlyjs.renderIno(text);
+			} else if (res[0].indexOf(".ino") != -1) {
+				extension = "ino";
+				mixlyjs.renderIno(text);
+			} else if (res[0].indexOf(".hex") != -1) {
+				extension = "hex";
+				loadHex("main.py", text);
+			} else if (res[0].indexOf(".mix") != -1) {
+				extension = "mix";
+				var newboard = mixlyjs.getBoardFromXml(text);
+                if (newboard !== undefined) {
+                    if (!mixlyjs.renderXml(decode(text))) {
+                    	pathShow = false;
+                    }
+                } else {
+                    alert("Error:could not read board from xml!!");
+                }
+			} else if (res[0].indexOf(".xml") != -1) {
+				var newboard = mixlyjs.getBoardFromXml(text);
+                if (newboard !== undefined) {
+                    if (!mixlyjs.renderXml(decode(text))) {
+                    	pathShow = false;
+                    }
+                } else {
+                    alert("Error:could not read board from xml!!");
+                }
+			} else {
+				alert("Invalid file type! (.ino|.xml|.mix|.py|.hex file supported)");
+				return;
+			}
+			if (pathShow) {
+				MixlyFile.IMGPATH = "";
+				MixlyFile.MIXPATH = "";
+				MixlyFile.CODEPATH = "";
+				MixlyFile.HEXPATH = "";
+				MixlyTitle.updateTitle(MixlyTitle.TITLE);
+				MixlyFile.updatePath(extension, res[0]);
+        		MixlyTitle.updeteFilePath(res[0]);
+			}
+		} catch(e) {
+			console.log(e);
+		}
+	}
 }
