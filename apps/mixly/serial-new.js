@@ -120,15 +120,14 @@ MixlySerial.refreshSerialList = function (select) {
 	    	}
 	    	com_num++;
 	  	}, ports);
-	  	if(com_num) {
-	    	if (old_com_is_empty) {
-	      		$devNames.val($devNames.eq(0).val());
-	    	} else {
-	      		$devNames.val(old_com);
-	    	}
-	  	}
+	  	//if(com_num) {
+	    	//if (!old_com_is_empty) {
+	      		//$devNames.val($devNames.eq(0).val());
+	      	//	$devNames.val(old_com);
+	    	//}
+	  	//}
+	  	form.render();
 	});
-  	form.render();
 }
 
 /**
@@ -298,6 +297,27 @@ MixlySerial.write = function () {
 }
 
 /**
+* @ function 读取串口发送框数据并发送字符串
+* @ description 读取串口发送框数据并发送字符串，然后清空串口发送框
+* @ return void
+*/
+MixlySerial.writeString = function () {
+	if (MixlySerial.serialPort) {
+		var ready_send_data = $("#serial_write_string").val();
+		var ready_send_data_end = $('#send_string_data_with option:selected').val();
+		ready_send_data_end = ready_send_data_end.replace("\\r", "\r");
+		ready_send_data_end = ready_send_data_end.replace("\\n", "\n");
+		if( ready_send_data_end == "no" ) {
+			ready_send_data_end = "";
+		}
+		if (ready_send_data) {
+			MixlySerial.serialPort.write(ready_send_data + ready_send_data_end);
+			$("#serial_write_string").val("");
+		}
+	}
+}
+
+/**
 * @ function 串口发送
 * @ description 串口发送Ctrl + C
 * @ return void
@@ -387,12 +407,14 @@ MixlySerial.connectCom = function () {
 
 	    MixlySerial.PARSER.on('data', function(data) {
 	    	MixlySerial.SERIAL_RECEIVE += data;
-	    	MixlySerialEcharts.draw(data);
+	    	//MixlySerialEcharts.draw(data);
+	    	MixlyHighCharts.addData(data);
 	    });
 	    MixlySerial.serialPort.on('error', function(err) {
 	    	serial_data_update && clearInterval(serial_data_update);
 	    	MixlySerial.showData(MixlySerial.OPENED, data);
 	    });
+
 	    //串口结束使用时执行此函数
 	    MixlySerial.serialPort.on('close', ()=>{
 	        $("#button_connect").text("打开");
@@ -418,6 +440,8 @@ MixlySerial.updateSelectCom = function () {
 		&& !document.querySelector("#div_select_com > div.layui-unselect.layui-form-select.layui-form-selected")
 		&& !document.querySelector("#div_cb_cf_baud_rates > div.layui-unselect.layui-form-select.layui-form-selected")
 		&& !document.querySelector("#div_send_data_with > div.layui-unselect.layui-form-select.layui-form-selected")
+		&& !document.querySelector("#div_send_string_data_with > div.layui-unselect.layui-form-select.layui-form-selected")
+		&& !document.querySelector("#div_serial_point_num > div.layui-unselect.layui-form-select.layui-form-selected")
 		) {
 		
 		MixlySerial.refreshSerialList(MixlySerial.UPLOAD_COM_SELECT);
@@ -462,6 +486,12 @@ MixlySerial.updateSelectCom = function () {
 * @ return void
 */
 MixlySerial.dataRefresh = function () {
+	if (!MixlySerial.serialPort) {
+		return;
+	}
+	if (!MixlySerial.serialPort.isOpen) {
+		return;
+	}
 	var serial_receive_old = "";
 	var serial_dispose_data = [];
 	if (MixlySerial.OPENED) {
@@ -510,10 +540,18 @@ MixlySerial.openSerial = function () {
         var serial_com_update = null;
         element.on('tab(serial)', function(elem){
         	if (elem.index == 1) {
-        		MixlySerialEcharts.init();
+        		//MixlySerialEcharts.init();
+        		MixlyHighCharts.init();
         	} else {
-        		MixlySerialEcharts.myChart && MixlySerialEcharts.myChart.dispose();
-        		MixlySerialEcharts.update && clearInterval(MixlySerialEcharts.update);
+        		//MixlySerialEcharts.myChart && MixlySerialEcharts.myChart.dispose();
+        		//MixlySerialEcharts.update && clearInterval(MixlySerialEcharts.update);
+        		try {
+	    		    MixlyHighCharts.chart && MixlyHighCharts.chart.destroy();
+	    		} catch(e) {
+	    			console.log(e);
+	    		}
+        		MixlyHighCharts.DRAW && clearInterval(MixlyHighCharts.DRAW);
+        		MixlyHighCharts.ADD_DATA && clearInterval(MixlyHighCharts.ADD_DATA);
         	}
 		});
         layer.open({
@@ -542,8 +580,15 @@ MixlySerial.openSerial = function () {
             end: function() {
 	            document.getElementById('serial-form').style.display = 'none';
     		    MixlyStatusBar.setValue($("#serial_content").val(), true);
-    		    MixlySerialEcharts.myChart && MixlySerialEcharts.myChart.dispose();
-    		    MixlySerialEcharts.update && clearInterval(MixlySerialEcharts.update);
+    		    //MixlySerialEcharts.myChart && MixlySerialEcharts.myChart.dispose();
+    		    //MixlySerialEcharts.update && clearInterval(MixlySerialEcharts.update);
+    		    try {
+	    		    MixlyHighCharts.chart && MixlyHighCharts.chart.destroy();
+	    		} catch(e) {
+	    			console.log(e);
+	    		}
+        		MixlyHighCharts.DRAW && clearInterval(MixlyHighCharts.DRAW);
+        		MixlyHighCharts.ADD_DATA && clearInterval(MixlyHighCharts.ADD_DATA);
     		    serial_com_update && clearInterval(serial_com_update);
     		    element.tabChange('serial', '1');
     		    MixlySerial.OPENED = false;

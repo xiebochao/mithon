@@ -161,6 +161,9 @@ MixlyHighCharts.draw = function () {
 		//console.log(xData)
 		//console.log(yData)
 		//console.log(xMax)
+		if (MixlyHighCharts.data.length > 0 && xMax < MixlyHighCharts.data[MixlyHighCharts.data.length-1][0]) {
+			xMax = MixlyHighCharts.data[MixlyHighCharts.data.length-1][0];
+		}
 		MixlyHighCharts.chart.xAxis[0].setExtremes(xMin, xMax);
 	} else if (MixlyHighCharts.data.length >= MixlyHighCharts.pointNum) {
 		xMax = MixlyHighCharts.data[MixlyHighCharts.pointNum-1][0];
