@@ -64,12 +64,12 @@ function updateMain() {
 			code = Blockly.Python.workspaceToCode(Blockly.mainWorkspace) || '';
 		}
 		//code = code_head+code
-		code = code.replace('from mixpy import math_map','')
-		code = code.replace('from mixpy import math_mean','')
-		code = code.replace('from mixpy import math_median','')
-		code = code.replace('from mixpy import math_modes','')
-		code = code.replace('from mixpy import math_standard_deviation','')
-		code = code.replace('from mixpy import lists_sort','')
+		//code = code.replace('from mixpy import math_map','')
+		//code = code.replace('from mixpy import math_mean','')
+		//code = code.replace('from mixpy import math_median','')
+		//code = code.replace('from mixpy import math_modes','')
+		//code = code.replace('from mixpy import math_standard_deviation','')
+		//code = code.replace('from mixpy import lists_sort','')
         //var mainCode = EDITOR.getCode();
         if (FS.exists('main.py')) {
             FS.remove('main.py');

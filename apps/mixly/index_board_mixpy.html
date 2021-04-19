@@ -2,9 +2,10 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Mixly 2.0 For MixPY</title>
+    <title></title>
     <link rel="shortcut icon" type="image/ico" href="../../files/mixly.ico">
     <script type="text/javascript" src="environment.js"></script>
+    <script type="text/javascript" src="../../interface-config.js"></script>
     <script type="text/javascript" src="board-config.js"></script>
     <script type="text/javascript" src="file.js"></script>
     <script type="text/javascript" src="title.js"></script>
@@ -16,7 +17,7 @@
     <script type="text/javascript" src="../../core/procedures.js"></script>
     <script type="text/javascript" src="../../core/blockly.js"></script>
     <script type="text/javascript" src="../../core/events.js"></script>
-    <script type="text/javascript" src="../../core/mixpy_python/class.js"></script>
+    
     <script type="text/javascript" src="../../core/mixpy_python/names.js"></script>
     <script src="../../generators/mixpy_python/python.js"></script>
     <script type="text/javascript" src="company_pin.js"></script>
@@ -37,8 +38,7 @@
     <script type="text/javascript" src="mixpy/myblock.js"></script>
     <script type="text/javascript" src="../../blocks/python/variables.js"></script>
     <script type="text/javascript" src="../../generators/python/variables.js"></script>
-    <script type="text/javascript" src="../../blocks/python/class.js"></script>
-    <script type="text/javascript" src="../../generators/python/class.js"></script>
+    
     <!-- blocks file -->
     <script src="../../blocks/mixpy_python/pins.js"></script>
     <script src="../../blocks/mixpy_python/inout.js"></script>
@@ -169,8 +169,8 @@
             <a href="javascript:;" id="file_btn"></a>
             <dl class="layui-nav-child">
                 <!-- 二级菜单 -->
-                <dd lay-unselect><a href="#" onclick="new_file()" id="new_btn" class="icon-doc-new"></a></dd>
-                <dd lay-unselect><a href="#" onclick="loadFile()" id="open_btn" class="icon-folder-open-empty"></a></dd>
+                <dd lay-unselect><a href="#" onclick="MixlyFile.newFile()" id="new_btn" class="icon-doc-new"></a></dd>
+                <dd lay-unselect><a href="#" onclick="MixlyFile.loadFile()" id="open_btn" class="icon-folder-open-empty"></a></dd>
             </dl>
         </li>
         <li class="layui-nav-item" style="float:right" lay-unselect>

@@ -222,6 +222,16 @@ function init() {
     var py2block_converter = new PythonToBlocks();
     py2block_editor = new Py2blockEditor(py2block_converter, editor);
     Sk.python3 = true;
+
+    /*
+    if (Mixly_20_environment) {
+        getid("py-saveas").style.display = "";
+        MixlyTitle.updateTitle("Mixly 2.0 For Python 3 Lite");
+    } else {
+        getid("py-saveas").style.display = "none";
+        MixlyTitle.updateTitle("mixpy for Mixly_Lite");
+    }
+    */
     var container = document.getElementById('content_area');
     var onresize = function (e) {
         var bBox = getBBox_(container);
@@ -318,6 +328,7 @@ function show_tag(){
     tag_select('operate_stop_btn', 'stop');
     tag_select('operate_layer_btn', 'status_bar_show');
     tag_select('operate_btn', 'operate');
+    tag_select('save_as_btn', 'save_as');
 }
 
 function tag_select(id, msg) {

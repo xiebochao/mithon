@@ -284,7 +284,7 @@ Blockly.Blocks['method_procedures_defnoreturn'] = {
       connection = paramBlock.nextConnection;
     }
     // Initialize procedure's callers with blank IDs.
-    Blockly.Class.promutateCallers(this);
+    //Blockly.Class.promutateCallers(this);
     return containerBlock;
   },
   /**
