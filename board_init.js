@@ -9,11 +9,15 @@ var fs = null;
 var resolve = null;
 var mixly_20_path = null;
 var path = null;
+var dialog = null;
+var nowPath = null;
 if (Mixly_20_environment == 0) {
 	fs = require('fs');
-	path = require('path')
+	path = require('path');
 	resolve = require('path').resolve;
 	mixly_20_path = resolve('./').replace("apps/mixly","");
+	dialog = require('electron').remote.dialog;
+	nowPath = path.resolve(__dirname);
 }
 
 function getid(id) {
@@ -160,174 +164,84 @@ function createDocs(src,dist,callback){
   }
 }
 
-function get_index_File(input) {
-    var files = input.files;
-    if (files) {
-	    if (files[0] && files[0].size > 10 * 1024 * 1024) {
-	        alert('你选择的文件太大了！');
-	        return false;
-	    }
-	    var index_path = files[0].path;
-	    var index_name = files[0].name;
-	    var old_path = index_path.replace("\\" + index_name, "");
-	    var new_path = mixly_20_path + "\\company\\";
-	    new_path = new_path + old_path.substring(old_path.lastIndexOf("\\") + 1, old_path.length);
-	    
-	    if (files[0].type != "text/html") {
-	    	layer.msg('所选择文件不是有效的板卡文件！', {
-	            time: 2000
-	        });
-	        return;
-	    }
+function get_index_File() {
+	const res = dialog.showOpenDialogSync({
+  		title: '导入板卡',
+  		// 默认打开的路径，比如这里默认打开下载文件夹
+  		defaultPath: mixly_20_path, 
+  		buttonLabel: '确认',
+  		// 限制能够选择的文件类型
+  		filters: [
+    		 { name: 'JSON File', extensions: ['json'] }
+  		],
+  		properties: [ 'openFile', 'showHiddenFiles' ],
+  		message: '导入板卡'
+	})
+	console.log('res', res);
 
-	    if (!fs.existsSync(old_path + "\\config.json")) {
-	    	layer.msg('未找到板卡配置文件！', {
-	            time: 2000
-	        });
-	        return;
-	    }
-
-	    if (new_path == old_path) {
-	    	layer.msg('此板卡已导入！', {
-	            time: 2000
-	        });
-	        return;
-	    }
-	    deleteFolder(new_path);
-	    fs.mkdir(new_path, function (err) {
-		    if (!err) {
-		        copyFolder(old_path, new_path, function(err) {
-					if (err) {
-					    return;
-					}
-					window.location.reload();
-				})
-		    }
-		})
+	if (!res) {
+		return;
 	}
+
+	if (res[0].indexOf("config.json") == -1) {
+		layer.msg('所选配置文件无效！', {
+            time: 2000
+        });
+        return;
+	}
+
+    var old_path = res[0].substring(0, res[0].lastIndexOf("\\"));
+    var new_path = nowPath + "\\board\\ThirdParty\\";
+    new_path = new_path + old_path.substring(old_path.lastIndexOf("\\") + 1, old_path.length);
+    if (new_path == old_path) {
+    	layer.msg('此板卡已导入！', {
+            time: 2000
+        });
+        return;
+    }
+    deleteFolder(new_path);
+    fs.mkdir(new_path, function (err) {
+	    if (!err) {
+	        copyFolder(old_path, new_path, function(err) {
+				if (err) {
+				    return;
+				}
+				window.location.reload();
+			})
+	    }
+	})
 }
 
 function load_board() {
 	var readDir = null;
-	if (Mixly_20_environment == 0)
-		readDir = fs.readdirSync(mixly_20_path + "\\company\\");
-	var now_index_num = 0;
-	if (Mixly_20_environment == 0 && readDir.length != 0) {
-		for (var i = 0; i < readDir.length; i++) {
-			var now_index_path = mixly_20_path + "\\company\\" + readDir[i];
-			if (fs.existsSync(now_index_path + "\\config.json")) {
-				
-				var rawdata = fs.readFileSync(now_index_path + "\\config.json");
-				var config_data = null;
-				try{
-					config_data = JSON.parse(rawdata);
-				} catch(e) {
-					console.log(e);
-					continue;
+	if (Mixly_20_environment == 0 
+		&& fs.existsSync(nowPath + "\\board\\ThirdParty\\")
+		&& fs.statSync(nowPath + "\\board\\ThirdParty\\").isDirectory()) {
+		readDir = fs.readdirSync(nowPath + "\\board\\ThirdParty\\");
+		var now_index_num = 0;
+		if (readDir.length != 0) {
+			for (var i = 0; i < readDir.length; i++) {
+				var now_index_path = nowPath + "\\board\\ThirdParty\\" + readDir[i];
+				if (fs.existsSync(now_index_path + "\\config.json")) {
+					var rawdata = fs.readFileSync(now_index_path + "\\config.json");
+					var config_data = null;
+					try{
+						config_data = JSON.parse(rawdata);
+					} catch(e) {
+						console.log(e);
+						continue;
+					}
+					config_data.ThirdPartyBoard = true;
+					config_data.FolderPath = now_index_path;
+					config_data.BoardIndex = 'board\\ThirdParty\\' + readDir[i] + '\\index.html';
+					mixly_board.push(config_data);
+					//console.log(config_data);
+					//console.log(mixly_board);
 				}
-				config_data.ThirdPartyBoard = true;
-				config_data.FolderPath = now_index_path;
-				mixly_board.push(config_data);
-				//console.log(config_data);
-				//console.log(mixly_board);
-				try{
-					deleteFolder(mixly_20_path + "\\resources\\app\\blocks\\" + config_data['blocks']);
-				} catch (e) {
-					console.log(e);
-				}
-
-				try{
-					deleteFolder(mixly_20_path + "\\resources\\app\\generators\\" + config_data['generators']);
-				} catch (e) {
-					console.log(e);
-				}
-
-				try{
-					deleteFolder(mixly_20_path + "\\resources\\app\\converters\\" + config_data['converters']);
-				} catch (e) {
-					console.log(e);
-				}
-
-				try{
-					deleteFolder(mixly_20_path + "\\resources\\app\\apps\\mixly\\" + config_data['myBlock']);
-				} catch (e) {
-					console.log(e);
-				}
-
-				try{
-					fs.unlinkSync(mixly_20_path + "\\resources\\app\\apps\\mixly\\css\\" + config_data['css']);
-				} catch (e) {
-					console.log(e);
-				}
-
-				try{
-					fs.unlinkSync(mixly_20_path + "\\resources\\app\\files\\" + config_data['files']);
-				} catch (e) {
-					console.log(e);
-				}
-
-				try{
-					fs.unlinkSync(mixly_20_path + "\\resources\\app\\apps\\mixly\\" + config_data['BoardIndex'].replace("./apps/mixly/", ""));
-				} catch (e) {
-					console.log(e);
-				}
-
-				try{
-					fs.copyFileSync(now_index_path + "\\" + config_data['BoardIndex'].replace("./apps/mixly/", ""), mixly_20_path + "\\resources\\app\\apps\\mixly\\" + config_data['BoardIndex'].replace("./apps/mixly/", "")); 
-				} catch (e) {
-					console.log(e);
-				}
-
-				try{
-					fs.copyFileSync(now_index_path + "\\files\\" + config_data['files'], mixly_20_path + "\\resources\\app\\files\\" + config_data['files']);  
-				} catch (e) {
-					console.log(e);
-				}
-
-				try{
-					fs.copyFileSync(now_index_path + "\\css\\" + config_data['css'], mixly_20_path + "\\resources\\app\\apps\\mixly\\css\\" + config_data['css']);
-				} catch (e) {
-					console.log(e);
-				}
-
-				try{
-					createDocs(now_index_path + "\\blocks\\", mixly_20_path + "\\resources\\app\\blocks\\",function(){});
-				} catch (e) {
-					console.log(e);
-				}
-
-				try{
-					createDocs(now_index_path + "\\generators\\", mixly_20_path + "\\resources\\app\\generators\\",function(){});
-				} catch (e) {
-					console.log(e);
-				}
-
-				try{
-					createDocs(now_index_path + "\\converters\\", mixly_20_path + "\\resources\\app\\converters\\",function(){});
-				} catch (e) {
-					console.log(e);
-				}
-
-				try{
-					if (config_data['myBlock'])
-						createDocs(now_index_path + "\\" + config_data['myBlock'], mixly_20_path + "\\resources\\app\\apps\\mixly\\" + config_data['myBlock'],function(){});
-				} catch (e) {
-					console.log(e);
-				}
-				
-				/*
-				fs.mkdir(mixly_20_path + "\\resources\\app\\apps\\mixly\\" + config_data['myBlock'], function (err) {
-				    if (err) {
-				    	console.log(err);
-				    } else {
-				    	createDocs(now_index_path + "\\" + config_data['myBlock'], mixly_20_path + "\\resources\\app\\apps\\mixly\\" + config_data['myBlock'],function(){});
-				    }
-				})
-				*/
+				now_index_num++;
+				if (now_index_num == readDir.length)
+					board_show();
 			}
-			now_index_num++;
-			if (now_index_num == readDir.length)
-				board_show();
 		}
 	} else {
 		board_show();
@@ -340,49 +254,6 @@ function del_board(board_number) {
 	} catch (e) {
 		console.log(e);
 	}
-
-	try{
-		deleteFolder(mixly_20_path + "\\resources\\app\\blocks\\" + mixly_board[board_number]['blocks']);
-	} catch (e) {
-		console.log(e);
-	}
-
-	try{
-		deleteFolder(mixly_20_path + "\\resources\\app\\generators\\" + mixly_board[board_number]['generators']);
-	} catch (e) {
-		console.log(e);
-	}
-
-	try{
-		deleteFolder(mixly_20_path + "\\resources\\app\\converters\\" + mixly_board[board_number]['converters']);
-	} catch (e) {
-		console.log(e);
-	}
-
-	try{
-		deleteFolder(mixly_20_path + "\\resources\\app\\apps\\mixly\\" + mixly_board[board_number]['myBlock']);
-	} catch (e) {
-		console.log(e);
-	}
-
-	try{
-		fs.unlinkSync(mixly_20_path + "\\resources\\app\\apps\\mixly\\css\\" + mixly_board[board_number]['css']);
-	} catch (e) {
-		console.log(e);
-	}
-
-	try{
-		fs.unlinkSync(mixly_20_path + "\\resources\\app\\files\\" + mixly_board[board_number]['files']);
-	} catch (e) {
-		console.log(e);
-	}
-
-	try{
-		fs.unlinkSync(mixly_20_path + "\\resources\\app\\apps\\mixly\\" + mixly_board[board_number]['BoardIndex'].replace("./apps/mixly/", ""));
-	} catch (e) {
-		console.log(e);
-	}
-
 	window.location.reload();
 	//load_board();
 }
@@ -476,7 +347,6 @@ function board_show() {
 				                    <img src="${mixly_board[i]['BoardImg']}" alt="service image" class="tiltimage">
 				                    <h2>${mixly_board[i]['BoardName']}</h2>
 				                </a>
-				                <!--<p>${mixly_board[i]['BoardDescription']}</p>-->
 				            </div>
 				        </div>
 						`;
@@ -488,7 +358,6 @@ function board_show() {
 				                    <img src="${mixly_board[i]['BoardImg']}" alt="service image" class="tiltimage">
 				                    <h2>${mixly_board[i]['BoardName']}</h2>
 				                </a>
-				                <!--<p>${mixly_board[i]['BoardDescription']}</p>-->
 				            </div>
 				        </div>
 						`;
@@ -497,11 +366,10 @@ function board_show() {
 					a_row += `
 					<div class="col-sm-4 col-md-3">
 			            <div class="service-single">
-			                <a href="${mixly_board[i]['BoardIndex']}" onclick="load_index_File();">
+			                <a href="${mixly_board[i]['BoardIndex']}" onclick="open_board();">
 			                    <img id="add-board" src="${mixly_board[i]['BoardImg']}" alt="service image" class="tiltimage">
 			                    <h2>${mixly_board[i]['BoardName']}</h2>
 			                </a>
-			                <!--<p>${mixly_board[i]['BoardDescription']}</p>-->
 			            </div>
 			        </div>
 					`;
@@ -523,7 +391,7 @@ function board_show() {
 				<div class="col-sm-4 col-md-3">
 		            <div class="service-single">
 		                <a href="javascript:;">
-		                    <img src="./files/blank2.jpg" alt="service image" class="tiltimage">
+		                    <img src="./files/blank.jpg" alt="service image" class="tiltimage">
 		                </a>
 		            </div>
 		        </div>

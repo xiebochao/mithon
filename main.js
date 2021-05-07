@@ -9,7 +9,7 @@ app.on('ready', function createWindow () {
         //resizable: false,
         minHeight: 400,
         minWidth: 650,
-        icon: __dirname + '/media/mixly.ico',
+        icon: __dirname + '/files/mixly.ico',
         allowRunningInsecureContent: true, 
         webPreferences: {
           nodeIntegration: true,

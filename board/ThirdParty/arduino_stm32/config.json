@@ -1,0 +1,45 @@
+{
+    "BoardImg": "./board/ThirdParty/arduino_stm32/media/stm32.png",
+    "BoardName": "Arduino STM32",
+    "environment": 0,
+	"board": {
+        "Generic STM32F103C series": "stm32duino:STM32F1:genericSTM32F103C",
+        "Generic STM32F103R series": "stm32duino:STM32F1:genericSTM32F103R",
+        "Generic STM32F103T series": "stm32duino:STM32F1:genericSTM32F103T",
+        "Generic STM32F103V series": "stm32duino:STM32F1:genericSTM32F103V",
+        "Generic STM32F103Z series": "stm32duino:STM32F1:genericSTM32F103Z",
+        "Generic STM32F103C6/fake STM32F103C8": "stm32duino:STM32F1:genericSTM32F103C6",
+        "HYTiny STM32F103TB": "stm32duino:STM32F1:hytiny-stm32f103t",
+        "STM32VLD to FLASH": "stm32duino:STM32F1:STM32VLD",
+        "Maple Mini": "stm32duino:STM32F1:mapleMini",
+        "Maple (Rev 3)": "stm32duino:STM32F1:maple",
+        "Maple (RET6)": "stm32duino:STM32F1:mapleRET6",
+        "Microduino Core STM32 to Flash": "stm32duino:STM32F1:microduino32_flash",
+        "STM Nucleo F103RB (STLink)": "stm32duino:STM32F1:nucleo_f103rb",
+        "Generic STM32F407V series": "stm32duino:STM32F4:generic_f407v",
+        "Generic STM32F407V mini series": "stm32duino:STM32F4:generic_f407v_mini",
+        "STM32 Discovery F407": "stm32duino:STM32F4:discovery_f407",
+        "Blackpill STM32F401CCU6": "stm32duino:STM32F4:blackpill_f401",
+        "STM32 Discovery F411E": "stm32duino:STM32F4:disco_f411"
+    },
+    "Burn": "None",
+    "Upload": {
+        "comSelect": "all"
+    },
+    "nav": {
+        "compile": true,
+        "upload": true,
+        "save": {
+            "img": true,
+            "ino": true
+        }
+    },
+    "serial": {
+        "ctrlCBtn": false,
+        "ctrlDBtn": false,
+        "baudRates": 9600,
+        "yMax": 100,
+        "yMin": 0,
+        "pointNum": 100
+    }
+}

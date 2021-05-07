@@ -1,10 +1,6 @@
 var MixlyConfig = {};
 
 MixlyConfig.softwareConfig = {
-	"version": "Mixly 2.0.1"
-}
-
-if (MixlyConfig.softwareConfig.hasOwnProperty("version") 
- && document.title.indexOf(MixlyConfig.softwareConfig["version"]) == -1) {
-	document.title = MixlyConfig.softwareConfig["version"];
+	"version": "Mixly 2.0",
+	"board.url": "https://gitee.com/smilebrightly/git_-test/raw/master/boards.json"
 }
