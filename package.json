@@ -13,7 +13,7 @@
   "author": "Mixly",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^11.2.1",
+    "electron": "^11.5.0",
     "electron-rebuild": "^2.3.4"
   },
   "dependencies": {
